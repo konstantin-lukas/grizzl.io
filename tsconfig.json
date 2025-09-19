@@ -23,6 +23,7 @@
             "@app/*": ["./src/app/*"],
             "@components/*": ["./src/components/*"],
             "@const/*": ["./src/const/*"],
+            "@contexts": ["./src/contexts"],
             "@database/*": ["./src/database/*"],
             "@enum/*": ["./src/enum/*"],
             "@hooks/*": ["./src/hooks/*"],
