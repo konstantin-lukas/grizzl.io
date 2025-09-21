@@ -19,20 +19,20 @@ export default function ThemeToggle() {
             <CSSTransition
                 in={hasMounted && resolvedTheme === "dark"}
                 timeout={200}
-                nodeRef={sunIconRef}
+                nodeRef={moonIconRef}
                 classNames="menu-icon-open"
                 unmountOnExit
             >
-                <Sun ref={sunIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+                <Moon ref={moonIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
             </CSSTransition>
             <CSSTransition
                 in={hasMounted && resolvedTheme === "light"}
                 timeout={200}
-                nodeRef={moonIconRef}
+                nodeRef={sunIconRef}
                 classNames="menu-icon-close"
                 unmountOnExit
             >
-                <Moon ref={moonIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+                <Sun ref={sunIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
             </CSSTransition>
         </button>
     );

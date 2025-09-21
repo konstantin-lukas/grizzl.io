@@ -16,11 +16,12 @@ import Grizzl from "@components/icons/Grizzl";
 import XMark from "@components/icons/XMark";
 import ThemeToggle from "@components/interaction/ThemeToggle";
 
-function MenuLink({ children, color }: { children: ReactNode; color: string }) {
+function MenuLink({ children, color, onClick }: { children: ReactNode; color: string; onClick?: () => void }) {
     const hoverClass = clsx("absolute", "h-full", "w-full", "px-8", "py-3", color);
     return (
         <li className="w-full">
             <Link
+                onClick={onClick}
                 href="/"
                 className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-front"
             >
@@ -62,24 +63,32 @@ export default function Menu() {
     const menu = (
         <header className={headerClass}>
             <div className="max-h-full w-full overflow-auto">
-                <nav className="m-auto flex flex-col items-center justify-center py-20">
-                    <Link href="/" className="mb-8 block w-[75dvw] sm:w-80">
+                <nav
+                    className="m-auto flex flex-col items-center justify-center py-20"
+                    aria-label="Main site navigation"
+                >
+                    <Link
+                        href="/"
+                        className="mb-8 block w-[75dvw] sm:w-80"
+                        aria-label="Go to Home"
+                        onClick={() => setIsOpen(false)}
+                    >
                         <Grizzl className="w-full fill-back" />
                     </Link>
                     <ul className="flex flex-col gap-6">
-                        <MenuLink color="bg-emerald-700">
+                        <MenuLink color="bg-emerald-700" onClick={() => setIsOpen(false)}>
                             <ChartPie />
                             Poll
                         </MenuLink>
-                        <MenuLink color="bg-cyan-700">
+                        <MenuLink color="bg-cyan-700" onClick={() => setIsOpen(false)}>
                             <ClipboardDocumentList />
                             To-Do
                         </MenuLink>
-                        <MenuLink color="bg-purple-700">
+                        <MenuLink color="bg-purple-700" onClick={() => setIsOpen(false)}>
                             <Clock className="size-6 stroke-front" />
                             Timer
                         </MenuLink>
-                        <MenuLink color="bg-rose-700">
+                        <MenuLink color="bg-rose-700" onClick={() => setIsOpen(false)}>
                             <Banknotes className="size-6 stroke-front" />
                             Finance
                         </MenuLink>
