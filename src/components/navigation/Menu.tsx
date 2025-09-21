@@ -1,12 +1,13 @@
 "use client";
 
 import { clsx } from "clsx/lite";
+import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import ArrowRight from "@components/icons/ArrowRight";
+import ArrowRightEndOnRectangle from "@components/icons/ArrowRightEndOnRectangle";
+import ArrowRightStartOnRectangle from "@components/icons/ArrowRightStartOnRectangle";
 import Banknotes from "@components/icons/Banknotes";
 import Bars2 from "@components/icons/Bars2";
 import ChartPie from "@components/icons/ChartPie";
@@ -15,30 +16,9 @@ import Clock from "@components/icons/Clock";
 import Grizzl from "@components/icons/Grizzl";
 import XMark from "@components/icons/XMark";
 import ThemeToggle from "@components/interaction/ThemeToggle";
+import MenuLink from "@components/navigation/MenuLink";
 
-function MenuLink({ children, color, onClick }: { children: ReactNode; color: string; onClick?: () => void }) {
-    const hoverClass = clsx("absolute", "h-full", "w-full", "px-8", "py-3", color);
-    return (
-        <li className="w-full">
-            <Link
-                onClick={onClick}
-                href="/"
-                className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-front"
-            >
-                <div className="w-full transition-transform group-hover:-translate-y-full group-focus-visible:-translate-y-full">
-                    <div className="flex h-full w-full justify-center gap-2 bg-back px-8 py-3 text-center">
-                        {children}
-                    </div>
-                    <div className={hoverClass}>
-                        <ArrowRight className="absolute top-1/2 left-1/2 h-8 w-8 -translate-1/2 stroke-theme-white" />
-                    </div>
-                </div>
-            </Link>
-        </li>
-    );
-}
-
-export default function Menu() {
+export default function Menu({ signedIn }: { signedIn: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
     const openIconRef = useRef(null);
     const closeIconRef = useRef(null);
@@ -60,6 +40,17 @@ export default function Menu() {
         isOpen && "backdrop-blur-lg",
     );
 
+    const sessionButton = (
+        <MenuLink
+            as="button"
+            color="bg-emerald-700"
+            onClick={signedIn ? () => signOut({ callbackUrl: "/" }) : () => signIn()}
+        >
+            {signedIn ? <ArrowRightStartOnRectangle /> : <ArrowRightEndOnRectangle />}
+            {signedIn ? "Sign Out" : "Sign Out"}
+        </MenuLink>
+    );
+
     const menu = (
         <header className={headerClass}>
             <div className="max-h-full w-full overflow-auto">
@@ -76,22 +67,31 @@ export default function Menu() {
                         <Grizzl className="w-full fill-back" />
                     </Link>
                     <ul className="flex flex-col gap-6">
-                        <MenuLink color="bg-emerald-700" onClick={() => setIsOpen(false)}>
-                            <ChartPie />
-                            Poll
-                        </MenuLink>
-                        <MenuLink color="bg-cyan-700" onClick={() => setIsOpen(false)}>
-                            <ClipboardDocumentList />
-                            To-Do
-                        </MenuLink>
-                        <MenuLink color="bg-purple-700" onClick={() => setIsOpen(false)}>
-                            <Clock className="size-6 stroke-front" />
-                            Timer
-                        </MenuLink>
-                        <MenuLink color="bg-rose-700" onClick={() => setIsOpen(false)}>
-                            <Banknotes className="size-6 stroke-front" />
-                            Finance
-                        </MenuLink>
+                        <li className="w-full">{sessionButton}</li>
+                        <li className="w-full">
+                            <MenuLink color="bg-cyan-700" onClick={() => setIsOpen(false)} href="/poll">
+                                <ChartPie />
+                                Poll
+                            </MenuLink>
+                        </li>
+                        <li className="w-full">
+                            <MenuLink color="bg-purple-700" onClick={() => setIsOpen(false)} href="/todo">
+                                <ClipboardDocumentList />
+                                To-Do
+                            </MenuLink>
+                        </li>
+                        <li className="w-full">
+                            <MenuLink color="bg-rose-700" onClick={() => setIsOpen(false)} href="/timer">
+                                <Clock className="size-6 stroke-front" />
+                                Timer
+                            </MenuLink>
+                        </li>
+                        <li className="w-full">
+                            <MenuLink color="bg-amber-700" onClick={() => setIsOpen(false)} href="/finance">
+                                <Banknotes className="size-6 stroke-front" />
+                                Finance
+                            </MenuLink>
+                        </li>
                     </ul>
                 </nav>
             </div>

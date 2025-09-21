@@ -1,5 +1,7 @@
+import getConfig from "next/config";
 import Link from "next/link";
 
+const { publicRuntimeConfig } = getConfig();
 export function Footer() {
     return (
         <footer className="h-footer-height">
@@ -11,7 +13,7 @@ export function Footer() {
                     Privacy Policy
                 </Link>
                 <Link className="inline-link-3" href="https://github.com/konstantin-lukas/grizzl.io">
-                    Version 0.1.0
+                    Version {publicRuntimeConfig?.version}
                 </Link>
             </nav>
         </footer>

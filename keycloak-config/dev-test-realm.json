@@ -1,0 +1,32 @@
+{
+    "realm": "dev-test",
+    "enabled": true,
+    "users": [
+        {
+            "username": "user",
+            "email": "user@test.com",
+            "firstName": "Test",
+            "lastName": "User",
+            "enabled": true,
+            "emailVerified": true,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "password",
+                    "temporary": false
+                }
+            ]
+        }
+    ],
+    "clients": [
+        {
+            "clientId": "nextauth-client",
+            "secret": "test-client-secret",
+            "enabled": true,
+            "protocol": "openid-connect",
+            "redirectUris": ["http://localhost:3000/auth/callback/keycloak"],
+            "publicClient": false,
+            "standardFlowEnabled": true
+        }
+    ]
+}
