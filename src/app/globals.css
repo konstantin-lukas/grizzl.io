@@ -5,11 +5,12 @@
 @custom-variant dark (&:where([data-color-scheme=dark], [data-color-scheme=dark] *));
 
 @theme {
-    --color-main: var(--color-rose-600);
     --color-theme-white: #ffffff;
     --color-theme-black: #1f1f1f;
     --color-back: var(--color-theme-white);
     --color-front: var(--color-theme-black);
+    --default-transition-timing-function: cubic-bezier(0,.66,.33,1);
+    --default-transition-duration: 250ms;
 }
 
 :root:where([data-color-scheme="dark"], [data-color-scheme="dark"] *) {
@@ -36,7 +37,8 @@
     }
 
     :focus-visible {
-        outline: 4px solid var(--color-main);
+        outline: 4px solid var(--color-back);
+        outline-offset: 4px;
     }
 }
 

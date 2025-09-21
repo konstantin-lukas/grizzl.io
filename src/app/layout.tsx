@@ -8,7 +8,7 @@ import Menu from "@components/navigation/Menu";
 import HeroUIProvider from "@components/providers/HeroUIProvider";
 
 export const metadata: Metadata = {
-    title: "Grizzl",
+    title: "Grizzl - The Bear That Does It All",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -24,7 +24,7 @@ function MenuLink({ children, color }: { children: ReactNode; color: string }) {
                 href="/"
                 className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-front"
             >
-                <div className="w-full transition-transform group-hover:-translate-y-full">
+                <div className="w-full transition-transform group-hover:-translate-y-full group-focus-visible:-translate-y-full">
                     <div className="flex h-full w-full justify-center gap-2 bg-back px-8 py-3 text-center">
                         {children}
                     </div>
