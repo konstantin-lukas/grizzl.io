@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 
 import "@app/globals.css";
 
+import RegisterSW from "@components/config/RegisterSW";
+import InstallButton from "@components/interaction/InstallButton";
 import Main from "@components/layout/Main";
 import { Footer } from "@components/navigation/Footer";
 import Menu from "@components/navigation/Menu";
@@ -30,7 +32,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 <SessionProvider basePath="/auth">
                     <HeroUIProvider>
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
+                            <RegisterSW />
                             <Menu signedIn={!!session} />
+                            <InstallButton />
                             <Main>{children}</Main>
                             <Footer />
                         </ThemeProvider>
