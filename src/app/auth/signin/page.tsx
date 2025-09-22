@@ -2,11 +2,13 @@ import { Card } from "@heroui/card";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
-import { LuTwitch } from "react-icons/lu";
-import { PiRedditLogo, PiSpotifyLogo } from "react-icons/pi";
-import { RiDiscordLine, RiGithubLine } from "react-icons/ri";
-import { SiKeycloak } from "react-icons/si";
 
+import Discord from "@components/icons/oauth-services/Discord";
+import GitHub from "@components/icons/oauth-services/GitHub";
+import Keycloak from "@components/icons/oauth-services/Keycloak";
+import Reddit from "@components/icons/oauth-services/Reddit";
+import Spotify from "@components/icons/oauth-services/Spotify";
+import Twitch from "@components/icons/oauth-services/Twitch";
 import SignInButton from "@components/interaction/SignInButton";
 import Wrapper from "@components/layout/Wrapper";
 import H1 from "@components/typography/H1";
@@ -21,30 +23,30 @@ export default async function Page(context: { searchParams: Promise<{ callbackUr
         process.env.APP_ENV === "production" ? (
             <>
                 <SignInButton color="bg-emerald-700" serviceName="discord">
-                    <RiDiscordLine className="mr-2 inline" />
+                    <Discord className="size-5 fill-front" />
                     <span>Discord</span>
                 </SignInButton>
                 <SignInButton color="bg-cyan-700" serviceName="github">
-                    <RiGithubLine className="mr-2 inline" />
+                    <GitHub className="size-5 fill-front" />
                     <span>GitHub</span>
                 </SignInButton>
                 <SignInButton color="bg-purple-700" serviceName="reddit">
-                    <PiRedditLogo className="mr-2 inline" />
+                    <Reddit className="size-5 fill-front" />
                     <span>Reddit</span>
                 </SignInButton>
                 <SignInButton color="bg-rose-700" serviceName="twitch">
-                    <LuTwitch className="mr-2 inline" />
+                    <Twitch className="size-4 stroke-front" />
                     <span>Twitch</span>
                 </SignInButton>
                 <SignInButton color="bg-amber-700" serviceName="spotify">
-                    <PiSpotifyLogo className="mr-2 inline" />
+                    <Spotify className="size-5 fill-front" />
                     <span>Spotify</span>
                 </SignInButton>
             </>
         ) : (
             <SignInButton color="bg-emerald-700" serviceName="keycloak">
-                <SiKeycloak className="mr-2 inline" />
-                <span>KeyCloak</span>
+                <Keycloak className="size-4 fill-front" />
+                <span>Keycloak</span>
             </SignInButton>
         );
 
@@ -53,8 +55,8 @@ export default async function Page(context: { searchParams: Promise<{ callbackUr
             <Wrapper>
                 <div className="flex items-center justify-center">
                     <Card>
-                        <div className="flex flex-col items-center justify-center px-10 py-6">
-                            <div className="mb-4">{heading}</div>
+                        <div className="flex flex-col items-center justify-center gap-4 px-10 pt-6 pb-8">
+                            {heading}
                             {buttons}
                         </div>
                     </Card>
