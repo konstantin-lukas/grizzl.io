@@ -41,14 +41,19 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
     );
 
     const sessionButton = (
-        <MenuLink
-            as="button"
-            color="bg-emerald-700"
-            onClick={signedIn ? () => signOut({ callbackUrl: "/" }) : () => signIn()}
-        >
-            {signedIn ? <ArrowRightStartOnRectangle /> : <ArrowRightEndOnRectangle />}
-            {signedIn ? "Sign Out" : "Sign Out"}
-        </MenuLink>
+        <div className="flex">
+            <button
+                onClick={signedIn ? () => signOut({ callbackUrl: "/" }) : () => signIn()}
+                className="inline-link-1 group mx-auto mt-4 flex justify-center gap-2"
+            >
+                {signedIn ? (
+                    <ArrowRightStartOnRectangle className="size-6 transition-colors group-hover:stroke-amber-400 group-focus-visible:stroke-amber-400 dark:group-hover:stroke-amber-600 dark:group-focus-visible:stroke-amber-600" />
+                ) : (
+                    <ArrowRightEndOnRectangle className="size-6 transition-colors group-hover:stroke-amber-400 group-focus-visible:stroke-amber-400 dark:group-hover:stroke-amber-600 dark:group-focus-visible:stroke-amber-600" />
+                )}
+                {signedIn ? "Sign Out" : "Sign In"}
+            </button>
+        </div>
     );
 
     const menu = (
@@ -67,31 +72,31 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
                         <Grizzl className="w-full fill-back" />
                     </Link>
                     <ul className="flex flex-col gap-6">
-                        <li className="w-full">{sessionButton}</li>
                         <li className="w-full">
-                            <MenuLink color="bg-cyan-700" onClick={() => setIsOpen(false)} href="/poll">
+                            <MenuLink color="bg-emerald-700" onClick={() => setIsOpen(false)} href="/poll">
                                 <ChartPie />
                                 Poll
                             </MenuLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink color="bg-purple-700" onClick={() => setIsOpen(false)} href="/todo">
+                            <MenuLink color="bg-cyan-700" onClick={() => setIsOpen(false)} href="/todo">
                                 <ClipboardDocumentList />
                                 To-Do
                             </MenuLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink color="bg-rose-700" onClick={() => setIsOpen(false)} href="/timer">
+                            <MenuLink color="bg-purple-700" onClick={() => setIsOpen(false)} href="/timer">
                                 <Clock className="size-6 stroke-front" />
                                 Timer
                             </MenuLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink color="bg-amber-700" onClick={() => setIsOpen(false)} href="/finance">
+                            <MenuLink color="bg-rose-700" onClick={() => setIsOpen(false)} href="/finance">
                                 <Banknotes className="size-6 stroke-front" />
                                 Finance
                             </MenuLink>
                         </li>
+                        <li className="w-full">{sessionButton}</li>
                     </ul>
                 </nav>
             </div>
