@@ -12,6 +12,9 @@
     --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
     --default-transition-duration: 250ms;
     --spacing-footer-height: 3rem;
+    --spacing-main-padding: calc(var(--spacing) * 20);
+    --spacing-main-height: calc(100dvh - var(--spacing-footer-height));
+    --spacing-main-height-no-padding: calc(100dvh - var(--spacing-footer-height) - var(--spacing-main-padding) * 2);
 }
 
 :root:where([data-color-scheme="dark"], [data-color-scheme="dark"] *) {
@@ -24,7 +27,6 @@
     body {
         background: var(--color-front);
         color: var(--color-back);
-        min-height: 100dvh;
     }
 
     button {

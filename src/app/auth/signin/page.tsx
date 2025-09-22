@@ -24,19 +24,19 @@ export default async function Page(context: { searchParams: Promise<{ callbackUr
                     <RiDiscordLine className="mr-2 inline" />
                     <span>Discord</span>
                 </SignInButton>
-                <SignInButton color="bg-emerald-700" serviceName="github">
+                <SignInButton color="bg-cyan-700" serviceName="github">
                     <RiGithubLine className="mr-2 inline" />
                     <span>GitHub</span>
                 </SignInButton>
-                <SignInButton color="bg-emerald-700" serviceName="reddit">
+                <SignInButton color="bg-purple-700" serviceName="reddit">
                     <PiRedditLogo className="mr-2 inline" />
                     <span>Reddit</span>
                 </SignInButton>
-                <SignInButton color="bg-emerald-700" serviceName="twitch">
+                <SignInButton color="bg-rose-700" serviceName="twitch">
                     <LuTwitch className="mr-2 inline" />
                     <span>Twitch</span>
                 </SignInButton>
-                <SignInButton color="bg-emerald-700" serviceName="spotify">
+                <SignInButton color="bg-amber-700" serviceName="spotify">
                     <PiSpotifyLogo className="mr-2 inline" />
                     <span>Spotify</span>
                 </SignInButton>
@@ -49,14 +49,16 @@ export default async function Page(context: { searchParams: Promise<{ callbackUr
         );
 
     return (
-        <div className="min-h-main-height-mobile desktop:min-h-main-height flex items-center justify-center">
+        <div className="flex min-h-main-height-no-padding items-center justify-center">
             <Wrapper>
-                <Card>
-                    <div className="inset-shadow-3d dark:inset-shadow-dark-3d mx-auto my-8 box-border flex max-w-72 flex-col items-center justify-center p-8">
-                        <div className="mb-4">{heading}</div>
-                        {buttons}
-                    </div>
-                </Card>
+                <div className="flex items-center justify-center">
+                    <Card>
+                        <div className="flex flex-col items-center justify-center px-10 py-6">
+                            <div className="mb-4">{heading}</div>
+                            {buttons}
+                        </div>
+                    </Card>
+                </div>
             </Wrapper>
         </div>
     );
