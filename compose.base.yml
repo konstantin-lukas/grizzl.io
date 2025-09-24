@@ -1,0 +1,15 @@
+services:
+    webserver:
+        image: "node:24.8-alpine3.22"
+        container_name: grizzl-webserver
+        build:
+            args:
+                APP_ENV: "development"
+        ports:
+            - "3000:3000"
+        restart: unless-stopped
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        command: npm run dev
+        user: "${DOCKER_USER_ID}:${DOCKER_GROUP_ID}"

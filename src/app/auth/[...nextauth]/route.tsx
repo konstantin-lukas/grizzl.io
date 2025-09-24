@@ -34,9 +34,19 @@ const authOptions: AuthOptions = {
               ]
             : [
                   KeycloakProvider({
+                      jwks_endpoint: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/certs",
+                      wellKnown: undefined,
                       clientId: "nextauth-client",
                       clientSecret: "test-client-secret",
                       issuer: "http://localhost:8080/realms/dev-test",
+                      authorization: {
+                          params: {
+                              scope: "openid email profile",
+                          },
+                          url: "http://localhost:8080/realms/dev-test/protocol/openid-connect/auth",
+                      },
+                      token: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/token",
+                      userinfo: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/userinfo",
                   }),
               ],
     pages: {
