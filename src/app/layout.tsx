@@ -16,6 +16,17 @@ import SessionProvider from "@components/providers/SessionProvider";
 
 export const metadata: Metadata = {
     title: "Grizzl - The Bear That Does It All",
+    icons: {
+        icon: [
+            { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+            { url: "/favicon.svg", type: "image/svg+xml" },
+            { url: "/favicon.ico" },
+        ],
+        apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    appleWebApp: {
+        title: "Grizzl",
+    },
 };
 
 const jost = Jost({
