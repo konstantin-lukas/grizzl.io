@@ -19,7 +19,7 @@ Requirements:
    will only occupy localhost:80 but if that port is already in use on your machine, you can set it to any port you like.
 
 ### Starting The Project Locally
-Before you can start the project, make sure you have done the [setup](#initial-setup-(linux)) first. 
+Before you can start the project, make sure you have done the [setup](#initial-setup-linux) first. 
 To start the project:
 1. Start a new shell inside the repository and run `docker compose up -d`.
 2. The project should now be running on `http://grizzl.test`. If you set a custom `GRIZZL_PORT_NUMBER`, you will need 
