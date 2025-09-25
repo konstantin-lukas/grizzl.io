@@ -1,15 +1,35 @@
 # grizzl.io
 
-## Starting the Project for Development (Linux)
-1. Install Docker in case you haven't yet
-2. Add these lines to your .bashrc (usually located at ~/.bashrc):
-    ```
-    export DOCKER_USER_ID=$(id -u)
-    export DOCKER_GROUP_ID=$(id -g)
-    ```
-    If you prefer to use a different shell, you might have to edit a different file.
-    The above is just for convenience when starting the containers. How can also set these values manually.
-3. Clone the repo and open a shell inside it
-4. Run `docker compose up`
-5. The project should now be running and reachable under `localhost:3000`. For it to work make sure the relevant ports
-   aren't already in use. Check the ports in the compose file if you are unsure.
+## Development
+Requirements: 
+- git
+- docker
+- a text editor of your choosing
+
+### Initial Setup (Linux)
+1. Clone the repository
+2. Add these lines to your `~/.bashrc` or `~/.zshrc` depending on the shell you're using:
+   ```
+   export DOCKER_USER_ID=$(id -u)
+   export DOCKER_GROUP_ID=$(id -g)
+   export GRIZZL_PORT_NUMBER=80 # This is optional
+   ```
+   The above is just for convenience when starting the containers. You can also set these values manually. 
+   Only set `GRIZZL_PORT_NUMBER` if you want to run the dev server on a custom port number. By default, the project 
+   will only occupy localhost:80 but if that port is already in use on your machine, you can set it to any port you like.
+
+### Starting The Project Locally
+Before you can start the project, make sure you have done the [setup](#initial-setup-(linux)) first. 
+To start the project:
+1. Start a new shell inside the repository and run `docker compose up -d`.
+2. The project should now be running on `http://grizzl.test`. If you set a custom `GRIZZL_PORT_NUMBER`, you will need 
+   to append that port number to the url.
+3. To shut down the project, simply run docker compose down inside the project directory.
+
+If you are wondering, why the project uses the TLD `.localhost` and not something like `.test` or `.dev`, read 
+[this](https://www.rfc-editor.org/rfc/rfc2606#section-2). The long and short of it is that with real TLDs like `.dev` 
+you will run into issues with HSTS. That's why the TLDs `.test`, `.example`, `.invalid` and `.localhost` are reserved 
+for development purposes. This project uses `.localhost` because it automatically points to the loop back IP address. In
+practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's just one step less to get the 
+project running. If for some strange reason, `.localhost` is not working on your system add this to your hosts: 
+`127.0.0.1 grizzl.localhost`.

@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     publicRuntimeConfig: {
         version,
     },
+    allowedDevOrigins: ["grizzl.localhost", "*.grizzl.localhost"],
 };
 
 export default nextConfig;

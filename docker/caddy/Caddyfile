@@ -1,0 +1,7 @@
+http://grizzl.localhost {
+    reverse_proxy webserver:3000
+}
+
+http://keycloak.grizzl.localhost {
+    reverse_proxy keycloak:8080
+}

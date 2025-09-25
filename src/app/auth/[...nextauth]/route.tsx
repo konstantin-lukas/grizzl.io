@@ -38,12 +38,12 @@ const authOptions: AuthOptions = {
                       wellKnown: undefined,
                       clientId: "nextauth-client",
                       clientSecret: "test-client-secret",
-                      issuer: "http://localhost:8080/realms/dev-test",
+                      issuer: "http://keycloak.grizzl.localhost/realms/dev-test",
                       authorization: {
                           params: {
                               scope: "openid email profile",
                           },
-                          url: "http://localhost:8080/realms/dev-test/protocol/openid-connect/auth",
+                          url: "http://keycloak.grizzl.localhost/realms/dev-test/protocol/openid-connect/auth",
                       },
                       token: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/token",
                       userinfo: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/userinfo",
