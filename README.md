@@ -12,17 +12,14 @@ Requirements:
    ```
    export DOCKER_USER_ID=$(id -u)
    export DOCKER_GROUP_ID=$(id -g)
-   export GRIZZL_PORT_NUMBER=80 # This is optional
    ```
-   The above is just for convenience when starting the containers. You can also set these values manually. 
-   Only set `GRIZZL_PORT_NUMBER` if you want to run the dev server on a custom port number. By default, the project 
-   will only occupy localhost:80 but if that port is already in use on your machine, you can set it to any port you like.
+   The above is just for convenience when starting the containers. You can also set these values manually.
 
 ### Starting The Project Locally
 Before you can start the project, make sure you have done the [setup](#initial-setup-linux) first. 
 To start the project:
 1. Start a new shell inside the repository and run `docker compose up -d`.
-2. The project should now be running on `http://grizzl.test`. If you set a custom `GRIZZL_PORT_NUMBER`, you will need 
+2. The project should now be running on `http://grizzl.localhost`. If you set a custom `GRIZZL_PORT_NUMBER`, you will need 
    to append that port number to the url.
 3. To shut down the project, simply run docker compose down inside the project directory.
 
