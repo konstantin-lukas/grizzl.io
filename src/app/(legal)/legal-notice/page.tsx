@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import WrapperSmall from "@components/layout/WrapperSmall";
-import H1 from "@components/typography/H1";
-import H2 from "@components/typography/H2";
+import WrapperSmall from "@component/layout/WrapperSmall";
+import H1 from "@component/typography/H1";
+import H2 from "@component/typography/H2";
 
 export const metadata: Metadata = {
     title: "Privacy Policy - Grizzl",

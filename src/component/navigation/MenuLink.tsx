@@ -2,26 +2,29 @@ import { clsx } from "clsx";
 import Link from "next/link";
 import type { ElementType, ReactNode } from "react";
 
-import ArrowRight from "@components/icons/ArrowRight";
+import ArrowRight from "@component/icon/ArrowRight";
 
 export default function MenuLink({
     children,
     color,
     onClick,
     href,
-    as: Component = Link,
+    "as": Component = Link,
+    "data-test-id": id,
 }: {
-    children: ReactNode;
-    color: string;
-    onClick?: () => void;
-    href?: string;
-    as?: ElementType;
+    "children": ReactNode;
+    "color": string;
+    "onClick"?: () => void;
+    "href"?: string;
+    "as"?: ElementType;
+    "data-test-id"?: string;
 }) {
     const hoverClass = clsx("absolute", "h-full", "w-full", "px-8", "py-3", "left-0", "top-full", color);
     if (Component === Link && !href) throw new Error("Component needs an href attribute");
     return (
         <Component
             onClick={onClick}
+            data-test-id={id}
             href={Component === Link ? href : undefined}
             className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-front"
         >

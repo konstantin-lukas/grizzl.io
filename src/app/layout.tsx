@@ -1,3 +1,10 @@
+import RegisterSW from "@component/config/RegisterSW";
+import InstallButton from "@component/interaction/InstallButton";
+import Main from "@component/layout/Main";
+import { Footer } from "@component/navigation/Footer";
+import Menu from "@component/navigation/Menu";
+import HeroUIProvider from "@component/provider/HeroUIProvider";
+import SessionProvider from "@component/provider/SessionProvider";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { ThemeProvider } from "next-themes";
@@ -5,14 +12,6 @@ import { Jost } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "@app/globals.css";
-
-import RegisterSW from "@components/config/RegisterSW";
-import InstallButton from "@components/interaction/InstallButton";
-import Main from "@components/layout/Main";
-import { Footer } from "@components/navigation/Footer";
-import Menu from "@components/navigation/Menu";
-import HeroUIProvider from "@components/providers/HeroUIProvider";
-import SessionProvider from "@components/providers/SessionProvider";
 
 export const metadata: Metadata = {
     title: "Grizzl - The Bear That Does It All",

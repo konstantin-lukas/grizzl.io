@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import type { ReactNode } from "react";
 
-import ButtonLink from "@components/navigation/MenuLink";
+import ButtonLink from "@component/navigation/MenuLink";
 
 export default function SignInButton({
     serviceName,

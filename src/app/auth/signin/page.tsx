@@ -3,15 +3,15 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 
-import Discord from "@components/icons/oauth-services/Discord";
-import GitHub from "@components/icons/oauth-services/GitHub";
-import Keycloak from "@components/icons/oauth-services/Keycloak";
-import Reddit from "@components/icons/oauth-services/Reddit";
-import Spotify from "@components/icons/oauth-services/Spotify";
-import Twitch from "@components/icons/oauth-services/Twitch";
-import SignInButton from "@components/interaction/SignInButton";
-import Wrapper from "@components/layout/Wrapper";
-import H1 from "@components/typography/H1";
+import Discord from "@component/icon/oauth-services/Discord";
+import GitHub from "@component/icon/oauth-services/GitHub";
+import Keycloak from "@component/icon/oauth-services/Keycloak";
+import Reddit from "@component/icon/oauth-services/Reddit";
+import Spotify from "@component/icon/oauth-services/Spotify";
+import Twitch from "@component/icon/oauth-services/Twitch";
+import SignInButton from "@component/interaction/SignInButton";
+import Wrapper from "@component/layout/Wrapper";
+import H1 from "@component/typography/H1";
 
 export default async function Page(context: { searchParams: Promise<{ callbackUrl: string }> }) {
     const session = await getServerSession();

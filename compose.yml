@@ -1,7 +1,15 @@
 services:
+    setup:
+        image: node:24.8-alpine3.22
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        command: npm ci
+
     keycloak:
         image: quay.io/keycloak/keycloak:26.3.4
-        container_name: grizzl-keycloak
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         environment:
             KEYCLOAK_ADMIN: admin
             KEYCLOAK_ADMIN_PASSWORD: admin
@@ -10,11 +18,10 @@ services:
         command: start-dev --import-realm
 
     webserver:
-        image: "node:24.8-alpine3.22"
-        container_name: grizzl-webserver
+        image: node:24.8-alpine3.22
         build:
             args:
-                APP_ENV: "development"
+                APP_ENV: development
         restart: unless-stopped
         volumes:
             - .:/home/grizzl
@@ -22,11 +29,28 @@ services:
         command: npm run dev
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:
-            - keycloak
+            keycloak:
+                condition: service_started
+            setup:
+                condition: service_completed_successfully
+
+    playwright:
+        image: mcr.microsoft.com/playwright:v1.55.1-noble
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            - DISPLAY=${DISPLAY}
+            - TZ=Europe/Berlin
+        network_mode: "host"
+        ipc: host
+        devices:
+            - /dev/dri
 
     caddy:
         image: caddy:2.10-alpine
-        container_name: grizzl-caddy
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         restart: unless-stopped
         ports:
             - "80:80"

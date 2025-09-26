@@ -6,17 +6,17 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import ArrowRightEndOnRectangle from "@components/icons/ArrowRightEndOnRectangle";
-import ArrowRightStartOnRectangle from "@components/icons/ArrowRightStartOnRectangle";
-import Banknotes from "@components/icons/Banknotes";
-import Bars2 from "@components/icons/Bars2";
-import ChartPie from "@components/icons/ChartPie";
-import ClipboardDocumentList from "@components/icons/ClipboardDocumentList";
-import Clock from "@components/icons/Clock";
-import Grizzl from "@components/icons/Grizzl";
-import XMark from "@components/icons/XMark";
-import ThemeToggle from "@components/interaction/ThemeToggle";
-import MenuLink from "@components/navigation/MenuLink";
+import ArrowRightEndOnRectangle from "@component/icon/ArrowRightEndOnRectangle";
+import ArrowRightStartOnRectangle from "@component/icon/ArrowRightStartOnRectangle";
+import Banknotes from "@component/icon/Banknotes";
+import Bars2 from "@component/icon/Bars2";
+import ChartPie from "@component/icon/ChartPie";
+import ClipboardDocumentList from "@component/icon/ClipboardDocumentList";
+import Clock from "@component/icon/Clock";
+import Grizzl from "@component/icon/Grizzl";
+import XMark from "@component/icon/XMark";
+import ThemeToggle from "@component/interaction/ThemeToggle";
+import MenuLink from "@component/navigation/MenuLink";
 
 export default function Menu({ signedIn }: { signedIn: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -108,6 +108,7 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
         <button
             className="fixed top-4 left-4 z-50 h-10 w-10 cursor-pointer"
             aria-label="Toggle the menu"
+            data-test-id="menu-button"
             onClick={() => setIsOpen(!isOpen)}
         >
             <CSSTransition in={isOpen} timeout={200} nodeRef={openIconRef} classNames="menu-icon-open" unmountOnExit>

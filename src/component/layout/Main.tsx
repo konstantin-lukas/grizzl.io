@@ -4,7 +4,7 @@ import { clsx } from "clsx/lite";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 
-import useHasMounted from "@hooks/useHasMounted";
+import useHasMounted from "@hook/useHasMounted";
 
 export default function Main({ children }: { children: ReactNode }) {
     const { resolvedTheme } = useTheme();

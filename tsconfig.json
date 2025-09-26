@@ -19,21 +19,21 @@
             }
         ],
         "paths": {
-            "@actions/*": ["./src/actions/*"],
+            "@action/*": ["./src/action/*"],
             "@app/*": ["./src/app/*"],
-            "@components/*": ["./src/components/*"],
+            "@component/*": ["./src/component/*"],
             "@const/*": ["./src/const/*"],
-            "@contexts": ["./src/contexts"],
+            "@context": ["./src/context"],
             "@database/*": ["./src/database/*"],
             "@enum/*": ["./src/enum/*"],
-            "@hooks/*": ["./src/hooks/*"],
-            "@schemas/*": ["./src/schemas/*"],
-            "@types/*": ["./src/types/*"],
-            "@utils/*": ["./src/utils/*"],
-            "@assets/*": ["./assets/*"],
+            "@hook/*": ["./src/hook/*"],
+            "@schema/*": ["./src/schema/*"],
+            "@type/*": ["./src/type/*"],
+            "@util/*": ["./src/util/*"],
+            "@asset/*": ["./asset/*"],
             "@public/*": ["./public/*"],
-            "@e2e/*": ["./tests/e2e/*"],
-            "@unit/*": ["./tests/unit/*"]
+            "@e2e/*": ["./test/e2e/*"],
+            "@unit/*": ["./test/unit/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

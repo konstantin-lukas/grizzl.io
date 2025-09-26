@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import useHasMounted from "@hooks/useHasMounted";
+import useHasMounted from "@hook/useHasMounted";
 
 export default function ThemeToggle() {
     const { setTheme, resolvedTheme } = useTheme();
