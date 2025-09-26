@@ -20,12 +20,12 @@ services:
             - .:/home/grizzl
         working_dir: /home/grizzl
         command: npm run dev
-        user: "${DOCKER_USER_ID}:${DOCKER_GROUP_ID}"
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:
             - keycloak
 
     caddy:
-        image: caddy:2.8
+        image: caddy:2.10-alpine
         container_name: grizzl-caddy
         restart: unless-stopped
         ports:
