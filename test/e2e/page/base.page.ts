@@ -24,7 +24,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }
 
     async all(key: keyof typeof this.loc) {
-        const locator = this.loc[key];
+        const locator = this.loc[key] as Locator;
         await expect(locator).toHaveCountGreaterThan(0);
         return await locator.all();
     }
