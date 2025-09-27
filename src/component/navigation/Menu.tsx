@@ -49,9 +49,9 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                 data-test-id="session-button"
             >
                 {signedIn ? (
-                    <ArrowRightStartOnRectangle className="size-6 transition-colors group-hover:stroke-amber-400 group-focus-visible:stroke-amber-400 dark:group-hover:stroke-amber-600 dark:group-focus-visible:stroke-amber-600" />
+                    <ArrowRightStartOnRectangle className="size-6 transition-colors group-hover:stroke-amber-600 group-focus-visible:stroke-amber-600 dark:group-hover:stroke-amber-400 dark:group-focus-visible:stroke-amber-400" />
                 ) : (
-                    <ArrowRightEndOnRectangle className="size-6 transition-colors group-hover:stroke-amber-400 group-focus-visible:stroke-amber-400 dark:group-hover:stroke-amber-600 dark:group-focus-visible:stroke-amber-600" />
+                    <ArrowRightEndOnRectangle className="size-6 transition-colors group-hover:stroke-amber-600 group-focus-visible:stroke-amber-600 dark:group-hover:stroke-amber-400 dark:group-focus-visible:stroke-amber-400" />
                 )}
                 {signedIn ? "Sign Out" : "Sign In"}
             </button>
