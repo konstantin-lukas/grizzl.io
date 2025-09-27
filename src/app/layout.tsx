@@ -1,10 +1,3 @@
-import RegisterSW from "@component/config/RegisterSW";
-import InstallButton from "@component/interaction/InstallButton";
-import Main from "@component/layout/Main";
-import { Footer } from "@component/navigation/Footer";
-import Menu from "@component/navigation/Menu";
-import HeroUIProvider from "@component/provider/HeroUIProvider";
-import SessionProvider from "@component/provider/SessionProvider";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { ThemeProvider } from "next-themes";
@@ -12,6 +5,14 @@ import { Jost } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "@app/globals.css";
+
+import RegisterSW from "@component/config/RegisterSW";
+import InstallButton from "@component/interaction/InstallButton";
+import Main from "@component/layout/Main";
+import { Footer } from "@component/navigation/Footer";
+import Menu from "@component/navigation/Menu";
+import HeroUIProvider from "@component/provider/HeroUIProvider";
+import SessionProvider from "@component/provider/SessionProvider";
 
 export const metadata: Metadata = {
     title: "Grizzl - The Bear That Does It All",
@@ -37,16 +38,17 @@ const jost = Jost({
 export default async function RootLayout({ children }: { children: ReactNode }) {
     const session = await getServerSession();
     return (
-        <html lang="en" suppressHydrationWarning={true} className={jost.className}>
+        <html lang="en" suppressHydrationWarning={true} className={jost.className} data-test-id="root">
             <body className="antialiased">
                 <SessionProvider basePath="/auth">
                     <HeroUIProvider>
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
                             <RegisterSW />
-                            <Menu signedIn={!!session} />
-                            <InstallButton />
-                            <Main>{children}</Main>
-                            <Footer />
+                            <Menu signedIn={!!session}>
+                                <InstallButton />
+                                <Main>{children}</Main>
+                                <Footer />
+                            </Menu>
                         </ThemeProvider>
                     </HeroUIProvider>
                 </SessionProvider>

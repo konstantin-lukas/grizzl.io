@@ -3,6 +3,7 @@
 import { clsx } from "clsx/lite";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
@@ -18,14 +19,14 @@ import XMark from "@component/icon/XMark";
 import ThemeToggle from "@component/interaction/ThemeToggle";
 import MenuLink from "@component/navigation/MenuLink";
 
-export default function Menu({ signedIn }: { signedIn: boolean }) {
+export default function Menu({ signedIn, children }: { signedIn: boolean; children: ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
     const openIconRef = useRef(null);
     const closeIconRef = useRef(null);
     const headerClass = clsx(
         "w-[100dvw]",
         "h-[100dvh]",
-        "bg-front/30",
+        "bg-back/30",
         "fixed",
         "top-0",
         "left-0",
@@ -33,10 +34,10 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
         "flex",
         "justify-center",
         "items-center",
-        "transition-opacity",
+        "transition-all",
         "duration-300",
         !isOpen && "opacity-0",
-        !isOpen && "pointer-events-none",
+        !isOpen && "invisible",
         isOpen && "backdrop-blur-lg",
     );
 
@@ -58,7 +59,7 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
     );
 
     const menu = (
-        <header className={headerClass}>
+        <header className={headerClass} id="menu" aria-hidden={!isOpen}>
             <div className="max-h-full w-full overflow-auto">
                 <nav
                     className="m-auto flex flex-col items-center justify-center py-20"
@@ -70,7 +71,7 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
                         aria-label="Go to Home"
                         onClick={() => setIsOpen(false)}
                     >
-                        <Grizzl className="w-full fill-back" />
+                        <Grizzl className="w-full fill-front" />
                     </Link>
                     <ul className="flex flex-col gap-6">
                         <li className="w-full">
@@ -102,7 +103,7 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
                                 href="/timer"
                                 data-test-id="menu-link-timer"
                             >
-                                <Clock className="size-6 stroke-front" />
+                                <Clock className="size-6" />
                                 Timer
                             </MenuLink>
                         </li>
@@ -113,7 +114,7 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
                                 href="/finance"
                                 data-test-id="menu-link-finance"
                             >
-                                <Banknotes className="size-6 stroke-front" />
+                                <Banknotes className="size-6" />
                                 Finance
                             </MenuLink>
                         </li>
@@ -131,12 +132,14 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
             aria-label="Toggle the menu"
             data-test-id="menu-button"
             onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="menu"
         >
-            <CSSTransition in={isOpen} timeout={200} nodeRef={openIconRef} classNames="menu-icon-open" unmountOnExit>
-                <XMark ref={openIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+            <CSSTransition in={isOpen} timeout={250} nodeRef={openIconRef} classNames="menu-icon-open" unmountOnExit>
+                <XMark ref={openIconRef} className="absolute top-0 left-0 h-full w-full stroke-front" />
             </CSSTransition>
-            <CSSTransition in={!isOpen} timeout={200} nodeRef={closeIconRef} classNames="menu-icon-close" unmountOnExit>
-                <Bars2 ref={closeIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+            <CSSTransition in={!isOpen} timeout={250} nodeRef={closeIconRef} classNames="menu-icon-close" unmountOnExit>
+                <Bars2 ref={closeIconRef} className="absolute top-0 left-0 h-full w-full stroke-front" />
             </CSSTransition>
         </button>
     );
@@ -145,6 +148,9 @@ export default function Menu({ signedIn }: { signedIn: boolean }) {
         <>
             {menu}
             {menuButton}
+            <div aria-hidden={isOpen} inert={isOpen} data-test-id="inert-container">
+                {children}
+            </div>
         </>
     );
 }

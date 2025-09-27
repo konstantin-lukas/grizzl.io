@@ -18,22 +18,22 @@ export default function ThemeToggle() {
             data-test-id={hasMounted && `theme-toggle-${resolvedTheme}`}
         >
             <CSSTransition
-                in={hasMounted && resolvedTheme === "dark"}
-                timeout={200}
+                in={hasMounted && resolvedTheme === "light"}
+                timeout={250}
                 nodeRef={moonIconRef}
                 classNames="menu-icon-open"
                 unmountOnExit
             >
-                <Moon ref={moonIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+                <Moon ref={moonIconRef} className="absolute top-0 left-0 h-full w-full stroke-front" />
             </CSSTransition>
             <CSSTransition
-                in={hasMounted && resolvedTheme === "light"}
-                timeout={200}
+                in={hasMounted && resolvedTheme === "dark"}
+                timeout={250}
                 nodeRef={sunIconRef}
                 classNames="menu-icon-close"
                 unmountOnExit
             >
-                <Sun ref={sunIconRef} className="absolute top-0 left-0 h-full w-full stroke-back" />
+                <Sun ref={sunIconRef} className="absolute top-0 left-0 h-full w-full stroke-front" />
             </CSSTransition>
         </button>
     );

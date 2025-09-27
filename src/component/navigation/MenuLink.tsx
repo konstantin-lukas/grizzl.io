@@ -26,10 +26,10 @@ export default function MenuLink({
             onClick={onClick}
             data-test-id={id}
             href={Component === Link ? href : undefined}
-            className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-front"
+            className="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-back"
         >
             <span className="w-full transition-transform group-hover:-translate-y-full group-focus-visible:-translate-y-full">
-                <span className="flex h-full w-full items-center justify-center gap-2 bg-back px-8 py-3 text-center">
+                <span className="flex h-full w-full items-center justify-center gap-2 bg-front px-8 py-3 text-center">
                     {children}
                 </span>
                 <span className={hoverClass}>

@@ -12,6 +12,8 @@ const LOCATORS = {
     todoLink: "menu-link-todo",
     themeToggleLight: "theme-toggle-light",
     themeToggleDark: "theme-toggle-dark",
+    inertContainer: "inert-container",
+    root: "root",
 };
 
 export default class HomePage extends BasePage<typeof LOCATORS> {
