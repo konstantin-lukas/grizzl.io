@@ -60,9 +60,9 @@
     .inline-link-1 {
         background-image: linear-gradient(
             to right,
-            var(--color-amber-400) 10%,
-            var(--color-emerald-400) 40%,
-            var(--color-emerald-400) 50%,
+            var(--color-amber-600) 10%,
+            var(--color-emerald-600) 40%,
+            var(--color-emerald-600) 50%,
             var(--color-front) 50%
         );
     }
@@ -70,9 +70,9 @@
     .inline-link-2 {
         background-image: linear-gradient(
             to right,
-            var(--color-teal-400) 10%,
-            var(--color-indigo-400) 40%,
-            var(--color-indigo-400) 50%,
+            var(--color-teal-600) 10%,
+            var(--color-indigo-600) 40%,
+            var(--color-indigo-600) 50%,
             var(--color-front) 50%
         );
     }
@@ -80,9 +80,9 @@
     .inline-link-3 {
         background-image: linear-gradient(
             to right,
-            var(--color-violet-400) 10%,
-            var(--color-rose-400) 40%,
-            var(--color-rose-400) 50%,
+            var(--color-violet-600) 10%,
+            var(--color-rose-600) 40%,
+            var(--color-rose-600) 50%,
             var(--color-front) 50%
         );
     }
@@ -91,9 +91,9 @@
         .inline-link-1 {
             background-image: linear-gradient(
                 to right,
-                var(--color-amber-600) 10%,
-                var(--color-emerald-600) 40%,
-                var(--color-emerald-600) 50%,
+                var(--color-amber-400) 10%,
+                var(--color-emerald-400) 40%,
+                var(--color-emerald-400) 50%,
                 var(--color-front) 50%
             );
         }
@@ -101,9 +101,9 @@
         .inline-link-2 {
             background-image: linear-gradient(
                 to right,
-                var(--color-teal-600) 10%,
-                var(--color-indigo-600) 40%,
-                var(--color-indigo-600) 50%,
+                var(--color-teal-400) 10%,
+                var(--color-indigo-400) 40%,
+                var(--color-indigo-400) 50%,
                 var(--color-front) 50%
             );
         }
@@ -111,9 +111,9 @@
         .inline-link-3 {
             background-image: linear-gradient(
                 to right,
-                var(--color-violet-600) 10%,
-                var(--color-rose-600) 40%,
-                var(--color-rose-600) 50%,
+                var(--color-violet-400) 10%,
+                var(--color-rose-400) 40%,
+                var(--color-rose-400) 50%,
                 var(--color-front) 50%
             );
         }
