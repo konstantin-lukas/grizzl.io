@@ -21,3 +21,7 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 `.localhost` are reserved for development purposes. This project uses `.localhost` because it automatically points to 
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
+
+### E2E Tests
+E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
+`bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`.

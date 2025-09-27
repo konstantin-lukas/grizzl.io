@@ -15,6 +15,7 @@ export default function ThemeToggle() {
             onClick={() => setTheme(hasMounted && resolvedTheme === "dark" ? "light" : "dark")}
             aria-label="Toggle app theme"
             className="absolute top-4 right-4 h-10 w-10"
+            data-test-id={hasMounted && `theme-toggle-${resolvedTheme}`}
         >
             <CSSTransition
                 in={hasMounted && resolvedTheme === "dark"}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "headless" ]; then
+  shift
+  docker compose run --rm playwright npx playwright test "$@"
+else
+  docker compose run --rm playwright npx playwright test --ui "$@"
+fi

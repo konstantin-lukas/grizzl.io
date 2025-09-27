@@ -31,7 +31,14 @@ export default function InstallButton() {
     if (!deferredPrompt) return null;
 
     return (
-        <Button onPress={handleInstall} className="fixed top-6 right-6" color="success" size="md" radius="full">
+        <Button
+            onPress={handleInstall}
+            className="fixed top-6 right-6"
+            color="success"
+            size="md"
+            radius="full"
+            data-test-id="install-prompt-button"
+        >
             Install App
         </Button>
     );
