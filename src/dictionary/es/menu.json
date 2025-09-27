@@ -1,0 +1,12 @@
+{
+    "poll": "Encuestas",
+    "todo": "Tareas",
+    "timer": "Temporizador",
+    "finance": "Finanzas",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "aria": {
+        "toggleMenu": "Mostrar u ocultar el menú.",
+        "toggleTheme": "Cambiar el tema de la aplicación."
+    }
+}

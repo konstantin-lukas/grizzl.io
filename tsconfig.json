@@ -25,6 +25,7 @@
             "@const/*": ["./src/const/*"],
             "@context": ["./src/context"],
             "@database/*": ["./src/database/*"],
+            "@dictionary/*": ["./src/dictionary/*"],
             "@enum/*": ["./src/enum/*"],
             "@hook/*": ["./src/hook/*"],
             "@schema/*": ["./src/schema/*"],

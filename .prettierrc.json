@@ -23,6 +23,7 @@
         "^@component/(.*)$",
         "^@const/(.*)$",
         "^@database/(.*)$",
+        "^@dictionary/(.*)$",
         "^@enum/(.*)$",
         "^@hook/(.*)$",
         "^@schema/(.*)$",

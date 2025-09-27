@@ -1,8 +1,5 @@
 "use client";
 
-import { HeroUIProvider as Provider } from "@heroui/react";
-import type { ReactNode } from "react";
+import { HeroUIProvider } from "@heroui/react";
 
-export default function HeroUIProvider({ children }: { children: ReactNode }) {
-    return <Provider>{children}</Provider>;
-}
+export default HeroUIProvider;

@@ -1,0 +1,12 @@
+{
+    "poll": "Umfragen",
+    "todo": "To-do",
+    "timer": "Timer",
+    "finance": "Finanzen",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "aria": {
+        "toggleMenu": "Menü ein- oder ausblenden.",
+        "toggleTheme": "App-Design umschalten."
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "poll": "Polls",
+    "todo": "To-Do",
+    "timer": "Timer",
+    "finance": "Finance",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "aria": {
+        "toggleMenu": "Toggle the menu.",
+        "toggleTheme": "Toggle the app theme."
+    }
+}

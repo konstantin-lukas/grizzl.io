@@ -28,8 +28,10 @@ test("should have links to all services", async ({ homePage }) => {
 test("should make all other page elements not focusable when open", async ({ homePage }) => {
     await homePage.goto();
     await expect(homePage.loc.inertContainer).not.toHaveAttribute("inert");
+    await homePage.analyzeA11y();
     await homePage.loc.menuButton.click();
     await expect(homePage.loc.inertContainer).toHaveAttribute("inert");
+    await homePage.analyzeA11y();
 });
 
 test("should have a button to toggle the theme", async ({ homePage }) => {
