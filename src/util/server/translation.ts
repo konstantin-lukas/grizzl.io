@@ -11,12 +11,6 @@ import type { Locale } from "@type/i18n";
 
 type Page = "footer" | "menu";
 
-export async function getDictionary(locale: Locale, page: "footer"): Promise<typeof FooterTranslation>;
-export async function getDictionary(locale: Locale, page: "menu"): Promise<typeof MenuTranslation>;
-export async function getDictionary(locale: Locale, page: Page) {
-    return import(`../../dictionary/${locale}/${page}.json`).then(module => module.default);
-}
-
 export async function getLocaleFromRequest() {
     const cookieLocale = (await cookies()).get(LOCALE_COOKIE_NAME)?.value as Locale;
     if (cookieLocale && LOCALES.includes(cookieLocale)) return cookieLocale;
@@ -30,4 +24,11 @@ export async function getLocaleFromRequest() {
     }
 
     return DEFAULT_LOCALE;
+}
+
+export async function getDictionary(page: "footer"): Promise<typeof FooterTranslation>;
+export async function getDictionary(page: "menu"): Promise<typeof MenuTranslation>;
+export async function getDictionary(page: Page) {
+    const locale = await getLocaleFromRequest();
+    return import(`../../dictionary/${locale}/${page}.json`).then(module => module.default);
 }

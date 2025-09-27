@@ -1,13 +1,11 @@
 import getConfig from "next/config";
 import Link from "next/link";
 
-import type { Locale } from "@type/i18n";
-
 import { getDictionary } from "@util/server/translation";
 
 const { publicRuntimeConfig } = getConfig();
-export async function Footer({ locale }: { locale: Locale }) {
-    const trans = await getDictionary(locale, "footer");
+export async function Footer() {
+    const trans = await getDictionary("footer");
     return (
         <footer className="h-footer-height">
             <nav className="flex h-full items-center justify-center gap-8">

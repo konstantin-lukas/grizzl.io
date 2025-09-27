@@ -19,7 +19,17 @@ import XMark from "@component/icon/XMark";
 import ThemeToggle from "@component/interaction/ThemeToggle";
 import MenuLink from "@component/navigation/MenuLink";
 
-export default function Menu({ signedIn, children }: { signedIn: boolean; children: ReactNode }) {
+import type { getDictionary } from "@util/server/translation";
+
+export default function Menu({
+    signedIn,
+    children,
+    translation,
+}: {
+    signedIn: boolean;
+    children: ReactNode;
+    translation: Awaited<ReturnType<typeof getDictionary>>;
+}) {
     const [isOpen, setIsOpen] = useState(false);
     const openIconRef = useRef(null);
     const closeIconRef = useRef(null);
@@ -53,7 +63,7 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                 ) : (
                     <ArrowRightEndOnRectangle className="size-6 transition-colors group-hover:stroke-amber-600 group-focus-visible:stroke-amber-600 dark:group-hover:stroke-amber-400 dark:group-focus-visible:stroke-amber-400" />
                 )}
-                {signedIn ? "Sign Out" : "Sign In"}
+                {signedIn ? translation.signOut : translation.signIn}
             </button>
         </div>
     );
@@ -82,7 +92,7 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                                 data-test-id="menu-link-poll"
                             >
                                 <ChartPie />
-                                Poll
+                                {translation.poll}
                             </MenuLink>
                         </li>
                         <li className="w-full">
@@ -93,7 +103,7 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                                 data-test-id="menu-link-todo"
                             >
                                 <ClipboardDocumentList />
-                                To-Do
+                                {translation.todo}
                             </MenuLink>
                         </li>
                         <li className="w-full">
@@ -104,7 +114,7 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                                 data-test-id="menu-link-timer"
                             >
                                 <Clock className="size-6" />
-                                Timer
+                                {translation.timer}
                             </MenuLink>
                         </li>
                         <li className="w-full">
@@ -115,7 +125,7 @@ export default function Menu({ signedIn, children }: { signedIn: boolean; childr
                                 data-test-id="menu-link-finance"
                             >
                                 <Banknotes className="size-6" />
-                                Finance
+                                {translation.finance}
                             </MenuLink>
                         </li>
                         <li className="w-full">{sessionButton}</li>

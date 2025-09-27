@@ -14,7 +14,7 @@ import Menu from "@component/navigation/Menu";
 import HeroUIProvider from "@component/provider/HeroUIProvider";
 import SessionProvider from "@component/provider/SessionProvider";
 
-import { getLocaleFromRequest } from "@util/server/translation";
+import { getDictionary, getLocaleFromRequest } from "@util/server/translation";
 
 export const metadata: Metadata = {
     title: "Grizzl - The Bear That Does It All",
@@ -39,19 +39,19 @@ const jost = Jost({
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
     const session = await getServerSession();
+    const menuTranslation = await getDictionary("menu");
     const locale = await getLocaleFromRequest();
-    console.log(locale);
     return (
-        <html lang="en" suppressHydrationWarning={true} className={jost.className} data-test-id="root">
+        <html lang={locale} suppressHydrationWarning={true} className={jost.className} data-test-id="root">
             <body className="antialiased">
                 <SessionProvider basePath="/auth">
                     <HeroUIProvider>
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
                             <RegisterSW />
-                            <Menu signedIn={!!session}>
+                            <Menu signedIn={!!session} translation={menuTranslation}>
                                 <InstallButton />
                                 <Main>{children}</Main>
-                                <Footer locale={locale} />
+                                <Footer />
                             </Menu>
                         </ThemeProvider>
                     </HeroUIProvider>
