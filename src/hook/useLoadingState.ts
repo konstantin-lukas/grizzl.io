@@ -9,5 +9,10 @@ export default function useLoadingState() {
     useEffect(() => {
         setLoadingState(false);
     }, [pathname, searchParams, setLoadingState]);
-    return { loadingState, setLoadingState };
+    return {
+        progress: typeof loadingState === "number" ? loadingState : 0,
+        isLoading: loadingState !== false,
+        loadingState,
+        setLoadingState,
+    };
 }

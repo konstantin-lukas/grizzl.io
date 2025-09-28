@@ -6,6 +6,7 @@ import Language from "@component/icon/Language";
 import { LANGUAGES, LOCALES } from "@const/i18n";
 
 import { useChangeLanguage } from "@hook/action/useChangeLanguage";
+import useLoadingState from "@hook/useLoadingState";
 
 import type { Locale } from "@type/i18n";
 
@@ -14,13 +15,16 @@ import type { getDictionary } from "@util/server/translation";
 function ChangeLanguageButton({ locale, index }: { locale: Locale; index: number }) {
     const action = useChangeLanguage(locale);
     const lang = LANGUAGES[locale];
+    const { isLoading } = useLoadingState();
     return (
         <li>
             <button
                 className={`inline-link-${(index % 3) + 1} flex items-center gap-2`}
                 onClick={() => startTransition(action)}
+                disabled={isLoading}
             >
-                {lang.flag} {lang.name}
+                {lang.flag}
+                {lang.name}
             </button>
         </li>
     );

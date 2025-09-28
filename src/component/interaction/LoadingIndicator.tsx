@@ -13,6 +13,7 @@ export default function LoadingIndicator() {
             aria-label="Loading..."
             value={(typeof loadingState === "number" && loadingState) || undefined}
             isIndeterminate={typeof loadingState === "boolean"}
+            data-test-id="loading-indicator"
         />
     );
 }

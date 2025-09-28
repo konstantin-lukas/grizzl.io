@@ -13,6 +13,7 @@ import Main from "@component/layout/Main";
 import { Footer } from "@component/navigation/Footer";
 import Menu from "@component/navigation/Menu";
 import HeroUIProvider from "@component/provider/HeroUIProvider";
+import LoadingStateProvider from "@component/provider/LoadingStateProvider";
 import SessionProvider from "@component/provider/SessionProvider";
 
 import { getDictionary, getLocaleFromRequest } from "@util/server/translation";
@@ -59,13 +60,15 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 <SessionProvider basePath="/auth">
                     <HeroUIProvider>
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
-                            <RegisterSW />
-                            <Menu signedIn={!!session} translation={menuTranslation}>
-                                <InstallButton />
-                                <Main>{children}</Main>
-                                <Footer />
-                                <LoadingIndicator />
-                            </Menu>
+                            <LoadingStateProvider>
+                                <RegisterSW />
+                                <Menu signedIn={!!session} translation={menuTranslation}>
+                                    <InstallButton />
+                                    <Main>{children}</Main>
+                                    <Footer />
+                                    <LoadingIndicator />
+                                </Menu>
+                            </LoadingStateProvider>
                         </ThemeProvider>
                     </HeroUIProvider>
                 </SessionProvider>
