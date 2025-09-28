@@ -3,12 +3,12 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 
-import Discord from "@component/icon/oauth-services/Discord";
-import GitHub from "@component/icon/oauth-services/GitHub";
-import Keycloak from "@component/icon/oauth-services/Keycloak";
-import Reddit from "@component/icon/oauth-services/Reddit";
-import Spotify from "@component/icon/oauth-services/Spotify";
-import Twitch from "@component/icon/oauth-services/Twitch";
+import Discord from "@component/icon/oauth-service/Discord";
+import GitHub from "@component/icon/oauth-service/GitHub";
+import Keycloak from "@component/icon/oauth-service/Keycloak";
+import Reddit from "@component/icon/oauth-service/Reddit";
+import Spotify from "@component/icon/oauth-service/Spotify";
+import Twitch from "@component/icon/oauth-service/Twitch";
 import SignInButton from "@component/interaction/SignInButton";
 import Wrapper from "@component/layout/Wrapper";
 import H1 from "@component/typography/H1";

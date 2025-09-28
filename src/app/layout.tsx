@@ -8,6 +8,7 @@ import "@app/globals.css";
 
 import RegisterSW from "@component/config/RegisterSW";
 import InstallButton from "@component/interaction/InstallButton";
+import LoadingIndicator from "@component/interaction/LoadingIndicator";
 import Main from "@component/layout/Main";
 import { Footer } from "@component/navigation/Footer";
 import Menu from "@component/navigation/Menu";
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                                 <InstallButton />
                                 <Main>{children}</Main>
                                 <Footer />
+                                <LoadingIndicator />
                             </Menu>
                         </ThemeProvider>
                     </HeroUIProvider>

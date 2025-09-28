@@ -7,6 +7,7 @@
     "signOut": "サインアウト",
     "aria": {
         "toggleMenu": "メニューを切り替えます。",
-        "toggleTheme": "アプリのテーマを切り替えます。"
+        "toggleTheme": "アプリのテーマを切り替えます。",
+        "changeLang": "アプリの言語変更"
     }
 }

@@ -16,6 +16,7 @@ import ClipboardDocumentList from "@component/icon/ClipboardDocumentList";
 import Clock from "@component/icon/Clock";
 import Grizzl from "@component/icon/Grizzl";
 import XMark from "@component/icon/XMark";
+import LanguageSelect from "@component/interaction/LanguageSelect";
 import ThemeToggle from "@component/interaction/ThemeToggle";
 import MenuLink from "@component/navigation/MenuLink";
 
@@ -133,6 +134,7 @@ export default function Menu({
                 </nav>
             </div>
             <ThemeToggle />
+            <LanguageSelect translation={translation} />
         </header>
     );
 

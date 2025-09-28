@@ -7,6 +7,7 @@
     "signOut": "Abmelden",
     "aria": {
         "toggleMenu": "Menü ein- oder ausblenden.",
-        "toggleTheme": "App-Design umschalten."
+        "toggleTheme": "App-Design umschalten.",
+        "changeLang": "Sprache der App ändern"
     }
 }
