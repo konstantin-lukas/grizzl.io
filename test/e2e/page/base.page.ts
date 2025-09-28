@@ -1,3 +1,4 @@
+import config from "@/playwright.config";
 import { AxeBuilder } from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
 
@@ -37,11 +38,12 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }
 
     async analyzeA11y() {
+        const timeout = config.expect?.timeout ?? 5000;
         const axe = new AxeBuilder({ page: this.page });
         const start = Date.now();
         while (true) {
             const results = await axe.analyze();
-            if (results.violations.length === 0 || Date.now() - start > 30000) {
+            if (results.violations.length === 0 || Date.now() - start > timeout) {
                 expect(results.violations).toEqual([]);
                 break;
             }

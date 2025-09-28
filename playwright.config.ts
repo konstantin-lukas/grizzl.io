@@ -8,6 +8,9 @@ export default defineConfig({
     workers: 1,
     reporter: "line",
     globalSetup: "./test/e2e/global.setup.ts",
+    expect: {
+        timeout: 5000,
+    },
     use: {
         trace: "on-all-retries",
         testIdAttribute: "data-test-id",
