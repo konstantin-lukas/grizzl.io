@@ -6,6 +6,8 @@ import WrapperSmall from "@component/layout/WrapperSmall";
 import H1 from "@component/typography/H1";
 import H2 from "@component/typography/H2";
 
+import { getDictionary } from "@util/server/translation";
+
 export const metadata: Metadata = {
     title: "Privacy Policy - Grizzl",
 };
@@ -14,11 +16,12 @@ function P({ children }: { children: ReactNode }) {
     return <p className="mb-4">{children}</p>;
 }
 
-export default function Page() {
+export default async function Page() {
+    const trans = await getDictionary("legal");
     return (
         <WrapperSmall>
             <div className="desktop:min-h-[calc(100dvh-var(--header-height)-var(--footer-height))] min-h-[calc(100dvh-var(--footer-height))] py-24">
-                <H1>Impressum</H1>
+                <H1>{trans.notice}</H1>
                 <P>
                     {process.env.LEGAL_RESPONSIBLE_ENTITY}
                     <br />
@@ -26,11 +29,11 @@ export default function Page() {
                     <br />
                     {process.env.LEGAL_ZIP_AND_CITY}
                 </P>
-                <H2>Contact Information</H2>
+                <H2>{trans.contact}</H2>
                 <P>
-                    Phone: {process.env.LEGAL_PHONE}
+                    {trans.phone}: {process.env.LEGAL_PHONE}
                     <br />
-                    Email:{" "}
+                    {trans.email}:{" "}
                     <Link href={`mailto:${process.env.LEGAL_EMAIL}`} className="inline-link inline-link-resting">
                         {process.env.LEGAL_EMAIL}
                     </Link>
