@@ -5,6 +5,7 @@
     "finance": "Finance",
     "signIn": "Sign In",
     "signOut": "Sign Out",
+    "selectLanguage": "Which language would you like us to use?",
     "aria": {
         "toggleMenu": "Toggle the menu.",
         "toggleTheme": "Toggle the app theme.",

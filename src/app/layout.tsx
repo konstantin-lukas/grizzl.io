@@ -48,6 +48,7 @@ const noto = Noto_Sans_JP({
 export default async function RootLayout({ children }: { children: ReactNode }) {
     const session = await getServerSession();
     const menuTranslation = await getDictionary("menu");
+    const uiTranslation = await getDictionary("ui");
     const locale = await getLocaleFromRequest();
     return (
         <html
@@ -62,7 +63,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
                             <LoadingStateProvider>
                                 <RegisterSW />
-                                <Menu signedIn={!!session} translation={menuTranslation}>
+                                <Menu
+                                    signedIn={!!session}
+                                    translation={{ ...menuTranslation, ...uiTranslation }}
+                                    locale={locale}
+                                >
                                     <InstallButton />
                                     <Main>{children}</Main>
                                     <Footer />

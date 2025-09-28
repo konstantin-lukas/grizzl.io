@@ -5,6 +5,7 @@
     "finance": "Finanzas",
     "signIn": "Iniciar sesión",
     "signOut": "Cerrar sesión",
+    "selectLanguage": "¿Qué idioma le gustaría que usemos?",
     "aria": {
         "toggleMenu": "Mostrar u ocultar el menú.",
         "toggleTheme": "Cambiar el tema de la aplicación.",

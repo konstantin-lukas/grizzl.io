@@ -1,5 +1,7 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
-import { startTransition } from "react";
+import { Button } from "@heroui/button";
+import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
+import { Radio, RadioGroup } from "@heroui/radio";
+import { startTransition, useState } from "react";
 
 import Language from "@component/icon/Language";
 
@@ -8,43 +10,71 @@ import { LANGUAGES, LOCALES } from "@const/i18n";
 import { useChangeLanguage } from "@hook/action/useChangeLanguage";
 import useLoadingState from "@hook/useLoadingState";
 
-import type { Locale } from "@type/i18n";
+import type { DictionaryMap, Locale } from "@type/i18n";
 
-import type { getDictionary } from "@util/server/translation";
-
-function ChangeLanguageButton({ locale, index }: { locale: Locale; index: number }) {
-    const action = useChangeLanguage(locale);
-    const lang = LANGUAGES[locale];
-    const { isLoading } = useLoadingState();
+function ChangeLanguageButton({ locale }: { locale: Locale }) {
+    const language = LANGUAGES[locale];
     return (
-        <li>
-            <button
-                className={`inline-link-${(index % 3) + 1} flex items-center gap-2`}
-                onClick={() => startTransition(action)}
-                disabled={isLoading}
-            >
-                {lang.flag}
-                {lang.name}
-            </button>
-        </li>
+        <Radio value={locale} classNames={{ label: "flex gap-2 items-center" }}>
+            {language}
+        </Radio>
     );
 }
 
-export default function LanguageSelect({ translation }: { translation: Awaited<ReturnType<typeof getDictionary>> }) {
-    const languageButtons = LOCALES.map((locale, index) => (
-        <ChangeLanguageButton key={locale} index={index} locale={locale} />
-    ));
+export default function LanguageSelect({
+    translation,
+    locale,
+}: {
+    translation: DictionaryMap["menu"] & DictionaryMap["ui"];
+    locale: Locale;
+}) {
+    const languageButtons = LOCALES.map(locale => <ChangeLanguageButton key={locale} locale={locale} />);
+    const [selectedLocale, setSelectedLocale] = useState<typeof locale>(locale);
+    const action = useChangeLanguage(selectedLocale);
+    const { isLoading } = useLoadingState();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
-        <Popover placement="top-end" className="absolute right-4 bottom-4">
-            <PopoverTrigger className="absolute right-4 bottom-4 h-10 w-10">
-                <button aria-label={translation.aria.changeLang} className="h-10 w-10" data-test-id="language-select">
-                    <Language className="absolute bottom-0 left-0 h-full w-full stroke-front" />
-                </button>
-            </PopoverTrigger>
-            <PopoverContent>
-                <ul className="p-2">{languageButtons}</ul>
-            </PopoverContent>
-        </Popover>
+        <>
+            <button
+                aria-label={translation.aria.changeLang}
+                className="absolute right-4 bottom-4 h-10 w-10"
+                data-test-id="language-select"
+                onClick={onOpen}
+            >
+                <Language className="absolute right-0 bottom-0 h-full w-full stroke-front" />
+            </button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {onClose => (
+                        <div className="p-8">
+                            <RadioGroup
+                                isDisabled={isLoading}
+                                value={selectedLocale}
+                                onValueChange={setSelectedLocale as (v: string) => void}
+                                label={translation.selectLanguage}
+                                classNames={{ label: "mb-4" }}
+                            >
+                                {languageButtons}
+                            </RadioGroup>
+                            <div className="mt-8">
+                                <Button
+                                    color="primary"
+                                    onPress={() => {
+                                        startTransition(action);
+                                        onClose();
+                                    }}
+                                >
+                                    {translation.save}
+                                </Button>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    {translation.cancel}
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 }

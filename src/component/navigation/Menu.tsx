@@ -20,16 +20,18 @@ import LanguageSelect from "@component/interaction/LanguageSelect";
 import ThemeToggle from "@component/interaction/ThemeToggle";
 import MenuLink from "@component/navigation/MenuLink";
 
-import type { getDictionary } from "@util/server/translation";
+import type { DictionaryMap, Locale } from "@type/i18n";
 
 export default function Menu({
     signedIn,
     children,
     translation,
+    locale,
 }: {
     signedIn: boolean;
     children: ReactNode;
-    translation: Awaited<ReturnType<typeof getDictionary>>;
+    translation: DictionaryMap["menu"] & DictionaryMap["ui"];
+    locale: Locale;
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const openIconRef = useRef(null);
@@ -134,7 +136,7 @@ export default function Menu({
                 </nav>
             </div>
             <ThemeToggle />
-            <LanguageSelect translation={translation} />
+            <LanguageSelect translation={translation} locale={locale} />
         </header>
     );
 

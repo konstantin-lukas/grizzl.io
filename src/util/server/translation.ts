@@ -4,12 +4,7 @@ import "server-only";
 import { LOCALE_COOKIE_NAME } from "@const/cookie";
 import { DEFAULT_LOCALE, LOCALES } from "@const/i18n";
 
-import type FooterTranslation from "@dictionary/en/footer.json";
-import type MenuTranslation from "@dictionary/en/menu.json";
-
-import type { Locale } from "@type/i18n";
-
-type Page = "footer" | "menu";
+import type { DictionaryMap, Locale } from "@type/i18n";
 
 export async function getLocaleFromRequest() {
     const cookieLocale = (await cookies()).get(LOCALE_COOKIE_NAME)?.value as Locale;
@@ -26,9 +21,7 @@ export async function getLocaleFromRequest() {
     return DEFAULT_LOCALE;
 }
 
-export async function getDictionary(page: "footer"): Promise<typeof FooterTranslation>;
-export async function getDictionary(page: "menu"): Promise<typeof MenuTranslation>;
-export async function getDictionary(page: Page) {
+export async function getDictionary<T extends keyof DictionaryMap>(page: T): Promise<DictionaryMap[T]> {
     const locale = await getLocaleFromRequest();
-    return import(`../../dictionary/${locale}/${page}.json`).then(module => module.default);
+    return import(`../../dictionary/${locale}/${page}.json`).then(module => module.default as DictionaryMap[T]);
 }
