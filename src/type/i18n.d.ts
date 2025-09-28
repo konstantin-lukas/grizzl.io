@@ -1,6 +1,7 @@
 import type { LOCALES } from "@const/i18n";
 
 import type FooterTranslation from "@dictionary/en/footer.json";
+import type HomeTranslation from "@dictionary/en/home.json";
 import type LegalTranslation from "@dictionary/en/legal.json";
 import type MenuTranslation from "@dictionary/en/menu.json";
 import type PrivacyTranslation from "@dictionary/en/privacy.json";
@@ -14,4 +15,5 @@ export interface DictionaryMap {
     ui: typeof UITranslation;
     privacy: typeof PrivacyTranslation;
     legal: typeof LegalTranslation;
+    home: typeof HomeTranslation;
 }

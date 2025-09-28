@@ -8,9 +8,12 @@ import H2 from "@component/typography/H2";
 
 import { getDictionary } from "@util/server/translation";
 
-export const metadata: Metadata = {
-    title: "Privacy Policy - Grizzl",
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const trans = await getDictionary("legal");
+    return {
+        title: `${trans.notice} - Grizzl`,
+    };
+}
 
 function P({ children }: { children: ReactNode }) {
     return <p className="mb-4">{children}</p>;
