@@ -57,7 +57,7 @@ export default function LanguageSelect({
                             >
                                 {languageButtons}
                             </RadioGroup>
-                            <div className="mt-8">
+                            <div className="mt-8 flex gap-4">
                                 <Button
                                     color="primary"
                                     onPress={() => {
