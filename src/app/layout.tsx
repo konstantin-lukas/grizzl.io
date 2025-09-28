@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { ThemeProvider } from "next-themes";
-import { Jost } from "next/font/google";
+import { Jost, Noto_Sans_JP } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "@app/globals.css";
@@ -33,7 +33,13 @@ export const metadata: Metadata = {
 };
 
 const jost = Jost({
-    subsets: ["latin"],
+    subsets: ["latin", "latin-ext"],
+    display: "swap",
+    weight: ["400", "700"],
+});
+
+const noto = Noto_Sans_JP({
+    subsets: ["latin", "latin-ext"],
     display: "swap",
     weight: ["400", "700"],
 });
@@ -43,7 +49,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     const menuTranslation = await getDictionary("menu");
     const locale = await getLocaleFromRequest();
     return (
-        <html lang={locale} suppressHydrationWarning={true} className={jost.className} data-test-id="root">
+        <html
+            lang={locale}
+            suppressHydrationWarning={true}
+            className={locale === "ja" ? noto.className : jost.className}
+            data-test-id="root"
+        >
             <body className="antialiased">
                 <SessionProvider basePath="/auth">
                     <HeroUIProvider>
