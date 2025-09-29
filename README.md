@@ -10,7 +10,7 @@ Requirements: git, docker
    ```
    The above is just for convenience when starting the containers. You can also set these values manually.
 2. Clone the repository and start a new shell inside of it.
-3. Make sure localhost:80 is free and run `docker compose up -d`.
+3. Make sure localhost:80 is free and run `bin/start`.
 4. The project should now be running on `http://grizzl.localhost`.
 5. To shut down the project, simply run `docker compose down`.
 
@@ -22,7 +22,16 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
 
-### E2E Tests
+### Shell Scripts
+The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any
+command, just check the respective file in `bin`. Here's an explanation of what each command does:
+- `start`: Starts all necessary docker containers for development
+- `stop`: Stops all docker containers in the project
+- `restart`: Calls `stop` and then `start`.
+- `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
+  Start the project before envoking this command. You can pass any Playwright flags to this command as well.
+
+### E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
 `bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`.
 
