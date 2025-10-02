@@ -4,7 +4,7 @@ import type { ElementType, ReactNode } from "react";
 
 import ArrowRight from "@component/icon/ArrowRight";
 
-export default function MenuLink({
+export default function BlockLink({
     children,
     color,
     onClick,

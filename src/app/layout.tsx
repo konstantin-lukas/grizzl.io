@@ -54,12 +54,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <html
             lang={locale}
             suppressHydrationWarning={true}
-            className={locale === "ja" ? noto.className : jost.className}
+            className={locale === "ja-JP" ? noto.className : jost.className}
             data-test-id="root"
         >
             <body className="antialiased">
                 <SessionProvider basePath="/auth">
-                    <HeroUIProvider>
+                    <HeroUIProvider locale={locale}>
                         <ThemeProvider attribute="data-color-scheme" enableSystem={true}>
                             <LoadingStateProvider>
                                 <RegisterSW />

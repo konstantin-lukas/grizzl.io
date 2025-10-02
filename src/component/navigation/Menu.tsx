@@ -18,7 +18,7 @@ import Grizzl from "@component/icon/Grizzl";
 import XMark from "@component/icon/XMark";
 import LanguageSelect from "@component/interaction/LanguageSelect";
 import ThemeToggle from "@component/interaction/ThemeToggle";
-import MenuLink from "@component/navigation/MenuLink";
+import BlockLink from "@component/navigation/BlockLink";
 
 import type { DictionaryMap, Locale } from "@type/i18n";
 
@@ -88,7 +88,7 @@ export default function Menu({
                     </Link>
                     <ul className="flex flex-col gap-6">
                         <li className="w-full">
-                            <MenuLink
+                            <BlockLink
                                 color="bg-emerald-700"
                                 onClick={() => setIsOpen(false)}
                                 href="/poll"
@@ -96,10 +96,10 @@ export default function Menu({
                             >
                                 <ChartPie />
                                 {translation.poll}
-                            </MenuLink>
+                            </BlockLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink
+                            <BlockLink
                                 color="bg-cyan-700"
                                 onClick={() => setIsOpen(false)}
                                 href="/todo"
@@ -107,10 +107,10 @@ export default function Menu({
                             >
                                 <ClipboardDocumentList />
                                 {translation.todo}
-                            </MenuLink>
+                            </BlockLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink
+                            <BlockLink
                                 color="bg-purple-700"
                                 onClick={() => setIsOpen(false)}
                                 href="/timer"
@@ -118,10 +118,10 @@ export default function Menu({
                             >
                                 <Clock className="size-6" />
                                 {translation.timer}
-                            </MenuLink>
+                            </BlockLink>
                         </li>
                         <li className="w-full">
-                            <MenuLink
+                            <BlockLink
                                 color="bg-rose-700"
                                 onClick={() => setIsOpen(false)}
                                 href="/finance"
@@ -129,7 +129,7 @@ export default function Menu({
                             >
                                 <Banknotes className="size-6" />
                                 {translation.finance}
-                            </MenuLink>
+                            </BlockLink>
                         </li>
                         <li className="w-full">{sessionButton}</li>
                     </ul>

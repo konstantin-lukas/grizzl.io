@@ -23,29 +23,29 @@ export default async function Page(context: { searchParams: Promise<{ callbackUr
         process.env.APP_ENV === "production" ? (
             <>
                 <SignInButton color="bg-emerald-700" serviceName="discord">
-                    <Discord className="size-5 fill-front" />
+                    <Discord className="size-5 fill-back" />
                     <span>Discord</span>
                 </SignInButton>
                 <SignInButton color="bg-cyan-700" serviceName="github">
-                    <GitHub className="size-5 fill-front" />
+                    <GitHub className="size-5 fill-back" />
                     <span>GitHub</span>
                 </SignInButton>
                 <SignInButton color="bg-purple-700" serviceName="reddit">
-                    <Reddit className="size-5 fill-front" />
+                    <Reddit className="size-5 fill-back" />
                     <span>Reddit</span>
                 </SignInButton>
                 <SignInButton color="bg-rose-700" serviceName="twitch">
-                    <Twitch className="size-4 stroke-front" />
+                    <Twitch className="size-4 stroke-back" />
                     <span>Twitch</span>
                 </SignInButton>
                 <SignInButton color="bg-amber-700" serviceName="spotify">
-                    <Spotify className="size-5 fill-front" />
+                    <Spotify className="size-5 fill-back" />
                     <span>Spotify</span>
                 </SignInButton>
             </>
         ) : (
             <SignInButton color="bg-emerald-700" serviceName="keycloak">
-                <Keycloak className="size-4 fill-front" />
+                <Keycloak className="size-4 fill-back" />
                 <span>Keycloak</span>
             </SignInButton>
         );
