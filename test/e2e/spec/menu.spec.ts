@@ -2,7 +2,7 @@ import { expect, test } from "@e2e/fixture";
 
 test("should have links to all services", async ({ homePage }) => {
     const links = [
-        { locator: homePage.loc.pollLink, text: "Poll", href: "/poll" },
+        { locator: homePage.loc.pollLink, text: "Polls", href: "/poll" },
         { locator: homePage.loc.todoLink, text: "To-Do", href: "/todo" },
         { locator: homePage.loc.timerLink, text: "Timer", href: "/timer" },
         { locator: homePage.loc.financeLink, text: "Finance", href: "/finance" },

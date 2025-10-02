@@ -3,6 +3,8 @@ import { AxeBuilder } from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
 
 import { expect } from "@e2e/fixture";
+import type { ExtendedGotoOptions } from "@e2e/type/test";
+import { goto as gotoUtil } from "@e2e/util/test";
 
 export default abstract class BasePage<T extends Record<string, string>> {
     private readonly page;
@@ -16,12 +18,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
         this.url = url;
     }
 
-    async goto(options?: {
-        referer?: string;
-        timeout?: number;
-        waitUntil?: "load" | "domcontentloaded" | "networkidle";
-    }) {
-        await this.page.goto(this.url, options);
+    async goto(options: ExtendedGotoOptions = { waitUntil: "hydration" }) {
+        await gotoUtil(this.page, this.url, options);
     }
 
     async all(key: keyof typeof this.loc) {

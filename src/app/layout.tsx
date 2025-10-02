@@ -15,6 +15,7 @@ import Menu from "@component/navigation/Menu";
 import HeroUIProvider from "@component/provider/HeroUIProvider";
 import LoadingStateProvider from "@component/provider/LoadingStateProvider";
 import SessionProvider from "@component/provider/SessionProvider";
+import HydrationMarker from "@component/test/HydrationMarker";
 
 import { getDictionary, getLocaleFromRequest } from "@util/server/translation";
 
@@ -72,6 +73,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                                     <Main>{children}</Main>
                                     <Footer />
                                     <LoadingIndicator />
+                                    {process.env.APP_ENV !== "production" && <HydrationMarker />}
                                 </Menu>
                             </LoadingStateProvider>
                         </ThemeProvider>
