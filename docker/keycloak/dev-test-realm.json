@@ -20,7 +20,7 @@
     ],
     "clients": [
         {
-            "clientId": "nextauth-client",
+            "clientId": "test-client",
             "secret": "test-client-secret",
             "enabled": true,
             "protocol": "openid-connect",

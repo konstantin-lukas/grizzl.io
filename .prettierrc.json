@@ -17,24 +17,6 @@
     "tailwindStylesheet": "./src/app/globals.css",
     "tailwindFunctions": ["clsx"],
     "tailwindPreserveWhitespace": true,
-    "importOrder": [
-        "^@action/(.*)$",
-        "^@app/(.*)$",
-        "^@component/(.*)$",
-        "^@const/(.*)$",
-        "^@database/(.*)$",
-        "^@dictionary/(.*)$",
-        "^@enum/(.*)$",
-        "^@hook/(.*)$",
-        "^@schema/(.*)$",
-        "^@type/(.*)$",
-        "^@util/(.*)$",
-        "^@asset/(.*)$",
-        "^@public/(.*)$",
-        "^@e2e/(.*)$",
-        "^@unit/(.*)$",
-        "^[./]"
-    ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true
 }
