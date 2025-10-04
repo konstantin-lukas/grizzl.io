@@ -5,5 +5,8 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     vite: { plugins: [tailwindcss()] },
     css: ["~/assets/css/main.css"],
-    modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/test-utils", "@nuxt/ui"],
+    modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/test-utils", "@nuxt/ui", "@nuxtjs/color-mode"],
+    colorMode: {
+        classSuffix: "",
+    },
 });

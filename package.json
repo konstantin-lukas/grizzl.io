@@ -18,6 +18,7 @@
         "@nuxt/image": "1.11.0",
         "@nuxt/test-utils": "3.19.2",
         "@nuxt/ui": "4.0.1",
+        "@nuxtjs/color-mode": "^3.5.2",
         "clsx": "^2.1.1",
         "eslint": "9.37.0",
         "nuxt": "4.1.2",
