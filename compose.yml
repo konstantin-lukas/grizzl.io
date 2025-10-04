@@ -5,7 +5,7 @@ services:
         volumes:
             - .:/home/grizzl
         working_dir: /home/grizzl
-        command: npm ci
+        command: npm install
 
     keycloak:
         image: quay.io/keycloak/keycloak:26.3.4

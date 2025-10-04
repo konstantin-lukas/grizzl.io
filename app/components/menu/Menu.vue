@@ -27,7 +27,9 @@ const headerClass = computed(() =>
     <header id="menu" :class="headerClass" :aria-hidden="!isOpen">
         <div class="max-h-full w-full overflow-auto">
             <nav class="m-auto flex flex-col items-center justify-center py-20" aria-label="Main site navigation">
-                Content
+                <ul class="flex flex-col gap-6">
+                    <li class="w-full"><MenuSessionButton /></li>
+                </ul>
             </nav>
         </div>
         <MenuThemeToggle />
