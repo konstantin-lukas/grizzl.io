@@ -11,8 +11,9 @@ services:
         image: quay.io/keycloak/keycloak:26.3.4
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         environment:
-            KEYCLOAK_ADMIN: admin
-            KEYCLOAK_ADMIN_PASSWORD: admin
+            KC_BOOTSTRAP_ADMIN_USERNAME: admin
+            KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+            KC_HOSTNAME: http://keycloak.grizzl.localhost
         volumes:
             - ./docker/keycloak:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
