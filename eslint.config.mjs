@@ -22,7 +22,6 @@ export default withNuxt([
             "no-unmodified-loop-condition": "error",
             "no-unreachable-loop": "error",
             "no-use-before-define": "error",
-            "no-useless-assignment": "error",
             "no-else-return": "error",
             "no-eval": "error",
             "no-implied-eval": "error",
@@ -49,6 +48,7 @@ export default withNuxt([
             "require-atomic-updates": "error",
             "wrap-iife": "error",
             "yoda": "error",
+            "vue/no-multiple-template-root": "off",
         },
     },
 ]);

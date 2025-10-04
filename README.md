@@ -12,7 +12,7 @@ Requirements: git, docker
 2. Clone the repository and start a new shell inside of it.
 3. Make sure localhost:80 is free and run `bin/start`.
 4. The project should now be running on `http://grizzl.localhost`.
-5. To shut down the project, simply run `docker compose down`.
+5. To shut down the project, simply run `bin/stop`.
 
 If you are wondering, why the project uses the TLD `.localhost` and not something like `.test` or `.dev`, read 
 [RFC 2606 section 2](https://www.rfc-editor.org/rfc/rfc2606#section-2) and 
