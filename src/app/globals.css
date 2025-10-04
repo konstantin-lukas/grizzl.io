@@ -82,7 +82,7 @@
         --inline-link-bg: var(--color-front);
     }
 
-    :root:where([data-color-scheme="dark"], [data-color-scheme="dark"] *) {
+    :root:where(.dark, .dark *) {
         .inline-link-1 {
             --inline-link-c1: var(--color-amber-400);
             --inline-link-c2: var(--color-emerald-400);
