@@ -24,7 +24,7 @@
             "secret": "test-client-secret",
             "enabled": true,
             "protocol": "openid-connect",
-            "redirectUris": ["http://grizzl.localhost/api/auth/keycloak"],
+            "redirectUris": ["http://grizzl.localhost/api/auth/oauth2/callback/keycloak"],
             "publicClient": false,
             "standardFlowEnabled": true
         }

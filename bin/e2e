@@ -6,3 +6,6 @@ if [ "$1" = "headless" ]; then
 else
   docker compose run --rm playwright npx playwright test --ui "$@"
 fi
+#!/usr/bin/env bash
+
+docker compose exec webserver npx drizzle-kit generate

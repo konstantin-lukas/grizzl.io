@@ -40,3 +40,9 @@ To extend the app with another language, you have to provide all translations fi
 the locale of your language. You also have to extend the `LANGUAGES` constant located at `src/const/i18n.ts` with the
 locale of your language as key and the name of your language in that language as value. That's it! Your new language
 should now be available.
+
+## Database
+In order to connect to the database you can use the postgres container's IP address.
+You can get that from `docker network inspect grizzlio_default`. The database port is not exposed
+to localhost because this project is only using port 80 to make development easier if you have other
+things running on localhost.
