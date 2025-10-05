@@ -6,7 +6,7 @@ export default defineConfig({
     casing: "snake_case",
     dialect: "postgresql",
     dbCredentials: {
-        url: process.env.DATABASE_URL!,
+        url: process.env.DATABASE_ADMIN_URL!,
     },
     verbose: true,
     strict: true,
