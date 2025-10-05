@@ -30,6 +30,8 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `restart`: Calls `stop` and then `start`.
 - `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
   Start the project before envoking this command. You can pass any Playwright flags to this command as well.
+- `generate`: Generates a new migration from the current schema files
+- `migrate`: Applies existing migrations to the database
 
 ### E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
