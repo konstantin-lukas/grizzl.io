@@ -38,10 +38,9 @@ E2E tests are written with Playwright and TypeScript. To start the Playwright UI
 `bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`.
 
 ## Adding Languages
-To extend the app with another language, you have to provide all translations files located at `src/dictionary` for
-the locale of your language. You also have to extend the `LANGUAGES` constant located at `src/const/i18n.ts` with the
-locale of your language as key and the name of your language in that language as value. That's it! Your new language
-should now be available.
+To extend the app with another language, you have to provide all translations files located at `i18n/locales` for
+the locale of your language. You also have to extend the `locales` constant located in the `nuxt.config.ts` file. 
+That's it! Your new language should now be available.
 
 ## Database
 In order to connect to the database you can use the postgres container's IP address.

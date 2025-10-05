@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --color-theme-white: #ffffff;
-    --color-theme-black: #1c1c1f;
+    --color-theme-black: #18181f;
+    --ui-bg: var(--color-theme-white);
     --color-back: var(--color-theme-white);
     --color-front: var(--color-theme-black);
     --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
@@ -18,6 +20,9 @@
 :root:where(.dark, .dark *) {
     --color-front: var(--color-theme-white);
     --color-back: var(--color-theme-black);
+    --ui-bg: var(--color-theme-black);
+    --ui-border: #4e4e65;
+    --ui-border-accented: #4e4e65;
 }
 
 @layer base {

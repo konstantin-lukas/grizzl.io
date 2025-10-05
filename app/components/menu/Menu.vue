@@ -33,6 +33,7 @@ const headerClass = computed(() =>
             </nav>
         </div>
         <MenuThemeToggle />
+        <MenuLangSelect />
     </header>
 </template>
 
