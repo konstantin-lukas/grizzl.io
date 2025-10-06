@@ -13,11 +13,12 @@ const { isOpen } = useMenu();
                 <Title>{{ title }}</Title>
             </Head>
             <Body>
-                <Menu />
-                <MenuButton />
+                <NavMenu />
+                <NavMenuButton />
                 <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-container">
                     <slot />
                 </main>
+                <NavFooter />
             </Body>
         </Html>
     </div>

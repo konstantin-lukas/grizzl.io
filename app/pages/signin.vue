@@ -2,7 +2,7 @@
 import { authClient } from "@@/lib/auth-client";
 
 definePageMeta({
-    title: "save",
+    title: "ui.save",
 });
 async function signIn() {
     await authClient.signIn.social({
