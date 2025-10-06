@@ -1,6 +1,8 @@
 {
-    "notice": "Legal Notice",
-    "contact": "Contact Information",
-    "phone": "Phone",
-    "email": "Email"
+    "legal": {
+        "notice": "Legal Notice",
+        "contact": "Contact Information",
+        "phone": "Phone",
+        "email": "Email"
+    }
 }

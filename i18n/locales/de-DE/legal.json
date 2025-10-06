@@ -1,6 +1,8 @@
 {
-    "notice": "Impressum",
-    "contact": "Kontaktinformationen",
-    "phone": "Telefon",
-    "email": "E-Mail"
+    "legal": {
+        "notice": "Impressum",
+        "contact": "Kontaktinformationen",
+        "phone": "Telefon",
+        "email": "E-Mail"
+    }
 }

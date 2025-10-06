@@ -1,4 +1,6 @@
 {
-    "save": "Speichern",
-    "cancel": "Abbrechen"
+    "ui": {
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    }
 }

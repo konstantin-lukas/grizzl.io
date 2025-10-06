@@ -1,5 +1,7 @@
 {
-    "legalNotice": "Aviso legal",
-    "privacyPolicy": "Política de privacidad",
-    "version": "Versión"
+    "footer": {
+        "legalNotice": "Aviso legal",
+        "privacyPolicy": "Política de privacidad",
+        "version": "Versión"
+    }
 }

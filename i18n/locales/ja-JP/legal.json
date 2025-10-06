@@ -1,6 +1,8 @@
 {
-    "notice": "法律上の情報",
-    "contact": "連絡先情報",
-    "phone": "電話",
-    "email": "メール"
+    "legal": {
+        "notice": "法律上の情報",
+        "contact": "連絡先情報",
+        "phone": "電話",
+        "email": "メール"
+    }
 }

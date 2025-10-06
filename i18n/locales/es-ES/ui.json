@@ -1,4 +1,6 @@
 {
-    "save": "Guardar",
-    "cancel": "Cancelar"
+    "ui": {
+        "save": "Guardar",
+        "cancel": "Cancelar"
+    }
 }

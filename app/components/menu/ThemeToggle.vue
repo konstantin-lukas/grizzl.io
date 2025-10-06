@@ -5,7 +5,7 @@ const { t } = useI18n();
 
 <template>
     <UColorModeButton
-        :aria-label="t('aria.toggleTheme')"
+        :aria-label="t('menu.aria.toggleTheme')"
         class="absolute right-4 top-4"
         data-test-id="theme-toggle"
         size="xl"

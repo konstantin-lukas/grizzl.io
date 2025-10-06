@@ -14,7 +14,7 @@ const session = authClient.useSession();
             data-test-id="session-button"
             @click="authClient.signOut()"
         >
-            {{ t("signOut") }}
+            {{ t("menu.signOut") }}
         </button>
         <NuxtLink
             v-else
@@ -23,7 +23,7 @@ const session = authClient.useSession();
             data-test-id="session-button"
             @click="close"
         >
-            {{ t("signIn") }}
+            {{ t("menu.signIn") }}
         </NuxtLink>
     </div>
 </template>

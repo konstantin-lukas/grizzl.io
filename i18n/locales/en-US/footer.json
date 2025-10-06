@@ -1,5 +1,7 @@
 {
-    "legalNotice": "Legal Notice",
-    "privacyPolicy": "Privacy Policy",
-    "version": "Version"
+    "footer": {
+        "legalNotice": "Legal Notice",
+        "privacyPolicy": "Privacy Policy",
+        "version": "Version"
+    }
 }

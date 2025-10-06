@@ -3,6 +3,7 @@ const route = useRoute();
 const { t } = useI18n();
 const head = useLocaleHead();
 const title = computed(() => t((route.meta.title as string) || "", t("title")));
+const { isOpen } = useMenu();
 </script>
 
 <template>
@@ -14,7 +15,9 @@ const title = computed(() => t((route.meta.title as string) || "", t("title")));
             <Body>
                 <Menu />
                 <MenuButton />
-                <slot />
+                <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-container">
+                    <slot />
+                </main>
             </Body>
         </Html>
     </div>
