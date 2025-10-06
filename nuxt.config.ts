@@ -27,7 +27,16 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     vite: { plugins: [tailwindcss()] },
     css: ["~/assets/css/main.css"],
-    modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/test-utils", "@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/i18n"],
+    modules: [
+        "@nuxt/eslint",
+        "@nuxt/image",
+        "@nuxt/test-utils",
+        "@nuxt/ui",
+        "@nuxtjs/color-mode",
+        "@nuxtjs/i18n",
+        "@nuxt/test-utils/module",
+        "@nuxt/test-utils/module",
+    ],
     i18n: {
         strategy: "no_prefix",
         defaultLocale: "en",

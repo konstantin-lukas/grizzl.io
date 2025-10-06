@@ -14,5 +14,11 @@
         {
             "path": "./.nuxt/tsconfig.node.json"
         }
-    ]
+    ],
+    "compilerOptions": {
+        "paths": {
+            "@e2e/*": ["./tests/e2e/*"],
+            "@unit/*": ["./tests/unit/*"]
+        }
+    }
 }
