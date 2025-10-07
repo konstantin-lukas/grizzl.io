@@ -13,12 +13,9 @@
         },
         {
             "path": "./.nuxt/tsconfig.node.json"
+        },
+        {
+            "path": "./tsconfig.override.json"
         }
-    ],
-    "compilerOptions": {
-        "paths": {
-            "@e2e/*": ["./tests/e2e/*"],
-            "@unit/*": ["./tests/unit/*"]
-        }
-    }
+    ]
 }
