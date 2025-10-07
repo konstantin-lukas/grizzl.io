@@ -1,23 +1,33 @@
 <script setup lang="ts">
-import { authClient } from "@@/lib/auth-client";
-
 definePageMeta({
     title: "ui.save",
 });
-async function signIn() {
-    await authClient.signIn.social({
-        provider: "keycloak",
-    });
-}
+const config = useRuntimeConfig();
+const providers =
+    config.public.appEnv === "production"
+        ? ([
+              ["Discord", "ri:discord-line", "bg-emerald-700"],
+              ["GitHub", "ri:github-line", "bg-cyan-700"],
+              ["Reddit", "ri:reddit-line", "bg-purple-700"],
+              ["Twitch", "ri:twitch-line", "bg-rose-700"],
+              ["Spotify", "ri:spotify-line", "bg-amber-700"],
+          ] as const)
+        : ([["Keycloak", "simple-icons:keycloak", "bg-emerald-700"]] as const);
 </script>
 
 <template>
-    <UCard>
-        <div class="mt-20 flex flex-col items-center gap-4">
-            <h1 class="text-2xl font-bold">Login</h1>
-            <div class="flex flex-col gap-2">
-                <button data-test-id="keycloak-provider" @click="signIn">Login with Keycloak</button>
+    <div class="flex min-h-main-height-no-padding items-center justify-center">
+        <UCard>
+            <div class="flex flex-col items-center justify-center gap-4 p-4">
+                <TypoH1 class="text-2xl font-bold">Sign In</TypoH1>
+                <NavProviderButton
+                    v-for="[provider, icon, color] in providers"
+                    :key="provider"
+                    :provider
+                    :icon
+                    :color
+                />
             </div>
-        </div>
-    </UCard>
+        </UCard>
+    </div>
 </template>

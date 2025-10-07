@@ -1,6 +1,6 @@
 import { customAlphabet } from "nanoid";
 
-export function generateID() {
+export function generateId() {
     const nanoid = customAlphabet("23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz", 16);
     return nanoid();
 }

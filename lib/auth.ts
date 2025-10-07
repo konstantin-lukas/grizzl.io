@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { generateID } from "@@/server/utils/id";
+import { generateId } from "@@/server/utils/id";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
@@ -10,7 +10,7 @@ export const auth = betterAuth({
     }),
     advanced: {
         database: {
-            generateId: () => generateID(),
+            generateId,
         },
     },
     plugins: [
