@@ -16,10 +16,16 @@ watch(() => route.fullPath, close);
             <Body>
                 <NavMenu />
                 <NavMenuButton />
-                <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-container">
+                <main
+                    :aria-hidden="isOpen"
+                    :inert="isOpen"
+                    data-test-id="inert-container"
+                    class="box-border min-h-main-height py-20"
+                >
                     <slot />
                 </main>
                 <NavFooter />
+                <CursorGlow />
             </Body>
         </Html>
     </div>
