@@ -2,7 +2,6 @@
 import { authClient } from "~~/lib/auth-client";
 
 const { t } = useI18n();
-const { close } = useMenu();
 const session = authClient.useSession();
 </script>
 
@@ -21,7 +20,6 @@ const session = authClient.useSession();
             class="inline-link-1 group mx-auto mt-4 flex justify-center gap-2"
             to="/signin"
             data-test-id="session-button"
-            @click="close"
         >
             {{ t("menu.signIn") }}
         </NuxtLink>

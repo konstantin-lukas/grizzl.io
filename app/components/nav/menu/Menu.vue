@@ -36,7 +36,7 @@ const links = [
         <div class="max-h-full w-full overflow-auto">
             <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="t('menu.aria.mainNav')">
                 <NuxtLink href="/" class="mb-8 block w-[75dvw] sm:w-80">
-                    <SvgGrizzlLogo class="fill-front w-full" />
+                    <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">
                     <li v-for="[link, color, icon] in links" :key="link" class="w-full">

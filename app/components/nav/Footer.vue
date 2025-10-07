@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const config = useRuntimeConfig();
 </script>
 
 <template>
@@ -9,6 +10,7 @@ const { t } = useI18n();
             <NuxtLink class="inline-link-2" href="/privacy-policy">{{ t("footer.privacyPolicy") }}</NuxtLink>
             <NuxtLink class="inline-link-3" href="https://github.com/konstantin-lukas/grizzl.io">
                 {{ t("footer.version") }}
+                {{ config.public.version }}
             </NuxtLink>
         </nav>
     </footer>

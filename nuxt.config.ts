@@ -1,3 +1,4 @@
+import pkg from "./package.json";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
@@ -69,5 +70,10 @@ export default defineNuxtConfig({
                 normalizeIconName: false,
             },
         ],
+    },
+    runtimeConfig: {
+        public: {
+            version: pkg.version,
+        },
     },
 });
