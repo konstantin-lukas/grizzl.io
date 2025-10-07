@@ -6,7 +6,10 @@
 @theme {
     --color-theme-white: #ffffff;
     --color-theme-black: #18181f;
+    --ease-bezier: cubic-bezier(0.4, 0, 0.2, 1);
     --ui-bg: var(--color-theme-white);
+    --ui-bg-inverted: var(--color-theme-black);
+    --ui-bg-elevated: rgba(24, 24, 31, 0.15);
     --color-back: var(--color-theme-white);
     --color-front: var(--color-theme-black);
     --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
@@ -20,7 +23,9 @@
 :root:where(.dark, .dark *) {
     --color-front: var(--color-theme-white);
     --color-back: var(--color-theme-black);
+    --ui-bg-elevated: rgba(255, 255, 255, 0.15);
     --ui-bg: var(--color-theme-black);
+    --ui-bg-inverted: var(--color-theme-white);
     --ui-border: #4e4e65;
     --ui-border-accented: #4e4e65;
 }
@@ -41,7 +46,7 @@
         color: var(--color-back);
     }
 
-    :focus-visible {
+    :focus-visible, button:focus-visible {
         outline: 4px solid var(--color-front);
         outline-offset: 4px;
     }
