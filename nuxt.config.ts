@@ -3,7 +3,6 @@ import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 function getTranslationFiles(locale: string) {
     const dirPath = path.join(process.cwd(), "i18n", "locales", locale);
@@ -31,9 +30,6 @@ export default defineNuxtConfig({
     css: ["~/assets/css/main.css"],
     typescript: {
         typeCheck: true,
-    },
-    alias: {
-        "@e2e": fileURLToPath(new URL("./tests/e2e", import.meta.url)),
     },
     modules: [
         "@nuxt/eslint",
