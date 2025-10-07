@@ -24,3 +24,4 @@ logs
 !.env.example
 
 tests/e2e/storage.json
+test-results

@@ -1,5 +1,5 @@
-import config from "@@/playwright.config";
 import { AxeBuilder } from "@axe-core/playwright";
+import config from "@config";
 import { expect } from "@e2e/fixtures";
 import type { Locator, Page } from "@playwright/test";
 
