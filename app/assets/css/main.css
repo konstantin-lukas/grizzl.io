@@ -35,6 +35,11 @@
     body {
         background: var(--color-back);
         color: var(--color-front);
+        font-family: Jost, sans-serif;
+    }
+    :root[lang="ja-JP"],
+    :root[lang="ja-JP"] body {
+        font-family: "Noto Sans JP", Jost, sans-serif;
     }
 
     button, a {

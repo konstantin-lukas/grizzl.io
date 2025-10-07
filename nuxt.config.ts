@@ -42,7 +42,7 @@ export default defineNuxtConfig({
         "@nuxtjs/color-mode",
         "@nuxtjs/i18n",
         "@nuxt/test-utils/module",
-        "@nuxt/test-utils/module",
+        "@nuxt/fonts",
     ],
     i18n: {
         strategy: "no_prefix",
