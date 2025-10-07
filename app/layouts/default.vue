@@ -24,7 +24,7 @@ watch(() => route.fullPath, close);
                 >
                     <slot />
                 </main>
-                <NavFooter />
+                <NavFooter :aria-hidden="isOpen" :inert="isOpen" />
             </Body>
         </Html>
     </div>
