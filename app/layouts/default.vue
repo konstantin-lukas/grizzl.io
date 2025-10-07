@@ -25,7 +25,6 @@ watch(() => route.fullPath, close);
                     <slot />
                 </main>
                 <NavFooter />
-                <CursorGlow />
             </Body>
         </Html>
     </div>
