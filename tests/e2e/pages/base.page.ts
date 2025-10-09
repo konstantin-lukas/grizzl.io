@@ -3,6 +3,20 @@ import config from "@config";
 import { expect } from "@e2e/fixtures";
 import type { Locator, Page } from "@playwright/test";
 
+const BASE_LOCATORS = {
+    installButton: "install-prompt-button",
+    menuButton: "menu-button",
+    sessionButton: "session-button",
+    pollLink: "menu-link-poll",
+    timerLink: "menu-link-timer",
+    financeLink: "menu-link-finance",
+    todoLink: "menu-link-todo",
+    themeToggleLight: "theme-toggle-light",
+    themeToggleDark: "theme-toggle-dark",
+    inertElements: "inert-elements",
+    root: "root",
+};
+
 export default abstract class BasePage<T extends Record<string, string>> {
     private readonly page;
     readonly loc;
@@ -10,8 +24,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
     protected constructor(page: Page, locators: T, url: string) {
         this.page = page;
         this.loc = Object.fromEntries(
-            Object.entries(locators).map(([key, value]) => [key, page.getByTestId(value)]),
-        ) as Record<keyof T, Locator>;
+            Object.entries({ ...BASE_LOCATORS, ...locators }).map(([key, value]) => [key, page.getByTestId(value)]),
+        ) as Record<keyof T | keyof typeof BASE_LOCATORS, Locator>;
         this.url = url;
     }
 
