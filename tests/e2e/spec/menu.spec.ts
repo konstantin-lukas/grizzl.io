@@ -1,29 +1,59 @@
 import { expect, test } from "@e2e/fixtures";
+import { forEachLocale } from "@e2e/utils/test";
 
-test("should have links to all services", async ({ homePage }) => {
-    const links = [
-        { locator: homePage.loc.pollLink, text: "Polls", href: "/poll" },
-        { locator: homePage.loc.todoLink, text: "To-Do", href: "/todo" },
-        { locator: homePage.loc.timerLink, text: "Timer", href: "/timer" },
-        { locator: homePage.loc.financeLink, text: "Finance", href: "/finance" },
-    ];
+const texts = {
+    "de-DE": {
+        poll: "Umfragen",
+        todo: "To-do",
+        timer: "Stoppuhr",
+        finance: "Finanzen",
+    },
+    "en-US": {
+        poll: "Polls",
+        todo: "To-Do",
+        timer: "Timer",
+        finance: "Finance",
+    },
+    "es-ES": {
+        poll: "Encuestas",
+        todo: "Tareas",
+        timer: "Temporizador",
+        finance: "Finanzas",
+    },
+    "ja-JP": {
+        poll: "アンケート",
+        todo: "ToDoリスト",
+        timer: "タイマー",
+        finance: "財務",
+    },
+};
 
-    await test.step("Check that menu elements do not exist when the menu is closed", async () => {
-        await homePage.goto();
-        await expect(homePage.loc.menuButton).toBeVisible();
-        for (const { locator } of links) {
-            await expect(locator).toBeHidden();
-        }
+forEachLocale((locale, texts) => {
+    test(`should have links to all services for locale ${locale.language}`, async ({ homePage }) => {
+        const links = [
+            { locator: homePage.loc.pollLink, text: texts.poll, href: "/poll" },
+            { locator: homePage.loc.todoLink, text: texts.todo, href: "/todo" },
+            { locator: homePage.loc.timerLink, text: texts.timer, href: "/timer" },
+            { locator: homePage.loc.financeLink, text: texts.finance, href: "/finance" },
+        ];
+
+        await test.step("Check that menu elements do not exist when the menu is closed", async () => {
+            await homePage.goto();
+            await expect(homePage.loc.menuButton).toBeVisible();
+            for (const { locator } of links) {
+                await expect(locator).toBeHidden();
+            }
+        });
+
+        await test.step("Open the menu and check that all links exist", async () => {
+            await homePage.loc.menuButton.click();
+            for (const { locator, text, href } of links) {
+                await expect(locator).toHaveText(text);
+                await expect(locator).toHaveAttribute("href", href);
+            }
+        });
     });
-
-    await test.step("Open the menu and check that all links exist", async () => {
-        await homePage.loc.menuButton.click();
-        for (const { locator, text, href } of links) {
-            await expect(locator).toHaveText(text);
-            await expect(locator).toHaveAttribute("href", href);
-        }
-    });
-});
+}, texts);
 
 test("should make all other page elements not focusable when open", async ({ homePage }) => {
     await homePage.goto();

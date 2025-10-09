@@ -39,7 +39,7 @@ E2E tests are written with Playwright and TypeScript. To start the Playwright UI
 
 ## Adding Languages
 To extend the app with another language, you have to provide all translations files located at `i18n/locales` for
-the locale of your language. You also have to extend the `locales` constant located in the `nuxt.config.ts` file. 
+the locale of your language. You also have to extend the `locales` constant located in the `i18n/locales.ts` file. 
 That's it! Your new language should now be available.
 
 ## Database
