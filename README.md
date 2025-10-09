@@ -12,7 +12,7 @@ Requirements: git, docker
 2. Clone the repository and start a new shell inside of it.
 3. Make sure localhost:80 is free and run `bin/start`.
 4. The project should now be running on `http://grizzl.localhost`.
-5. To shut down the project, simply run `docker compose down`.
+5. To shut down the project, simply run `bin/stop`.
 
 If you are wondering, why the project uses the TLD `.localhost` and not something like `.test` or `.dev`, read 
 [RFC 2606 section 2](https://www.rfc-editor.org/rfc/rfc2606#section-2) and 
@@ -30,13 +30,20 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `restart`: Calls `stop` and then `start`.
 - `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
   Start the project before envoking this command. You can pass any Playwright flags to this command as well.
+- `generate`: Generates a new migration from the current schema files
+- `migrate`: Applies existing migrations to the database
 
 ### E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
 `bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`.
 
 ## Adding Languages
-To extend the app with another language, you have to provide all translations files located at `src/dictionary` for
-the locale of your language. You also have to extend the `LANGUAGES` constant located at `src/const/i18n.ts` with the
-locale of your language as key and the name of your language in that language as value. That's it! Your new language
-should now be available.
+To extend the app with another language, you have to provide all translations files located at `i18n/locales` for
+the locale of your language. You also have to extend the `locales` constant located in the `nuxt.config.ts` file. 
+That's it! Your new language should now be available.
+
+## Database
+In order to connect to the database you can use the postgres container's IP address.
+You can get that from `docker network inspect grizzlio_default`. The database port is not exposed
+to localhost because this project is only using port 80 to make development easier if you have other
+things running on localhost.

@@ -1,50 +1,16 @@
-import { fixupConfigRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
-import tsParser from "@typescript-eslint/parser";
-import { globalIgnores } from "eslint/config";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+// @ts-check
+import withNuxt from "./.nuxt/eslint.config.mjs";
+import vuejsA11y from "eslint-plugin-vuejs-accessibility";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
+const a11yRules = vuejsA11y.configs.recommended.rules;
 
-const config = [
-    ...fixupConfigRules(
-        compat.extends(
-            "eslint:recommended",
-            "next/core-web-vitals",
-            "next/typescript",
-            "plugin:import/recommended",
-            "plugin:jsx-a11y/recommended",
-            "plugin:@typescript-eslint/strict",
-            "plugin:@typescript-eslint/stylistic",
-            "prettier",
-        ),
-    ),
+export default withNuxt([
     {
-        languageOptions: {
-            parser: tsParser,
-            parserOptions: {
-                project: "./tsconfig.json",
-                tsconfigRootDir: __dirname,
-                sourceType: "module",
-            },
+        plugins: {
+            "vuejs-accessibility": vuejsA11y,
         },
         rules: {
-            "import/first": "error",
-            "import/newline-after-import": "error",
-            "import/no-duplicates": "error",
-            "@typescript-eslint/consistent-type-imports": "error",
-            "@typescript-eslint/consistent-type-exports": "error",
-            "@typescript-eslint/consistent-type-definitions": "error",
-            "@typescript-eslint/consistent-type-assertions": "error",
-            "@typescript-eslint/no-non-null-assertion": "off",
+            ...a11yRules,
             "array-callback-return": "error",
             "default-param-last": "error",
             "eqeqeq": "error",
@@ -56,7 +22,6 @@ const config = [
             "no-unmodified-loop-condition": "error",
             "no-unreachable-loop": "error",
             "no-use-before-define": "error",
-            "no-useless-assignment": "error",
             "no-else-return": "error",
             "no-eval": "error",
             "no-implied-eval": "error",
@@ -83,11 +48,7 @@ const config = [
             "require-atomic-updates": "error",
             "wrap-iife": "error",
             "yoda": "error",
-            "react/self-closing-comp": "error",
-            "react/jsx-curly-brace-presence": "error",
+            "vue/no-multiple-template-root": "off",
         },
     },
-    globalIgnores([".next/*", "node_modules/*", "*.mjs", "./next-env.d.ts"]),
-];
-
-export default config;
+]);

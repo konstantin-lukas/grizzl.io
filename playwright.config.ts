@@ -1,13 +1,13 @@
 import { defineConfig, devices } from "playwright/test";
 
 export default defineConfig({
-    testDir: "./test/e2e/spec",
+    testDir: "./tests/e2e/spec",
     fullyParallel: false,
     forbidOnly: true,
     retries: 0,
     workers: 1,
     reporter: "line",
-    globalSetup: "./test/e2e/global.setup.ts",
+    globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 5000,
     },
@@ -17,7 +17,7 @@ export default defineConfig({
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
         timezoneId: "Europe/Berlin",
-        storageState: "test/e2e/storage.json",
+        storageState: "tests/e2e/storage.json",
     },
     projects: [
         {

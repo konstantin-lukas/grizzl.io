@@ -1,0 +1,50 @@
+import { AxeBuilder } from "@axe-core/playwright";
+import config from "@config";
+import { expect } from "@e2e/fixtures";
+import type { Locator, Page } from "@playwright/test";
+
+export default abstract class BasePage<T extends Record<string, string>> {
+    private readonly page;
+    readonly loc;
+    readonly url;
+    protected constructor(page: Page, locators: T, url: string) {
+        this.page = page;
+        this.loc = Object.fromEntries(
+            Object.entries(locators).map(([key, value]) => [key, page.getByTestId(value)]),
+        ) as Record<keyof T, Locator>;
+        this.url = url;
+    }
+
+    async goto() {
+        await this.page.goto(this.url);
+    }
+
+    async all(key: keyof typeof this.loc) {
+        const locator = this.loc[key] as Locator;
+        await expect(locator).toHaveCountGreaterThan(0);
+        return await locator.all();
+    }
+
+    async forEach(key: keyof typeof this.loc, callback: (locator: Locator, index: number) => Promise<void>) {
+        const all = await this.all(key);
+        for (const [index, locator] of all.entries()) {
+            await callback(locator, index);
+        }
+    }
+
+    async analyzeA11y() {
+        const timeout = config.expect?.timeout ?? 5000;
+        const axe = new AxeBuilder({ page: this.page });
+        const start = Date.now();
+        while (true) {
+            const results = await axe.analyze();
+            if (results.violations.length === 0 || Date.now() - start > timeout) {
+                expect(results.violations).toEqual([]);
+                break;
+            }
+            await new Promise(resolve => {
+                setTimeout(resolve, 50);
+            });
+        }
+    }
+}
