@@ -35,7 +35,7 @@ const links = [
     <header id="menu" :class="headerClass" :aria-hidden="!isOpen">
         <div class="max-h-full w-full overflow-auto">
             <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="t('menu.aria.mainNav')">
-                <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" aria-label="Go to home page">
+                <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="t('menu.aria.goToHome')">
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">

@@ -11,7 +11,8 @@
             "toggleMenu": "Toggle the menu.",
             "toggleTheme": "Toggle the app theme.",
             "changeLang": "Change App Language",
-            "mainNav": "Main site navigation"
+            "mainNav": "Main site navigation",
+            "goToHome": "Go to home page"
         }
     }
 }

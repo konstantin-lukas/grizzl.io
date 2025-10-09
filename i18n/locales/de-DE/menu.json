@@ -11,7 +11,8 @@
             "toggleMenu": "Menü ein- oder ausblenden.",
             "toggleTheme": "App-Design umschalten.",
             "changeLang": "Sprache der App ändern",
-            "mainNav": "Hauptnavigation der Seite"
+            "mainNav": "Hauptnavigation der Seite",
+            "goToHome": "Zur Startseite gehen"
         }
     }
 }
