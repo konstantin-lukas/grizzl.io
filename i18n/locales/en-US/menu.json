@@ -10,7 +10,8 @@
         "aria": {
             "toggleMenu": "Toggle the menu.",
             "toggleTheme": "Toggle the app theme.",
-            "changeLang": "Change App Language"
+            "changeLang": "Change App Language",
+            "mainNav": "Main site navigation"
         }
     }
 }
