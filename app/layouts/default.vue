@@ -9,7 +9,7 @@ watch(() => route.fullPath, close);
 
 <template>
     <div>
-        <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
+        <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir" data-test-id="root">
             <Head>
                 <Title>{{ title }}</Title>
             </Head>
@@ -19,7 +19,7 @@ watch(() => route.fullPath, close);
                 <main
                     :aria-hidden="isOpen"
                     :inert="isOpen"
-                    data-test-id="inert-container"
+                    data-test-id="inert-elements"
                     class="box-border min-h-main-height py-20"
                 >
                     <slot />

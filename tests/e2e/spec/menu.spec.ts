@@ -27,10 +27,14 @@ test("should have links to all services", async ({ homePage }) => {
 
 test("should make all other page elements not focusable when open", async ({ homePage }) => {
     await homePage.goto();
-    await expect(homePage.loc.inertContainer).not.toHaveAttribute("inert");
+    await homePage.forEach("inertElements", async el => {
+        await expect(el).not.toHaveAttribute("inert");
+    });
     await homePage.analyzeA11y();
     await homePage.loc.menuButton.click();
-    await expect(homePage.loc.inertContainer).toHaveAttribute("inert");
+    await homePage.forEach("inertElements", async el => {
+        await expect(el).toHaveAttribute("inert");
+    });
     await homePage.analyzeA11y();
 });
 
@@ -42,14 +46,14 @@ test("should have a button to toggle the theme", async ({ homePage }) => {
         await expect(homePage.loc.themeToggleDark).toBeHidden();
         await homePage.loc.menuButton.click();
         await expect(homePage.loc.themeToggleDark).toBeDisattached();
-        await expect(homePage.loc.root).toHaveAttribute("data-color-scheme", "light");
-        await expect(homePage.loc.root).toHaveAttribute("style", "color-scheme: light;");
+        await expect(homePage.loc.root).toContainClass("light");
+        await expect(homePage.loc.root).not.toContainClass("dark");
     });
 
     await test.step("Check that the state after toggling the theme", async () => {
         await homePage.loc.themeToggleLight.click();
-        await expect(homePage.loc.root).toHaveAttribute("data-color-scheme", "dark");
-        await expect(homePage.loc.root).toHaveAttribute("style", "color-scheme: dark;");
+        await expect(homePage.loc.root).toContainClass("dark");
+        await expect(homePage.loc.root).not.toContainClass("light");
         await expect(homePage.loc.themeToggleLight).toBeDisattached();
         await homePage.loc.themeToggleDark.click();
         await expect(homePage.loc.themeToggleDark).toBeDisattached();

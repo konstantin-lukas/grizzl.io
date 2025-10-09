@@ -1,6 +1,5 @@
-import type { Page } from "@playwright/test";
-
 import BasePage from "@e2e/pages/base.page";
+import type { Page } from "@playwright/test";
 
 const LOCATORS = {
     installButton: "install-prompt-button",
@@ -12,7 +11,7 @@ const LOCATORS = {
     todoLink: "menu-link-todo",
     themeToggleLight: "theme-toggle-light",
     themeToggleDark: "theme-toggle-dark",
-    inertContainer: "inert-container",
+    inertElements: "inert-elements",
     root: "root",
 };
 

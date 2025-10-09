@@ -4,7 +4,7 @@ const config = useRuntimeConfig();
 </script>
 
 <template>
-    <footer class="h-footer-height">
+    <footer class="h-footer-height" data-test-id="inert-elements">
         <nav class="flex h-full items-center justify-center gap-8">
             <NuxtLink class="inline-link-1" to="/legal-notice">{{ t("footer.legalNotice") }}</NuxtLink>
             <NuxtLink class="inline-link-2" to="/privacy-policy">{{ t("footer.privacyPolicy") }}</NuxtLink>
