@@ -24,7 +24,7 @@ const session = authClient.useSession();
                 </NuxtLink>
             </UMarquee>
         </div>
-        <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8">
+        <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
             <SvgGrizzlLogo class="max-w-[600px] fill-front" />
             <div>
                 <NavBlockLink as="button" v-if="session.data" @click="authClient.signOut()">
