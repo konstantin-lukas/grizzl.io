@@ -1,5 +1,6 @@
 {
-    "home": {
+    "meta": {
+        "grizzl": "Grizzl",
         "tagline": "The Bear That Does It All"
     }
 }

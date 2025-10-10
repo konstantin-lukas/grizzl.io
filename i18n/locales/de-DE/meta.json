@@ -1,5 +1,6 @@
 {
-    "home": {
+    "meta": {
+        "grizzl": "Grizzl",
         "tagline": "Der Bär, der alles kann"
     }
 }

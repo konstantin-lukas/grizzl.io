@@ -2,7 +2,7 @@
 const route = useRoute();
 const { t } = useI18n();
 const head = useLocaleHead();
-const title = computed(() => t((route.meta.title as string) || "", `Grizzl - ${t("home.tagline")}`));
+const title = computed(() => t((route.meta.title as string) || "", `${t("meta.grizzl")} - ${t("meta.tagline")}`));
 const { isOpen, close } = useMenu();
 watch(() => route.fullPath, close);
 </script>
