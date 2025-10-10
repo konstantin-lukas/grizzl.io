@@ -27,7 +27,7 @@ const hoverClass = clsx(
                 <slot />
             </span>
             <span :class="hoverClass">
-                <Icon
+                <UIcon
                     name="heroicons:arrow-right-20-solid"
                     class="absolute top-1/2 left-1/2 h-8 w-8 -translate-1/2"
                     style="color: var(--color-theme-white)"

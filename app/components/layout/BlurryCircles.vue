@@ -15,11 +15,11 @@ const circle2 = clsx(baseClass, "bg-rose-500", "-translate-y-full");
 </script>
 
 <template>
-    <div class="fixed h-dvh w-dvw opacity-50 dark:opacity-25">
+    <div class="fixed -z-10 h-dvh w-dvw opacity-50 dark:opacity-25">
         <div :class="circle1" />
         <div :class="circle2" />
     </div>
-    <div class="flex h-main-height items-center justify-center">
+    <div class="flex min-h-main-height items-center justify-center">
         <slot />
     </div>
 </template>

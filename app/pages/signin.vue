@@ -18,12 +18,12 @@ const providers =
 <template>
     <LayoutBlurryCircles>
         <div class="flex min-h-main-height items-center justify-center py-main-padding">
-            <div
-                class="flex flex-col items-center justify-center gap-4 rounded-2xl border border-accented p-8 backdrop-blur-lg"
-            >
-                <TypoH1>Sign In</TypoH1>
-                <NavProviderButton v-for="[provider, icon] in providers" :key="provider" :provider :icon />
-            </div>
+            <UCard>
+                <div class="flex flex-col items-center justify-center gap-4 p-2">
+                    <TypoH1>Sign In</TypoH1>
+                    <NavProviderButton v-for="[provider, icon] in providers" :key="provider" :provider :icon />
+                </div>
+            </UCard>
         </div>
     </LayoutBlurryCircles>
 </template>
