@@ -58,9 +58,7 @@
 }
 
 @layer utilities {
-    .inline-link-1,
-    .inline-link-2,
-    .inline-link-3 {
+    .inline-link {
         user-select: none;
         background-size: 200% 100%;
         background-position: 100%;
@@ -77,47 +75,21 @@
         );
     }
 
-    .inline-link-1 {
-        --inline-link-c1: var(--color-amber-600);
-        --inline-link-c2: var(--color-emerald-600);
-        --inline-link-bg: var(--color-front);
-    }
-
-    .inline-link-2 {
-        --inline-link-c1: var(--color-teal-600);
-        --inline-link-c2: var(--color-indigo-600);
-        --inline-link-bg: var(--color-front);
-    }
-
-    .inline-link-3 {
+    .inline-link {
         --inline-link-c1: var(--color-violet-600);
         --inline-link-c2: var(--color-rose-600);
         --inline-link-bg: var(--color-front);
     }
 
     :root:where(.dark, .dark *) {
-        .inline-link-1 {
-            --inline-link-c1: var(--color-amber-400);
-            --inline-link-c2: var(--color-emerald-400);
-        }
-
-        .inline-link-2 {
-            --inline-link-c1: var(--color-teal-400);
-            --inline-link-c2: var(--color-indigo-400);
-        }
-
-        .inline-link-3 {
+        .inline-link {
             --inline-link-c1: var(--color-violet-400);
             --inline-link-c2: var(--color-rose-400);
         }
     }
 
-    .inline-link-1:hover,
-    .inline-link-1:focus-visible,
-    .inline-link-2:hover,
-    .inline-link-2:focus-visible,
-    .inline-link-3:hover,
-    .inline-link-3:focus-visible {
+    .inline-link:hover,
+    .inline-link:focus-visible {
         background-position: 0;
     }
 

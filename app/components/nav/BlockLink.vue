@@ -2,8 +2,19 @@
 import { NuxtLink } from "#components";
 import { clsx } from "clsx/lite";
 
-const { color, as = NuxtLink } = defineProps<{ color: string; as?: string | object }>();
-const hoverClass = clsx("absolute", "h-full", "w-full", "px-8", "py-3", "left-0", "top-full", color);
+const { as = NuxtLink } = defineProps<{ as?: string | object }>();
+const hoverClass = clsx(
+    "absolute",
+    "h-full",
+    "w-full",
+    "px-8",
+    "py-3",
+    "left-0",
+    "top-full",
+    "bg-gradient-to-r",
+    "from-violet-500",
+    "to-rose-500",
+);
 </script>
 
 <template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { APP_NAV } from "@/constants/nav";
 import { clsx } from "clsx/lite";
 
 const { t } = useI18n();
@@ -22,13 +23,6 @@ const headerClass = computed(() =>
         isOpen.value && "backdrop-blur-lg",
     ),
 );
-
-const links = [
-    ["poll", "bg-emerald-700", "heroicons:chart-pie"],
-    ["todo", "bg-cyan-700", "heroicons:clipboard-document-check"],
-    ["timer", "bg-purple-700", "heroicons:clock"],
-    ["finance", "bg-rose-700", "heroicons:banknotes"],
-] as const;
 </script>
 
 <template>
@@ -39,9 +33,9 @@ const links = [
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">
-                    <li v-for="[link, color, icon] in links" :key="link" class="w-full">
-                        <NavBlockLink :color :to="`/${link}`" :data-test-id="`menu-link-${link}`">
-                            <Icon :name="icon" size="1.25rem" />
+                    <li v-for="[link, icon] in APP_NAV" :key="link" class="w-full">
+                        <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`">
+                            <UIcon :name="icon" size="1.25rem" />
                             {{ t(`menu.${link}`) }}
                         </NavBlockLink>
                     </li>

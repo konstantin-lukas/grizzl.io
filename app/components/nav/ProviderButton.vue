@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { authClient } from "@@/lib/auth-client";
 
-const { provider, icon, color } = defineProps<{ provider: string; icon: string; color: string }>();
+const { provider, icon } = defineProps<{ provider: string; icon: string }>();
 const providerLowerCase = provider.toLowerCase();
 async function signIn() {
     await authClient.signIn.social({
@@ -12,7 +12,6 @@ async function signIn() {
 
 <template>
     <NavBlockLink
-        :color
         as="button"
         :aria-label="`Sign in with ${provider}`"
         :data-test-id="`${providerLowerCase}-provider`"

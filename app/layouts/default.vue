@@ -16,12 +16,7 @@ watch(() => route.fullPath, close);
             <Body>
                 <NavMenu />
                 <NavMenuButton />
-                <main
-                    :aria-hidden="isOpen"
-                    :inert="isOpen"
-                    data-test-id="inert-elements"
-                    class="box-border min-h-main-height py-20"
-                >
+                <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-elements" class="min-h-main-height">
                     <slot />
                 </main>
                 <NavFooter :aria-hidden="isOpen" :inert="isOpen" />
