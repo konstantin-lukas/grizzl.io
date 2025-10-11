@@ -8,6 +8,8 @@
     --color-theme-black: #18181f;
     --ease-bezier: cubic-bezier(0.4, 0, 0.2, 1);
     --ui-bg: var(--color-theme-white);
+    --ui-primary: var(--color-violet-500);
+    --ui-secondary: var(--color-rose-500);
     --ui-bg-inverted: var(--color-theme-black);
     --ui-bg-elevated: rgba(24, 24, 31, 0.15);
     --color-back: var(--color-theme-white);

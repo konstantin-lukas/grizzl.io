@@ -26,7 +26,11 @@ const session = authClient.useSession();
         </div>
         <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
             <SvgGrizzlLogo class="max-w-[600px] fill-front" />
-            <div>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <NavBlockLink as="button">
+                    <UIcon name="heroicons:arrow-down-tray" class="size-6" />
+                    {{ t("ui.install") }}
+                </NavBlockLink>
                 <NavBlockLink as="button" v-if="session.data" @click="authClient.signOut()">
                     <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
                     {{ t("menu.signOut") }}

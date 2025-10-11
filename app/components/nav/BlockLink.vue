@@ -23,7 +23,9 @@ const hoverClass = clsx(
         class="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-back"
     >
         <span class="w-full transition-transform group-hover:-translate-y-full group-focus-visible:-translate-y-full">
-            <span class="flex h-full w-full items-center justify-center gap-2 bg-front px-8 py-3 text-center">
+            <span
+                class="flex h-full w-full items-center justify-center gap-2 bg-front px-8 py-3 text-center text-nowrap"
+            >
                 <slot />
             </span>
             <span :class="hoverClass">
