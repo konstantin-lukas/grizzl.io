@@ -1,19 +1,19 @@
 {
     "compilerOptions": {
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "noEmit": true,
-      "skipLibCheck": true,
-      "allowJs": true,
-      "resolveJsonModule": true,
-      "allowSyntheticDefaultImports": true,
-      "target": "ESNext",
-      "module": "ESNext",
-      "moduleResolution": "Bundler",
-      "baseUrl": ".",
-      "paths": {
-        "@e2e/*": ["./e2e/*"],
-        "@@/*": ["../*"],
-      }
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "baseUrl": ".",
+        "paths": {
+            "@e2e/*": ["./e2e/*"],
+            "@@/*": ["../*"]
+        }
     }
 }

@@ -44,7 +44,8 @@
         font-family: "Noto Sans JP", Jost, sans-serif;
     }
 
-    button, a {
+    button,
+    a {
         cursor: pointer;
     }
 
@@ -53,7 +54,8 @@
         color: var(--color-back);
     }
 
-    :focus-visible, button:focus-visible {
+    :focus-visible,
+    button:focus-visible {
         outline: 4px solid var(--color-front);
         outline-offset: 4px;
     }
