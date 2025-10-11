@@ -38,9 +38,6 @@ services:
     webserver:
         container_name: grizzl-webserver-dev
         image: node:24.8-alpine3.22
-        build:
-            args:
-                APP_ENV: development
         restart: unless-stopped
         volumes:
             - .:/home/grizzl

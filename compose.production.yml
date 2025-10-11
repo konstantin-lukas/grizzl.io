@@ -43,7 +43,7 @@ services:
             context: .
             dockerfile: Dockerfile
         environment:
-            APP_ENV: production
+            NUXT_PUBLIC_APP_ENV: production
         restart: unless-stopped
         volumes:
             - .:/home/grizzl
@@ -63,5 +63,6 @@ volumes:
 
 networks:
     proxy_net:
+        name: proxy_net
         external: true
     grizzl_net:

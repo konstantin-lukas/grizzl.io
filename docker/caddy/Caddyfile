@@ -1,4 +1,4 @@
-http://grizzl.localhost, http://localhost {
+http://grizzl.localhost {
     reverse_proxy webserver:3000
 }
 

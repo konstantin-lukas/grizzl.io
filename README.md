@@ -47,3 +47,8 @@ In order to connect to the database you can use the postgres container's IP addr
 You can get that from `docker network inspect grizzlio_default`. The database port is not exposed
 to localhost because this project is only using port 80 to make development easier if you have other
 things running on localhost.
+
+## Production Deployment
+To set up the app for production, you need get a proxy going that listens to the relevant http(s) ports and redirects
+traffic to the docker containers. This is best done through the `proxy_net` docker network that is used by the
+containers in `compose.production.yml`. You can keep the necessary configuration for this in your own separate repo.
