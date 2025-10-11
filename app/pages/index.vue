@@ -1,6 +1,36 @@
 <script setup lang="ts">
 import { APP_NAV } from "@/constants/nav";
 import { authClient } from "@@/lib/auth-client";
+import { clsx } from "clsx/lite";
+
+interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+}
+
+const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null);
+
+onMounted(() => {
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker
+        .register("/sw.js")
+        .then(reg => console.log("SW registered:", reg))
+        .catch(err => console.error("SW registration failed:", err));
+    const handler = (e: Event) => {
+        e.preventDefault();
+        deferredPrompt.value = e as unknown as BeforeInstallPromptEvent;
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    onUnmounted(() => window.removeEventListener("beforeinstallprompt", handler));
+});
+
+const handleInstall = async () => {
+    if (!deferredPrompt.value) return;
+    await deferredPrompt.value.prompt();
+    deferredPrompt.value = null;
+};
+
+const className = clsx("grid", "grid-cols-1", "gap-4", deferredPrompt.value && "sm:grid-cols-2");
 
 const { t } = useI18n();
 const session = authClient.useSession();
@@ -26,8 +56,8 @@ const session = authClient.useSession();
         </div>
         <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
             <SvgGrizzlLogo class="max-w-[600px] fill-front" />
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <NavBlockLink as="button">
+            <div :class="className">
+                <NavBlockLink as="button" @click="handleInstall" v-if="deferredPrompt">
                     <UIcon name="heroicons:arrow-down-tray" class="size-6" />
                     {{ t("ui.install") }}
                 </NavBlockLink>
