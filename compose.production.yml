@@ -38,7 +38,7 @@ services:
         restart: "no"
 
     webserver:
-        container_name: grizzl-webserver
+        container_name: grizzl-web-server
         build:
             context: .
             dockerfile: Dockerfile

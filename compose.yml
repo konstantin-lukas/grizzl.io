@@ -36,7 +36,7 @@ services:
         command: start-dev --import-realm
 
     webserver:
-        container_name: grizzl-webserver-dev
+        container_name: grizzl-web-server-dev
         image: node:24.8-alpine3.22
         restart: unless-stopped
         volumes:
