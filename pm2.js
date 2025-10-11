@@ -1,0 +1,27 @@
+module.exports = {
+    apps: [
+        {
+            name: "Grizzl",
+            script: "./.output/server/index.mjs",
+            port: "3000",
+            exec_mode: "cluster",
+            instances: "max",
+            autorestart: true,
+            watch: false,
+            max_memory_restart: "2G",
+            error_file: "logs/error.log",
+            out_file: "logs/output.log",
+            merge_logs: true,
+            time: true,
+            log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+            combine_logs: false,
+            max_restarts: 3,
+            min_uptime: 10000,
+            kill_timeout: 3000,
+            log_type: "json",
+            rotate_interval: "1d",
+            max_size: "20M",
+            max_files: "14d",
+        },
+    ],
+};
