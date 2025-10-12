@@ -6,6 +6,7 @@ it("should catch errors and return them as a value", async () => {
     expect(error).not.toBeNull();
     expect(data).toBeNull();
 });
+
 it("should catch errors and return them as a value", async () => {
     const { error, data } = await tryCatch(Promise.resolve(42));
     expect(error).toBeNull();

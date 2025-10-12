@@ -8,6 +8,7 @@ it("should catch errors and return them as a value", () => {
     expect(error).not.toBeNull();
     expect(data).toBeNull();
 });
+
 it("should catch errors and return them as a value", () => {
     const { error, data } = tryCatchSync(() => {
         return 42;
