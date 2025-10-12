@@ -14,7 +14,7 @@ function getTranslationFiles(locale: string) {
 const languages = ["en-US", "de-DE", "es-ES", "ja-JP"] as const;
 type LanguageCode = (typeof languages)[number] extends `${infer T}-${string}` ? T : never;
 
-const LOCALES = ["en-US", "de-DE", "es-ES", "ja-JP"].map(locale => ({
+const LOCALES = languages.map(locale => ({
     code: locale.split("-")[0],
     language: locale,
     files: getTranslationFiles(locale),
