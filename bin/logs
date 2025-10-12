@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 <service_name>"
+  echo "Usage: $0 <service_name> [num_lines]"
   exit 1
 fi
 
-docker compose logs "$1" --timestamps
+SERVICE="$1"
+NUM_LINES="$2"
+
+if [ -n "$NUM_LINES" ]; then
+  docker compose logs "$SERVICE" --timestamps -n "$NUM_LINES"
+else
+  docker compose logs "$SERVICE" --timestamps
+fi
