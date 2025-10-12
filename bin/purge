@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+docker ps -aq | xargs -r docker rm -vf || true
+docker images -aq | xargs -r docker rmi -f || true
+docker volume ls -q | xargs -r docker volume rm || true
+docker network ls --format '{{.Name}}' | grep -vE '^(bridge|host|none)$' | xargs -r docker network rm || true

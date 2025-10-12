@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-docker compose up -d
+"$SCRIPT_DIR/proxy"
+docker compose -f compose.yml --env-file .env up -d
 "$SCRIPT_DIR/migrate"

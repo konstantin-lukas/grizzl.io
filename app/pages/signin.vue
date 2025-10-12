@@ -13,7 +13,6 @@ const providers =
               ["Spotify", "ri:spotify-line"],
           ] as const)
         : ([["Keycloak", "simple-icons:keycloak"]] as const);
-console.log(config.public.appEnv);
 </script>
 
 <template>

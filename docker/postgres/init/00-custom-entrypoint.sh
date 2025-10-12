@@ -11,5 +11,3 @@ for f in /docker-entrypoint-initdb.d/*.sql.template; do
       "$f" > "${f%.template}"
   fi
 done
-
-exec docker-entrypoint.sh "$@"

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker compose  -f compose.production.yml down --remove-orphans
+docker compose -f compose.production.yml down --remove-orphans
