@@ -19,6 +19,34 @@ services:
             timeout: 15s
             retries: 10
 
+    postgres-backup:
+        image: postgres:18.0-alpine3.22
+        container_name: grizzl-postgres-backup
+        depends_on:
+            postgres:
+                condition: service_healthy
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            DB_NAME: ${DB_NAME}
+        volumes:
+            - grizzl_database_backups:/backups
+        entrypoint: ["sh", "-c"]
+        command:
+            - |
+                while true; do
+                  echo "Starting nightly backup at $(date)";
+                  PGPASSWORD=$$POSTGRES_PASSWORD pg_dump -h postgres -U $$POSTGRES_USER $$DB_NAME \
+                    | gzip > /backups/grizzl_backup_$(date +%Y-%m-%d_%H-%M-%S).sql.gz;
+                  echo "Backup completed at $(date)";
+                  # Keep only the last 7 backups
+                  ls -1t /backups/*.sql.gz | tail -n +8 | xargs -r rm --;
+                  sleep 24h;
+                done
+        restart: unless-stopped
+        networks:
+            - grizzl_net
+
     migrations:
         image: node:24-alpine
         container_name: grizzl-migrations
@@ -59,6 +87,9 @@ services:
 
 volumes:
     grizzl_database:
+        name: grizzl_database
+    grizzl_database_backup:
+        name: grizzl_database_backup
 
 networks:
     proxy_net:

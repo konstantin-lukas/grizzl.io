@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+rm -rf "$PROJECT_ROOT/backups"
+
+docker cp grizzl-postgres-backup:/backups "$PROJECT_ROOT/backups"
+for f in "$PROJECT_ROOT"/backups/*.gz; do
+    gunzip -c "$f" > "${f%.gz}"
+    rm "$f"
+done

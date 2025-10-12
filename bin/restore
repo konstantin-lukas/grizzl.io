@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <database_name> <username> <path_to_sql_file>"
+    exit 1
+fi
+
+DB_NAME="$1"
+DB_USER="$2"
+SQL_FILE="$3"
+
+if [ ! -f "$SQL_FILE" ]; then
+    echo "Error: SQL file '$SQL_FILE' does not exist."
+    exit 1
+fi
+
+
+
+docker compose exec -T postgres psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS $DB_NAME;"
+docker compose exec -T postgres psql -U "$DB_USER" -c "CREATE DATABASE $DB_NAME;"
+
+echo "Restoring database '$DB_NAME' from file '$SQL_FILE' using user '$DB_USER'..."
+
+docker compose exec -T postgres psql -U "$DB_USER" -d "$DB_NAME" < "$SQL_FILE"
+
+echo "Restore complete!"
