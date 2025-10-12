@@ -2,5 +2,6 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 "$SCRIPT_DIR/proxy"
+docker volume ls -q | xargs -r docker volume rm
 docker compose -f compose.yml --env-file .env up -d
 "$SCRIPT_DIR/migrate"

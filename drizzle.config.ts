@@ -8,8 +8,8 @@ export default defineConfig({
     dbCredentials: {
         host: process.env.DB_HOST,
         database: process.env.DB_NAME,
-        user: process.env.DB_ADMIN_USERNAME,
-        password: process.env.DB_ADMIN_PASSWORD,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
         ssl: false,
     },
     verbose: true,
