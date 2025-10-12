@@ -1,7 +1,15 @@
 http://grizzl.localhost {
     reverse_proxy webserver:3000
+    log {
+        output stdout
+        format console
+    }
 }
 
 http://keycloak.grizzl.localhost {
     reverse_proxy keycloak:8080
+    log {
+        output stdout
+        format console
+    }
 }

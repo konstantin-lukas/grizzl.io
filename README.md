@@ -29,6 +29,7 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
    Start the project before envoking this command. You can pass any Playwright flags to this command as well.
 - `generate`: Generates a new migration from the schemas in `lib/db/schemas` and puts it in `lib/db/migrations`
+- `logs`: View the logs of any container. Provide the service name of the container as the only argument.
 - `migrate`: Applies migrations from `lib/db/migrations` to the database.
 - `proxy`: (Production Only) Creates the `proxy_net` network used to connect the production container to a reverse proxy.
 - `purge`: Deletes ALL docker containers, images, volumes, and networks (expect built-in ones).
