@@ -19,9 +19,9 @@ logs
 .idea
 
 # Local env files
-.env
 .env.*
 !.env.example
 
 tests/e2e/storage.json
 test-results
+backups
