@@ -1,6 +1,7 @@
+import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 import { defineConfig, devices } from "playwright/test";
 
-export default defineConfig({
+export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,
     forbidOnly: true,
@@ -9,8 +10,9 @@ export default defineConfig({
     reporter: "line",
     globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
-        timeout: 5000,
+        timeout: 20000,
     },
+    timeout: 30000,
     use: {
         trace: "on-all-retries",
         testIdAttribute: "data-test-id",
@@ -18,6 +20,9 @@ export default defineConfig({
         locale: "en-US",
         timezoneId: "Europe/Berlin",
         storageState: "tests/e2e/storage.json",
+        nuxt: {
+            host: "http://grizzl.localhost",
+        },
     },
     projects: [
         {

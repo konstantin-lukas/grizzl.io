@@ -18,7 +18,7 @@ const BASE_LOCATORS = {
 };
 
 export default abstract class BasePage<T extends Record<string, string>> {
-    private readonly page;
+    readonly page;
     readonly loc;
     readonly url;
     protected constructor(page: Page, locators: T, url: string) {
