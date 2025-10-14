@@ -49,6 +49,7 @@ services:
             DB_NAME: grizzl
             BETTER_AUTH_SECRET: ultra-secure-password
             BETTER_AUTH_URL: http://grizzl.localhost
+            NUXT_PUBLIC_ORIGIN: http://grizzl.localhost
         restart: unless-stopped
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:

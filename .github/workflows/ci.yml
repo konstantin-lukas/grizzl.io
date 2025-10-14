@@ -109,8 +109,11 @@ jobs:
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
+
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
             - name: Run end-to-end tests
-              run: docker compose run --rm playwright npx playwright test
+              run: npx playwright test
