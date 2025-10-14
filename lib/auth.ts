@@ -28,20 +28,20 @@ const socialProviders =
     process.env.NUXT_PUBLIC_APP_ENV === "production"
         ? {
               github: {
-                  clientId: process.env.GITHUB_ID!,
-                  clientSecret: process.env.GITHUB_SECRET!,
+                  clientId: process.env.OAUTH_GITHUB_ID!,
+                  clientSecret: process.env.OAUTH_GITHUB_SECRET!,
               },
               twitch: {
-                  clientId: process.env.TWITCH_ID!,
-                  clientSecret: process.env.TWITCH_SECRET!,
+                  clientId: process.env.OAUTH_TWITCH_ID!,
+                  clientSecret: process.env.OAUTH_TWITCH_SECRET!,
               },
               reddit: {
-                  clientId: process.env.REDDIT_ID!,
-                  clientSecret: process.env.REDDIT_SECRET!,
+                  clientId: process.env.OAUTH_REDDIT_ID!,
+                  clientSecret: process.env.OAUTH_REDDIT_SECRET!,
               },
               discord: {
-                  clientId: process.env.DISCORD_ID!,
-                  clientSecret: process.env.DISCORD_SECRET!,
+                  clientId: process.env.OAUTH_DISCORD_ID!,
+                  clientSecret: process.env.OAUTH_DISCORD_SECRET!,
               },
           }
         : undefined;
