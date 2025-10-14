@@ -43,10 +43,6 @@ const socialProviders =
                   clientId: process.env.DISCORD_ID!,
                   clientSecret: process.env.DISCORD_SECRET!,
               },
-              spotify: {
-                  clientId: process.env.SPOTIFY_ID!,
-                  clientSecret: process.env.SPOTIFY_SECRET!,
-              },
           }
         : undefined;
 

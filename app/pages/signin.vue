@@ -10,7 +10,6 @@ const providers =
               ["GitHub", "ri:github-line"],
               ["Reddit", "ri:reddit-line"],
               ["Twitch", "ri:twitch-line"],
-              ["Spotify", "ri:spotify-line"],
           ] as const)
         : ([["Keycloak", "simple-icons:keycloak"]] as const);
 </script>
