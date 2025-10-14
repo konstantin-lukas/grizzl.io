@@ -9,99 +9,113 @@ on:
             - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
-    install-deps:
+    build-and-cache-docker:
         runs-on: ubuntu-latest
         outputs:
-            cache-hit: ${{ steps.npm-cache.outputs.cache-hit }}
+            cache-hit: ${{ steps.docker-cache.outputs.cache-hit }}
         steps:
             - uses: actions/checkout@v4
 
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: "24"
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-            - name: Cache node_modules
-              id: npm-cache
+            - name: Cache Docker layers
+              id: docker-cache
               uses: actions/cache@v4
               with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ hashFiles('compose.test.yml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
 
-            - name: Install dependencies
-              run: npm ci
+            - name: Build Docker images from compose.test.yml
+              run: |
+                  docker compose -f compose.test.yml build --build-arg BUILDKIT_INLINE_CACHE=1 --progress plain
+              env:
+                  DOCKER_BUILDKIT: 1
+
+            - name: Save built images to cache
+              run: |
+                  mkdir -p /tmp/.buildx-cache
+                  docker save $(docker compose -f compose.test.yml config --services | xargs -I {} docker compose -f compose.test.yml images -q {}) -o /tmp/.buildx-cache/docker-images.tar
 
     code-quality:
-        needs: install-deps
+        needs: build-and-cache-docker
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "24"
-
-            - name: Restore node_modules cache
+            - name: Restore Docker cache
               uses: actions/cache@v4
               with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ hashFiles('compose.test.yml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
+
+            - name: Load cached Docker images
+              run: |
+                  if [ -f /tmp/.buildx-cache/docker-images.tar ]; then
+                    docker load -i /tmp/.buildx-cache/docker-images.tar
+                  fi
+
+            - name: Start containers
+              run: docker compose -f compose.test.yml up -d
 
             - name: Run Prettier Check
-              run: npm run prettier
+              run: docker compose exec -T webserver npm run prettier
 
-            - name: Run Eslint Check
-              run: npm run eslint
+            - name: Run ESLint Check
+              run: docker compose exec -T webserver npm run eslint
 
             - name: Perform Typecheck
-              run: npx nuxt typecheck
+              run: docker compose exec -T webserver npx nuxt typecheck
 
     unit-tests:
-        needs: install-deps
+        needs: build-and-cache-docker
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "24"
-
-            - name: Restore node_modules cache
+            - name: Restore Docker cache
               uses: actions/cache@v4
               with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ hashFiles('compose.test.yml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
 
-            - name: Unit Tests
-              run: vitest --run unit/
+            - name: Load cached Docker images
+              run: |
+                  if [ -f /tmp/.buildx-cache/docker-images.tar ]; then
+                    docker load -i /tmp/.buildx-cache/docker-images.tar
+                  fi
+
+            - name: Start containers
+              run: docker compose -f compose.test.yml up -d
+
+            - name: Run Unit Tests inside webserver
+              run: docker compose exec -T webserver vitest --run unit/
 
     e2e-tests:
-        needs: install-deps
+        needs: build-and-cache-docker
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "24"
-
-            - name: Restore node_modules cache
+            - name: Restore Docker cache
               uses: actions/cache@v4
               with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ hashFiles('compose.test.yml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
+
+            - name: Load cached Docker images
+              run: |
+                  if [ -f /tmp/.buildx-cache/docker-images.tar ]; then
+                    docker load -i /tmp/.buildx-cache/docker-images.tar
+                  fi
 
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d

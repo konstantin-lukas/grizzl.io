@@ -74,6 +74,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+        volumes:
+            - .:/home/grizzl
         environment:
             NUXT_PUBLIC_APP_ENV: ${NUXT_PUBLIC_APP_ENV:-production}
             DB_HOST: ${DB_HOST}
