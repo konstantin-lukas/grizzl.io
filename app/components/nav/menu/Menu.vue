@@ -2,7 +2,6 @@
 import { APP_NAV } from "@/constants/nav";
 import { clsx } from "clsx/lite";
 
-const config = useRuntimeConfig();
 const { t } = useI18n();
 const { isOpen } = useMenu();
 const headerClass = computed(() =>
@@ -47,7 +46,7 @@ const headerClass = computed(() =>
         <div class="absolute bottom-3 left-4">
             <NuxtLink class="inline-link" to="https://github.com/konstantin-lukas/grizzl.io">
                 {{ t("footer.version") }}
-                {{ config.public.version }}
+                {{ $config.public.version }}
             </NuxtLink>
         </div>
         <NavMenuThemeToggle />
