@@ -1,0 +1,110 @@
+name: CI
+
+on:
+    pull_request:
+        branches: [main]
+    push:
+        branches: [main]
+        tags:
+            - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+    install-deps:
+        runs-on: ubuntu-latest
+        outputs:
+            cache-hit: ${{ steps.npm-cache.outputs.cache-hit }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+
+            - name: Cache node_modules
+              id: npm-cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Install dependencies
+              run: npm ci
+
+    code-quality:
+        needs: install-deps
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+
+            - name: Restore node_modules cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Run Prettier Check
+              run: npm run prettier
+
+            - name: Run Eslint Check
+              run: npm run lint
+
+            - name: Perform Typecheck
+              run: npx nuxt typecheck
+
+    unit-tests:
+        needs: install-deps
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+
+            - name: Restore node_modules cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Unit Tests
+              run: vitest --run unit/
+
+    e2e-tests:
+        needs: install-deps
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+
+            - name: Restore node_modules cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Start Containers
+              run: docker compose -f compose.test.yml up -d
+
+            - name: Run end-to-end tests
+              run: docker compose run --rm playwright npx playwright test

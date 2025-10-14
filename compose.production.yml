@@ -75,7 +75,11 @@ services:
             context: .
             dockerfile: Dockerfile
         environment:
-            NUXT_PUBLIC_APP_ENV: production
+            NUXT_PUBLIC_APP_ENV: "${NUXT_PUBLIC_APP_ENV:-production}"
+            DB_HOST: ${DB_HOST}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
         restart: unless-stopped
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:

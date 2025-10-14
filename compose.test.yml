@@ -1,0 +1,87 @@
+services:
+    postgres:
+        container_name: grizzl-postgres
+        image: postgres:18.0-alpine3.22
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            POSTGRES_DB: admin
+            DB_NAME: grizzl
+            DB_PASSWORD: password
+            DB_USERNAME: grizzl_user
+        volumes:
+            - grizzl_database:/var/lib/postgresql/data
+            - ./docker/postgres/init:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+            interval: 1s
+            timeout: 15s
+            retries: 10
+
+    migrations:
+        image: node:24-alpine
+        container_name: grizzl-migrations
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            DB_HOST: postgres
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            DB_NAME: grizzl
+        command: npx drizzle-kit migrate
+        restart: "no"
+
+    webserver:
+        container_name: grizzl-web-server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            NUXT_PUBLIC_APP_ENV: test
+            DB_HOST: postgres
+            DB_USERNAME: grizzl_user
+            DB_PASSWORD: password
+            DB_NAME: grizzl
+        restart: unless-stopped
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            migrations:
+                condition: service_completed_successfully
+
+    keycloak:
+        container_name: grizzl-keycloak
+        image: quay.io/keycloak/keycloak:26.3.4
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        environment:
+            KC_BOOTSTRAP_ADMIN_USERNAME: admin
+            KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+            KC_HOSTNAME: http://keycloak.grizzl.localhost
+        volumes:
+            - ./docker/keycloak:/opt/keycloak/data/import:ro
+        command: start-dev --import-realm
+
+    playwright:
+        container_name: grizzl-playwright
+        image: mcr.microsoft.com/playwright:v1.56.0-noble
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            - DISPLAY=${DISPLAY}
+            - TZ=Europe/Berlin
+        network_mode: "host"
+        ipc: host
+        devices:
+            - /dev/dri
+
+volumes:
+    grizzl_database:
+        name: grizzl_database
