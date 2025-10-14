@@ -51,6 +51,9 @@ jobs:
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
+            - name: Prepare Nuxt
+              run: npm run postinstall
+
             - name: Run Prettier Check
               run: npm run prettier
 
@@ -79,6 +82,9 @@ jobs:
                   path: |
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Prepare Nuxt
+              run: npm run postinstall
 
             - name: Unit Tests
               run: vitest --run unit/
