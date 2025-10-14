@@ -77,7 +77,6 @@ services:
             - .:/home/grizzl
         working_dir: /home/grizzl
         environment:
-            - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
         network_mode: "host"
         ipc: host
