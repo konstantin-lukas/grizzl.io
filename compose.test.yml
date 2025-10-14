@@ -82,6 +82,19 @@ services:
         devices:
             - /dev/dri
 
+    caddy:
+        container_name: grizzl-caddy
+        image: caddy:2.10-alpine
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+        depends_on:
+            - webserver
+            - keycloak
+
 volumes:
     grizzl_database:
         name: grizzl_database
