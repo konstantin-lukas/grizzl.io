@@ -87,7 +87,7 @@ jobs:
               run: npm run postinstall
 
             - name: Unit Tests
-              run: vitest --run unit/
+              run: npm run unit
 
     e2e-tests:
         needs: install-deps

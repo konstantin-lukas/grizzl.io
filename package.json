@@ -12,7 +12,8 @@
         "eslint": "eslint",
         "eslint:fix": "eslint --fix",
         "prettier": "prettier --check './**/*.{ts,tsx,css,json,yml}' --config ./.prettierrc.json",
-        "prettier:fix": "prettier --write './**/*.{ts,tsx,css,json,yml}' --config ./.prettierrc.json"
+        "prettier:fix": "prettier --write './**/*.{ts,tsx,css,json,yml}' --config ./.prettierrc.json",
+        "unit": "vitest --run unit/"
     },
     "dependencies": {
         "@nuxt/eslint": "1.9.0",
