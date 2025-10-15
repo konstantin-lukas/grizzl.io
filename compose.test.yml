@@ -72,6 +72,32 @@ services:
             - ./docker/keycloak:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
 
+    playwright:
+        container_name: grizzl-playwright
+        image: mcr.microsoft.com/playwright:v1.56.0-noble
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            - TZ=Europe/Berlin
+        network_mode: "host"
+        ipc: host
+        devices:
+            - /dev/dri
+
+    caddy:
+        container_name: grizzl-caddy
+        image: caddy:2.10-alpine
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+        depends_on:
+            - webserver
+            - keycloak
+
 volumes:
     grizzl_database:
         name: grizzl_database
