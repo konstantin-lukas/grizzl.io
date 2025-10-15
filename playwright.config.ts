@@ -20,9 +20,6 @@ export default defineConfig<ConfigOptions>({
         locale: "en-US",
         timezoneId: "Europe/Berlin",
         storageState: "tests/e2e/storage.json",
-        nuxt: {
-            host: "http://localhost:3000",
-        },
     },
     projects: [
         {
