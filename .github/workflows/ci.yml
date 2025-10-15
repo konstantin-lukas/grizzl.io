@@ -120,11 +120,5 @@ jobs:
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
-            - name: Sleep
-              run: sleep 10
-
-            - name: Check on Keycloak
-              run: docker compose logs keycloak
-
             - name: Run end-to-end tests
               run: npx playwright test
