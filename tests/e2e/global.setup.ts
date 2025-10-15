@@ -10,7 +10,6 @@ export default async function GlobalSetup(config: FullConfig) {
 
     await page.goto(`${baseURL}/signin`);
     await page.getByTestId("keycloak-provider").click();
-    await page.waitForTimeout(10000);
     await page.locator("#username").fill("user");
     await page.locator("#password").fill("password");
     await page.locator("#kc-login").click();
