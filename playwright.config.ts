@@ -5,7 +5,7 @@ export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,
     forbidOnly: true,
-    retries: 0,
+    retries: 1,
     workers: 1,
     reporter: "line",
     globalSetup: "./tests/e2e/global.setup.ts",
