@@ -118,6 +118,9 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
+            - name: Sleep
+              run: sleep 60
+
             - name: Run end-to-end tests
               run: npx playwright test
 
