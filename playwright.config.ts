@@ -8,7 +8,7 @@ export default defineConfig<ConfigOptions>({
     retries: 0,
     workers: 1,
     reporter: "html",
-    globalSetup: "./tests/e2e/global.setup.ts",
+    // globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
     },
@@ -22,20 +22,24 @@ export default defineConfig<ConfigOptions>({
         storageState: "tests/e2e/storage.json",
     },
     projects: [
+        { name: "setup", testMatch: "auth.setup.ts" },
         {
             name: "chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
+            dependencies: ["setup"],
         },
         {
             name: "firefox",
             use: { ...devices["Desktop Firefox"] },
+            dependencies: ["setup"],
         },
         {
             name: "webkit",
             use: { ...devices["Desktop Safari"] },
+            dependencies: ["setup"],
         },
         {
             name: "Mobile Chrome",
@@ -43,10 +47,12 @@ export default defineConfig<ConfigOptions>({
                 ...devices["Pixel 5"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
+            dependencies: ["setup"],
         },
         {
             name: "Mobile Safari",
             use: { ...devices["iPhone 12"] },
+            dependencies: ["setup"],
         },
     ],
 });
