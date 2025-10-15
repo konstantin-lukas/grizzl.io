@@ -7,7 +7,7 @@ export default defineConfig<ConfigOptions>({
     forbidOnly: true,
     retries: 0,
     workers: 1,
-    reporter: "line",
+    reporter: "html",
     globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
