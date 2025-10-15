@@ -19,27 +19,22 @@ export default defineConfig<ConfigOptions>({
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
         timezoneId: "Europe/Berlin",
-        storageState: "tests/e2e/storage.json",
     },
     projects: [
-        { name: "setup", testMatch: "auth.setup.ts" },
         {
             name: "chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
-            dependencies: ["setup"],
         },
         {
             name: "firefox",
             use: { ...devices["Desktop Firefox"] },
-            dependencies: ["setup"],
         },
         {
             name: "webkit",
             use: { ...devices["Desktop Safari"] },
-            dependencies: ["setup"],
         },
         {
             name: "Mobile Chrome",
@@ -47,12 +42,10 @@ export default defineConfig<ConfigOptions>({
                 ...devices["Pixel 5"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
-            dependencies: ["setup"],
         },
         {
             name: "Mobile Safari",
             use: { ...devices["iPhone 12"] },
-            dependencies: ["setup"],
         },
     ],
 });
