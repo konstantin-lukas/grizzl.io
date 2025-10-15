@@ -80,19 +80,6 @@ services:
             retries: 5
             start_period: 40s
 
-    playwright:
-        container_name: grizzl-playwright
-        image: mcr.microsoft.com/playwright:v1.56.0-noble
-        volumes:
-            - .:/home/grizzl
-        working_dir: /home/grizzl
-        environment:
-            - TZ=Europe/Berlin
-        network_mode: "host"
-        ipc: host
-        devices:
-            - /dev/dri
-
 volumes:
     grizzl_database:
         name: grizzl_database
