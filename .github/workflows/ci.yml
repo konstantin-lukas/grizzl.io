@@ -109,19 +109,17 @@ jobs:
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
-            - name: Set up hosts for local domains
-              run: |
-                  echo "127.0.0.1 grizzl.localhost" | sudo tee -a /etc/hosts
-                  echo "127.0.0.1 keycloak.grizzl.localhost" | sudo tee -a /etc/hosts
-
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
+
+            - name: Start Containers
+              run: docker compose -f compose.test.yml up -d
 
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Start Containers
-              run: docker compose -f compose.test.yml up -d
+            - name: Ping keycloak
+              run: curl -v http://keycloak.grizzl.localhost || true
 
             - name: Run end-to-end tests
               run: npx playwright test
