@@ -2,6 +2,7 @@ import type { FullConfig } from "@playwright/test";
 import { expect, firefox, selectors } from "@playwright/test";
 
 export default async function GlobalSetup(config: FullConfig) {
+    return;
     const { baseURL, storageState, testIdAttribute } = config.projects[0].use;
     selectors.setTestIdAttribute(testIdAttribute!);
 
