@@ -29,7 +29,7 @@ const texts = {
 };
 
 forEachLocale((locale, texts) => {
-    test(`should have links to all services for locale ${locale.language}`, async ({ homePage }) => {
+    test(`should have links to all services for locale ${locale.language}`, async ({ homePage, goto }) => {
         const links = [
             { locator: homePage.loc.pollLink, text: texts.poll, href: "/poll" },
             { locator: homePage.loc.todoLink, text: texts.todo, href: "/todo" },
@@ -38,7 +38,7 @@ forEachLocale((locale, texts) => {
         ];
 
         await test.step("Check that menu elements do not exist when the menu is closed", async () => {
-            await homePage.goto();
+            await goto(homePage.url, { waitUntil: "hydration" });
             await expect(homePage.loc.menuButton).toBeVisible();
             for (const { locator } of links) {
                 await expect(locator).toBeHidden();
@@ -55,8 +55,8 @@ forEachLocale((locale, texts) => {
     });
 }, texts);
 
-test("should make all other page elements not focusable when open", async ({ homePage }) => {
-    await homePage.goto();
+test("should make all other page elements not focusable when open", async ({ homePage, goto }) => {
+    await goto(homePage.url, { waitUntil: "hydration" });
     await homePage.forEach("inertElements", async el => {
         await expect(el).not.toHaveAttribute("inert");
     });
@@ -68,8 +68,8 @@ test("should make all other page elements not focusable when open", async ({ hom
     await homePage.analyzeA11y();
 });
 
-test("should have a button to toggle the theme", async ({ homePage }) => {
-    await homePage.goto();
+test("should have a button to toggle the theme", async ({ homePage, goto }) => {
+    await goto(homePage.url, { waitUntil: "hydration" });
 
     await test.step("Check that the state before toggling the theme", async () => {
         await expect(homePage.loc.themeToggleLight).toBeHidden();
