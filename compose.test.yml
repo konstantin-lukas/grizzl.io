@@ -75,10 +75,9 @@ services:
         command: start-dev --import-realm
         healthcheck:
             test: ["CMD-SHELL", "curl --head -fsS http://localhost:9000/health/ready | echo $?"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-            start_period: 40s
+            interval: 1s
+            timeout: 15s
+            retries: 10
 
 volumes:
     grizzl_database:

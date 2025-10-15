@@ -14,3 +14,4 @@ node_modules
 tests/e2e/storage.json
 test-results
 backups
+playwright-report
