@@ -118,8 +118,11 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Ping keycloak
-              run: curl -v http://keycloak.grizzl.localhost || true
+            - name: Build test instance
+              run: npm run build
+
+            - name: Start test instance
+              run: node ./.output/server/index.mjs &
 
             - name: Run end-to-end tests
               run: npx playwright test
