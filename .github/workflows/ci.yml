@@ -120,16 +120,5 @@ jobs:
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
-            - name: Debug Docker networking
-              run: |
-                  echo "== Networks =="
-                  docker network ls
-                  echo
-                  echo "== Inspect compose network =="
-                  docker network inspect $(docker network ls --format '{{.Name}}' | grep _default || true) | grep Name
-                  echo
-                  echo "== Containers on the network =="
-                  docker ps --format "table {{.Names}}\t{{.Networks}}"
-
             - name: Run end-to-end tests
               run: npx playwright test
