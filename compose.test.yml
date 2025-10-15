@@ -48,17 +48,22 @@ services:
             DB_PASSWORD: password
             DB_NAME: grizzl
             BETTER_AUTH_SECRET: ultra-secure-password
-            BETTER_AUTH_URL: http://grizzl.localhost
-            NUXT_PUBLIC_ORIGIN: http://grizzl.localhost
+            BETTER_AUTH_URL: http://localhost:3000
+            NUXT_PUBLIC_ORIGIN: http://localhost:3000
         restart: unless-stopped
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
         depends_on:
             postgres:
                 condition: service_healthy
             migrations:
                 condition: service_completed_successfully
             keycloak:
-                condition: service_started
+                condition: service_healthy
 
     keycloak:
         container_name: grizzl-keycloak
@@ -69,8 +74,14 @@ services:
         ports:
             - "8080:8080"
         volumes:
-            - ./docker/keycloak:/opt/keycloak/data/import:ro
+            - ./docker/keycloak-ci:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
+        healthcheck:
+            test: ["CMD-SHELL", "curl --head -fsS http://localhost:9000/health/ready | echo $?"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+            start_period: 40s
 
     playwright:
         container_name: grizzl-playwright
@@ -84,19 +95,6 @@ services:
         ipc: host
         devices:
             - /dev/dri
-
-    caddy:
-        container_name: grizzl-caddy
-        image: caddy:2.10-alpine
-        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
-        restart: unless-stopped
-        ports:
-            - "80:80"
-        volumes:
-            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-        depends_on:
-            - webserver
-            - keycloak
 
 volumes:
     grizzl_database:
