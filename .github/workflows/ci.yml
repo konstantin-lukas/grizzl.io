@@ -120,8 +120,5 @@ jobs:
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
-            - name: Log curl
-              run: curl -v http://localhost:8080
-
             - name: Run end-to-end tests
               run: npx playwright test
