@@ -5,9 +5,6 @@ export default async function GlobalSetup(config: FullConfig) {
     const { baseURL, storageState, testIdAttribute } = config.projects[0].use;
     selectors.setTestIdAttribute(testIdAttribute!);
 
-    console.log(baseURL);
-    console.log(testIdAttribute);
-    console.log(storageState);
     const browser = await firefox.launch();
     const page = await browser.newPage();
 
