@@ -8,7 +8,7 @@ export default defineConfig<ConfigOptions>({
     retries: 0,
     workers: 1,
     reporter: "html",
-    // globalSetup: "./tests/e2e/global.setup.ts",
+    globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
     },
@@ -19,6 +19,10 @@ export default defineConfig<ConfigOptions>({
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
         timezoneId: "Europe/Berlin",
+        storageState: "tests/e2e/storage.json",
+        nuxt: {
+            host: "http://grizzl.localhost",
+        },
     },
     projects: [
         {

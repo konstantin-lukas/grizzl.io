@@ -117,6 +117,9 @@ jobs:
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
 
+            - name: Prepare Nuxt
+              run: npm run postinstall
+
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
