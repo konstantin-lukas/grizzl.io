@@ -5,7 +5,7 @@ export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,
     forbidOnly: true,
-    retries: 1,
+    retries: 0,
     workers: 1,
     reporter: "line",
     globalSetup: "./tests/e2e/global.setup.ts",
@@ -14,7 +14,7 @@ export default defineConfig<ConfigOptions>({
     },
     timeout: 30000,
     use: {
-        trace: "on-all-retries",
+        trace: "retain-on-failure",
         testIdAttribute: "data-test-id",
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
