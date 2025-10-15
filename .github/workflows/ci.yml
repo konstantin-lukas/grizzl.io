@@ -120,5 +120,10 @@ jobs:
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
+            - name: Verify Docker DNS and connectivity
+              run: |
+                  docker exec grizzl-caddy ping -c 2 keycloak || true
+                  docker exec grizzl-caddy curl -v http://keycloak:8080 || true
+
             - name: Run end-to-end tests
               run: npx playwright test
