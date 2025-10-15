@@ -21,7 +21,7 @@ export default defineConfig<ConfigOptions>({
         timezoneId: "Europe/Berlin",
         storageState: "tests/e2e/storage.json",
         nuxt: {
-            host: "http://grizzl.localhost",
+            host: "http://localhost:3000",
         },
     },
     projects: [
