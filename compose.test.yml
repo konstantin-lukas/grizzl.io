@@ -52,11 +52,8 @@ services:
             NUXT_PUBLIC_ORIGIN: http://localhost:3000
         restart: unless-stopped
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-            interval: 5s
-            timeout: 5s
-            retries: 10
+        ports:
+            - "3000:3000"
         depends_on:
             postgres:
                 condition: service_healthy
