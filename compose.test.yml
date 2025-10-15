@@ -66,9 +66,22 @@ services:
             KC_BOOTSTRAP_ADMIN_USERNAME: admin
             KC_BOOTSTRAP_ADMIN_PASSWORD: admin
             KC_HOSTNAME: http://keycloak.grizzl.localhost
+            KC_HEALTH_ENABLED: true
         volumes:
             - ./docker/keycloak:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
+        ports:
+            - "127.0.0.1:8080:8080"
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /health/ready HTTP/1.1\r\nhost:
+                    http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     caddy:
         container_name: grizzl-caddy
