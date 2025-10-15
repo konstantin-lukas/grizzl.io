@@ -18,6 +18,8 @@ services:
             interval: 1s
             timeout: 15s
             retries: 10
+        networks:
+            - testnet
 
     migrations:
         image: node:24-alpine
@@ -35,6 +37,8 @@ services:
             DB_NAME: grizzl
         command: npx drizzle-kit migrate
         restart: "no"
+        networks:
+            - testnet
 
     webserver:
         container_name: grizzl-web-server
@@ -57,6 +61,8 @@ services:
                 condition: service_healthy
             migrations:
                 condition: service_completed_successfully
+        networks:
+            - testnet
 
     keycloak:
         container_name: grizzl-keycloak
@@ -69,6 +75,8 @@ services:
         volumes:
             - ./docker/keycloak:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
+        networks:
+            - testnet
 
     caddy:
         container_name: grizzl-caddy
@@ -82,7 +90,12 @@ services:
         depends_on:
             - webserver
             - keycloak
+        networks:
+            - testnet
 
 volumes:
     grizzl_database:
         name: grizzl_database
+
+networks:
+    testnet:
