@@ -120,5 +120,16 @@ jobs:
             - name: Start Containers
               run: docker compose -f compose.test.yml up -d
 
+            - name: Debug network
+              run: |
+                  echo "Hosts file:"
+                  cat /etc/hosts
+                  echo
+                  echo "Ping test:"
+                  ping -c 2 keycloak.grizzl.localhost || true
+                  echo
+                  echo "CURL test:"
+                  curl -v http://keycloak.grizzl.localhost || true
+
             - name: Run end-to-end tests
               run: npx playwright test
