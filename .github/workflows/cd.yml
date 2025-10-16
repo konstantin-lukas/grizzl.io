@@ -17,7 +17,7 @@ jobs:
         environment: production
         steps:
             - name: Print deploy info
-              run: echo "Deploying version from tag ${{ github.event.workflow_run.ref_name }}"
+              run: echo "Deploying version from tag ${{ github.ref_name }}"
 
             - name: Execute remote SSH commands using SSH key
               uses: appleboy/ssh-action@v1
@@ -60,5 +60,5 @@ jobs:
                   script: |
                       cd /home/${{ secrets.VPS_USER }}/git/grizzl.io
                       git pull
-                      git checkout ${{ github.event.workflow_run.ref_name }}
+                      git checkout ${{ github.ref_name }}
                       docker compose -f compose.production.yml up -d --build
