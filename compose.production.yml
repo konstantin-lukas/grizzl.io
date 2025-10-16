@@ -56,16 +56,18 @@ services:
             postgres:
                 condition: service_healthy
         volumes:
-            - .:/home/grizzl
+            - ./package.json:/home/grizzl/package.json
+            - ./package-lock.json:/home/grizzl/package-lock.json
+            - ./drizzle.config.ts:/home/grizzl/drizzle.config.ts
+            - ./lib/db:/home/grizzl/lib/db
         working_dir: /home/grizzl
         environment:
             DB_HOST: ${DB_HOST}
             POSTGRES_USER: ${POSTGRES_USER}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
             DB_NAME: ${DB_NAME}
-        command: npx drizzle-kit migrate
+        command: npm ci && npx drizzle-kit migrate
         networks:
-            - proxy_net
             - grizzl_net
         restart: "no"
 
