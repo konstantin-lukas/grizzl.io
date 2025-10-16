@@ -66,3 +66,10 @@ containers in `compose.production.yml`. You can keep the necessary configuration
 In production the website creates a nightly backup of the database. You can use the `bin/backup` command to extract and
 unzip all backups from the docker volume. You can then use `bin/restore <database_name> <username> <path_to_sql_file>`
 to take one of these backups and override the current database state.
+
+### Environment Variables
+In production, the `.env` file is ignored. Instead, environment are passed via docker compose. You need to specify which
+variables to pass to each container separately. And for docker compose to receive environment variables from GitHub
+actions, you need to adjust `.github/workflows/cd.yml`. Also, if you want to use an environment variable in the Nuxt
+part of the application, use the [runtime config](https://nuxt.com/docs/4.x/guide/going-further/runtime-config)
+and override the value of the config through correctly named env vars.
