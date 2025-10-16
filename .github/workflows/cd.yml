@@ -59,6 +59,6 @@ jobs:
                       NUXT_PUBLIC_LEGAL_STREET,NUXT_PUBLIC_LEGAL_ZIP_AND_CITY,NUXT_PUBLIC_VERSION
                   script: |
                       cd /home/${{ secrets.VPS_USER }}/git/grizzl.io
-                      git pull
+                      git fetch
                       git checkout ${{ github.ref_name }}
                       docker compose -f compose.production.yml up -d --build
