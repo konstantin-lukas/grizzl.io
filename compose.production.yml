@@ -66,7 +66,7 @@ services:
             POSTGRES_USER: ${POSTGRES_USER}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
             DB_NAME: ${DB_NAME}
-        command: npm ci && npx drizzle-kit migrate
+        command: ["sh", "-c", "npm ci && npx drizzle-kit migrate"]
         networks:
             - grizzl_net
         restart: "no"
