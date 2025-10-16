@@ -45,7 +45,7 @@ jobs:
                   NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${{ vars.NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY }}
                   NUXT_PUBLIC_LEGAL_STREET: ${{ vars.NUXT_PUBLIC_LEGAL_STREET }}
                   NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${{ vars.NUXT_PUBLIC_LEGAL_ZIP_AND_CITY }}
-                  NUXT_PUBLIC_VERSION: ${{ github.event.workflow_run.head_tag }}
+                  NUXT_PUBLIC_VERSION: ${{ github.event.workflow_run.ref_name }}
               with:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
@@ -56,7 +56,7 @@ jobs:
                       OAUTH_DISCORD_SECRET,OAUTH_GITHUB_ID,OAUTH_GITHUB_SECRET,OAUTH_REDDIT_ID,OAUTH_REDDIT_SECRET,
                       OAUTH_TWITCH_ID,OAUTH_TWITCH_SECRET,POSTGRES_DB,POSTGRES_PASSWORD,POSTGRES_USER,NUXT_PUBLIC_APP_ENV,
                       NUXT_PUBLIC_LEGAL_EMAIL,NUXT_PUBLIC_LEGAL_PHONE,NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY,
-                      NUXT_PUBLIC_LEGAL_STREET,NUXT_PUBLIC_LEGAL_ZIP_AND_CITY
+                      NUXT_PUBLIC_LEGAL_STREET,NUXT_PUBLIC_LEGAL_ZIP_AND_CITY,NUXT_PUBLIC_VERSION
                   script: |
                       cd /home/${{ secrets.VPS_USER }}/git/grizzl.io
                       git pull
