@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
+set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-docker volume ls -q | xargs -r docker volume rm
-docker compose -f compose.yml --env-file .env up -d
-"$SCRIPT_DIR/migrate"
+ENV=${1:-dev}
+
+case "$ENV" in
+  dev)
+    docker volume ls -q | xargs -r docker volume rm
+    docker compose -f compose.yml --env-file .env up -d
+    "$SCRIPT_DIR/migrate"
+    ;;
+  prod)
+    "$SCRIPT_DIR/proxy"
+    docker compose -f compose.production.yml --env-file .env up -d
+    ;;
+  test)
+    docker compose -f compose.test.yml up -d --build
+    ;;
+  *)
+    echo "Unknown environment: $ENV"
+    echo "Usage: $0 [dev|prod|test]"
+    exit 1
+    ;;
+esac

@@ -34,11 +34,9 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `migrate`: Applies migrations from `lib/db/migrations` to the database.
 - `proxy`: (Production Only) Creates the `proxy_net` network used to connect the production container to a reverse proxy.
 - `purge`: Deletes ALL docker containers, images, volumes, and networks (expect built-in ones).
-- `restart`: Calls `stop` and then `start`.
-- `start`: Deletes all volumes, starts the project in dev mode and applies migrations.
-- `start-prod`: Sets up the `proxy_net` network and starts the project in production mode (Only for testing purposes).
-- `stop`: Stops all docker containers in the project if started with `start`
-- `stop-prod`: Stops all docker containers in the project if started with `start-prod`
+- `restart`: Calls `stop` and then `start` with the given parameters.
+- `start`: Starts the project in the specified mode for local operation. Can be `dev`, `test`, or `prod`. Defaults to `dev`.
+- `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
 - `unit`: Runs the unit tests with vitest.
 

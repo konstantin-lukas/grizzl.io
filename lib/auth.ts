@@ -13,7 +13,8 @@ const plugins =
                           providerId: "keycloak",
                           clientId: "test-client",
                           clientSecret: "test-client-secret",
-                          authorizationUrl: "http://localhost:8080/realms/dev-test/protocol/openid-connect/auth",
+                          authorizationUrl:
+                              "http://keycloak.grizzl.localhost/realms/dev-test/protocol/openid-connect/auth",
                           tokenUrl: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/token",
                           userInfoUrl: "http://keycloak:8080/realms/dev-test/protocol/openid-connect/userinfo",
                           scopes: ["openid", "email", "profile"],

@@ -16,12 +16,12 @@ export default defineConfig<ConfigOptions>({
     use: {
         trace: "retain-on-failure",
         testIdAttribute: "data-test-id",
-        baseURL: "http://localhost:3000",
+        baseURL: "http://grizzl.localhost",
         locale: "en-US",
         timezoneId: "Europe/Berlin",
         storageState: "tests/e2e/storage.json",
         nuxt: {
-            host: "http://localhost:3000",
+            host: "http://grizzl.localhost",
         },
     },
     projects: [

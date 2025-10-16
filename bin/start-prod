@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-"$SCRIPT_DIR/proxy"
-docker compose -f compose.production.yml --env-file .env up -d
