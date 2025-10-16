@@ -44,6 +44,7 @@ jobs:
                   NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${{ vars.NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY }}
                   NUXT_PUBLIC_LEGAL_STREET: ${{ vars.NUXT_PUBLIC_LEGAL_STREET }}
                   NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${{ vars.NUXT_PUBLIC_LEGAL_ZIP_AND_CITY }}
+                  NUXT_PUBLIC_VERSION: ${{ github.event.workflow_run.head_tag }}
               with:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
@@ -57,6 +58,6 @@ jobs:
                       NUXT_PUBLIC_LEGAL_STREET,NUXT_PUBLIC_LEGAL_ZIP_AND_CITY
                   script: |
                       cd /home/${{ secrets.VPS_USER }}/git/grizzl.io
-                      git checkout main
                       git pull
+                      git checkout ${{ github.event.workflow_run.head_tag }}
                       docker compose -f compose.production.yml up -d --build

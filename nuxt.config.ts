@@ -1,5 +1,4 @@
 import LOCALES from "./i18n/locales";
-import pkg from "./package.json";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "fs";
@@ -132,7 +131,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            version: pkg.version,
+            version: process.env.NUXT_PUBLIC_VERSION,
             appEnv: process.env.NUXT_PUBLIC_APP_ENV,
         },
     },
