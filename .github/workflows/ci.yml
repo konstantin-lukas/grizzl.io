@@ -118,9 +118,6 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Run docker compose logs keycloak
-              run: docker compose logs keycloak
-
             - name: Run end-to-end tests
               run: npx playwright test
 
