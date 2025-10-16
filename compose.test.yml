@@ -14,7 +14,7 @@ services:
             - grizzl_database:/var/lib/postgresql/data
             - ./docker/postgres/init:/docker-entrypoint-initdb.d
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            test: ["CMD-SHELL", "pg_isready -U admin"]
             interval: 1s
             timeout: 15s
             retries: 10
@@ -64,21 +64,22 @@ services:
 
     keycloak:
         container_name: grizzl-keycloak
-        image: quay.io/keycloak/keycloak:26.3.4
+        build:
+            context: ./docker/keycloak-ci
+            dockerfile: Dockerfile
         environment:
             KC_BOOTSTRAP_ADMIN_USERNAME: admin
             KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-            KC_HEALTH_ENABLED: true
         ports:
             - "8080:8080"
         volumes:
             - ./docker/keycloak-ci:/opt/keycloak/data/import:ro
         command: start-dev --import-realm
         healthcheck:
-            test: ["CMD-SHELL", "curl --head -fsS http://localhost:9000/health/ready | echo $?"]
-            interval: 1s
-            timeout: 15s
-            retries: 10
+            test: ["CMD-SHELL", "curl --head -fsS http://localhost:8080/realms/dev-test/"]
+            interval: 5s
+            timeout: 60s
+            retries: 12
 
 volumes:
     grizzl_database:
