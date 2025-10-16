@@ -45,7 +45,7 @@ jobs:
                   NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${{ vars.NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY }}
                   NUXT_PUBLIC_LEGAL_STREET: ${{ vars.NUXT_PUBLIC_LEGAL_STREET }}
                   NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${{ vars.NUXT_PUBLIC_LEGAL_ZIP_AND_CITY }}
-                  NUXT_PUBLIC_VERSION: ${{ github.event.workflow_run.ref_name }}
+                  NUXT_PUBLIC_VERSION: ${{ github.ref_name }}
               with:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
