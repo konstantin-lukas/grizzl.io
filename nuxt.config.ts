@@ -88,7 +88,7 @@ export default defineNuxtConfig({
                 { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
                 { rel: "shortcut icon", href: "/favicon.ico" },
                 { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
-                { rel: "manifest", href: "/manifest.json" },
+                { rel: "manifest", href: "/manifest.webmanifest" },
             ],
             meta: [{ name: "apple-mobile-web-app-title", content: "Grizzl" }],
         },
@@ -102,7 +102,73 @@ export default defineNuxtConfig({
         "@nuxtjs/i18n",
         "@nuxt/test-utils/module",
         "@nuxt/fonts",
+        "@vite-pwa/nuxt",
     ],
+    pwa: {
+        manifest: {
+            name: "Grizzl - The Bear That Does It All",
+            short_name: "Grizzl",
+            description: "Your everything in one app for daily tasks.",
+            start_url: "/",
+            display: "standalone",
+            display_override: ["fullscreen", "minimal-ui"],
+            background_color: "#ffffff",
+            theme_color: "#000000",
+            id: "/",
+            icons: [
+                {
+                    src: "/web-app-manifest-192x192.png",
+                    sizes: "192x192",
+                    type: "image/png",
+                },
+                {
+                    src: "/web-app-manifest-512x512.png",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+            ],
+            screenshots: [
+                {
+                    src: "/desktop-screenshot.png",
+                    sizes: "1920x1080",
+                    type: "image/png",
+                    form_factor: "wide",
+                },
+                {
+                    src: "/mobile-screenshot.png",
+                    sizes: "325x441",
+                    type: "image/png",
+                    form_factor: "narrow",
+                },
+            ],
+        },
+        client: {
+            installPrompt: true,
+        },
+        workbox: {
+            runtimeCaching: [
+                {
+                    urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+                    handler: "CacheFirst",
+                    options: {
+                        cacheName: "images-cache",
+                        expiration: {
+                            maxEntries: 60,
+                            maxAgeSeconds: 10 * 24 * 60 * 60,
+                        },
+                    },
+                },
+                {
+                    urlPattern: /\/api\/.*$/,
+                    handler: "NetworkFirst",
+                    options: {
+                        cacheName: "api-cache",
+                        networkTimeoutSeconds: 10,
+                    },
+                },
+            ],
+        },
+    },
     i18n: {
         strategy: "no_prefix",
         defaultLocale: "en",
