@@ -44,12 +44,9 @@ const headerClass = computed(() =>
             </nav>
         </div>
         <div class="absolute bottom-3 left-4">
-            <NuxtLink
-                class="inline-link"
-                :to="`https://github.com/konstantin-lukas/grizzl.io/tree/${$config.public.version}`"
-            >
+            <span class="select-none">
                 {{ $config.public.version }}
-            </NuxtLink>
+            </span>
         </div>
         <NavMenuThemeToggle />
         <NavMenuLangSelect />

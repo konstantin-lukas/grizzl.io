@@ -2,6 +2,7 @@
     "ui": {
         "save": "Save",
         "cancel": "Cancel",
-        "install": "Install"
+        "install": "Install",
+        "create": "Create"
     }
 }

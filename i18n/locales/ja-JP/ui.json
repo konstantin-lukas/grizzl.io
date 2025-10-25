@@ -2,6 +2,7 @@
     "ui": {
         "save": "保存",
         "cancel": "キャンセル",
-        "install": "インストール"
+        "install": "インストール",
+        "create": "作成"
     }
 }

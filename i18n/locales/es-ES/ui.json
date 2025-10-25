@@ -2,6 +2,7 @@
     "ui": {
         "save": "Guardar",
         "cancel": "Cancelar",
-        "install": "Instalar"
+        "install": "Instalar",
+        "create": "Crear"
     }
 }

@@ -9,9 +9,10 @@ const baseClass = clsx(
     "size-[150dvmin]",
     "top-1/2",
     "left-1/2",
+    "bg-primary",
 );
-const circle1 = clsx(baseClass, "bg-violet-500", "-translate-x-full");
-const circle2 = clsx(baseClass, "bg-rose-500", "-translate-y-full");
+const circle1 = clsx(baseClass, "-translate-x-full");
+const circle2 = clsx(baseClass, "-translate-y-full");
 </script>
 
 <template>
