@@ -1,5 +1,5 @@
+import { generateId } from "./utils";
 import { db } from "@@/lib/db";
-import { generateId } from "@@/server/utils/id";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
