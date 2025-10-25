@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import { authClient } from "@@/lib/auth-client";
-import { clsx } from "clsx/lite";
-
-const { $pwa } = useNuxtApp();
-
-const className = computed(() => clsx("grid", "grid-cols-1", "gap-4", $pwa?.showInstallPrompt && "sm:grid-cols-2"));
 
 const session = authClient.useSession();
 </script>
@@ -13,7 +8,7 @@ const session = authClient.useSession();
     <LayoutBlurryCircles>
         <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
             <SvgGrizzlLogo class="max-w-[600px] fill-front" />
-            <div :class="className">
+            <div class="grid grid-cols-1 gap-4" :class="{ 'sm:grid-cols-2': $pwa?.showInstallPrompt }">
                 <NavBlockLink v-if="session.data" as="button" @click="authClient.signOut()">
                     <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
                     {{ $t("menu.signOut") }}

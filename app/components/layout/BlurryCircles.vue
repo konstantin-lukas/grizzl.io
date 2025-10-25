@@ -1,24 +1,11 @@
 <script setup lang="ts">
-import { clsx } from "clsx/lite";
-
-const baseClass = clsx(
-    "animate-pulse-blur",
-    "absolute",
-    "rounded-full",
-    "blur-3xl",
-    "size-[150dvmin]",
-    "top-1/2",
-    "left-1/2",
-    "bg-primary",
-);
-const circle1 = clsx(baseClass, "-translate-x-full");
-const circle2 = clsx(baseClass, "-translate-y-full");
+const baseClass = tw`animate-pulse-blur absolute top-1/2 left-1/2 size-[150dvmin] rounded-full bg-primary blur-3xl`;
 </script>
 
 <template>
     <div class="fixed -z-10 h-dvh w-dvw opacity-50 dark:opacity-25">
-        <div :class="circle1" />
-        <div :class="circle2" />
+        <div :class="{ [baseClass]: true }" class="-translate-x-full" />
+        <div :class="{ [baseClass]: true }" class="-translate-y-full" />
     </div>
     <div class="flex min-h-main-height items-center justify-center">
         <slot />

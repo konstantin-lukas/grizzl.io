@@ -1,31 +1,16 @@
 <script setup lang="ts">
 import { APP_NAV } from "@/constants/nav";
-import { clsx } from "clsx/lite";
 
 const { isOpen } = useMenu();
-const headerClass = computed(() =>
-    clsx(
-        "w-[100dvw]",
-        "h-[100dvh]",
-        "bg-back/30",
-        "fixed",
-        "top-0",
-        "left-0",
-        "z-40",
-        "flex",
-        "justify-center",
-        "items-center",
-        "transition-all",
-        "duration-300",
-        !isOpen.value && "opacity-0",
-        !isOpen.value && "invisible",
-        isOpen.value && "backdrop-blur-lg",
-    ),
-);
 </script>
 
 <template>
-    <header id="menu" :class="headerClass" :aria-hidden="!isOpen">
+    <header
+        id="menu"
+        class="fixed top-0 left-0 z-40 flex h-[100dvh] w-[100dvw] items-center justify-center bg-back/30 transition-all duration-300"
+        :class="{ 'invisible opacity-0': !isOpen, 'backdrop-blur-lg': isOpen }"
+        :aria-hidden="!isOpen"
+    >
         <div class="max-h-full w-full overflow-auto">
             <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="$t('menu.aria.mainNav')">
                 <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="$t('menu.aria.goToHome')">
