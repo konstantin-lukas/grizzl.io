@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { authClient } from "~~/lib/auth-client";
 
-const { t } = useI18n();
 const session = authClient.useSession();
 </script>
 
@@ -17,7 +16,7 @@ const session = authClient.useSession();
                 name="heroicons:arrow-right-start-on-rectangle"
                 class="size-6 transition-colors group-hover:text-primary"
             />
-            {{ t("menu.signOut") }}
+            {{ $t("menu.signOut") }}
         </button>
         <NuxtLink
             v-else
@@ -29,7 +28,7 @@ const session = authClient.useSession();
                 name="heroicons:arrow-right-end-on-rectangle"
                 class="size-6 transition-colors group-hover:text-primary"
             />
-            {{ t("menu.signIn") }}
+            {{ $t("menu.signIn") }}
         </NuxtLink>
     </div>
 </template>

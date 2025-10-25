@@ -2,7 +2,6 @@
 import { clsx } from "clsx/lite";
 
 const { toggle, isOpen } = useMenu();
-const { t } = useI18n();
 const className = computed(() => {
     const baseClassName = clsx(
         "absolute left-1/2 h-[3px] w-full origin-center -translate-x-1/2 rounded-full bg-front transition-all ease-bezier",
@@ -18,7 +17,7 @@ const className = computed(() => {
         color="neutral"
         variant="ghost"
         class="fixed top-4 left-4 z-50 h-10 w-10 cursor-pointer"
-        :aria-label="t('menu.aria.toggleMenu')"
+        :aria-label="$t('menu.aria.toggleMenu')"
         data-test-id="menu-button"
         @click="toggle"
     >

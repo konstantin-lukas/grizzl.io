@@ -2,7 +2,6 @@
 import { APP_NAV } from "@/constants/nav";
 import { clsx } from "clsx/lite";
 
-const { t } = useI18n();
 const { isOpen } = useMenu();
 const headerClass = computed(() =>
     clsx(
@@ -28,15 +27,15 @@ const headerClass = computed(() =>
 <template>
     <header id="menu" :class="headerClass" :aria-hidden="!isOpen">
         <div class="max-h-full w-full overflow-auto">
-            <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="t('menu.aria.mainNav')">
-                <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="t('menu.aria.goToHome')">
+            <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="$t('menu.aria.mainNav')">
+                <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="$t('menu.aria.goToHome')">
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">
                     <li v-for="[link, icon] in APP_NAV" :key="link" class="w-full">
                         <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`">
                             <UIcon :name="icon" size="1.25rem" />
-                            {{ t(`menu.${link}`) }}
+                            {{ $t(`menu.${link}`) }}
                         </NavBlockLink>
                     </li>
                     <li class="w-full"><NavMenuSessionButton /></li>

@@ -6,7 +6,6 @@ const { $pwa } = useNuxtApp();
 
 const className = computed(() => clsx("grid", "grid-cols-1", "gap-4", $pwa?.showInstallPrompt && "sm:grid-cols-2"));
 
-const { t } = useI18n();
 const session = authClient.useSession();
 </script>
 
@@ -17,15 +16,15 @@ const session = authClient.useSession();
             <div :class="className">
                 <NavBlockLink v-if="session.data" as="button" @click="authClient.signOut()">
                     <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ t("menu.signOut") }}
+                    {{ $t("menu.signOut") }}
                 </NavBlockLink>
                 <NavBlockLink v-else to="/signin">
                     <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ t("menu.signIn") }}
+                    {{ $t("menu.signIn") }}
                 </NavBlockLink>
                 <NavBlockLink v-if="$pwa?.showInstallPrompt" as="button" @click="$pwa.install">
                     <UIcon name="heroicons:arrow-down-tray" class="size-6" />
-                    {{ t("ui.install") }}
+                    {{ $t("ui.install") }}
                 </NavBlockLink>
             </div>
         </div>
