@@ -5,7 +5,9 @@ const session = authClient.useSession();
 </script>
 
 <template>
-    <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-24">
+    <div
+        class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 bg-gradient-to-bl from-primary/50 to-75% px-24 dark:from-primary/25"
+    >
         <div class="flex max-w-[1280px] items-center gap-24">
             <div class="flex w-1/2 flex-col items-start gap-8 py-10">
                 <div>
@@ -15,20 +17,22 @@ const session = authClient.useSession();
                         {{ $t("meta.description") }}
                     </p>
                 </div>
-                <div class="flex gap-8">
-                    <NavBlockLink v-if="session.data" as="button" @click="authClient.signOut()">
-                        <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
+                <div class="flex gap-4">
+                    <UButton
+                        v-if="session.data"
+                        size="xl"
+                        icon="heroicons:arrow-right-end-on-rectangle"
+                        @click="authClient.signOut()"
+                    >
                         {{ $t("ui.signOut") }}
-                    </NavBlockLink>
-                    <NavBlockLink v-else to="/signin">
-                        <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
+                    </UButton>
+                    <UButton v-else to="/signin" size="xl" icon="heroicons:arrow-right-end-on-rectangle">
                         {{ $t("ui.signIn") }}
-                    </NavBlockLink>
+                    </UButton>
                     <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
-                        <NavBlockLink as="button" variant="subtle">
-                            <UIcon name="heroicons:arrow-down-tray" class="size-6" />
+                        <UButton variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
                             {{ $t("ui.install") }}
-                        </NavBlockLink>
+                        </UButton>
                     </div>
                 </div>
             </div>
