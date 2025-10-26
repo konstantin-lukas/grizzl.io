@@ -47,7 +47,7 @@ const session = authClient.useSession();
                 <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
                     <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label="label" :icon />
                 </UMarquee>
-                <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false" reverse>
+                <UMarquee orientation="vertical" class="h-dvh items-start pl-8" :overlay="false" reverse>
                     <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label="label" :icon />
                 </UMarquee>
             </div>
