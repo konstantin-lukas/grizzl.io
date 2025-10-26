@@ -1,4 +1,4 @@
-import { generateId } from "./utils";
+import { generateId } from "./mixins";
 import { db } from "@@/lib/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";

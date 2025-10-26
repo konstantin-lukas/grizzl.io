@@ -1,5 +1,5 @@
 CREATE TABLE "account" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" char(16) PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
 	"user_id" text NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE "account" (
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" char(16) PRIMARY KEY NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	"token" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE "session" (
 );
 --> statement-breakpoint
 CREATE TABLE "user" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" char(16) PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"email_verified" boolean DEFAULT false NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE "user" (
 );
 --> statement-breakpoint
 CREATE TABLE "verification" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" char(16) PRIMARY KEY NOT NULL,
 	"identifier" text NOT NULL,
 	"value" text NOT NULL,
 	"expires_at" timestamp NOT NULL,
@@ -46,5 +46,24 @@ CREATE TABLE "verification" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "timer" (
+	"id" char(16) PRIMARY KEY NOT NULL,
+	"user_id" char(16) NOT NULL,
+	"title" varchar(100) NOT NULL,
+	"tts_voice" text
+);
+--> statement-breakpoint
+CREATE TABLE "timer_interval" (
+	"id" char(16) PRIMARY KEY NOT NULL,
+	"timer_id" char(16) NOT NULL,
+	"title" varchar(100),
+	"index" integer NOT NULL,
+	"repeat_count" integer NOT NULL,
+	"duration" integer NOT NULL,
+	"beat_pattern" integer[] DEFAULT '{}' NOT NULL
+);
+--> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "timer" ADD CONSTRAINT "timer_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "timer_interval" ADD CONSTRAINT "timer_interval_timer_id_timer_id_fk" FOREIGN KEY ("timer_id") REFERENCES "public"."timer"("id") ON DELETE cascade ON UPDATE no action;
