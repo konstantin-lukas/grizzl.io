@@ -6,7 +6,7 @@
 @theme {
     --color-theme-white: #ffffff;
     --color-theme-black: #18181f;
-    --color-theme-light: var(--color-emerald-400);
+    --color-theme-light: var(--color-emerald-500);
     --color-theme-dark: var(--color-emerald-700);
     --ease-bezier: cubic-bezier(0.4, 0, 0.2, 1);
     --ui-bg: var(--color-theme-white);
@@ -20,8 +20,8 @@
     --default-transition-duration: 250ms;
     --spacing-footer-height: 3rem;
     --spacing-main-padding: calc(var(--spacing) * 16);
-    --spacing-main-height: calc(100dvh - var(--spacing-footer-height));
-    --spacing-main-height-no-padding: calc(100dvh - var(--spacing-footer-height) - var(--spacing-main-padding) * 2);
+    --spacing-main-height: 100dvh;
+    --spacing-main-height-no-padding: calc(100dvh - var(--spacing-main-padding) * 2);
 }
 
 :root:where(.dark, .dark *) {
@@ -79,6 +79,13 @@
             var(--ui-primary) 50%,
             var(--color-front) 50%
         );
+    }
+
+    .center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .inline-link:hover,

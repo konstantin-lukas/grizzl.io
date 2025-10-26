@@ -11,14 +11,15 @@ const title = computed(() => {
 });
 const { isOpen, close } = useMenu();
 watch(() => route.fullPath, close);
+useHead({
+    title,
+    meta: [{ name: "description", content: t("meta.description") }],
+});
 </script>
 
 <template>
     <div>
         <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir" data-test-id="root">
-            <Head>
-                <Title>{{ title }}</Title>
-            </Head>
             <Body>
                 <NavMenu />
                 <NavMenuButton />

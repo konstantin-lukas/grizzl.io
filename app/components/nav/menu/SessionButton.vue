@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { authClient } from "~~/lib/auth-client";
 
+const { close } = useMenu();
 const session = authClient.useSession();
 </script>
 
@@ -10,7 +11,7 @@ const session = authClient.useSession();
             v-if="session.data"
             class="inline-link group mx-auto mt-4 flex justify-center gap-2"
             data-test-id="session-button"
-            @click="authClient.signOut()"
+            @click="authClient.signOut().then(close)"
         >
             <UIcon
                 name="heroicons:arrow-right-start-on-rectangle"
