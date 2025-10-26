@@ -7,11 +7,11 @@ const session = authClient.useSession();
 
 <template>
     <div
-        class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-primary/50 to-[100dvh] px-6 sm:px-12 md:px-24 xl:bg-gradient-to-bl xl:to-75% dark:from-primary/25"
+        class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-primary/50 to-[100dvh] px-6 xs:px-12 md:px-24 xl:bg-gradient-to-bl xl:to-75% dark:from-primary/25"
     >
         <div class="flex max-w-[1280px] flex-col items-center xl:flex-row xl:gap-24">
             <div class="flex w-full flex-col items-center justify-center gap-6 pt-20 xl:hidden">
-                <SvgGrizzlLogo class="max-w-96 fill-front" />
+                <SvgGrizzlLogo class="max-w-120 fill-front" />
                 <div class="mt-4 mb-8 grid w-full grid-cols-1 gap-4 2xs:grid-cols-2 xs:gap-6 sm:gap-8 md:grid-cols-3">
                     <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label="label" :icon class="w-auto" />
                 </div>
