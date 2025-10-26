@@ -2,12 +2,18 @@
 
 <template>
     <LayoutWrapper class="flex flex-col items-center justify-center">
-        <UCard>
-            <div class="flex flex-col items-center justify-center">
-                <UIcon name="heroicons:inbox" size="100" />
-                <span>{{ $t("timer.noTimers") }}</span>
-            </div>
-        </UCard>
-        <UButton size="xl" class="mt-8" trailing-icon="heroicons:plus-small">{{ $t("ui.create") }}</UButton>
+        <UEmpty
+            :title="$t('timer.noTimersTitle')"
+            :description="$t('timer.noTimersDescription')"
+            variant="naked"
+            icon="heroicons:inbox"
+            :actions="[
+                {
+                    icon: 'heroicons:plus-small',
+                    label: $t('ui.create'),
+                    size: 'xl',
+                },
+            ]"
+        />
     </LayoutWrapper>
 </template>

@@ -1,11 +1,5 @@
 {
     "menu": {
-        "poll": "Umfragen",
-        "todo": "To-do",
-        "timer": "Stoppuhr",
-        "finance": "Finanzen",
-        "signIn": "Anmelden",
-        "signOut": "Abmelden",
         "selectLanguage": "Welche Sprache möchten Sie verwenden?",
         "aria": {
             "toggleMenu": "Menü ein- oder ausblenden.",

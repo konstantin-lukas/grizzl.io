@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { authClient } from "@@/lib/auth-client";
-
-const session = authClient.useSession();
+import { APP_NAV } from "~/constants/nav";
 </script>
 
 <template>
-    <LayoutBlurryCircles>
-        <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
-            <SvgGrizzlLogo class="max-w-[600px] fill-front" />
-            <div class="grid grid-cols-1 gap-4" :class="{ 'sm:grid-cols-2': $pwa?.showInstallPrompt }">
-                <NavBlockLink v-if="session.data" as="button" @click="authClient.signOut()">
-                    <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ $t("menu.signOut") }}
-                </NavBlockLink>
-                <NavBlockLink v-else to="/signin">
-                    <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ $t("menu.signIn") }}
-                </NavBlockLink>
-                <NavBlockLink v-if="$pwa?.showInstallPrompt" as="button" @click="$pwa.install">
-                    <UIcon name="heroicons:arrow-down-tray" class="size-6" />
-                    {{ $t("ui.install") }}
-                </NavBlockLink>
-            </div>
+    <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
+        <div v-if="$pwa?.showInstallPrompt" class="fixed top-6 right-6" @click="$pwa.install">
+            <UButton variant="subtle">
+                <UIcon name="heroicons:arrow-down-tray" class="size-6" />
+                {{ $t("ui.install") }}
+            </UButton>
         </div>
-    </LayoutBlurryCircles>
+        <SvgGrizzlLogo class="max-w-[600px] fill-front" />
+        <div>
+            <UCard v-for="test in APP_NAV" :key="test[0]">{{ $t(`ui.${test[0]}`) }}</UCard>
+        </div>
+    </div>
 </template>

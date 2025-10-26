@@ -1,8 +1,15 @@
 {
     "ui": {
+        "poll": "Polls",
+        "todo": "To-Do",
+        "timer": "Timer",
+        "finance": "Finance",
+        "signIn": "Sign In",
+        "signOut": "Sign Out",
         "save": "Save",
         "cancel": "Cancel",
         "install": "Install",
-        "create": "Create"
+        "create": "Create",
+        "pickProvider": "Please choose a service to sign in."
     }
 }

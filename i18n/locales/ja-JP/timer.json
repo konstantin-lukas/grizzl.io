@@ -1,5 +1,6 @@
 {
     "timer": {
-        "noTimers": "まだタイマーを作成していません。"
+        "noTimersTitle": "タイマーが見つかりません",
+        "noTimersDescription": "まだタイマーを作成していません。一度作成してみましょう。"
     }
 }

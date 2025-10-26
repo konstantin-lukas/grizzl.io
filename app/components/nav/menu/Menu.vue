@@ -20,7 +20,7 @@ const { isOpen } = useMenu();
                     <li v-for="[link, icon] in APP_NAV" :key="link" class="w-full">
                         <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`">
                             <UIcon :name="icon" size="1.25rem" />
-                            {{ $t(`menu.${link}`) }}
+                            {{ $t(`ui.${link}`) }}
                         </NavBlockLink>
                     </li>
                     <li class="w-full"><NavMenuSessionButton /></li>

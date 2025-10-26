@@ -1,8 +1,15 @@
 {
     "ui": {
+        "poll": "アンケート",
+        "todo": "ToDoリスト",
+        "timer": "タイマー",
+        "finance": "財務",
+        "signIn": "サインイン",
+        "signOut": "サインアウト",
         "save": "保存",
         "cancel": "キャンセル",
         "install": "インストール",
-        "create": "作成"
+        "create": "作成",
+        "pickProvider": "サインインするサービスを選択してください。"
     }
 }

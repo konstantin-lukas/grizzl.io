@@ -1,5 +1,6 @@
 {
     "timer": {
-        "noTimers": "You haven't created any timers yet."
+        "noTimersTitle": "No Timers Found",
+        "noTimersDescription": "You haven't created any timers yet. Create one to get started."
     }
 }
