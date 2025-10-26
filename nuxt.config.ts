@@ -149,6 +149,7 @@ export default defineNuxtConfig({
             runtimeCaching: [
                 {
                     urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+                    method: "GET",
                     handler: "CacheFirst",
                     options: {
                         cacheName: "images-cache",
@@ -160,6 +161,7 @@ export default defineNuxtConfig({
                 },
                 {
                     urlPattern: /\/api\/.*$/,
+                    method: "GET",
                     handler: "NetworkFirst",
                     options: {
                         cacheName: "api-cache",

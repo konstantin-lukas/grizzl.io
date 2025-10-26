@@ -1,3 +1,4 @@
+CREATE TYPE "public"."beat" AS ENUM('pause', 'low', 'high');--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -50,7 +51,7 @@ CREATE TABLE "timer" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"user_id" char(16) NOT NULL,
 	"title" varchar(100) NOT NULL,
-	"tts_voice" text
+	"tts_voice" varchar(200)
 );
 --> statement-breakpoint
 CREATE TABLE "timer_interval" (
@@ -60,7 +61,7 @@ CREATE TABLE "timer_interval" (
 	"index" integer NOT NULL,
 	"repeat_count" integer NOT NULL,
 	"duration" integer NOT NULL,
-	"beat_pattern" integer[] DEFAULT '{}' NOT NULL
+	"beat_pattern" "beat"[] DEFAULT '{}' NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
