@@ -13,6 +13,7 @@
     --ui-primary: var(--color-theme-dark);
     --ui-bg-inverted: var(--color-theme-black);
     --ui-bg-elevated: rgba(24, 24, 31, 0.15);
+    --color-elevated: var(--ui-bg-elevated);
     --color-back: var(--color-theme-white);
     --ui-text-inverted: var(--color-back);
     --color-front: var(--color-theme-black);

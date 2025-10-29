@@ -12,7 +12,7 @@ const { isOpen } = useMenu();
         :aria-hidden="!isOpen"
     >
         <div class="max-h-full w-full overflow-auto">
-            <nav class="m-auto flex flex-col items-center justify-center py-20" :aria-label="$t('menu.aria.mainNav')">
+            <nav class="center m-auto py-20" :aria-label="$t('menu.aria.mainNav')">
                 <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="$t('menu.aria.goToHome')">
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
