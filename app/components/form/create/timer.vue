@@ -3,10 +3,7 @@ import { Beat } from "#shared/enum/timer";
 import type { TimerPostType } from "#shared/schema/timer";
 import { TimerPostSchema } from "#shared/schema/timer";
 import type { FormSubmitEvent } from "@nuxt/ui";
-import { z } from "zod";
-import { ja } from "zod/locales";
 
-z.config(ja());
 const ttsVoices = ref(["Don't read section titles", "Todo", "In Progress", "Done"]);
 const state = reactive<TimerPostType>({
     title: "",
