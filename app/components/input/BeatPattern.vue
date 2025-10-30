@@ -15,7 +15,7 @@ watch(
 
 <template>
     <div
-        class="flex flex-col gap-2 rounded-md border border-elevated p-2"
+        class="flex flex-col gap-2 rounded-md border border-border-accented p-2"
         :class="{ 'border-error': color === 'error' }"
     >
         <div class="flex justify-between">
@@ -40,8 +40,10 @@ watch(
                         icon="mdi:music-note-quarter"
                         aria-label="Add Beat"
                         variant="ghost"
+                        :disabled="beats.length === 16"
                         @click="
                             () => {
+                                if (beats.length === 16) return;
                                 emit('update:beats', [...beats, Beat.NORMAL]);
                                 emitFormChange();
                             }
@@ -52,8 +54,10 @@ watch(
                     <UButton
                         icon="mdi:exclamation-thick"
                         variant="ghost"
+                        :disabled="beats.length === 16"
                         @click="
                             () => {
+                                if (beats.length === 16) return;
                                 emit('update:beats', [...beats, Beat.ACCENTED]);
                                 emitFormChange();
                             }
@@ -64,9 +68,11 @@ watch(
                     <UButton
                         icon="mdi:music-rest-quarter"
                         variant="ghost"
+                        :disabled="beats.length === 16"
                         aria-label="Add Pause"
                         @click="
                             () => {
+                                if (beats.length === 16) return;
                                 emit('update:beats', [...beats, Beat.PAUSE]);
                                 emitFormChange();
                             }
