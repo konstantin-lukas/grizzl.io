@@ -66,7 +66,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                                     value => {
                                         interval.beatPattern =
                                             value === 'Temporal'
-                                                ? []
+                                                ? undefined
                                                 : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
                                     }
                                 "
@@ -91,7 +91,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                             </UFormField>
                         </div>
                         <UFormField
-                            v-if="interval.beatPattern"
+                            v-if="interval.beatPattern !== undefined"
                             label="Beat Pattern"
                             :name="`intervals.${index}.beatPattern`"
                             required
@@ -99,6 +99,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                         >
                             <InputBeatPattern
                                 :beats="interval.beatPattern"
+                                :bar-length="interval.duration"
                                 class="w-full"
                                 @update:beats="value => (interval.beatPattern = value)"
                             />

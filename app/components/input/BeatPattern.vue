@@ -2,15 +2,41 @@
 import { Beat, BeatSymbol } from "#shared/enum/timer";
 
 const { emitFormChange, color } = useFormField();
-const { beats } = defineProps<{ beats: Beat[] }>();
+const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
 const playSound = ref(false);
+const currentBeat = ref(0);
+const startTime = ref(Date.now());
+
 watch(
-    () => beats,
+    () => [beats, barLength, playSound],
     () => {
         if (beats.length === 0) playSound.value = false;
     },
 );
+
+watch(
+    () => [beats, barLength],
+    () => {
+        currentBeat.value = 0;
+        startTime.value = Date.now();
+    },
+);
+
+watch(playSound, () => {
+    if (!playSound.value) return;
+    startTime.value = Date.now() - currentBeat.value * ((barLength * 1000) / beats.length);
+    const animateBeats = () => {
+        if (!playSound.value) return;
+        const barLengthInMs = barLength * 1000;
+        const moduloTime = (Date.now() - startTime.value) % barLengthInMs;
+        const beatLength = barLengthInMs / beats.length;
+        currentBeat.value = Math.floor(moduloTime / beatLength);
+        requestAnimationFrame(animateBeats);
+        console.log(currentBeat.value);
+    };
+    animateBeats();
+});
 </script>
 
 <template>
@@ -99,7 +125,13 @@ watch(
         </div>
         <USeparator v-if="beats.length > 0" />
         <div v-if="beats.length > 0" class="min-h-9.5">
-            <UIcon v-for="[index, beat] in beats.entries()" :key="index" class="size-8" :name="BeatSymbol[beat]" />
+            <UIcon
+                v-for="[index, beat] in beats.entries()"
+                :key="index"
+                class="size-8"
+                :class="{ 'bg-primary': index === currentBeat }"
+                :name="BeatSymbol[beat]"
+            />
         </div>
     </div>
 </template>
