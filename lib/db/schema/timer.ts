@@ -22,5 +22,5 @@ export const timerInterval = pgTable("timer_interval", {
     index: integer().notNull(),
     repeatCount: integer().notNull(),
     duration: integer().notNull(),
-    beatPattern: beatEnum().array().notNull().default([]),
+    beatPattern: beatEnum().array(),
 });

@@ -8,7 +8,7 @@ const ttsVoices = ref(["Don't read section titles", "Todo", "In Progress", "Done
 const state = reactive<TimerPostType>({
     title: "",
     ttsVoice: ttsVoices.value[0],
-    intervals: [{ title: "", index: 0, repeatCount: 1, duration: 10 }],
+    intervals: [{ title: "", index: 0, repeatCount: 1, duration: 2 }],
 });
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);

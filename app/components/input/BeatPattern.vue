@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Beat, BeatSymbol } from "#shared/enum/timer";
+import accentedAudio from "~/assets/sound/accented_beat.wav";
+import beatAudio from "~/assets/sound/beat.wav";
 
 const { emitFormChange, color } = useFormField();
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
@@ -31,9 +33,15 @@ watch(playSound, () => {
         const barLengthInMs = barLength * 1000;
         const moduloTime = (Date.now() - startTime.value) % barLengthInMs;
         const beatLength = barLengthInMs / beats.length;
-        currentBeat.value = Math.floor(moduloTime / beatLength);
+        const nextBeat = Math.floor(moduloTime / beatLength);
+        if (nextBeat !== currentBeat.value) {
+            if (beats[nextBeat] !== Beat.PAUSE) {
+                const beat = new Audio(beats[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio);
+                beat.play();
+            }
+            currentBeat.value = nextBeat;
+        }
         requestAnimationFrame(animateBeats);
-        console.log(currentBeat.value);
     };
     animateBeats();
 });

@@ -1,5 +1,5 @@
 {
-  "id": "0c459fa5-f0d3-4f49-8ba4-b9cd801deee7",
+  "id": "60fff160-24a4-42d9-afe9-667e5623a5d6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -407,8 +407,7 @@
           "type": "beat[]",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'{}'"
+          "notNull": false
         }
       },
       "indexes": {},

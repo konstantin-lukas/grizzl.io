@@ -6,7 +6,7 @@ const IntervalSchema = z.strictObject({
     index: z.int().min(0),
     repeatCount: z.int().min(1),
     duration: z.int().min(1),
-    beatPattern: z.optional(z.array(z.enum(Beat)).min(1).max(16)),
+    beatPattern: z.optional(z.array(z.enum(Beat)).min(2).max(16)),
 });
 
 export const TimerPostSchema = z.strictObject({
