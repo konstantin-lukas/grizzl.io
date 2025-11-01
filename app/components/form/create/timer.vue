@@ -2,6 +2,7 @@
 import { Beat } from "#shared/enum/timer";
 import type { TimerPostType } from "#shared/schema/timer";
 import { TimerPostSchema } from "#shared/schema/timer";
+import { deleteNthElement, duplicateNthElement } from "#shared/utils/array";
 import type { FormSubmitEvent } from "@nuxt/ui";
 
 const ttsVoices = ref(["Don't read section titles", "Todo", "In Progress", "Done"]);
@@ -30,6 +31,10 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
     toast.add({ title: "Success", description: "The form has been submitted.", color: "success" });
     console.log(event.data);
 }
+
+function resetIndices(interval: (typeof state.intervals)[number], i: number) {
+    return { ...interval, index: i };
+}
 </script>
 
 <template>
@@ -51,7 +56,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                     </UFormField>
                     <fieldset
                         v-for="[index, interval] in state.intervals.entries()"
-                        :key="index"
+                        :key="interval.index"
                         class="center w-full gap-4 rounded-md border border-border-accented p-4"
                     >
                         <UFormField label="Interval Title" :name="`intervals.${index}.title`" class="w-full">
@@ -104,6 +109,34 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                                 @update:beats="value => (interval.beatPattern = value)"
                             />
                         </UFormField>
+                        <div class="flex w-full flex-col gap-4 xs:flex-row">
+                            <UButton
+                                icon="heroicons:document-duplicate"
+                                class="flex w-full justify-center"
+                                variant="subtle"
+                                @click="
+                                    () => {
+                                        state.intervals = duplicateNthElement(state.intervals, index).map(resetIndices);
+                                    }
+                                "
+                            >
+                                {{ $t("ui.duplicate") }}
+                            </UButton>
+                            <UButton
+                                icon="heroicons:trash"
+                                color="error"
+                                class="flex w-full justify-center"
+                                variant="subtle"
+                                :disabled="state.intervals.length === 1"
+                                @click="
+                                    () => {
+                                        if (state.intervals.length === 1) return;
+                                        state.intervals = deleteNthElement(state.intervals, index).map(resetIndices);
+                                    }
+                                "
+                                >{{ $t("ui.delete") }}</UButton
+                            >
+                        </div>
                     </fieldset>
                     <div
                         class="fixed bottom-0 z-2 flex w-full justify-center gap-4 border-t border-t-border-accented bg-back py-4"
