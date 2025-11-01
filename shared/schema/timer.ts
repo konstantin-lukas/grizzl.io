@@ -12,7 +12,7 @@ const IntervalSchema = z.strictObject({
 export const TimerPostSchema = z.strictObject({
     title: z.string().min(1).max(100),
     ttsVoice: z.optional(z.string().max(200)),
-    intervals: z.array(IntervalSchema).min(1),
+    intervals: z.array(IntervalSchema).min(1).max(2),
 });
 
 export type TimerPostType = z.infer<typeof TimerPostSchema>;
