@@ -45,6 +45,10 @@ watch(playSound, () => {
     };
     animateBeats();
 });
+
+onBeforeUnmount(() => {
+    playSound.value = false;
+});
 </script>
 
 <template>
