@@ -100,8 +100,9 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                         <USelect v-model="state.ttsVoice" :items="ttsVoices" class="w-full">
                             <template #trailing>
                                 <UTooltip
-                                    text="Not all voices are available on all devices. If you use Grizzl on multiple devices and text-to-speech is not working, try selecting a different voice."
+                                    text="Not all voices are available on all devices"
                                     :delay-duration="0"
+                                    :content="{ side: 'right', align: 'center', sideOffset: 20 }"
                                 >
                                     <UIcon
                                         name="mdi:information-outline"
