@@ -113,25 +113,28 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
                                     <UInputNumber
                                         v-model="interval.duration"
                                         class="w-full"
+                                        :step="0.1"
                                         :min="1"
                                         :format-options="{ style: 'unit', unit: 'second' }"
                                     />
                                 </UFormField>
                             </div>
-                            <UFormField
-                                v-if="interval.beatPattern !== undefined"
-                                label="Beat Pattern"
-                                :name="`intervals.${index}.beatPattern`"
-                                required
-                                class="w-full"
-                            >
-                                <InputBeatPattern
-                                    :beats="interval.beatPattern"
-                                    :bar-length="interval.duration"
+                            <Transition name="fade">
+                                <UFormField
+                                    v-if="interval.beatPattern !== undefined"
+                                    label="Beat Pattern"
+                                    :name="`intervals.${index}.beatPattern`"
+                                    required
                                     class="w-full"
-                                    @update:beats="value => (interval.beatPattern = value)"
-                                />
-                            </UFormField>
+                                >
+                                    <InputBeatPattern
+                                        :beats="interval.beatPattern"
+                                        :bar-length="interval.duration"
+                                        class="w-full"
+                                        @update:beats="value => (interval.beatPattern = value)"
+                                    />
+                                </UFormField>
+                            </Transition>
                             <div class="flex w-full flex-col gap-4 xs:flex-row">
                                 <UButton
                                     icon="heroicons:document-duplicate"
