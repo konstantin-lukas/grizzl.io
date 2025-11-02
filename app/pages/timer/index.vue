@@ -20,7 +20,7 @@ const open = ref(false);
                 },
             ]"
         />
-        <UDrawer v-model:open="open">
+        <UDrawer v-model:open="open" class="max-h-dvh">
             <template #content>
                 <FormCreateTimer />
             </template>

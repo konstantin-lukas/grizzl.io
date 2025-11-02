@@ -51,13 +51,13 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
 </script>
 
 <template>
-    <UForm class="h-[calc(100dvh_-_6rem)] pt-4" :schema="TimerPostSchema" :state="state" @submit="onSubmit">
-        <div ref="scroll-container" class="relative h-[calc(100%_-_4rem)] overflow-auto">
+    <UForm class="mt-0 h-dvh pt-4" :schema="TimerPostSchema" :state="state" @submit="onSubmit">
+        <div ref="scroll-container" class="relative h-[calc(100dvh_-_6rem_+_2px)] overflow-auto">
             <span
-                class="pointer-events-none fixed top-9 left-1/2 z-1 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
+                class="pointer-events-none fixed top-9 left-1/2 z-1 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
             />
             <span
-                class="pointer-events-none fixed bottom-16 left-1/2 z-1 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
+                class="pointer-events-none fixed bottom-14 left-1/2 z-1 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
             />
             <div class="center">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
@@ -170,33 +170,31 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
                             </div>
                         </fieldset>
                     </TransitionGroup>
-                    <div
-                        class="fixed bottom-0 z-2 flex w-full justify-center gap-4 border-t border-t-border-accented bg-back py-4"
-                    >
-                        <div class="flex w-120 justify-between px-8">
-                            <UTooltip text="Add interval">
-                                <UButton
-                                    icon="heroicons:plus-small"
-                                    variant="subtle"
-                                    aria-label="Add interval"
-                                    @click="
-                                        () => {
-                                            if (state.intervals.length === 100) return;
-                                            state.intervals.push({
-                                                id: nanoid(),
-                                                title: '',
-                                                index: 0,
-                                                repeatCount: 1,
-                                                duration: 10,
-                                            });
-                                        }
-                                    "
-                                />
-                            </UTooltip>
-                            <UButton type="submit">Create</UButton>
-                        </div>
-                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="flex h-14 w-full justify-center gap-4 border-t border-t-border-accented py-3">
+            <div class="flex w-120 justify-between px-8">
+                <UTooltip text="Add interval">
+                    <UButton
+                        icon="heroicons:plus-small"
+                        variant="subtle"
+                        aria-label="Add interval"
+                        @click="
+                            () => {
+                                if (state.intervals.length === 100) return;
+                                state.intervals.push({
+                                    id: nanoid(),
+                                    title: '',
+                                    index: 0,
+                                    repeatCount: 1,
+                                    duration: 10,
+                                });
+                            }
+                        "
+                    />
+                </UTooltip>
+                <UButton type="submit">Create</UButton>
             </div>
         </div>
     </UForm>
