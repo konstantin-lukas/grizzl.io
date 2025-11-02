@@ -6,14 +6,15 @@ import beatAudio from "~/assets/sound/beat.wav";
 const { emitFormChange, color } = useFormField();
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
-const playSound = ref(false);
+const playSound = useState("beat-pattern-input-playing", () => "");
 const currentBeat = ref(0);
 const startTime = ref(Date.now());
 
+const componentId = useId();
 watch(
     () => [beats, barLength, playSound],
     () => {
-        if (beats.length === 0) playSound.value = false;
+        if (beats.length === 0) playSound.value = componentId;
     },
 );
 
@@ -26,10 +27,10 @@ watch(
 );
 
 watch(playSound, () => {
-    if (!playSound.value) return;
+    if (playSound.value !== componentId) return;
     startTime.value = Date.now() - currentBeat.value * ((barLength * 1000) / beats.length);
     const animateBeats = () => {
-        if (!playSound.value) return;
+        if (playSound.value !== componentId) return;
         const barLengthInMs = barLength * 1000;
         const moduloTime = (Date.now() - startTime.value) % barLengthInMs;
         const beatLength = barLengthInMs / beats.length;
@@ -47,7 +48,7 @@ watch(playSound, () => {
 });
 
 onBeforeUnmount(() => {
-    playSound.value = false;
+    if (playSound.value === componentId) playSound.value = "";
 });
 </script>
 
@@ -58,15 +59,16 @@ onBeforeUnmount(() => {
     >
         <div class="flex justify-between">
             <div>
-                <UTooltip :text="playSound ? 'Pause Playback' : 'Start Playback'">
+                <UTooltip :text="playSound === componentId ? 'Pause Playback' : 'Start Playback'">
                     <UButton
-                        :icon="playSound ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+                        :icon="playSound === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
                         :aria-label="playSound ? 'Pause Playback' : 'Start Playback'"
                         variant="ghost"
                         :disabled="beats.length === 0"
                         @click="
                             () => {
-                                playSound = !playSound;
+                                if (playSound === componentId) playSound = '';
+                                else playSound = componentId;
                             }
                         "
                     />
