@@ -15,6 +15,7 @@ type TimerPostWithId = Omit<TimerPostType, "intervals"> & {
 };
 
 const ttsVoices = ref<string[][]>([]);
+const ttsVoicePreviewText = ref("");
 
 const state = reactive<TimerPostWithId>({
     title: "",
@@ -39,6 +40,16 @@ onMounted(() => {
         speechSynthesis.removeEventListener("voiceschanged", loadVoices);
     });
 });
+
+function saySampleText() {
+    const utterThis = new SpeechSynthesisUtterance(ttsVoicePreviewText.value);
+    for (const voice of speechSynthesis.getVoices()) {
+        if (voice.name === state.ttsVoice) {
+            utterThis.voice = voice;
+        }
+    }
+    speechSynthesis.speak(utterThis);
+}
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
@@ -86,8 +97,34 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                         name="ttsVoice"
                         class="w-full"
                     >
-                        <USelect v-model="state.ttsVoice" :items="ttsVoices" class="w-full" />
+                        <USelect v-model="state.ttsVoice" :items="ttsVoices" class="w-full">
+                            <template #trailing>
+                                <UTooltip
+                                    text="Not all voices are available on all devices. If you use Grizzl on multiple devices and text-to-speech is not working, try selecting a different voice."
+                                    :delay-duration="0"
+                                >
+                                    <UIcon
+                                        name="mdi:information-outline"
+                                        tabindex="0"
+                                        class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
+                                    />
+                                </UTooltip>
+                            </template>
+                        </USelect>
                     </UFormField>
+                    <Transition name="fade">
+                        <div
+                            v-if="ttsVoices.length > 0 && state.ttsVoice !== ttsVoices[0]?.[0]"
+                            class="flex w-full gap-4"
+                        >
+                            <UButton icon="heroicons:speaker-wave" @click="saySampleText" />
+                            <UInput
+                                v-model="ttsVoicePreviewText"
+                                class="w-full"
+                                placeholder="Enter some text to preview the selected voice"
+                            />
+                        </div>
+                    </Transition>
                     <TransitionGroup name="list" tag="div" class="relative flex flex-col gap-4">
                         <fieldset
                             v-for="[index, interval] in state.intervals.entries()"
