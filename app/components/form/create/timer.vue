@@ -14,10 +14,10 @@ type TimerPostWithId = Omit<TimerPostType, "intervals"> & {
     intervals: TimerIntervalWithId[];
 };
 
-const ttsVoices = ref(["Don't read section titles", "Todo", "In Progress", "Done"]);
+const ttsVoices = typeof speechSynthesis === "undefined" ? null : speechSynthesis.getVoices().map(voice => voice.name);
 const state = reactive<TimerPostWithId>({
     title: "",
-    ttsVoice: ttsVoices.value[0],
+    ttsVoice: ttsVoices?.[0],
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
@@ -25,7 +25,6 @@ const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 
 watch(state, () => {
-    console.log(TimerPostSchema.safeParse(state)?.error);
     setTimeout(() => {
         const elementInserted = state.intervals.length > previousIntervalCount.value;
         const elementDuplicated = state.intervals[state.intervals.length - 1]!.id === previousLastId.value;
@@ -61,7 +60,12 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                     <UFormField label="Timer Title" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" />
                     </UFormField>
-                    <UFormField label="Text-to-speech voice for reading interval titles" name="ttsVoice" class="w-full">
+                    <UFormField
+                        v-if="ttsVoices"
+                        label="Text-to-speech voice for reading interval titles"
+                        name="ttsVoice"
+                        class="w-full"
+                    >
                         <USelect v-model="state.ttsVoice" :items="ttsVoices" class="w-full" />
                     </UFormField>
                     <TransitionGroup name="list" tag="div" class="relative flex flex-col gap-4">
