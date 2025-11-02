@@ -24,6 +24,10 @@ const open = ref(false);
             <template #content>
                 <FormCreateTimer />
             </template>
+            <template #title>Create a new timer</template>
+            <template #description>
+                Choose between different types of timer intervals to create a fully customized timer
+            </template>
         </UDrawer>
     </LayoutWrapper>
 </template>
