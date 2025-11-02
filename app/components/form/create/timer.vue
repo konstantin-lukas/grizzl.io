@@ -14,12 +14,32 @@ type TimerPostWithId = Omit<TimerPostType, "intervals"> & {
     intervals: TimerIntervalWithId[];
 };
 
-const ttsVoices = typeof speechSynthesis === "undefined" ? null : speechSynthesis.getVoices().map(voice => voice.name);
+const ttsVoices = ref<string[][]>([]);
+
 const state = reactive<TimerPostWithId>({
     title: "",
-    ttsVoice: ttsVoices?.[0],
+    ttsVoice: undefined,
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
+
+onMounted(() => {
+    if (typeof speechSynthesis === "undefined") return;
+    const loadVoices = () => {
+        const voices = speechSynthesis.getVoices();
+        const options = [["Don't read interval titles aloud"], voices.map(v => v.name)];
+        ttsVoices.value = options;
+        if (!state.ttsVoice && voices.length > 0) {
+            [state.ttsVoice] = options[0]!;
+        }
+    };
+    loadVoices();
+    speechSynthesis.addEventListener("voiceschanged", loadVoices);
+    onBeforeUnmount(() => {
+        if (typeof speechSynthesis === "undefined") return;
+        speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+    });
+});
+
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
@@ -62,7 +82,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                     </UFormField>
                     <UFormField
                         v-if="ttsVoices"
-                        label="Text-to-speech voice for reading interval titles"
+                        label="Text-to-speech voice for interval titles"
                         name="ttsVoice"
                         class="w-full"
                     >
