@@ -22,7 +22,7 @@ const open = ref(false);
         />
         <UDrawer v-model:open="open" class="max-h-dvh">
             <template #content>
-                <FormCreateTimer />
+                <FormCreateTimer @close="() => (open = false)" />
             </template>
             <template #title>Create a new timer</template>
             <template #description>
