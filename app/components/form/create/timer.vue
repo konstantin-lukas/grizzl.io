@@ -6,10 +6,6 @@ import { deleteNthElement, duplicateNthElement } from "#shared/utils/array";
 import type { FormSubmitEvent } from "@nuxt/ui";
 import { nanoid } from "nanoid";
 
-const emit = defineEmits<{
-    (e: "close"): void;
-}>();
-
 type TimerIntervalWithId = TimerPostType["intervals"][number] & {
     id: string;
 };
@@ -22,13 +18,14 @@ const ttsVoices = ref(["Don't read section titles", "Todo", "In Progress", "Done
 const state = reactive<TimerPostWithId>({
     title: "",
     ttsVoice: ttsVoices.value[0],
-    intervals: [{ title: "", index: 0, repeatCount: 1, duration: 2, id: nanoid() }],
+    intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 
 watch(state, () => {
+    console.log(TimerPostSchema.safeParse(state)?.error);
     setTimeout(() => {
         const elementInserted = state.intervals.length > previousIntervalCount.value;
         const elementDuplicated = state.intervals[state.intervals.length - 1]!.id === previousLastId.value;
@@ -48,25 +45,18 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
     toast.add({ title: "Success", description: "The form has been submitted.", color: "success" });
     console.log(event.data);
 }
-
-function resetIndices(interval: (typeof state.intervals)[number], i: number) {
-    return { ...interval, index: i };
-}
 </script>
 
 <template>
     <UForm class="mt-0 h-dvh pt-4" :schema="TimerPostSchema" :state="state" @submit="onSubmit">
-        <div
-            ref="scroll-container"
-            class="relative h-[calc(100dvh_-_10rem_+_2px)] overflow-auto xs:h-[calc(100dvh_-_6rem_+_2px)]"
-        >
+        <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
-                class="pointer-events-none fixed top-9 left-1/2 z-1 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
+                class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
             />
             <span
-                class="pointer-events-none fixed bottom-30 left-1/2 z-1 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back xs:bottom-14"
+                class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
             />
-            <div class="center">
+            <div class="center overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <UFormField label="Timer Title" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" />
@@ -78,7 +68,7 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
                         <fieldset
                             v-for="[index, interval] in state.intervals.entries()"
                             :key="interval.id"
-                            class="center w-full gap-4 rounded-md border border-border-accented p-4"
+                            class="center w-full gap-4 rounded-md border border-border-accented bg-back p-4"
                         >
                             <UFormField label="Interval Title" :name="`intervals.${index}.title`" class="w-full">
                                 <UInput
@@ -104,7 +94,7 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
                             </UFormField>
                             <div class="flex gap-4">
                                 <UFormField
-                                    label="Repeat Count"
+                                    label="Repetitions"
                                     :name="`intervals.${index}.repeatCount`"
                                     required
                                     class="w-full"
@@ -143,81 +133,73 @@ function resetIndices(interval: (typeof state.intervals)[number], i: number) {
                                 </UFormField>
                             </Transition>
                             <USeparator />
-                            <div class="flex w-full flex-col gap-4 xs:flex-row">
-                                <UButton
-                                    icon="heroicons:document-duplicate"
-                                    class="flex w-full justify-center"
-                                    variant="subtle"
-                                    @click="
-                                        () => {
-                                            if (state.intervals.length === 100) return;
-                                            const newIntervals = duplicateNthElement(state.intervals, index).map(
-                                                resetIndices,
-                                            );
-                                            newIntervals[index + 1]!.id = nanoid();
-                                            state.intervals = newIntervals;
-                                        }
-                                    "
-                                >
-                                    Duplicate
-                                </UButton>
-                                <UButton
-                                    icon="heroicons:trash"
-                                    color="error"
-                                    class="flex w-full justify-center"
-                                    variant="subtle"
-                                    :disabled="state.intervals.length === 1"
-                                    @click="
-                                        () => {
-                                            if (state.intervals.length === 1) return;
-                                            state.intervals = deleteNthElement(state.intervals, index).map(
-                                                resetIndices,
-                                            );
-                                        }
-                                    "
-                                >
-                                    Delete
-                                </UButton>
+                            <div class="flex w-full justify-center gap-4">
+                                <UTooltip text="Duplicate interval">
+                                    <UButton
+                                        icon="heroicons:document-duplicate"
+                                        variant="subtle"
+                                        aria-label="Duplicate interval"
+                                        :disabled="state.intervals.length === 100"
+                                        @click="
+                                            () => {
+                                                if (state.intervals.length === 100) return;
+                                                const newIntervals = duplicateNthElement(state.intervals, index);
+                                                newIntervals[index + 1] = { ...newIntervals[index + 1]!, id: nanoid() };
+                                                state.intervals = newIntervals;
+                                            }
+                                        "
+                                    />
+                                </UTooltip>
+                                <UTooltip text="Move interval up">
+                                    <UButton
+                                        icon="heroicons:arrow-small-up"
+                                        variant="subtle"
+                                        aria-label="Move interval up"
+                                        :disabled="index === 0"
+                                        @click="
+                                            () => {
+                                                state.intervals = moveElement(state.intervals, index, index - 1);
+                                            }
+                                        "
+                                    />
+                                </UTooltip>
+                                <UTooltip text="Move interval down">
+                                    <UButton
+                                        icon="heroicons:arrow-small-down"
+                                        variant="subtle"
+                                        aria-label="Move interval down"
+                                        :disabled="index === state.intervals.length - 1"
+                                        @click="
+                                            () => {
+                                                state.intervals = moveElement(state.intervals, index, index + 1);
+                                            }
+                                        "
+                                    />
+                                </UTooltip>
+                                <UTooltip text="Delete interval">
+                                    <UButton
+                                        icon="heroicons:trash"
+                                        color="error"
+                                        variant="subtle"
+                                        aria-label="Delete interval"
+                                        :disabled="state.intervals.length === 1"
+                                        @click="
+                                            () => {
+                                                if (state.intervals.length === 1) return;
+                                                state.intervals = deleteNthElement(state.intervals, index);
+                                            }
+                                        "
+                                    />
+                                </UTooltip>
                             </div>
                         </fieldset>
                     </TransitionGroup>
                 </div>
             </div>
         </div>
-        <div class="flex h-30 w-full justify-center gap-4 border-t border-t-border-accented py-3 xs:h-14">
-            <div class="flex w-120 flex-col justify-center gap-4 px-8 xs:flex-row">
-                <UButton type="submit" icon="ic:outline-create" class="flex justify-center">Erstellen</UButton>
-                <div class="flex gap-4">
-                    <UButton
-                        icon="heroicons:plus-small"
-                        class="flex w-full justify-center"
-                        variant="subtle"
-                        aria-label="Add interval"
-                        @click="
-                            () => {
-                                if (state.intervals.length === 100) return;
-                                state.intervals.push({
-                                    id: nanoid(),
-                                    title: '',
-                                    index: 0,
-                                    repeatCount: 1,
-                                    duration: 2,
-                                });
-                            }
-                        "
-                    >
-                        Hinzufügen
-                    </UButton>
-                    <UButton
-                        color="error"
-                        class="flex w-full justify-center"
-                        icon="heroicons:backspace"
-                        variant="subtle"
-                        @click="() => emit('close')"
-                    >
-                        Abbrechen
-                    </UButton>
-                </div>
+        <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
+            <div class="flex w-120 justify-center gap-4 px-8">
+                <UButton type="submit" icon="ic:outline-create" class="flex w-full justify-center">Erstellen</UButton>
             </div>
         </div>
     </UForm>

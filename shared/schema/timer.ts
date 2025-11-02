@@ -5,7 +5,6 @@ const IntervalSchema = z
     .strictObject({
         id: z.string(),
         title: z.optional(z.string().max(100)).transform(value => (value === "" ? undefined : value)),
-        index: z.int().min(0),
         repeatCount: z.int().min(1),
         duration: z
             .number()
