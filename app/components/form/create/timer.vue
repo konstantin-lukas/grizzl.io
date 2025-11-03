@@ -197,7 +197,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                             </Transition>
                             <USeparator />
                             <div class="flex w-full justify-center gap-4">
-                                <UTooltip text="Duplicate interval">
+                                <UTooltip text="Duplicate interval" :content="{ side: 'top', sideOffset: 13 }">
                                     <UButton
                                         icon="heroicons:document-duplicate"
                                         variant="subtle"
@@ -213,7 +213,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                                         "
                                     />
                                 </UTooltip>
-                                <UTooltip text="Move interval up">
+                                <UTooltip text="Move interval up" :content="{ side: 'top', sideOffset: 13 }">
                                     <UButton
                                         icon="heroicons:arrow-small-up"
                                         variant="subtle"
@@ -226,7 +226,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                                         "
                                     />
                                 </UTooltip>
-                                <UTooltip text="Move interval down">
+                                <UTooltip text="Move interval down" :content="{ side: 'top', sideOffset: 13 }">
                                     <UButton
                                         icon="heroicons:arrow-small-down"
                                         variant="subtle"
@@ -239,7 +239,7 @@ async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
                                         "
                                     />
                                 </UTooltip>
-                                <UTooltip text="Delete interval">
+                                <UTooltip text="Delete interval" :content="{ side: 'top', sideOffset: 13 }">
                                     <UButton
                                         icon="heroicons:trash"
                                         color="error"

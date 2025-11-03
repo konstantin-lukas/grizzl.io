@@ -59,7 +59,10 @@ onBeforeUnmount(() => {
     >
         <div class="flex justify-between">
             <div>
-                <UTooltip :text="playSound === componentId ? 'Pause Playback' : 'Start Playback'">
+                <UTooltip
+                    :text="playSound === componentId ? 'Pause Playback' : 'Start Playback'"
+                    :content="{ side: 'right', align: 'center' }"
+                >
                     <UButton
                         :icon="playSound === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
                         :aria-label="playSound ? 'Pause Playback' : 'Start Playback'"
@@ -75,7 +78,7 @@ onBeforeUnmount(() => {
                 </UTooltip>
             </div>
             <div>
-                <UTooltip text="Add Beat">
+                <UTooltip text="Add Beat" :content="{ sideOffset: 9 }">
                     <UButton
                         icon="mdi:music-note-quarter"
                         aria-label="Add Beat"
@@ -90,7 +93,7 @@ onBeforeUnmount(() => {
                         "
                     />
                 </UTooltip>
-                <UTooltip text="Add Accented Beat">
+                <UTooltip text="Add Accented Beat" :content="{ sideOffset: 9 }">
                     <UButton
                         icon="mdi:exclamation-thick"
                         variant="ghost"
@@ -104,7 +107,7 @@ onBeforeUnmount(() => {
                         "
                     />
                 </UTooltip>
-                <UTooltip text="Add Pause">
+                <UTooltip text="Add Pause" :content="{ sideOffset: 9 }">
                     <UButton
                         icon="mdi:music-rest-quarter"
                         variant="ghost"
@@ -119,7 +122,7 @@ onBeforeUnmount(() => {
                         "
                     />
                 </UTooltip>
-                <UTooltip text="Delete Beat">
+                <UTooltip text="Delete Beat" :content="{ sideOffset: 9 }">
                     <UButton
                         variant="ghost"
                         icon="mdi:music-note-off"
