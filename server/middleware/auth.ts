@@ -25,6 +25,7 @@ export default defineEventHandler(async event => {
         throw createError({
             statusCode: HttpStatusCode.UNAUTHORIZED,
             statusMessage: "Unauthorized",
+            message: "You need to sign in to perform this action.",
         });
     }
 

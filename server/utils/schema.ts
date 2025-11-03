@@ -1,11 +1,10 @@
+import { HttpStatusCode } from "#shared/enum/status";
+import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { z } from "zod";
 import LOCALES from "~~/i18n/locales";
 
-export async function safeParseRequestBody(
-    event: H3Event<EventHandlerRequest>,
-    schema: Parameters<typeof z.safeParse>[0],
-) {
+export async function safeParseRequestBody<T extends ZodType>(event: H3Event<EventHandlerRequest>, schema: T) {
     const cookies = parseCookies(event);
     const body = await readBody(event);
     const language = LOCALES.find(locale => locale.code === cookies.i18n_redirected)?.code ?? "en";
@@ -14,5 +13,17 @@ export async function safeParseRequestBody(
         error,
     } = await tryCatch(import(`zod/v4/locales/${language}.js`));
     if (!error) z.config(locale());
-    return z.safeParse(schema, body);
+    return z.safeParse<T>(schema, body);
+}
+
+export async function parseRequestBody<T extends ZodType>(event: H3Event<EventHandlerRequest>, schema: T) {
+    const { success, data, error } = await safeParseRequestBody(event, schema);
+    if (!success) {
+        throw createError({
+            statusCode: HttpStatusCode.BAD_REQUEST,
+            statusMessage: "Bad Request",
+            message: z.prettifyError(error),
+        });
+    }
+    return data;
 }

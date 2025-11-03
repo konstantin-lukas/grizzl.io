@@ -2,9 +2,8 @@
 import { Beat } from "#shared/enum/timer";
 import type { TimerPostType } from "#shared/schema/timer";
 import { TimerPostSchema } from "#shared/schema/timer";
-import { deleteNthElement, duplicateNthElement } from "#shared/utils/array";
-import type { FormSubmitEvent } from "@nuxt/ui";
 import { nanoid } from "nanoid";
+import { createToastSuccess } from "~/utils/toast";
 
 type TimerIntervalWithId = TimerPostType["intervals"][number] & {
     id: string;
@@ -72,14 +71,23 @@ watch(state, () => {
 });
 
 const toast = useToast();
-async function onSubmit(event: FormSubmitEvent<TimerPostType>) {
-    toast.add({ title: "Success", description: "The form has been submitted.", color: "success" });
-    console.log(event.data);
+async function onSubmit() {
+    const { error } = await tryCatchApi(
+        $fetch("/api/timer", {
+            method: "POST",
+            body: state,
+        }),
+    );
+    if (error) {
+        toast.add(createToastError(error));
+        return;
+    }
+    toast.add(createToastSuccess("Timer created successfully."));
 }
 </script>
 
 <template>
-    <UForm class="mt-0 h-dvh pt-4" :schema="TimerPostSchema" :state="state" @submit="onSubmit">
+    <UForm class="mt-0 h-dvh pt-4" :schema="TimerPostSchema" :state="state" @submit.prevent="onSubmit">
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
                 class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
