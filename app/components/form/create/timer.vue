@@ -42,6 +42,7 @@ onMounted(() => {
 });
 
 function saySampleText() {
+    if (speechSynthesis.speaking) return;
     const utterThis = new SpeechSynthesisUtterance(ttsVoicePreviewText.value);
     for (const voice of speechSynthesis.getVoices()) {
         if (voice.name === state.ttsVoice) {
