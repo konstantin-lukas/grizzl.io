@@ -17,12 +17,6 @@ case "$ENV" in
   test)
     docker compose -f compose.test.yml up -d --build
     ;;
-  wsl)
-    docker volume ls -q | xargs -r docker volume rm
-    docker compose -f compose.yml --env-file .env up -d setup postgres keycloak webserver caddy
-    "$SCRIPT_DIR/migrate"
-
-    ;;
   *)
     echo "Unknown environment: $ENV"
     echo "Usage: $0 [dev|prod|test|wsl]"

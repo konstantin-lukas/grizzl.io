@@ -63,14 +63,11 @@ services:
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
+            - /tmp/.X11-unix:/tmp/.X11-unix
         working_dir: /home/grizzl
         environment:
             - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
-        network_mode: "host"
-        ipc: host
-        devices:
-            - /dev/dri
 
     caddy:
         container_name: grizzl-caddy-dev
