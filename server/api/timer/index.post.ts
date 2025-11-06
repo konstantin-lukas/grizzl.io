@@ -1,9 +1,13 @@
-import { HttpStatusCode } from "#shared/enum/status";
 import { TimerPostSchema } from "#shared/schema/timer";
+import insert from "~~/server/utils/db/timer/insert";
 import { parseRequestBody } from "~~/server/utils/schema";
 
 export default defineEventHandler(async event => {
-    const data = await parseRequestBody(event, TimerPostSchema);
-    setResponseStatus(event, HttpStatusCode.CREATED, "Created");
+    const timer = await parseRequestBody(event, TimerPostSchema);
+    const { data, error } = await tryCatch(insert(event.context.user.id, timer));
+
+    if (error) throwError(error, "UNPROCESSABLE_CONTENT");
+    setStatus(event, "CREATED");
+
     return { data };
 });

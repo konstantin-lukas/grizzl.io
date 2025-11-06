@@ -1,6 +1,5 @@
 import { sendRedirect } from "#imports";
 import { PROTECTED_PATHS } from "#shared/constants/auth";
-import { HttpStatusCode } from "#shared/enum/status";
 import { DatabaseIdSchema } from "#shared/schema/id";
 import { auth } from "~~/lib/auth";
 
@@ -22,11 +21,7 @@ export default defineEventHandler(async event => {
     }
 
     if (event.path.startsWith("/api") && !event.path.startsWith("/api/auth")) {
-        throw createError({
-            statusCode: HttpStatusCode.UNAUTHORIZED,
-            statusMessage: "Unauthorized",
-            message: "You need to sign in to perform this action.",
-        });
+        throwError("You need to sign in to perform this action.", "UNAUTHORIZED");
     }
 
     if (PROTECTED_PATHS.some(path => event.path.startsWith(path))) {

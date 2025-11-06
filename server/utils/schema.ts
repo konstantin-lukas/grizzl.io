@@ -1,4 +1,3 @@
-import { HttpStatusCode } from "#shared/enum/status";
 import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { z } from "zod";
@@ -18,12 +17,6 @@ export async function safeParseRequestBody<T extends ZodType>(event: H3Event<Eve
 
 export async function parseRequestBody<T extends ZodType>(event: H3Event<EventHandlerRequest>, schema: T) {
     const { success, data, error } = await safeParseRequestBody(event, schema);
-    if (!success) {
-        throw createError({
-            statusCode: HttpStatusCode.BAD_REQUEST,
-            statusMessage: "Bad Request",
-            message: z.prettifyError(error),
-        });
-    }
+    if (!success) throwError(error);
     return data;
 }
