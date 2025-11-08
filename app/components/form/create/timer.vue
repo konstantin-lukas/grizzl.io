@@ -144,7 +144,9 @@ async function onSubmit() {
                         handle=".handle"
                     >
                         <template #item="{ element: interval, index }">
-                            <fieldset class="group relative rounded-md border border-border-accented bg-back">
+                            <fieldset
+                                class="group relative rounded-md border border-border-accented bg-back transition-[margin] focus-within:mb-12 sm:focus-within:mb-0"
+                            >
                                 <div class="center w-full gap-4 p-4">
                                     <UFormField
                                         label="Interval Title"
@@ -227,7 +229,7 @@ async function onSubmit() {
                                     />
                                 </div>
                                 <div
-                                    class="center invisible absolute top-0 left-full ml-4 gap-4 group-focus-within:visible"
+                                    class="invisible absolute left-0 mt-4 flex w-full items-center justify-center gap-4 group-focus-within:visible sm:top-0 sm:left-full sm:mt-0 sm:ml-4 sm:w-auto sm:flex-col"
                                 >
                                     <UTooltip text="Duplicate interval" :content="{ side: 'top', sideOffset: 13 }">
                                         <UButton
