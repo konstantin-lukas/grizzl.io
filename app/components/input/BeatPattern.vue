@@ -78,6 +78,20 @@ onBeforeUnmount(() => {
                 </UTooltip>
             </div>
             <div>
+                <UTooltip text="Add Accented Beat" :content="{ sideOffset: 9 }">
+                    <UButton
+                        icon="mdi:exclamation-thick"
+                        variant="ghost"
+                        :disabled="beats.length === 16"
+                        @click="
+                            () => {
+                                if (beats.length === 16) return;
+                                emit('update:beats', [...beats, Beat.ACCENTED]);
+                                emitFormChange();
+                            }
+                        "
+                    />
+                </UTooltip>
                 <UTooltip text="Add Beat" :content="{ sideOffset: 9 }">
                     <UButton
                         icon="mdi:music-note-quarter"
@@ -88,20 +102,6 @@ onBeforeUnmount(() => {
                             () => {
                                 if (beats.length === 16) return;
                                 emit('update:beats', [...beats, Beat.NORMAL]);
-                                emitFormChange();
-                            }
-                        "
-                    />
-                </UTooltip>
-                <UTooltip text="Add Accented Beat" :content="{ sideOffset: 9 }">
-                    <UButton
-                        icon="mdi:exclamation-thick"
-                        variant="ghost"
-                        :disabled="beats.length === 16"
-                        @click="
-                            () => {
-                                if (beats.length === 16) return;
-                                emit('update:beats', [...beats, Beat.ACCENTED]);
                                 emitFormChange();
                             }
                         "
