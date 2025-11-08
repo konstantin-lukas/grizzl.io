@@ -141,7 +141,7 @@ async function onSubmit() {
                         item-key="id"
                         class="center gap-4"
                         :animation="250"
-                        handle=".handle"
+                        handle="[data-handle]"
                     >
                         <template #item="{ element: interval, index }">
                             <fieldset
@@ -222,7 +222,7 @@ async function onSubmit() {
                                     </Transition>
                                 </div>
                                 <USeparator />
-                                <div class="handle relative w-full cursor-move overflow-hidden py-6" tabindex="0">
+                                <div class="relative w-full cursor-move overflow-hidden py-6" tabindex="0" data-handle>
                                     <UIcon
                                         name="mdi:drag-horizontal"
                                         class="absolute top-1/2 left-1/2 size-12 -translate-1/2"
