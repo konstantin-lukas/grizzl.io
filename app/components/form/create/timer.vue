@@ -3,7 +3,7 @@ import { Beat } from "#shared/enum/timer";
 import type { TimerPostType } from "#shared/schema/timer";
 import { TimerPostSchema } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
-import draggable from "vuedraggable";
+import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
 type TimerIntervalWithId = TimerPostType["intervals"][number] & {
@@ -85,6 +85,8 @@ async function onSubmit() {
     }
     toast.add(createToastSuccess("Timer created successfully."));
 }
+const isDragging = ref(false);
+const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
 </script>
 
 <template>
@@ -136,16 +138,22 @@ async function onSubmit() {
                             />
                         </div>
                     </Transition>
-                    <draggable
+                    <VueDraggable
                         v-model="state.intervals"
-                        item-key="id"
-                        class="center gap-4"
                         :animation="250"
+                        class="center relative gap-4"
+                        tag="div"
                         handle="[data-handle]"
+                        ghost-class="ghost"
+                        @start="() => (isDragging = true)"
+                        @end="handleEnd"
                     >
-                        <template #item="{ element: interval, index }">
+                        <TransitionGroup name="list">
                             <fieldset
+                                v-for="[index, interval] in state.intervals.entries()"
+                                :key="interval.id"
                                 class="group relative rounded-md border border-border-accented bg-back transition-[margin] focus-within:mb-12 sm:focus-within:mb-0"
+                                :style="{ transition: isDragging ? 'none' : '' }"
                             >
                                 <div class="center w-full gap-4 p-4">
                                     <UFormField
@@ -293,8 +301,8 @@ async function onSubmit() {
                                     </UTooltip>
                                 </div>
                             </fieldset>
-                        </template>
-                    </draggable>
+                        </TransitionGroup>
+                    </VueDraggable>
                 </div>
             </div>
         </div>
