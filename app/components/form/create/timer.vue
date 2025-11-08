@@ -23,8 +23,6 @@ const state = reactive<TimerPostWithId>({
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
 
-const isDragging = useIsDragging();
-
 onMounted(() => {
     if (typeof speechSynthesis === "undefined") return;
     const loadVoices = () => {
@@ -144,8 +142,6 @@ async function onSubmit() {
                         class="center gap-4"
                         :animation="250"
                         handle=".handle"
-                        @start="() => (isDragging = true)"
-                        @end="() => (isDragging = false)"
                     >
                         <template #item="{ element: interval, index }">
                             <fieldset class="group relative rounded-md border border-border-accented bg-back">

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const open = ref(false);
-const isDragging = useIsDragging();
 </script>
 
 <template>
@@ -21,12 +20,7 @@ const isDragging = useIsDragging();
                 },
             ]"
         />
-        <UDrawer
-            v-model:open="open"
-            class="max-h-dvh"
-            :dismissible="!isDragging"
-            :style="isDragging ? 'touch-action:none; overscroll-behavior:none;' : ''"
-        >
+        <UDrawer v-model:open="open" class="max-h-dvh" :handle-only="true">
             <template #content>
                 <FormCreateTimer />
             </template>
