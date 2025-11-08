@@ -229,7 +229,7 @@ async function onSubmit() {
                                     />
                                 </div>
                                 <div
-                                    class="invisible absolute left-0 mt-4 flex w-full items-center justify-center gap-4 group-focus-within:visible sm:top-0 sm:left-full sm:mt-0 sm:ml-4 sm:w-auto sm:flex-col"
+                                    class="invisible absolute left-0 mt-4 flex w-full items-center justify-center gap-4 opacity-0 transition-all group-focus-within:visible group-focus-within:opacity-100 sm:top-0 sm:left-full sm:mt-0 sm:ml-4 sm:w-auto sm:flex-col"
                                 >
                                     <UTooltip text="Duplicate interval" :content="{ side: 'top', sideOffset: 13 }">
                                         <UButton
