@@ -20,7 +20,14 @@ const open = ref(false);
                 },
             ]"
         />
-        <UDrawer v-model:open="open" class="max-h-dvh" :handle-only="true">
+        <UDrawer
+            v-model:open="open"
+            class="max-h-dvh"
+            :handle-only="true"
+            :ui="{
+                handle: '[&>span]:!w-dvw',
+            }"
+        >
             <template #content>
                 <FormCreateTimer />
             </template>
