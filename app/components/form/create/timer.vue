@@ -3,6 +3,7 @@ import { Beat } from "#shared/enum/timer";
 import type { TimerPostType } from "#shared/schema/timer";
 import { TimerPostSchema } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
+import draggable from "vuedraggable";
 import { createToastSuccess } from "~/utils/toast";
 
 type TimerIntervalWithId = TimerPostType["intervals"][number] & {
@@ -21,6 +22,8 @@ const state = reactive<TimerPostWithId>({
     ttsVoice: undefined,
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
+
+const isDragging = useIsDragging();
 
 onMounted(() => {
     if (typeof speechSynthesis === "undefined") return;
@@ -135,136 +138,165 @@ async function onSubmit() {
                             />
                         </div>
                     </Transition>
-                    <TransitionGroup name="list" tag="div" class="relative flex flex-col gap-4">
-                        <fieldset
-                            v-for="[index, interval] in state.intervals.entries()"
-                            :key="interval.id"
-                            class="center w-full gap-4 rounded-md border border-border-accented bg-back p-4"
-                        >
-                            <UFormField label="Interval Title" :name="`intervals.${index}.title`" class="w-full">
-                                <UInput
-                                    v-model="interval.title"
-                                    class="w-full"
-                                    placeholder="Displayed during interval"
-                                />
-                            </UFormField>
-                            <UFormField label="Interval Type" :name="`intervals.${index}.type`" required class="w-full">
-                                <USelect
-                                    :items="['Temporal', 'Rhythm']"
-                                    default-value="Temporal"
-                                    class="w-full"
-                                    @update:model-value="
-                                        value => {
-                                            interval.beatPattern =
-                                                value === 'Temporal'
-                                                    ? undefined
-                                                    : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
-                                        }
-                                    "
-                                />
-                            </UFormField>
-                            <div class="flex gap-4">
-                                <UFormField
-                                    label="Repetitions"
-                                    :name="`intervals.${index}.repeatCount`"
-                                    required
-                                    class="w-full"
-                                >
-                                    <UInputNumber v-model="interval.repeatCount" class="w-full" :min="1" />
-                                </UFormField>
-                                <UFormField
-                                    label="Duration"
-                                    :name="`intervals.${index}.duration`"
-                                    required
-                                    class="w-full"
-                                >
-                                    <UInputNumber
-                                        v-model="interval.duration"
+                    <draggable
+                        v-model="state.intervals"
+                        item-key="id"
+                        class="center gap-4"
+                        :animation="250"
+                        handle=".handle"
+                        @start="() => (isDragging = true)"
+                        @end="() => (isDragging = false)"
+                    >
+                        <template #item="{ element: interval, index }">
+                            <fieldset class="group relative rounded-md border border-border-accented bg-back">
+                                <div class="center w-full gap-4 p-4">
+                                    <UFormField
+                                        label="Interval Title"
+                                        :name="`intervals.${index}.title`"
                                         class="w-full"
-                                        :step="0.1"
-                                        :min="1"
-                                        :format-options="{ style: 'unit', unit: 'second' }"
+                                    >
+                                        <UInput
+                                            v-model="interval.title"
+                                            class="w-full"
+                                            placeholder="Displayed during interval"
+                                        />
+                                    </UFormField>
+                                    <UFormField
+                                        label="Interval Type"
+                                        :name="`intervals.${index}.type`"
+                                        required
+                                        class="z-1 w-full"
+                                    >
+                                        <USelect
+                                            :items="['Temporal', 'Rhythm']"
+                                            default-value="Temporal"
+                                            class="w-full"
+                                            :portal="false"
+                                            @update:model-value="
+                                                value => {
+                                                    interval.beatPattern =
+                                                        value === 'Temporal'
+                                                            ? undefined
+                                                            : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
+                                                }
+                                            "
+                                        />
+                                    </UFormField>
+                                    <div class="flex gap-4">
+                                        <UFormField
+                                            label="Repetitions"
+                                            :name="`intervals.${index}.repeatCount`"
+                                            required
+                                            class="w-full"
+                                        >
+                                            <UInputNumber v-model="interval.repeatCount" class="w-full" :min="1" />
+                                        </UFormField>
+                                        <UFormField
+                                            label="Duration"
+                                            :name="`intervals.${index}.duration`"
+                                            required
+                                            class="w-full"
+                                        >
+                                            <UInputNumber
+                                                v-model="interval.duration"
+                                                class="w-full"
+                                                :step="0.1"
+                                                :min="1"
+                                                :format-options="{ style: 'unit', unit: 'second' }"
+                                            />
+                                        </UFormField>
+                                    </div>
+                                    <Transition name="fade">
+                                        <UFormField
+                                            v-if="interval.beatPattern !== undefined"
+                                            label="Beat Pattern"
+                                            :name="`intervals.${index}.beatPattern`"
+                                            required
+                                            class="w-full"
+                                        >
+                                            <InputBeatPattern
+                                                :beats="interval.beatPattern"
+                                                :bar-length="interval.duration"
+                                                class="w-full"
+                                                @update:beats="value => (interval.beatPattern = value)"
+                                            />
+                                        </UFormField>
+                                    </Transition>
+                                </div>
+                                <USeparator />
+                                <div class="handle relative w-full cursor-move overflow-hidden py-6" tabindex="0">
+                                    <UIcon
+                                        name="mdi:drag-horizontal"
+                                        class="absolute top-1/2 left-1/2 size-12 -translate-1/2"
                                     />
-                                </UFormField>
-                            </div>
-                            <Transition name="fade">
-                                <UFormField
-                                    v-if="interval.beatPattern !== undefined"
-                                    label="Beat Pattern"
-                                    :name="`intervals.${index}.beatPattern`"
-                                    required
-                                    class="w-full"
+                                </div>
+                                <div
+                                    class="center invisible absolute top-0 left-full ml-4 gap-4 group-focus-within:visible"
                                 >
-                                    <InputBeatPattern
-                                        :beats="interval.beatPattern"
-                                        :bar-length="interval.duration"
-                                        class="w-full"
-                                        @update:beats="value => (interval.beatPattern = value)"
-                                    />
-                                </UFormField>
-                            </Transition>
-                            <USeparator />
-                            <div class="flex w-full justify-center gap-4">
-                                <UTooltip text="Duplicate interval" :content="{ side: 'top', sideOffset: 13 }">
-                                    <UButton
-                                        icon="heroicons:document-duplicate"
-                                        variant="subtle"
-                                        aria-label="Duplicate interval"
-                                        :disabled="state.intervals.length === 100"
-                                        @click="
-                                            () => {
-                                                if (state.intervals.length === 100) return;
-                                                const newIntervals = duplicateNthElement(state.intervals, index);
-                                                newIntervals[index + 1] = { ...newIntervals[index + 1]!, id: nanoid() };
-                                                state.intervals = newIntervals;
-                                            }
-                                        "
-                                    />
-                                </UTooltip>
-                                <UTooltip text="Move interval up" :content="{ side: 'top', sideOffset: 13 }">
-                                    <UButton
-                                        icon="heroicons:arrow-small-up"
-                                        variant="subtle"
-                                        aria-label="Move interval up"
-                                        :disabled="index === 0"
-                                        @click="
-                                            () => {
-                                                state.intervals = moveElement(state.intervals, index, index - 1);
-                                            }
-                                        "
-                                    />
-                                </UTooltip>
-                                <UTooltip text="Move interval down" :content="{ side: 'top', sideOffset: 13 }">
-                                    <UButton
-                                        icon="heroicons:arrow-small-down"
-                                        variant="subtle"
-                                        aria-label="Move interval down"
-                                        :disabled="index === state.intervals.length - 1"
-                                        @click="
-                                            () => {
-                                                state.intervals = moveElement(state.intervals, index, index + 1);
-                                            }
-                                        "
-                                    />
-                                </UTooltip>
-                                <UTooltip text="Delete interval" :content="{ side: 'top', sideOffset: 13 }">
-                                    <UButton
-                                        icon="heroicons:trash"
-                                        color="error"
-                                        variant="subtle"
-                                        aria-label="Delete interval"
-                                        :disabled="state.intervals.length === 1"
-                                        @click="
-                                            () => {
-                                                if (state.intervals.length === 1) return;
-                                                state.intervals = deleteNthElement(state.intervals, index);
-                                            }
-                                        "
-                                    />
-                                </UTooltip>
-                            </div>
-                        </fieldset>
-                    </TransitionGroup>
+                                    <UTooltip text="Duplicate interval" :content="{ side: 'top', sideOffset: 13 }">
+                                        <UButton
+                                            icon="heroicons:document-duplicate"
+                                            variant="subtle"
+                                            aria-label="Duplicate interval"
+                                            :disabled="state.intervals.length === 100"
+                                            @click="
+                                                () => {
+                                                    if (state.intervals.length === 100) return;
+                                                    const newIntervals = duplicateNthElement(state.intervals, index);
+                                                    newIntervals[index + 1] = {
+                                                        ...newIntervals[index + 1]!,
+                                                        id: nanoid(),
+                                                    };
+                                                    state.intervals = newIntervals;
+                                                }
+                                            "
+                                        />
+                                    </UTooltip>
+                                    <UTooltip text="Move interval up" :content="{ side: 'top', sideOffset: 13 }">
+                                        <UButton
+                                            icon="heroicons:arrow-small-up"
+                                            variant="subtle"
+                                            aria-label="Move interval up"
+                                            :disabled="index === 0"
+                                            @click="
+                                                () => {
+                                                    state.intervals = moveElement(state.intervals, index, index - 1);
+                                                }
+                                            "
+                                        />
+                                    </UTooltip>
+                                    <UTooltip text="Move interval down" :content="{ side: 'top', sideOffset: 13 }">
+                                        <UButton
+                                            icon="heroicons:arrow-small-down"
+                                            variant="subtle"
+                                            aria-label="Move interval down"
+                                            :disabled="index === state.intervals.length - 1"
+                                            @click="
+                                                () => {
+                                                    state.intervals = moveElement(state.intervals, index, index + 1);
+                                                }
+                                            "
+                                        />
+                                    </UTooltip>
+                                    <UTooltip text="Delete interval" :content="{ side: 'top', sideOffset: 13 }">
+                                        <UButton
+                                            icon="heroicons:trash"
+                                            color="error"
+                                            variant="subtle"
+                                            aria-label="Delete interval"
+                                            :disabled="state.intervals.length === 1"
+                                            @click="
+                                                () => {
+                                                    if (state.intervals.length === 1) return;
+                                                    state.intervals = deleteNthElement(state.intervals, index);
+                                                }
+                                            "
+                                        />
+                                    </UTooltip>
+                                </div>
+                            </fieldset>
+                        </template>
+                    </draggable>
                 </div>
             </div>
         </div>
