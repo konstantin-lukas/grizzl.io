@@ -6,15 +6,15 @@ import beatAudio from "~/assets/sound/beat.wav";
 const { emitFormChange, color } = useFormField();
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
-const playSound = useState("beat-pattern-input-playing", () => "");
+const playingComponentId = useState("beat-pattern-input-playing", () => "");
 const currentBeat = ref(0);
 const startTime = ref(Date.now());
 
 const componentId = useId();
 watch(
-    () => [beats, barLength, playSound],
+    () => [beats, playingComponentId],
     () => {
-        if (beats.length === 0) playSound.value = componentId;
+        if (beats.length <= 1 && playingComponentId.value === componentId) playingComponentId.value = "";
     },
 );
 
@@ -26,11 +26,11 @@ watch(
     },
 );
 
-watch(playSound, () => {
-    if (playSound.value !== componentId) return;
+watch(playingComponentId, () => {
+    if (playingComponentId.value !== componentId) return;
     startTime.value = Date.now() - currentBeat.value * ((barLength * 1000) / beats.length);
     const animateBeats = () => {
-        if (playSound.value !== componentId) return;
+        if (playingComponentId.value !== componentId) return;
         const barLengthInMs = barLength * 1000;
         const moduloTime = (Date.now() - startTime.value) % barLengthInMs;
         const beatLength = barLengthInMs / beats.length;
@@ -48,7 +48,7 @@ watch(playSound, () => {
 });
 
 onBeforeUnmount(() => {
-    if (playSound.value === componentId) playSound.value = "";
+    if (playingComponentId.value === componentId) playingComponentId.value = "";
 });
 </script>
 
@@ -60,18 +60,18 @@ onBeforeUnmount(() => {
         <div class="flex justify-between">
             <div>
                 <UTooltip
-                    :text="playSound === componentId ? 'Pause Playback' : 'Start Playback'"
+                    :text="playingComponentId === componentId ? 'Pause Playback' : 'Start Playback'"
                     :content="{ side: 'right', align: 'center' }"
                 >
                     <UButton
-                        :icon="playSound === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-                        :aria-label="playSound ? 'Pause Playback' : 'Start Playback'"
+                        :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+                        :aria-label="playingComponentId ? 'Pause Playback' : 'Start Playback'"
                         variant="ghost"
                         :disabled="beats.length === 0"
                         @click="
                             () => {
-                                if (playSound === componentId) playSound = '';
-                                else playSound = componentId;
+                                if (playingComponentId === componentId) playingComponentId = '';
+                                else playingComponentId = componentId;
                             }
                         "
                     />
