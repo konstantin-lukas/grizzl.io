@@ -21,6 +21,9 @@ useHead({
     <div>
         <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir" data-test-id="root">
             <Body>
+                <teleport to="body">
+                    <NuxtLoadingIndicator />
+                </teleport>
                 <NavMenu />
                 <NavMenuButton />
                 <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-elements" class="min-h-main-height">

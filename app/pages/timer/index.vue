@@ -20,6 +20,6 @@ const open = ref(false);
                 },
             ]"
         />
-        <FormCreateTimer v-model:open="open" />
+        <FormCreateTimer v-model:open="open" @success="open = false" />
     </LayoutWrapper>
 </template>

@@ -14,6 +14,10 @@ type TimerPostWithId = Omit<TimerPostType, "intervals"> & {
     intervals: TimerIntervalWithId[];
 };
 
+const emit = defineEmits(["success"]);
+
+const { start, finish, isLoading } = useLoadingIndicator();
+
 const ttsVoices = ref<string[][]>([]);
 const ttsVoicePreviewText = ref("");
 
@@ -73,6 +77,7 @@ watch(state, () => {
 
 const toast = useToast();
 async function onSubmit() {
+    start();
     const { error } = await tryCatchApi(
         $fetch("/api/timers", {
             method: "POST",
@@ -83,6 +88,8 @@ async function onSubmit() {
         toast.add(createToastError(error));
         return;
     }
+    emit("success");
+    finish();
     toast.add(createToastSuccess("Timer created successfully."));
 }
 const isDragging = ref(false);
@@ -95,6 +102,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
         :handle-only="true"
         :ui="{
             handle: '[&>span]:!w-dvw',
+            content: 'rounded-none',
         }"
     >
         <template #content>
@@ -345,9 +353,14 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                 </div>
                 <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
                     <div class="flex w-120 justify-center gap-4 px-8">
-                        <UButton type="submit" icon="ic:outline-create" class="flex w-full justify-center"
-                            >Erstellen</UButton
+                        <UButton
+                            type="submit"
+                            icon="ic:outline-create"
+                            class="flex w-full justify-center"
+                            :disabled="isLoading"
                         >
+                            Erstellen
+                        </UButton>
                     </div>
                 </div>
             </UForm>
