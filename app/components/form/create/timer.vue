@@ -18,7 +18,7 @@ const emit = defineEmits(["success"]);
 
 const { start, finish, isLoading } = useLoadingIndicator();
 
-const ttsVoices = ref<string[][]>([]);
+const ttsVoices = ref<{ label: string; value: string | undefined }[][]>([]);
 const ttsVoicePreviewText = ref("");
 
 const state = reactive<TimerPostWithId>({
@@ -31,11 +31,10 @@ onMounted(() => {
     if (typeof speechSynthesis === "undefined") return;
     const loadVoices = () => {
         const voices = speechSynthesis.getVoices();
-        const options = [["Don't read interval titles aloud"], voices.map(v => v.name)];
-        ttsVoices.value = options;
-        if (!state.ttsVoice && voices.length > 0) {
-            [state.ttsVoice] = options[0]!;
-        }
+        ttsVoices.value = [
+            [{ label: "Don't read interval titles aloud", value: undefined }],
+            voices.map(v => ({ label: v.name, value: v.voiceURI })),
+        ];
     };
     loadVoices();
     speechSynthesis.addEventListener("voiceschanged", loadVoices);
@@ -125,7 +124,12 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                 name="ttsVoice"
                                 class="w-full"
                             >
-                                <USelect v-model="state.ttsVoice" :items="ttsVoices" class="w-full">
+                                <USelect
+                                    v-model="state.ttsVoice"
+                                    :items="ttsVoices"
+                                    class="w-full"
+                                    placeholder="Don't read interval titles aloud"
+                                >
                                     <template #trailing>
                                         <UTooltip
                                             text="Not all voices are available on all devices"
