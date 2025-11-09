@@ -98,7 +98,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
             <span
                 class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
             />
-            <div class="center overflow-hidden">
+            <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <UFormField label="Timer Title" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" />
