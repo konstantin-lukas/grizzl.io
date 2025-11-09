@@ -116,7 +116,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                     <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                         <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                             <UFormField label="Timer Title" name="title" class="w-full" required>
-                                <UInput v-model="state.title" class="w-full" />
+                                <UInput v-model="state.title" class="w-full" :maxlength="100" />
                             </UFormField>
                             <UFormField
                                 v-if="ttsVoices"
@@ -184,6 +184,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                                 <UInput
                                                     v-model="interval.title"
                                                     class="w-full"
+                                                    :maxlength="100"
                                                     placeholder="Displayed during interval"
                                                 />
                                             </UFormField>
