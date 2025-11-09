@@ -14,10 +14,10 @@ const IntervalSchema = z
     })
     .transform(({ id, ...rest }) => rest);
 
-export const TimerPostSchema = z.strictObject({
+export const TimerSchema = z.strictObject({
     title: z.string().min(1).max(100),
     ttsVoice: z.optional(z.string().max(200)),
     intervals: z.array(IntervalSchema).min(1).max(100),
 });
 
-export type TimerPostType = z.infer<typeof TimerPostSchema>;
+export type TimerType = z.infer<typeof TimerSchema>;

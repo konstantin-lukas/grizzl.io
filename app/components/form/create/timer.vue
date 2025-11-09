@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
-import type { TimerPostType } from "#shared/schema/timer";
-import { TimerPostSchema } from "#shared/schema/timer";
+import type { TimerType } from "#shared/schema/timer";
+import { TimerSchema } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
-type TimerIntervalWithId = TimerPostType["intervals"][number] & {
+type TimerIntervalWithId = TimerType["intervals"][number] & {
     id: string;
 };
 
-type TimerPostWithId = Omit<TimerPostType, "intervals"> & {
+type TimerPostWithId = Omit<TimerType, "intervals"> & {
     intervals: TimerIntervalWithId[];
 };
 
@@ -106,7 +106,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
         }"
     >
         <template #content>
-            <UForm class="mt-0 h-dvh pt-4" :schema="TimerPostSchema" :state="state" @submit.prevent="onSubmit">
+            <UForm class="mt-0 h-dvh pt-4" :schema="TimerSchema" :state="state" @submit.prevent="onSubmit">
                 <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
                     <span
                         class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
