@@ -119,7 +119,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                 <UInput v-model="state.title" class="w-full" :maxlength="100" />
                             </UFormField>
                             <UFormField
-                                v-if="ttsVoices"
+                                v-if="ttsVoices.length > 0"
                                 label="Text-to-speech voice for interval titles"
                                 name="ttsVoice"
                                 class="w-full"
@@ -147,7 +147,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                             </UFormField>
                             <Transition name="fade">
                                 <div
-                                    v-if="ttsVoices.length > 0 && state.ttsVoice !== ttsVoices[0]?.[0]"
+                                    v-if="ttsVoices.length > 0 && state.ttsVoice !== undefined"
                                     class="flex w-full gap-4"
                                 >
                                     <UButton icon="heroicons:speaker-wave" @click="saySampleText" />
