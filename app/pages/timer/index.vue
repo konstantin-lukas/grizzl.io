@@ -20,21 +20,6 @@ const open = ref(false);
                 },
             ]"
         />
-        <UDrawer
-            v-model:open="open"
-            class="max-h-dvh"
-            :handle-only="true"
-            :ui="{
-                handle: '[&>span]:!w-dvw',
-            }"
-        >
-            <template #content>
-                <FormCreateTimer />
-            </template>
-            <template #title>Create a new timer</template>
-            <template #description>
-                Choose between different types of timer intervals to create a fully customized timer
-            </template>
-        </UDrawer>
+        <FormCreateTimer v-model:open="open" />
     </LayoutWrapper>
 </template>
