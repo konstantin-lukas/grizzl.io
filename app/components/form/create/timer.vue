@@ -230,7 +230,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                     </Transition>
                                 </div>
                                 <USeparator />
-                                <div class="relative w-full cursor-move overflow-hidden py-6" tabindex="0" data-handle>
+                                <div class="relative w-full cursor-move overflow-hidden py-6" data-handle>
                                     <UIcon
                                         name="mdi:drag-horizontal"
                                         class="absolute top-1/2 left-1/2 size-12 -translate-1/2"

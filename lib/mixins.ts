@@ -1,4 +1,4 @@
-import { char } from "drizzle-orm/pg-core";
+import { char, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 
 export function generateId() {
@@ -8,4 +8,8 @@ export function generateId() {
 
 export const id = {
     id: char({ length: 16 }).primaryKey().$defaultFn(generateId),
+};
+
+export const createdAt = {
+    createdAt: timestamp().defaultNow().notNull(),
 };
