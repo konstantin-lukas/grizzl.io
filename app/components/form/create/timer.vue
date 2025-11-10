@@ -76,7 +76,7 @@ watch(state, () => {
 
 const toast = useToast();
 async function onSubmit() {
-    start();
+    start({ force: true });
     const { error } = await tryCatchApi(
         $fetch("/api/timers", {
             method: "POST",

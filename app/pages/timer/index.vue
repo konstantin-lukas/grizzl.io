@@ -2,6 +2,12 @@
 const open = ref(false);
 const { data, refresh } = useFetch("/api/timers");
 watch(open, () => refresh());
+const toast = useToast();
+async function deleteTimer(id: string) {
+    const { error } = await tryCatchApi($fetch(`/api/timers/${id}`, { method: "DELETE" }));
+    toast.add(error ? createToastError(error) : createToastSuccess("Timer deleted successfully."));
+    if (!error) await refresh();
+}
 </script>
 
 <template>
@@ -40,7 +46,13 @@ watch(open, () => refresh());
                             <UButton aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
                         </UTooltip>
                         <UTooltip text="Löschen">
-                            <UButton aria-label="Löschen" color="error" variant="subtle" icon="heroicons:trash" />
+                            <Button
+                                aria-label="Löschen"
+                                color="error"
+                                variant="subtle"
+                                icon="heroicons:trash"
+                                :on-async-click="async () => await deleteTimer(timer.id)"
+                            />
                         </UTooltip>
                     </div>
                 </div>
