@@ -78,9 +78,6 @@ export default defineNuxtConfig({
     devtools: { enabled: false },
     vite: { plugins: [tailwindcss()] },
     css: ["~/assets/css/main.css"],
-    typescript: {
-        typeCheck: true,
-    },
     app: {
         head: {
             link: [

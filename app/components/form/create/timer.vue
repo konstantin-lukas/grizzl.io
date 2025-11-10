@@ -360,7 +360,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                     <div class="flex w-120 justify-center gap-4 px-8">
                         <UButton
                             type="submit"
-                            icon="ic:outline-create"
+                            icon="heroicons:plus-circle-16-solid"
                             class="flex w-full justify-center"
                             :disabled="isLoading"
                         >
