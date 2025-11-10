@@ -4,7 +4,7 @@ const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x
 </script>
 
 <template>
-    <UButton
+    <Button
         color="neutral"
         variant="ghost"
         class="fixed top-4 left-4 z-50 h-10 w-10 cursor-pointer"
@@ -16,5 +16,5 @@ const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x
             <span class="top-0.75" :class="{ [baseClass]: true, 'top-1/2 -translate-y-1/2 rotate-225': isOpen }" />
             <span class="bottom-0.75" :class="{ [baseClass]: true, 'bottom-1/2 translate-y-1/2 rotate-135': isOpen }" />
         </span>
-    </UButton>
+    </Button>
 </template>

@@ -25,21 +25,21 @@ const session = authClient.useSession();
                     </p>
                 </div>
                 <div class="flex gap-4">
-                    <UButton
+                    <Button
                         v-if="session.data"
                         size="xl"
                         icon="heroicons:arrow-right-end-on-rectangle"
                         @click="authClient.signOut()"
                     >
                         {{ $t("ui.signOut") }}
-                    </UButton>
-                    <UButton v-else to="/signin" size="xl" icon="heroicons:arrow-right-end-on-rectangle">
+                    </Button>
+                    <Button v-else to="/signin" size="xl" icon="heroicons:arrow-right-end-on-rectangle">
                         {{ $t("ui.signIn") }}
-                    </UButton>
+                    </Button>
                     <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
-                        <UButton variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
+                        <Button variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
                             {{ $t("ui.install") }}
-                        </UButton>
+                        </Button>
                     </div>
                 </div>
             </div>

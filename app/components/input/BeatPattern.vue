@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
                     :text="playingComponentId === componentId ? 'Pause Playback' : 'Start Playback'"
                     :content="{ side: 'right', align: 'center' }"
                 >
-                    <UButton
+                    <Button
                         :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
                         :aria-label="playingComponentId ? 'Pause Playback' : 'Start Playback'"
                         variant="ghost"
@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
             </div>
             <div>
                 <UTooltip text="Add Accented Beat" :content="{ sideOffset: 9 }">
-                    <UButton
+                    <Button
                         icon="mdi:exclamation-thick"
                         variant="ghost"
                         :disabled="beats.length === 16"
@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
                     />
                 </UTooltip>
                 <UTooltip text="Add Beat" :content="{ sideOffset: 9 }">
-                    <UButton
+                    <Button
                         icon="mdi:music-note-quarter"
                         aria-label="Add Beat"
                         variant="ghost"
@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
                     />
                 </UTooltip>
                 <UTooltip text="Add Pause" :content="{ sideOffset: 9 }">
-                    <UButton
+                    <Button
                         icon="mdi:music-rest-quarter"
                         variant="ghost"
                         :disabled="beats.length === 16"
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
                     />
                 </UTooltip>
                 <UTooltip text="Delete Beat" :content="{ sideOffset: 9 }">
-                    <UButton
+                    <Button
                         variant="ghost"
                         icon="mdi:music-note-off"
                         color="error"

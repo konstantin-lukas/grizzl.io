@@ -41,9 +41,9 @@ async function deleteTimer(id: string) {
                     </span>
                     <USeparator class="mt-2 mb-4" />
                     <div class="flex gap-4">
-                        <UButton icon="heroicons:play-solid">Start</UButton>
+                        <Button icon="heroicons:play-solid">Start</Button>
                         <UTooltip text="Bearbeiten">
-                            <UButton aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
+                            <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
                         </UTooltip>
                         <UTooltip text="Löschen">
                             <Button

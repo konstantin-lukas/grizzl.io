@@ -150,7 +150,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                     v-if="ttsVoices.length > 0 && state.ttsVoice !== undefined"
                                     class="flex w-full gap-4"
                                 >
-                                    <UButton icon="heroicons:speaker-wave" @click="saySampleText" />
+                                    <Button icon="heroicons:speaker-wave" @click="saySampleText" />
                                     <UInput
                                         v-model="ttsVoicePreviewText"
                                         class="w-full"
@@ -273,7 +273,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                                 text="Duplicate interval"
                                                 :content="{ side: 'top', sideOffset: 13 }"
                                             >
-                                                <UButton
+                                                <Button
                                                     icon="heroicons:document-duplicate"
                                                     variant="subtle"
                                                     aria-label="Duplicate interval"
@@ -298,7 +298,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                                 text="Move interval up"
                                                 :content="{ side: 'top', sideOffset: 13 }"
                                             >
-                                                <UButton
+                                                <Button
                                                     icon="heroicons:arrow-small-up"
                                                     variant="subtle"
                                                     aria-label="Move interval up"
@@ -318,7 +318,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                                 text="Move interval down"
                                                 :content="{ side: 'top', sideOffset: 13 }"
                                             >
-                                                <UButton
+                                                <Button
                                                     icon="heroicons:arrow-small-down"
                                                     variant="subtle"
                                                     aria-label="Move interval down"
@@ -335,7 +335,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                                 />
                                             </UTooltip>
                                             <UTooltip text="Delete interval" :content="{ side: 'top', sideOffset: 13 }">
-                                                <UButton
+                                                <Button
                                                     icon="heroicons:trash"
                                                     color="error"
                                                     variant="subtle"
@@ -358,14 +358,14 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                 </div>
                 <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
                     <div class="flex w-120 justify-center gap-4 px-8">
-                        <UButton
+                        <Button
                             type="submit"
                             icon="heroicons:plus-circle-16-solid"
                             class="flex w-full justify-center"
                             :disabled="isLoading"
                         >
                             Erstellen
-                        </UButton>
+                        </Button>
                     </div>
                 </div>
             </UForm>
