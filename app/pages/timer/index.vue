@@ -50,15 +50,24 @@ async function deleteTimer(id: string, title: string) {
                         <UTooltip text="Bearbeiten">
                             <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
                         </UTooltip>
-                        <UTooltip text="Löschen">
-                            <Button
-                                aria-label="Löschen"
-                                color="error"
-                                variant="subtle"
-                                icon="heroicons:trash"
-                                :on-async-click="async () => await deleteTimer(timer.id, timer.title)"
-                            />
-                        </UTooltip>
+                        <UModal :close="false">
+                            <UTooltip text="Löschen">
+                                <Button aria-label="Löschen" color="error" variant="subtle" icon="heroicons:trash" />
+                            </UTooltip>
+                            <template #body>
+                                <p>Are you sure you want to delete the timer titled "{{ timer.title }}"?</p>
+                            </template>
+                            <template #footer="{ close }">
+                                <Button
+                                    icon="heroicons:trash"
+                                    :on-async-click="async () => await deleteTimer(timer.id, timer.title)"
+                                    color="error"
+                                >
+                                    Delete
+                                </Button>
+                                <Button variant="subtle" icon="heroicons:backspace" @click="close"> Cancel </Button>
+                            </template>
+                        </UModal>
                     </div>
                 </div>
             </div>
