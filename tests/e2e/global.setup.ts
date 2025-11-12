@@ -8,7 +8,7 @@ export default async function GlobalSetup(config: FullConfig) {
     const browser = await firefox.launch();
     const page = await browser.newPage();
 
-    await page.goto(`${baseURL}/signin`);
+    await page.goto(`${baseURL}/signin`, { waitUntil: "load" });
     await page.getByTestId("keycloak-provider").click();
     await page.locator("#username").fill("user");
     await page.locator("#password").fill("password");
