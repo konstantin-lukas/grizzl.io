@@ -167,7 +167,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                 @start="() => (isDragging = true)"
                                 @end="handleEnd"
                             >
-                                <TransitionGroup name="list">
+                                <TransitionGroup name="draggable-list">
                                     <fieldset
                                         v-for="[index, interval] in state.intervals.entries()"
                                         :key="interval.id"

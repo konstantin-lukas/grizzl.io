@@ -174,26 +174,26 @@
             transform 200ms;
     }
 
-    .list-move,
-    .list-enter-active,
-    .list-leave-active {
+    .draggable-list-move,
+    .draggable-list-enter-active,
+    .draggable-list-leave-active {
         transition: transform 0.5s ease;
         z-index: 5;
     }
 
-    .list-enter-active {
+    .draggable-list-enter-active {
         transition:
             opacity 0.5s ease,
             transform 0.5s ease;
     }
 
-    .list-enter-from,
-    .list-leave-to {
+    .draggable-list-enter-from,
+    .draggable-list-leave-to {
         opacity: 0;
         transform: translateX(3rem);
     }
 
-    .list-leave-active {
+    .draggable-list-leave-active {
         position: absolute;
     }
 
@@ -211,5 +211,23 @@
 
     .ghost {
         visibility: hidden;
+    }
+
+    .list-move, /* apply transition to moving elements */
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 0.5s ease;
+    }
+
+    .list-enter-from,
+    .list-leave-to {
+        opacity: 0;
+        transform: translateX(3rem);
+    }
+
+    /* ensure leaving items are taken out of layout flow so that moving
+       animations can be calculated correctly. */
+    .list-leave-active {
+        position: absolute;
     }
 }
