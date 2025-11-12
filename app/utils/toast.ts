@@ -2,6 +2,13 @@ import { h } from "vue";
 import type { ApiError } from "~/types/error";
 
 export function createToastError(error: ApiError) {
+    if (!error.data) {
+        return {
+            title: error.name,
+            description: error.message,
+            color: "error",
+        } as const;
+    }
     return {
         title: error?.data?.statusMessage,
         description: h("div", {

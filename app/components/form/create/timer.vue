@@ -77,19 +77,18 @@ watch(state, () => {
 const toast = useToast();
 async function onSubmit() {
     start({ force: true });
-    const { error } = await tryCatchApi(
-        $fetch("/api/timers", {
-            method: "POST",
-            body: state,
-        }),
-    );
-    if (error) {
-        toast.add(createToastError(error));
-        return;
-    }
-    emit("success");
-    finish();
-    toast.add(createToastSuccess("Timer created successfully."));
+    $fetch("/api/timers", {
+        method: "POST",
+        body: state,
+    })
+        .then(() => {
+            emit("success");
+            finish();
+            toast.add(createToastSuccess("Timer created successfully."));
+        })
+        .catch(error => {
+            toast.add(createToastError(error));
+        });
 }
 const isDragging = ref(false);
 const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);

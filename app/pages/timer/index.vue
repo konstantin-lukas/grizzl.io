@@ -3,10 +3,15 @@ const open = ref(false);
 const { data, refresh } = useFetch("/api/timers");
 watch(open, () => refresh());
 const toast = useToast();
-async function deleteTimer(id: string) {
-    const { error } = await tryCatchApi($fetch(`/api/timers/${id}`, { method: "DELETE" }));
-    toast.add(error ? createToastError(error) : createToastSuccess("Timer deleted successfully."));
-    if (!error) await refresh();
+async function deleteTimer(id: string, title: string) {
+    $fetch(`/api/timers/${id}`, { method: "DELETE" })
+        .then(async () => {
+            await refresh();
+            toast.add(createToastSuccess(`Timer "${title}" deleted successfully.`));
+        })
+        .catch(error => {
+            toast.add(createToastError(error));
+        });
 }
 </script>
 
@@ -51,7 +56,7 @@ async function deleteTimer(id: string) {
                                 color="error"
                                 variant="subtle"
                                 icon="heroicons:trash"
-                                :on-async-click="async () => await deleteTimer(timer.id)"
+                                :on-async-click="async () => await deleteTimer(timer.id, timer.title)"
                             />
                         </UTooltip>
                     </div>
