@@ -22,24 +22,13 @@ async function deleteTimer(id: string, title: string) {
 <template>
     <LayoutWrapper :class="{ center: data?.length === 0 }">
         <div class="m-auto max-w-xl">
-            <UEmpty
+            <DataEmpty
                 v-if="data?.length === 0"
                 :title="$t('timer.noTimersTitle')"
                 :description="$t('timer.noTimersDescription')"
-                variant="naked"
-                icon="heroicons:inbox"
-                :actions="[
-                    {
-                        icon: 'heroicons:plus-small',
-                        label: $t('ui.create'),
-                        size: 'xl',
-                        onClick: () => {
-                            open = true;
-                        },
-                    },
-                ]"
+                @open="() => (open = true)"
             />
-            <FormCreateTimer v-model:open="open" @success="open = false" />
+            <FormTimerCreate v-model:open="open" @success="open = false" />
             <div v-if="data?.length !== 0" class="mt-16">
                 <TransitionGroup name="list" tag="div" class="relative">
                     <div
