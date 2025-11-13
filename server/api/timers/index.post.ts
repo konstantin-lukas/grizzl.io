@@ -4,10 +4,7 @@ import { parseRequestBody } from "~~/server/utils/schema";
 
 export default defineEventHandler(async event => {
     const timer = await parseRequestBody(event, TimerSchema);
-    const { data, error } = await tryCatch(insert(event.context.user.id, timer));
-
-    if (error) throwError(error, "UNPROCESSABLE_CONTENT");
+    const data = await tryThrow(insert(event.context.user.id, timer));
     setStatus(event, "CREATED");
-
     return { data };
 });

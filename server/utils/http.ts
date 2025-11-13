@@ -5,8 +5,11 @@ import { ZodError, z } from "zod";
 export function throwError(
     error: string | Error | ZodError,
     status: keyof typeof HttpStatusCode = "BAD_REQUEST",
+    maskError: boolean = false,
 ): never {
+    console.error(error);
     const message = (() => {
+        if (maskError) return HttpStatusMessage[status];
         if (error instanceof ZodError) return z.prettifyError(error);
         if (error instanceof Error) return error.message;
         return error;
