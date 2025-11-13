@@ -21,9 +21,8 @@ const { start, finish, isLoading } = useLoadingIndicator();
 const ttsVoices = useVoices();
 const voiceOptions = computed(() => [
     [{ label: "Don't read interval titles aloud", value: undefined }],
-    ttsVoices.value,
+    ttsVoices.value.map(v => ({ label: v.name, value: v.voiceURI })),
 ]);
-const ttsVoicePreviewText = ref("");
 
 const state = reactive<TimerPostWithId>({
     title: "",
@@ -31,16 +30,8 @@ const state = reactive<TimerPostWithId>({
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
 
-function saySampleText() {
-    if (speechSynthesis.speaking) return;
-    const utterThis = new SpeechSynthesisUtterance(ttsVoicePreviewText.value);
-    for (const voice of speechSynthesis.getVoices()) {
-        if (voice.name === state.ttsVoice) {
-            utterThis.voice = voice;
-        }
-    }
-    speechSynthesis.speak(utterThis);
-}
+const utteranceText = ref("");
+const speak = useSpeakUtterance();
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
@@ -136,9 +127,16 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                     v-if="ttsVoices.length > 0 && state.ttsVoice !== undefined"
                                     class="flex w-full gap-4"
                                 >
-                                    <Button icon="heroicons:speaker-wave" @click="saySampleText" />
+                                    <Button
+                                        icon="heroicons:speaker-wave"
+                                        @click="
+                                            () => {
+                                                if (state.ttsVoice) speak(utteranceText, state.ttsVoice);
+                                            }
+                                        "
+                                    />
                                     <UInput
-                                        v-model="ttsVoicePreviewText"
+                                        v-model="utteranceText"
                                         class="w-full"
                                         placeholder="Enter some text to preview the selected voice"
                                     />

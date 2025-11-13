@@ -1,11 +1,10 @@
 export default function useVoices() {
-    const ttsVoices = ref<{ label: string; value: string | undefined }[]>([]);
+    const ttsVoices = ref<SpeechSynthesisVoice[]>([]);
 
     onMounted(() => {
         if (typeof speechSynthesis === "undefined") return;
         const loadVoices = () => {
-            const voices = speechSynthesis.getVoices();
-            ttsVoices.value = voices.map(v => ({ label: v.name, value: v.voiceURI }));
+            ttsVoices.value = speechSynthesis.getVoices();
         };
         loadVoices();
         speechSynthesis.addEventListener("voiceschanged", loadVoices);
