@@ -4,19 +4,6 @@ const { data, refresh } = useFetch("/api/timers");
 watch(open, () => {
     if (!open.value) refresh();
 });
-const toast = useToast();
-const confirmDeleteTimer = ref<{ id: string; title: string } | undefined>(undefined);
-async function deleteTimer(id: string, title: string) {
-    $fetch(`/api/timers/${id}`, { method: "DELETE" })
-        .then(async () => {
-            await refresh();
-            toast.add(createToastSuccess(`Timer "${title}" deleted successfully.`));
-            confirmDeleteTimer.value = undefined;
-        })
-        .catch(error => {
-            toast.add(createToastError(error));
-        });
-}
 </script>
 
 <template>
@@ -52,44 +39,11 @@ async function deleteTimer(id: string, title: string) {
                             <UTooltip text="Bearbeiten">
                                 <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
                             </UTooltip>
-                            <UTooltip text="Löschen">
-                                <Button
-                                    aria-label="Löschen"
-                                    color="error"
-                                    variant="subtle"
-                                    icon="heroicons:trash"
-                                    @click="
-                                        () => {
-                                            confirmDeleteTimer = timer;
-                                        }
-                                    "
-                                />
-                            </UTooltip>
+                            <FormTimerDelete :id="timer.id" :title="timer.title" @success="refresh" />
                         </div>
                     </div>
                 </TransitionGroup>
             </div>
         </div>
-
-        <UModal :close="false" :open="!!confirmDeleteTimer">
-            <template #title>
-                <p>Are you sure you want to delete the timer titled "{{ confirmDeleteTimer?.title }}"?</p>
-            </template>
-            <template #description>
-                <p>This action cannot be undone, so be sure you really want to do this!</p>
-            </template>
-            <template #footer>
-                <Button
-                    icon="heroicons:trash"
-                    :on-async-click="async () => await deleteTimer(confirmDeleteTimer!.id, confirmDeleteTimer!.title)"
-                    color="error"
-                >
-                    Delete
-                </Button>
-                <Button variant="subtle" icon="heroicons:backspace" @click="() => (confirmDeleteTimer = undefined)">
-                    Cancel
-                </Button>
-            </template>
-        </UModal>
     </LayoutWrapper>
 </template>
