@@ -18,30 +18,17 @@ const emit = defineEmits(["success"]);
 
 const { start, finish, isLoading } = useLoadingIndicator();
 
-const ttsVoices = ref<{ label: string; value: string | undefined }[][]>([]);
+const ttsVoices = useVoices();
+const voiceOptions = computed(() => [
+    [{ label: "Don't read interval titles aloud", value: undefined }],
+    ttsVoices.value,
+]);
 const ttsVoicePreviewText = ref("");
 
 const state = reactive<TimerPostWithId>({
     title: "",
     ttsVoice: undefined,
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
-});
-
-onMounted(() => {
-    if (typeof speechSynthesis === "undefined") return;
-    const loadVoices = () => {
-        const voices = speechSynthesis.getVoices();
-        ttsVoices.value = [
-            [{ label: "Don't read interval titles aloud", value: undefined }],
-            voices.map(v => ({ label: v.name, value: v.voiceURI })),
-        ];
-    };
-    loadVoices();
-    speechSynthesis.addEventListener("voiceschanged", loadVoices);
-    onBeforeUnmount(() => {
-        if (typeof speechSynthesis === "undefined") return;
-        speechSynthesis.removeEventListener("voiceschanged", loadVoices);
-    });
 });
 
 function saySampleText() {
@@ -125,7 +112,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                             >
                                 <USelect
                                     v-model="state.ttsVoice"
-                                    :items="ttsVoices"
+                                    :items="voiceOptions"
                                     class="w-full"
                                     placeholder="Don't read interval titles aloud"
                                 >
