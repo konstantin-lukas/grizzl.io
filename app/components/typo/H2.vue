@@ -1,5 +1,5 @@
 <template>
-    <h2 class="inline-block pt-1 pb-2 text-3xl font-bold uppercase">
+    <h2 class="text-2xl text-primary uppercase">
         <slot />
     </h2>
 </template>

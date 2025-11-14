@@ -1,7 +1,15 @@
 {
     "ui": {
+        "poll": "Umfragen",
+        "todo": "To-do",
+        "timer": "Stoppuhr",
+        "finance": "Finanzen",
+        "signIn": "Anmelden",
+        "signOut": "Abmelden",
         "save": "Speichern",
         "cancel": "Abbrechen",
-        "install": "Installieren"
+        "install": "Installieren",
+        "create": "Erstellen",
+        "pickProvider": "Wähle einen Dienst, um dich anzumelden."
     }
 }

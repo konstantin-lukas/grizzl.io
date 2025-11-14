@@ -1,50 +1,56 @@
 <script setup lang="ts">
-import { APP_NAV } from "@/constants/nav";
 import { authClient } from "@@/lib/auth-client";
-import { clsx } from "clsx/lite";
+import { APP_NAV } from "~/constants/nav";
 
-const { $pwa } = useNuxtApp();
-
-const className = computed(() => clsx("grid", "grid-cols-1", "gap-4", $pwa?.showInstallPrompt && "sm:grid-cols-2"));
-
-const { t } = useI18n();
 const session = authClient.useSession();
 </script>
 
 <template>
-    <LayoutBlurryCircles>
-        <div class="fixed top-0 z-10 flex w-full justify-center bg-back px-16 py-2">
-            <UMarquee pause-on-hover>
-                <NuxtLink
-                    v-for="link in APP_NAV"
-                    :key="link[0]"
-                    class="inline-link group/link flex justify-center gap-2 bg-red-500"
-                    :to="`/${link[0]}`"
-                >
-                    <UIcon
-                        :name="link[1]"
-                        class="size-6 transition-colors group-hover/link:text-violet-600 dark:group-hover/link:text-violet-400"
-                    />
-                    {{ t(`menu.${link[0]}`) }}
-                </NuxtLink>
-            </UMarquee>
-        </div>
-        <div class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 px-8 pt-10">
-            <SvgGrizzlLogo class="max-w-[600px] fill-front" />
-            <div :class="className">
-                <NavBlockLink v-if="session.data" as="button" @click="authClient.signOut()">
-                    <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ t("menu.signOut") }}
-                </NavBlockLink>
-                <NavBlockLink v-else to="/signin">
-                    <UIcon name="heroicons:arrow-right-end-on-rectangle" class="size-6" />
-                    {{ t("menu.signIn") }}
-                </NavBlockLink>
-                <NavBlockLink v-if="$pwa?.showInstallPrompt" as="button" @click="$pwa.install">
-                    <UIcon name="heroicons:arrow-down-tray" class="size-6" />
-                    {{ t("ui.install") }}
-                </NavBlockLink>
+    <div
+        class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-primary/50 to-[100dvh] px-6 xs:px-12 md:px-24 xl:bg-gradient-to-bl xl:to-75% dark:from-primary/25"
+    >
+        <div class="flex max-w-[1280px] flex-col items-center xl:flex-row xl:gap-24">
+            <div class="flex w-full flex-col items-center justify-center gap-6 pt-20 xl:hidden">
+                <SvgGrizzlLogo class="max-w-120 fill-front" />
+                <div class="mt-4 mb-8 grid w-full grid-cols-1 gap-4 2xs:grid-cols-2 xs:gap-6 sm:gap-8 md:grid-cols-3">
+                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label="label" :icon class="w-auto" />
+                </div>
+            </div>
+            <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
+                <div>
+                    <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />
+                    <TypoH1 class="my-4">{{ $t("meta.tagline") }}</TypoH1>
+                    <p class="text-neutral-600 dark:text-neutral-400">
+                        {{ $t("meta.description") }}
+                    </p>
+                </div>
+                <div class="flex gap-4">
+                    <Button
+                        v-if="session.data"
+                        size="xl"
+                        icon="heroicons:arrow-right-end-on-rectangle"
+                        @click="authClient.signOut()"
+                    >
+                        {{ $t("ui.signOut") }}
+                    </Button>
+                    <Button v-else to="/signin" size="xl" icon="heroicons:arrow-right-end-on-rectangle">
+                        {{ $t("ui.signIn") }}
+                    </Button>
+                    <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
+                        <Button variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
+                            {{ $t("ui.install") }}
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden w-1/2 grid-cols-2 xl:grid">
+                <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
+                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label :icon />
+                </UMarquee>
+                <UMarquee orientation="vertical" class="h-dvh items-start pl-8" :overlay="false" reverse>
+                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label :icon />
+                </UMarquee>
             </div>
         </div>
-    </LayoutBlurryCircles>
+    </div>
 </template>

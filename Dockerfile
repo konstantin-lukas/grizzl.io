@@ -27,6 +27,7 @@ FROM base AS runner
 WORKDIR /home/grizzl
 
 COPY --from=builder /home/grizzl/.output ./.output
+COPY --from=builder /home/grizzl/i18n ./i18n
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

@@ -1,20 +1,7 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
-import { clsx } from "clsx/lite";
 
 const { as = NuxtLink } = defineProps<{ as?: string | object }>();
-const hoverClass = clsx(
-    "absolute",
-    "h-full",
-    "w-full",
-    "px-8",
-    "py-3",
-    "left-0",
-    "top-full",
-    "bg-gradient-to-r",
-    "from-violet-500",
-    "to-rose-500",
-);
 </script>
 
 <template>
@@ -28,11 +15,10 @@ const hoverClass = clsx(
             >
                 <slot />
             </span>
-            <span :class="hoverClass">
+            <span class="absolute top-full left-0 h-full w-full bg-theme-dark px-8 py-3">
                 <UIcon
                     name="heroicons:arrow-right-20-solid"
-                    class="absolute top-1/2 left-1/2 h-8 w-8 -translate-1/2"
-                    style="color: var(--color-theme-white)"
+                    class="absolute top-1/2 left-1/2 h-8 w-8 -translate-1/2 text-theme-white"
                 />
             </span>
         </span>

@@ -1,6 +1,6 @@
-import type { Result } from "~/types/result";
+import type { Result } from "#shared/types/result";
 
-export async function tryCatch<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
+export async function tryCatch<T, E extends Error>(promise: Promise<T>): Promise<Result<T, E>> {
     try {
         const data = await promise;
         return { data, error: null };
@@ -9,7 +9,7 @@ export async function tryCatch<T, E = Error>(promise: Promise<T>): Promise<Resul
     }
 }
 
-export function tryCatchSync<T, E = Error>(fn: () => T): Result<T, E> {
+export function tryCatchSync<T, E extends Error>(fn: () => T): Result<T, E> {
     try {
         const data = fn();
         return { data, error: null };

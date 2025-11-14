@@ -1,7 +1,15 @@
 {
     "ui": {
+        "poll": "Encuestas",
+        "todo": "Tareas",
+        "timer": "Temporizador",
+        "finance": "Finanzas",
+        "signIn": "Iniciar sesión",
+        "signOut": "Cerrar sesión",
         "save": "Guardar",
         "cancel": "Cancelar",
-        "install": "Instalar"
+        "install": "Instalar",
+        "create": "Crear",
+        "pickProvider": "Elige un servicio para iniciar sesión."
     }
 }
