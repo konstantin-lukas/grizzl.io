@@ -7,16 +7,14 @@ const confirmDeleteTimer = ref<{ id: string; title: string } | undefined>(undefi
 </script>
 
 <template>
-    <div class="mt-16">
-        <TransitionGroup name="list" tag="ul" class="relative">
-            <ListTimerItem
-                v-for="timer in props.timers"
-                :key="timer.id"
-                :timer="timer"
-                @delete="confirmDeleteTimer = timer"
-            />
-        </TransitionGroup>
-    </div>
+    <TransitionGroup name="list" tag="ul" class="relative">
+        <ListTimerItem
+            v-for="timer in props.timers"
+            :key="timer.id"
+            :timer="timer"
+            @delete="confirmDeleteTimer = timer"
+        />
+    </TransitionGroup>
     <FormTimerDelete
         :timer="confirmDeleteTimer"
         @success="

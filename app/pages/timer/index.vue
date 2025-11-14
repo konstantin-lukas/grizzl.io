@@ -7,14 +7,8 @@ watch(open, () => {
 </script>
 
 <template>
-    <LayoutWrapper :class="{ center: data?.length === 0 }">
+    <LayoutWrapper>
         <div class="m-auto max-w-xl">
-            <DataEmpty
-                v-if="data?.length === 0"
-                :title="$t('timer.noTimersTitle')"
-                :description="$t('timer.noTimersDescription')"
-                @open="() => (open = true)"
-            />
             <OverlayDrawer v-model:open="open">
                 <FormTimerCreate @success="open = false" />
                 <template #title>Create a new timer</template>
@@ -23,6 +17,16 @@ watch(open, () => {
                 </template>
             </OverlayDrawer>
             <ListTimer :timers="data" @delete="refresh" />
+            <div class="center h-main-height-no-padding">
+                <Transition name="fade">
+                    <DataEmpty
+                        v-if="data?.length === 0"
+                        :title="$t('timer.noTimersTitle')"
+                        :description="$t('timer.noTimersDescription')"
+                        @open="() => (open = true)"
+                    />
+                </Transition>
+            </div>
         </div>
     </LayoutWrapper>
 </template>
