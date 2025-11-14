@@ -9,20 +9,11 @@ const emit = defineEmits(["success"]);
 
 const { start, finish, isLoading } = useLoadingIndicator();
 
-const ttsVoices = useVoices();
-const voiceOptions = computed(() => [
-    [{ label: "Don't read interval titles aloud", value: undefined }],
-    ttsVoices.value.map(v => ({ label: v.name, value: v.voiceURI })),
-]);
-
 const state = reactive<TimerPostWithId>({
     title: "",
     ttsVoice: undefined,
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
-
-const utteranceText = ref("");
-const speak = useSpeakUtterance();
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
@@ -86,53 +77,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                             <UFormField label="Timer Title" name="title" class="w-full" required>
                                 <UInput v-model="state.title" class="w-full" :maxlength="100" />
                             </UFormField>
-                            <UFormField
-                                v-if="ttsVoices.length > 0"
-                                label="Text-to-speech voice for interval titles"
-                                name="ttsVoice"
-                                class="w-full"
-                            >
-                                <USelect
-                                    v-model="state.ttsVoice"
-                                    :items="voiceOptions"
-                                    class="w-full"
-                                    placeholder="Don't read interval titles aloud"
-                                >
-                                    <template #trailing>
-                                        <UTooltip
-                                            text="Not all voices are available on all devices"
-                                            :delay-duration="0"
-                                            :content="{ side: 'right', align: 'center', sideOffset: 20 }"
-                                        >
-                                            <UIcon
-                                                name="mdi:information-outline"
-                                                tabindex="0"
-                                                class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
-                                            />
-                                        </UTooltip>
-                                    </template>
-                                </USelect>
-                            </UFormField>
-                            <Transition name="fade">
-                                <div
-                                    v-if="ttsVoices.length > 0 && state.ttsVoice !== undefined"
-                                    class="flex w-full gap-4"
-                                >
-                                    <Button
-                                        icon="heroicons:speaker-wave"
-                                        @click="
-                                            () => {
-                                                if (state.ttsVoice) speak(utteranceText, state.ttsVoice);
-                                            }
-                                        "
-                                    />
-                                    <UInput
-                                        v-model="utteranceText"
-                                        class="w-full"
-                                        placeholder="Enter some text to preview the selected voice"
-                                    />
-                                </div>
-                            </Transition>
+                            <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
                             <VueDraggable
                                 v-model="state.intervals"
                                 :animation="250"
