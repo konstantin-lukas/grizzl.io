@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const emit = defineEmits(["success", "cancel"]);
-const toast = useToast();
 const props = defineProps<{ timer: { id: string; title: string } | undefined }>();
+
+const toast = useToast();
 
 async function deleteTimer(id: string, title: string) {
     $fetch(`/api/timers/${id}`, { method: "DELETE" })

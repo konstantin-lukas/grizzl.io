@@ -1,8 +1,10 @@
 <script setup lang="ts">
-const utteranceText = ref("");
-const speak = useSpeakUtterance();
 const ttsVoice = defineModel<string>("ttsVoice");
+
 const ttsVoices = useVoices();
+const speak = useSpeakUtterance();
+
+const utteranceText = ref("");
 const voiceOptions = computed(() => [
     [{ label: "Don't read interval titles aloud", value: undefined }],
     ttsVoices.value.map(v => ({ label: v.name, value: v.voiceURI })),

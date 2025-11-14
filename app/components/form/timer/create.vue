@@ -6,18 +6,18 @@ import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
 const emit = defineEmits(["success"]);
-
-const { start, finish, isLoading } = useLoadingIndicator();
-
 const state = reactive<TimerPostWithId>({
     title: "",
     ttsVoice: undefined,
     intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
 });
-
-const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
+const isDragging = ref(false);
+
+const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
+const { start, finish, isLoading } = useLoadingIndicator();
+const toast = useToast();
 
 watch(state, () => {
     setTimeout(() => {
@@ -34,7 +34,6 @@ watch(state, () => {
     }, 0);
 });
 
-const toast = useToast();
 async function onSubmit() {
     start({ force: true });
     $fetch("/api/timers", {
@@ -50,8 +49,10 @@ async function onSubmit() {
             toast.add(createToastError(error));
         });
 }
-const isDragging = ref(false);
-const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
+
+function onEnd() {
+    setTimeout(() => (isDragging.value = false), 0);
+}
 </script>
 
 <template>
@@ -86,7 +87,7 @@ const handleEnd = () => setTimeout(() => (isDragging.value = false), 0);
                                 handle="[data-handle]"
                                 ghost-class="ghost"
                                 @start="() => (isDragging = true)"
-                                @end="handleEnd"
+                                @end="onEnd"
                             >
                                 <TransitionGroup name="draggable-list">
                                     <FormTimerInterval

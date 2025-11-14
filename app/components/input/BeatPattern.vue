@@ -3,14 +3,24 @@ import { Beat, BeatSymbol } from "#shared/enum/timer";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 
-const { emitFormChange, color } = useFormField();
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
-const playingComponentId = useState("beat-pattern-input-playing", () => "");
+
 const currentBeat = ref(0);
 const startTime = ref(Date.now());
+const commonButtonProps = computed(
+    () =>
+        ({
+            content: { sideOffset: 9 },
+            variant: "ghost",
+            disabled: beats.length === 16,
+        }) as const,
+);
 
+const playingComponentId = useState("beat-pattern-input-playing", () => "");
 const componentId = useId();
+const { emitFormChange, color } = useFormField();
+
 watch(
     () => [beats, playingComponentId],
     () => {
@@ -56,14 +66,6 @@ function addBeat(beat: Beat) {
     emit("update:beats", [...beats, beat]);
     emitFormChange();
 }
-const commonButtonProps = computed(
-    () =>
-        ({
-            content: { sideOffset: 9 },
-            variant: "ghost",
-            disabled: beats.length === 16,
-        }) as const,
-);
 </script>
 
 <template>
