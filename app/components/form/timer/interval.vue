@@ -3,10 +3,6 @@ import { Beat } from "#shared/enum/timer";
 import type { TimerIntervalWithId } from "#shared/types/timer";
 import { nanoid } from "nanoid";
 
-const beatPattern = defineModel<Beat[] | undefined>("beatPattern");
-const title = defineModel<string | undefined>("title");
-const repeatCount = defineModel<number | undefined>("repeatCount");
-const duration = defineModel<number | undefined>("duration");
 const intervals = defineModel<TimerIntervalWithId[]>("intervals");
 const { index } = defineProps<{ index: number }>();
 </script>
@@ -17,7 +13,12 @@ const { index } = defineProps<{ index: number }>();
     >
         <div class="center w-full gap-4 p-4">
             <UFormField label="Interval Title" :name="`intervals.${index}.title`" class="w-full">
-                <UInput v-model="title" class="w-full" :maxlength="100" placeholder="Displayed during interval" />
+                <UInput
+                    v-model="intervals![index]!.title"
+                    class="w-full"
+                    :maxlength="100"
+                    placeholder="Displayed during interval"
+                />
             </UFormField>
             <UFormField label="Interval Type" :name="`intervals.${index}.type`" required class="z-1 w-full">
                 <USelect
@@ -27,7 +28,7 @@ const { index } = defineProps<{ index: number }>();
                     :portal="false"
                     @update:model-value="
                         value => {
-                            beatPattern =
+                            intervals![index]!.beatPattern =
                                 value === 'Temporal'
                                     ? undefined
                                     : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
@@ -37,11 +38,11 @@ const { index } = defineProps<{ index: number }>();
             </UFormField>
             <div class="flex gap-4">
                 <UFormField label="Repetitions" :name="`intervals.${index}.repeatCount`" required class="w-full">
-                    <UInputNumber v-model="repeatCount" class="w-full" :min="1" />
+                    <UInputNumber v-model="intervals![index]!.repeatCount" class="w-full" :min="1" />
                 </UFormField>
                 <UFormField label="Duration" :name="`intervals.${index}.duration`" required class="w-full">
                     <UInputNumber
-                        v-model="duration"
+                        v-model="intervals![index]!.duration"
                         class="w-full"
                         :step="0.1"
                         :min="1"
@@ -51,17 +52,17 @@ const { index } = defineProps<{ index: number }>();
             </div>
             <Transition name="fade">
                 <UFormField
-                    v-if="beatPattern !== undefined"
+                    v-if="intervals![index]!.beatPattern !== undefined"
                     label="Beat Pattern"
                     :name="`intervals.${index}.beatPattern`"
                     required
                     class="w-full"
                 >
                     <InputBeatPattern
-                        :beats="beatPattern!"
-                        :bar-length="duration!"
+                        :beats="intervals![index]!.beatPattern"
+                        :bar-length="intervals![index]!.duration"
                         class="w-full"
-                        @update:beats="value => (beatPattern = value)"
+                        @update:beats="value => (intervals![index]!.beatPattern = value)"
                     />
                 </UFormField>
             </Transition>
