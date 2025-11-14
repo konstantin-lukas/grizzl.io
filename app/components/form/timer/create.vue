@@ -56,74 +56,59 @@ function onEnd() {
 </script>
 
 <template>
-    <UDrawer
-        class="max-h-dvh"
-        :handle-only="true"
-        :ui="{
-            handle: '[&>span]:!w-dvw',
-            content: 'rounded-none',
-        }"
-    >
-        <template #content>
-            <UForm class="mt-0 h-dvh pt-4" :schema="TimerSchema" :state="state" @submit.prevent="onSubmit">
-                <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
-                    <span
-                        class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
-                    />
-                    <span
-                        class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
-                    />
-                    <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
-                        <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
-                            <UFormField label="Timer Title" name="title" class="w-full" required>
-                                <UInput v-model="state.title" class="w-full" :maxlength="100" />
-                            </UFormField>
-                            <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
-                            <VueDraggable
-                                v-model="state.intervals"
-                                :animation="250"
-                                class="center relative gap-4"
-                                tag="div"
-                                handle="[data-handle]"
-                                ghost-class="ghost"
-                                @start="() => (isDragging = true)"
-                                @end="onEnd"
-                            >
-                                <TransitionGroup name="draggable-list">
-                                    <FormTimerInterval
-                                        v-for="[index, interval] in state.intervals.entries()"
-                                        :key="interval.id"
-                                        v-model:title="interval.title"
-                                        v-model:beat-pattern="interval.beatPattern"
-                                        v-model:repeat-count="interval.repeatCount"
-                                        v-model:duration="interval.duration"
-                                        v-model:intervals="state.intervals"
-                                        :interval="interval"
-                                        :index="index"
-                                        :style="{ transition: isDragging ? 'none' : '' }"
-                                    />
-                                </TransitionGroup>
-                            </VueDraggable>
-                        </div>
-                    </div>
+    <UForm :schema="TimerSchema" :state="state" @submit.prevent="onSubmit">
+        <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
+            <span
+                class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
+            />
+            <span
+                class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
+            />
+            <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
+                <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
+                    <UFormField label="Timer Title" name="title" class="w-full" required>
+                        <UInput v-model="state.title" class="w-full" :maxlength="100" />
+                    </UFormField>
+                    <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
+                    <VueDraggable
+                        v-model="state.intervals"
+                        :animation="250"
+                        class="center relative gap-4"
+                        tag="div"
+                        handle="[data-handle]"
+                        ghost-class="ghost"
+                        @start="() => (isDragging = true)"
+                        @end="onEnd"
+                    >
+                        <TransitionGroup name="draggable-list">
+                            <FormTimerInterval
+                                v-for="[index, interval] in state.intervals.entries()"
+                                :key="interval.id"
+                                v-model:title="interval.title"
+                                v-model:beat-pattern="interval.beatPattern"
+                                v-model:repeat-count="interval.repeatCount"
+                                v-model:duration="interval.duration"
+                                v-model:intervals="state.intervals"
+                                :interval="interval"
+                                :index="index"
+                                :style="{ transition: isDragging ? 'none' : '' }"
+                            />
+                        </TransitionGroup>
+                    </VueDraggable>
                 </div>
-                <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
-                    <div class="flex w-120 justify-center gap-4 px-8">
-                        <Button
-                            type="submit"
-                            icon="heroicons:plus-circle-16-solid"
-                            class="flex w-full justify-center"
-                            :disabled="isLoading"
-                        >
-                            Erstellen
-                        </Button>
-                    </div>
-                </div>
-            </UForm>
-        </template>
-        <template #title>Create a new timer</template>
-        <template #description>
-            Choose between different types of timer intervals to create a fully customized timer
-        </template>
-    </UDrawer>
+            </div>
+        </div>
+        <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
+            <div class="flex w-120 justify-center gap-4 px-8">
+                <Button
+                    type="submit"
+                    icon="heroicons:plus-circle-16-solid"
+                    class="flex w-full justify-center"
+                    :disabled="isLoading"
+                >
+                    Erstellen
+                </Button>
+            </div>
+        </div>
+    </UForm>
 </template>

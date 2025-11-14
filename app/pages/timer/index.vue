@@ -15,7 +15,13 @@ watch(open, () => {
                 :description="$t('timer.noTimersDescription')"
                 @open="() => (open = true)"
             />
-            <FormTimerCreate v-model:open="open" @success="open = false" />
+            <OverlayDrawer v-model:open="open">
+                <FormTimerCreate @success="open = false" />
+                <template #title>Create a new timer</template>
+                <template #description>
+                    Choose between different types of timer intervals to create a fully customized timer
+                </template>
+            </OverlayDrawer>
             <ListTimer :timers="data" @delete="refresh" />
         </div>
     </LayoutWrapper>
