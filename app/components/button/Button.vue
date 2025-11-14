@@ -4,11 +4,13 @@ import type { ButtonProps } from "@nuxt/ui";
 const {
     onAsyncClick = undefined,
     disabled = undefined,
+    ariaLabel = undefined,
     ...props
 } = defineProps<
     Omit<ButtonProps, "disabled"> & {
         onAsyncClick?: (event: MouseEvent) => Promise<void> | undefined;
         disabled?: boolean | undefined;
+        ariaLabel?: string;
     }
 >();
 const { isLoading, start, finish } = useLoadingIndicator();
@@ -22,7 +24,17 @@ const handler = computed(() => (typeof onAsyncClick !== "undefined" ? handleClic
 </script>
 
 <template>
-    <UButton v-bind="props" :disabled="typeof disabled === 'boolean' ? disabled : isLoading" @click="handler">
+    <UTooltip v-if="ariaLabel" :text="ariaLabel">
+        <UButton
+            v-bind="props"
+            :aria-label="ariaLabel"
+            :disabled="typeof disabled === 'boolean' ? disabled : isLoading"
+            @click="handler"
+        >
+            <slot />
+        </UButton>
+    </UTooltip>
+    <UButton v-else v-bind="props" :disabled="typeof disabled === 'boolean' ? disabled : isLoading" @click="handler">
         <slot />
     </UButton>
 </template>

@@ -50,6 +50,20 @@ watch(playingComponentId, () => {
 onBeforeUnmount(() => {
     if (playingComponentId.value === componentId) playingComponentId.value = "";
 });
+
+function addBeat(beat: Beat) {
+    if (beats.length === 16) return;
+    emit("update:beats", [...beats, beat]);
+    emitFormChange();
+}
+const commonButtonProps = computed(
+    () =>
+        ({
+            content: { sideOffset: 9 },
+            variant: "ghost",
+            disabled: beats.length === 16,
+        }) as const,
+);
 </script>
 
 <template>
@@ -59,85 +73,54 @@ onBeforeUnmount(() => {
     >
         <div class="flex justify-between">
             <div>
-                <UTooltip
-                    :text="playingComponentId === componentId ? 'Pause Playback' : 'Start Playback'"
+                <Button
                     :content="{ side: 'right', align: 'center' }"
-                >
-                    <Button
-                        :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-                        :aria-label="playingComponentId ? 'Pause Playback' : 'Start Playback'"
-                        variant="ghost"
-                        :disabled="beats.length === 0"
-                        @click="
-                            () => {
-                                if (playingComponentId === componentId) playingComponentId = '';
-                                else playingComponentId = componentId;
-                            }
-                        "
-                    />
-                </UTooltip>
+                    :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+                    :aria-label="playingComponentId ? 'Pause Playback' : 'Start Playback'"
+                    variant="ghost"
+                    :disabled="beats.length === 0"
+                    @click="
+                        () => {
+                            if (playingComponentId === componentId) playingComponentId = '';
+                            else playingComponentId = componentId;
+                        }
+                    "
+                />
             </div>
             <div>
-                <UTooltip text="Add Accented Beat" :content="{ sideOffset: 9 }">
-                    <Button
-                        icon="mdi:exclamation-thick"
-                        variant="ghost"
-                        :disabled="beats.length === 16"
-                        @click="
-                            () => {
-                                if (beats.length === 16) return;
-                                emit('update:beats', [...beats, Beat.ACCENTED]);
+                <Button
+                    v-bind="commonButtonProps"
+                    icon="mdi:exclamation-thick"
+                    aria-label="Add accented beat"
+                    @click="addBeat(Beat.ACCENTED)"
+                />
+                <Button
+                    v-bind="commonButtonProps"
+                    icon="mdi:music-note-quarter"
+                    aria-label="Add Beat"
+                    @click="addBeat(Beat.NORMAL)"
+                />
+                <Button
+                    v-bind="commonButtonProps"
+                    icon="mdi:music-rest-quarter"
+                    aria-label="Add Pause"
+                    @click="addBeat(Beat.PAUSE)"
+                />
+                <Button
+                    v-bind="commonButtonProps"
+                    :disabled="beats.length === 0"
+                    icon="mdi:music-note-off"
+                    color="error"
+                    aria-label="Delete"
+                    @click="
+                        () => {
+                            if (beats.length > 0) {
+                                emit('update:beats', beats.slice(0, -1));
                                 emitFormChange();
                             }
-                        "
-                    />
-                </UTooltip>
-                <UTooltip text="Add Beat" :content="{ sideOffset: 9 }">
-                    <Button
-                        icon="mdi:music-note-quarter"
-                        aria-label="Add Beat"
-                        variant="ghost"
-                        :disabled="beats.length === 16"
-                        @click="
-                            () => {
-                                if (beats.length === 16) return;
-                                emit('update:beats', [...beats, Beat.NORMAL]);
-                                emitFormChange();
-                            }
-                        "
-                    />
-                </UTooltip>
-                <UTooltip text="Add Pause" :content="{ sideOffset: 9 }">
-                    <Button
-                        icon="mdi:music-rest-quarter"
-                        variant="ghost"
-                        :disabled="beats.length === 16"
-                        aria-label="Add Pause"
-                        @click="
-                            () => {
-                                if (beats.length === 16) return;
-                                emit('update:beats', [...beats, Beat.PAUSE]);
-                                emitFormChange();
-                            }
-                        "
-                    />
-                </UTooltip>
-                <UTooltip text="Delete Beat" :content="{ sideOffset: 9 }">
-                    <Button
-                        variant="ghost"
-                        icon="mdi:music-note-off"
-                        color="error"
-                        aria-label="Delete"
-                        @click="
-                            () => {
-                                if (beats.length > 0) {
-                                    emit('update:beats', beats.slice(0, -1));
-                                    emitFormChange();
-                                }
-                            }
-                        "
-                    />
-                </UTooltip>
+                        }
+                    "
+                />
             </div>
         </div>
         <USeparator v-if="beats.length > 0" />
