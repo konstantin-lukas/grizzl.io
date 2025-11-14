@@ -35,5 +35,3 @@ async function deleteTimer(id: string, title: string) {
         </template>
     </UModal>
 </template>
-
-<style scoped></style>
