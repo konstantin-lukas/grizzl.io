@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const open = ref(false);
-const { data, refresh } = useFetch("/api/timers");
+const { timers, refresh } = useTimers();
 watch(open, () => {
     if (!open.value) refresh();
 });
@@ -16,11 +16,11 @@ watch(open, () => {
                     Choose between different types of timer intervals to create a fully customized timer
                 </template>
             </OverlayDrawer>
-            <ListTimer :timers="data" @delete="refresh" />
+            <ListTimer :timers="timers" />
             <div class="center h-main-height-no-padding">
                 <Transition name="fade">
                     <DataEmpty
-                        v-if="data?.length === 0"
+                        v-if="timers && timers.length === 0"
                         :title="$t('timer.noTimersTitle')"
                         :description="$t('timer.noTimersDescription')"
                         @open="() => (open = true)"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const emit = defineEmits(["delete"]);
 const props = defineProps<{ timer: { id: string; title: string; intervals: { duration: number }[] } }>();
 </script>
 
@@ -19,13 +18,7 @@ const props = defineProps<{ timer: { id: string; title: string; intervals: { dur
         <div class="flex justify-start gap-4">
             <Button aria-label="Start" icon="heroicons:play-solid" />
             <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
-            <Button
-                aria-label="Löschen"
-                color="error"
-                variant="subtle"
-                icon="heroicons:trash"
-                @click="emit('delete')"
-            />
+            <FormTimerDelete :timer="props.timer" />
         </div>
     </li>
 </template>
