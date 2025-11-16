@@ -8,8 +8,8 @@ import { createToastSuccess } from "~/utils/toast";
 const emit = defineEmits(["success"]);
 const state = reactive<TimerPostWithId>({
     title: "",
-    ttsVoice: undefined,
-    intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
+    ttsVoice: null,
+    intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid(), beatPattern: null }],
 });
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);

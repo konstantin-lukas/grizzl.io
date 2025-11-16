@@ -16,10 +16,12 @@ export default function useSoftDelete(resource: string, refresh?: () => Promise<
                             variant: "outline",
                             onClick: () => {
                                 start();
-                                $fetch(resource, { method: "PATCH", body: { deleted: false } }).finally(async () => {
-                                    await refresh?.();
-                                    finish();
-                                });
+                                $fetch(resource, { method: "PATCH", body: { deleted: false } })
+                                    .catch(error => toast.add(createToastError(error)))
+                                    .finally(async () => {
+                                        await refresh?.();
+                                        finish();
+                                    });
                             },
                         },
                     ],

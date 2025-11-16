@@ -28,9 +28,7 @@ const { index } = defineProps<{ index: number }>();
                     @update:model-value="
                         value => {
                             intervals![index]!.beatPattern =
-                                value === 'Temporal'
-                                    ? undefined
-                                    : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
+                                value === 'Temporal' ? null : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
                         }
                     "
                 />
@@ -51,7 +49,7 @@ const { index } = defineProps<{ index: number }>();
             </div>
             <Transition name="fade">
                 <UFormField
-                    v-if="intervals![index]!.beatPattern !== undefined"
+                    v-if="intervals![index]!.beatPattern !== null"
                     label="Beat Pattern"
                     :name="`intervals.${index}.beatPattern`"
                     required

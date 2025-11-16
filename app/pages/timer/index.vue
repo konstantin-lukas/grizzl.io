@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const open = ref(false);
-const { data, refresh } = await useFetch("/api/timers", { key: "/api/timers" });
+const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
 watch(open, () => {
     if (!open.value) refresh();
 });
 </script>
 
 <template>
-    <LayoutWrapper class="max-w-xl">
+    <LayoutWrapper :class="{ 'max-w-xl': true }">
         <OverlayDrawer v-model:open="open">
             <FormTimerCreate @success="open = false" />
             <template #title>Create a new timer</template>
