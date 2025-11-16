@@ -1,5 +1,5 @@
 import type { TimerType } from "#shared/schema/timer";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "~~/lib/db";
 import { timer, timerInterval } from "~~/lib/db/schema";
 
@@ -28,7 +28,7 @@ export default async function select(userId: string) {
         })
         .from(timer)
         .leftJoin(timerInterval, eq(timer.id, timerInterval.timerId))
-        .where(eq(timer.userId, userId))
+        .where(and(eq(timer.userId, userId), eq(timer.deleted, false)))
         .groupBy(timer.id)
         .orderBy(timer.createdAt) as unknown as (TimerType & { id: string; createdAt: string })[];
 }

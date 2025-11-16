@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const open = ref(false);
-const { timers, refresh } = useTimers();
+const { data: timers, refresh } = useTimers();
 watch(open, () => {
     if (!open.value) refresh();
 });

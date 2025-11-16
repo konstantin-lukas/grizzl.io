@@ -1,4 +1,4 @@
-import { createdAt, id } from "../../mixins";
+import { createdAt, deleted, id } from "../../mixins";
 import { user } from "./auth-schema";
 import { char, integer, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";
 
@@ -12,6 +12,7 @@ export const timer = pgTable("timer", {
     title: varchar({ length: 100 }).notNull(),
     ttsVoice: varchar({ length: 200 }),
     ...createdAt,
+    ...deleted,
 });
 
 export const timerInterval = pgTable("timer_interval", {

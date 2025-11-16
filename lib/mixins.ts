@@ -1,4 +1,4 @@
-import { char, timestamp } from "drizzle-orm/pg-core";
+import { boolean, char, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 
 export function generateId() {
@@ -12,4 +12,8 @@ export const id = {
 
 export const createdAt = {
     createdAt: timestamp().defaultNow().notNull(),
+};
+
+export const deleted = {
+    deleted: boolean().default(false).notNull(),
 };
