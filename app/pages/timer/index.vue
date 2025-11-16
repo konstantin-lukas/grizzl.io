@@ -7,7 +7,7 @@ watch(open, () => {
 </script>
 
 <template>
-    <LayoutWrapper class="relative max-w-xl">
+    <LayoutWrapper class="max-w-xl">
         <OverlayDrawer v-model:open="open">
             <FormTimerCreate @success="open = false" />
             <template #title>Create a new timer</template>

@@ -1,5 +1,6 @@
 export default function useSoftDelete(resource: string, refresh?: () => Promise<void>) {
     const toast = useToast();
+    const { start, finish } = useLoadingIndicator();
     async function execute() {
         await $fetch(resource, { method: "PATCH", body: { deleted: true } })
             .then(() => {
@@ -13,9 +14,12 @@ export default function useSoftDelete(resource: string, refresh?: () => Promise<
                             icon: "heroicons:arrow-turn-down-left",
                             color: "neutral",
                             variant: "outline",
-                            onClick: async () => {
-                                await $fetch(resource, { method: "PATCH", body: { deleted: false } });
-                                await refresh?.();
+                            onClick: () => {
+                                start();
+                                $fetch(resource, { method: "PATCH", body: { deleted: false } }).finally(async () => {
+                                    await refresh?.();
+                                    finish();
+                                });
                             },
                         },
                     ],
