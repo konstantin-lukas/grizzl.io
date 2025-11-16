@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { TimerType } from "#shared/schema/timer";
+import type { TimerOutput } from "#shared/schema/timer";
 
-const props = defineProps<{ timers: (TimerType & { id: string })[] | undefined }>();
+const props = defineProps<{ timers: TimerOutput[] | undefined }>();
 </script>
 
 <template>

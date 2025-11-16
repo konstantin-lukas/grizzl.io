@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
-import type { TimerIntervalWithId } from "#shared/types/timer";
+import type { TimerInput } from "#shared/schema/timer";
 
-const intervals = defineModel<TimerIntervalWithId[]>("intervals");
+const intervals = defineModel<TimerInput["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
 </script>
 

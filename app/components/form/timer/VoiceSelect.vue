@@ -18,12 +18,7 @@ const voiceOptions = computed(() => [
         name="ttsVoice"
         class="w-full"
     >
-        <USelect
-            v-model="ttsVoice!"
-            :items="voiceOptions"
-            class="w-full"
-            placeholder="Don't read interval titles aloud"
-        >
+        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full">
             <template #trailing>
                 <UTooltip
                     text="Not all voices are available on all devices"
@@ -40,7 +35,7 @@ const voiceOptions = computed(() => [
         </USelect>
     </UFormField>
     <Transition name="fade">
-        <div v-if="ttsVoices.length > 0 && ttsVoice !== undefined" class="flex w-full gap-4">
+        <div v-if="ttsVoices.length > 0 && ttsVoice !== null" class="flex w-full gap-4">
             <Button
                 icon="heroicons:speaker-wave"
                 @click="

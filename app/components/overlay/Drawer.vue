@@ -16,3 +16,4 @@
         <template #description><slot name="description" /></template>
     </UDrawer>
 </template>
+<script setup lang="ts"></script>

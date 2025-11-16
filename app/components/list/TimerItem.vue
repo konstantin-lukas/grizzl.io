@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{ timer: { id: string; title: string; intervals: { duration: number }[] } }>();
+import type { TimerOutput } from "#shared/schema/timer";
+
+const props = defineProps<{ timer: TimerOutput & { id: string } }>();
+const open = ref(false);
+watch(open, () => {
+    if (!open.value) refreshNuxtData("/api/timers");
+});
 </script>
 
 <template>
@@ -17,9 +23,16 @@ const props = defineProps<{ timer: { id: string; title: string; intervals: { dur
         </div>
         <div class="flex justify-start gap-4">
             <Button aria-label="Start" icon="heroicons:play-solid" />
-            <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" />
+            <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
             <FormTimerDelete :timer="props.timer" />
         </div>
+        <OverlayDrawer v-model:open="open">
+            <FormTimerCreate :initial-state="props.timer" @success="open = false" />
+            <template #title>Create a new timer</template>
+            <template #description>
+                Choose between different types of timer intervals to create a fully customized timer
+            </template>
+        </OverlayDrawer>
     </li>
 </template>
 

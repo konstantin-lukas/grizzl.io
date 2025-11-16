@@ -1,16 +1,26 @@
 <script setup lang="ts">
-import { TimerSchema } from "#shared/schema/timer";
-import type { TimerPostWithId } from "#shared/types/timer";
+import { type TimerInput, type TimerOutput, TimerSchema } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
+const { initialState = null } = defineProps<{ initialState?: TimerOutput }>();
 const emit = defineEmits(["success"]);
-const state = reactive<TimerPostWithId>({
-    title: "",
-    ttsVoice: null,
-    intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid(), beatPattern: null }],
-});
+const state = reactive<TimerInput>(
+    initialState
+        ? {
+              ...initialState,
+              intervals: initialState.intervals.map(interval => ({
+                  ...interval,
+                  duration: Math.floor(interval.duration / 1000),
+              })),
+          }
+        : {
+              title: "",
+              ttsVoice: null,
+              intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid(), beatPattern: null }],
+          },
+);
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 const isDragging = ref(false);
@@ -36,14 +46,18 @@ watch(state, () => {
 
 async function onSubmit() {
     start({ force: true });
-    $fetch("/api/timers", {
-        method: "POST",
+    $fetch(initialState === null ? "/api/timers" : `/api/timers/${initialState.id}`, {
+        method: initialState === null ? "POST" : "PUT",
         body: state,
     })
         .then(() => {
             emit("success");
             finish();
-            toast.add(createToastSuccess("Timer created successfully."));
+            toast.add(
+                createToastSuccess(
+                    initialState === null ? "Timer created successfully." : "Timer updated successfully.",
+                ),
+            );
         })
         .catch(error => {
             toast.add(createToastError(error));
@@ -84,12 +98,7 @@ function onEnd() {
                             <FormTimerInterval
                                 v-for="[index, interval] in state.intervals.entries()"
                                 :key="interval.id"
-                                v-model:title="interval.title"
-                                v-model:beat-pattern="interval.beatPattern"
-                                v-model:repeat-count="interval.repeatCount"
-                                v-model:duration="interval.duration"
                                 v-model:intervals="state.intervals"
-                                :interval="interval"
                                 :index="index"
                                 :style="{ transition: isDragging ? 'none' : '' }"
                             />

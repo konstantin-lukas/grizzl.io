@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const IntervalSchema = z
     .strictObject({
-        id: z.string(),
+        id: z.string().optional().default(""),
         title: z.nullable(z.string().max(100)).transform(value => (value === "" ? null : value)),
         repeatCount: z.int().min(1),
         duration: z
@@ -15,9 +15,12 @@ const IntervalSchema = z
     .transform(({ id, ...rest }) => rest);
 
 export const TimerSchema = z.strictObject({
+    id: z.string().optional().default(""),
     title: z.string().min(1).max(100),
     ttsVoice: z.nullable(z.string().max(200)),
     intervals: z.array(IntervalSchema).min(1).max(100),
+    createdAt: z.string().optional().default(""),
 });
 
-export type TimerType = z.infer<typeof TimerSchema>;
+export type TimerInput = z.input<typeof TimerSchema>;
+export type TimerOutput = z.output<typeof TimerSchema>;
