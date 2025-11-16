@@ -4,7 +4,7 @@ const props = defineProps<{ timer: { id: string; title: string; intervals: { dur
 
 <template>
     <li
-        class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 first-of-type:mt-16 last-of-type:border-none sm:flex-row sm:items-center"
+        class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 last-of-type:border-none sm:flex-row sm:items-center"
     >
         <div>
             <TypoH1 class="mb-1 line-clamp-2 break-words">{{ props.timer.title }}</TypoH1>

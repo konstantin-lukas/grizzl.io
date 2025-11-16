@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{ timer: { id: string; title: string } | undefined }>();
-const { refresh } = useTimers();
-const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, refresh);
+const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, async () => {
+    await refreshNuxtData("/api/timers");
+});
 </script>
 
 <template>

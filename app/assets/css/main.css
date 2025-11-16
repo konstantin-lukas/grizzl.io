@@ -20,7 +20,7 @@
     --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
     --default-transition-duration: 250ms;
     --spacing-footer-height: 3rem;
-    --spacing-main-padding: calc(var(--spacing) * 16);
+    --spacing-main-padding: calc(var(--spacing) * 26);
     --spacing-main-height: 100dvh;
     --spacing-main-height-no-padding: calc(100dvh - var(--spacing-main-padding) * 2);
     --breakpoint-xs: 25rem;
