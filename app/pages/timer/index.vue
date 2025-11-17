@@ -9,13 +9,13 @@ watch(open, () => {
 <template>
     <LayoutWrapper :class="{ 'max-w-xl': true }">
         <OverlayDrawer v-model:open="open">
-            <FormTimerCreate @success="open = false" />
+            <FormTimer @success="open = false" />
             <template #title>Create a new timer</template>
             <template #description>
                 Choose between different types of timer intervals to create a fully customized timer
             </template>
         </OverlayDrawer>
-        <ListTimer :timers="data" />
+        <ListTimer :timers="data" @create="open = true" />
         <Transition name="fade">
             <DataEmpty
                 v-if="data && data.length === 0"

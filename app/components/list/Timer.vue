@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import type { TimerOutput } from "#shared/schema/timer";
 
+const emit = defineEmits(["create"]);
 const props = defineProps<{ timers: TimerOutput[] | undefined }>();
 </script>
 
 <template>
-    <TransitionGroup name="list" tag="ul" class="relative">
-        <ListTimerItem v-for="timer in props.timers" :key="timer.id" :timer="timer" />
-    </TransitionGroup>
+    <ul class="relative">
+        <TransitionGroup name="list">
+            <ListTimerItem
+                v-for="[index, timer] in props.timers?.entries()"
+                :key="timer.id"
+                :is-last="index === props.timers!.length - 1"
+                :timer="timer"
+                @create="emit('create')"
+            />
+        </TransitionGroup>
+    </ul>
 </template>
 
 <style scoped></style>
