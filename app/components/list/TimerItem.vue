@@ -12,8 +12,8 @@ watch(open, () => {
     <li
         class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 last-of-type:border-none sm:flex-row sm:items-center"
     >
-        <div>
-            <TypoH1 class="mb-1 line-clamp-2 break-words">{{ props.timer.title }}</TypoH1>
+        <div class="min-w-0 shrink-1">
+            <TypoH1 class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH1>
             <span>
                 {{ props.timer.intervals.length }}
                 {{ `Interval${props.timer.intervals.length === 1 ? "" : "s"}` }} (~{{
@@ -35,5 +35,3 @@ watch(open, () => {
         </OverlayDrawer>
     </li>
 </template>
-
-<style scoped></style>
