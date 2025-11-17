@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
-import type { TimerInput } from "#shared/schema/timer";
+import type { PutTimer } from "#shared/schema/timer";
 
-const intervals = defineModel<TimerInput["intervals"]>("intervals");
+const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
 </script>
 
@@ -22,7 +22,7 @@ const { index } = defineProps<{ index: number }>();
             <UFormField label="Interval Type" :name="`intervals.${index}.type`" required class="z-1 w-full">
                 <USelect
                     :items="['Temporal', 'Rhythm']"
-                    default-value="Temporal"
+                    :default-value="intervals![index]!.beatPattern ? 'Rhythm' : 'Temporal'"
                     class="w-full"
                     :portal="false"
                     @update:model-value="

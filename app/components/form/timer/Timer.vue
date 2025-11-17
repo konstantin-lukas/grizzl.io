@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { type TimerInput, type TimerOutput, TimerSchema } from "#shared/schema/timer";
+import { type GetTimer, PostTimerSchema, type PutTimer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
-const { initialState = null } = defineProps<{ initialState?: TimerOutput }>();
+const { initialState = null } = defineProps<{ initialState?: GetTimer }>();
+console.log(initialState);
 const emit = defineEmits(["success"]);
-const state = reactive<TimerInput>(
+const state = reactive<PutTimer>(
     initialState
         ? {
               ...initialState,
@@ -46,6 +47,9 @@ watch(state, () => {
 
 async function onSubmit() {
     start({ force: true });
+    for (const interval of state.intervals) {
+        if (interval.id?.length !== 16) delete interval.id;
+    }
     $fetch(initialState === null ? "/api/timers" : `/api/timers/${initialState.id}`, {
         method: initialState === null ? "POST" : "PUT",
         body: state,
@@ -70,7 +74,7 @@ function onEnd() {
 </script>
 
 <template>
-    <UForm :schema="TimerSchema" :state="state" @submit.prevent="onSubmit">
+    <UForm :schema="PostTimerSchema" :state="state" @submit.prevent="onSubmit" @error="error => console.log(error)">
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
                 class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"

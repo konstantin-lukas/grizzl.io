@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TimerOutput } from "#shared/schema/timer";
+import type { GetTimer } from "#shared/schema/timer";
 
 const emit = defineEmits(["create"]);
-const props = defineProps<{ timers: TimerOutput[] | undefined }>();
+const props = defineProps<{ timers: GetTimer[] | undefined }>();
 </script>
 
 <template>

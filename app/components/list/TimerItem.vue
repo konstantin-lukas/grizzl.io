@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TimerOutput } from "#shared/schema/timer";
+import type { GetTimer } from "#shared/schema/timer";
 
 const emit = defineEmits(["create"]);
-const props = defineProps<{ isLast: boolean; timer: TimerOutput & { id: string } }>();
+const props = defineProps<{ isLast: boolean; timer: GetTimer & { id: string } }>();
 const open = ref(false);
 watch(open, () => {
     if (!open.value) refreshNuxtData("/api/timers");

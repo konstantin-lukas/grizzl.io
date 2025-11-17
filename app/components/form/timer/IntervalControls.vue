@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TimerInput } from "#shared/schema/timer";
+import type { PutTimer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 
-const intervals = defineModel<TimerInput["intervals"]>("intervals");
+const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
 </script>
 
