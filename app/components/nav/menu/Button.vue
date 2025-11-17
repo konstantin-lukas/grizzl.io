@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { toggle, isOpen } = useMenu();
-const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x-1/2 rounded-full bg-front transition-all ease-bezier`;
+const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x-1/2 rounded-full transition-all ease-bezier`;
+const isOnline = useOnlineStatus();
 </script>
 
 <template>
@@ -13,8 +14,24 @@ const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x
         @click="toggle"
     >
         <span class="absolute top-1/2 left-1/2 h-1/2 w-1/2 -translate-1/2">
-            <span class="top-0.75" :class="{ [baseClass]: true, 'top-1/2 -translate-y-1/2 rotate-225': isOpen }" />
-            <span class="bottom-0.75" :class="{ [baseClass]: true, 'bottom-1/2 translate-y-1/2 rotate-135': isOpen }" />
+            <span
+                class="top-0.75"
+                :class="{
+                    [baseClass]: true,
+                    'bg-front': isOnline,
+                    'bg-back': !isOnline,
+                    'top-1/2 -translate-y-1/2 rotate-225': isOpen,
+                }"
+            />
+            <span
+                class="bottom-0.75"
+                :class="{
+                    [baseClass]: true,
+                    'bg-front': isOnline,
+                    'bg-back': !isOnline,
+                    'bottom-1/2 translate-y-1/2 rotate-135': isOpen,
+                }"
+            />
         </span>
     </Button>
 </template>

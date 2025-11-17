@@ -209,6 +209,16 @@
         transform: scale(90%);
     }
 
+    .fade-pure-enter-active,
+    .fade-pure-leave-active {
+        transition: opacity 0.25s ease;
+    }
+
+    .fade-pure-enter-from,
+    .fade-pure-leave-to {
+        opacity: 0;
+    }
+
     .ghost {
         visibility: hidden;
     }
