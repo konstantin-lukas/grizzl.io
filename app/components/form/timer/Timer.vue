@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
+import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
@@ -20,7 +20,7 @@ const state = reactive<PutTimer>(
         : {
               title: "",
               ttsVoice: null,
-              intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid(), beatPattern: null }],
+              intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3, id: nanoid(), beatPattern: null }],
           },
 );
 const previousIntervalCount = ref(state.intervals.length);
