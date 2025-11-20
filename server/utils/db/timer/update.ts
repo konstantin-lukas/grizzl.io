@@ -16,27 +16,28 @@ export default async function update(
 
         if (rowCount === null || "deleted" in values) return rowCount;
 
-        const promises = values.intervals.map((interval, index) =>
-            interval.id
-                ? tx
-                      .update(timerInterval)
-                      .set({
-                          title: interval.title,
-                          index,
-                          repeatCount: interval.repeatCount,
-                          duration: interval.duration,
-                          beatPattern: interval.beatPattern,
-                      })
-                      .where(and(eq(timerInterval.id, interval.id ?? ""), eq(timerInterval.timerId, id)))
-                : tx.insert(timerInterval).values({
-                      timerId: id,
-                      index,
-                      title: interval.title,
-                      repeatCount: interval.repeatCount,
-                      duration: interval.duration,
-                      beatPattern: interval.beatPattern,
-                  }),
-        );
+        const promises = values.intervals.map((interval, index) => {
+            if (interval.id) {
+                return tx
+                    .update(timerInterval)
+                    .set({
+                        title: interval.title,
+                        index,
+                        repeatCount: interval.repeatCount,
+                        duration: interval.duration,
+                        beatPattern: interval.beatPattern,
+                    })
+                    .where(and(eq(timerInterval.id, interval.id ?? ""), eq(timerInterval.timerId, id)));
+            }
+            return tx.insert(timerInterval).values({
+                timerId: id,
+                index,
+                title: interval.title,
+                repeatCount: interval.repeatCount,
+                duration: interval.duration,
+                beatPattern: interval.beatPattern,
+            });
+        });
         const results = await Promise.all(promises);
         return results.reduce((acc, val) => acc + (val.rowCount ?? 0), rowCount);
     });

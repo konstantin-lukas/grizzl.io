@@ -5,6 +5,7 @@ import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
 const { initialState = null } = defineProps<{ initialState?: Timer }>();
+const createNewTimer = initialState === null;
 const emit = defineEmits(["success"]);
 const state = reactive<PutTimer>(
     initialState
@@ -49,7 +50,6 @@ async function onSubmit() {
     for (const interval of state.intervals) {
         if (interval.id?.length !== 16) delete interval.id;
     }
-    const createNewTimer = initialState === null;
     $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
         method: createNewTimer ? "POST" : "PUT",
         body: state,
@@ -113,11 +113,11 @@ function onEnd() {
             <div class="flex w-120 justify-center gap-4 px-8">
                 <Button
                     type="submit"
-                    icon="heroicons:plus-circle-16-solid"
+                    :icon="createNewTimer ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
                     class="flex w-full justify-center"
                     :disabled="isLoading"
                 >
-                    Erstellen
+                    {{ createNewTimer ? "Erstellen" : "Speichern" }}
                 </Button>
             </div>
         </div>
