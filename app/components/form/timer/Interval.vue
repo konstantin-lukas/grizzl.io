@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { COUNT_MIN, TITLE_MAX } from "#shared/constants/data";
 import { Beat } from "#shared/enum/timer";
 import type { PutTimer } from "#shared/schema/timer";
 
@@ -15,7 +16,7 @@ const { index } = defineProps<{ index: number }>();
                 <UInput
                     v-model="intervals![index]!.title"
                     class="w-full"
-                    :maxlength="100"
+                    :maxlength="TITLE_MAX"
                     placeholder="Displayed during interval"
                 />
             </UFormField>
@@ -35,14 +36,14 @@ const { index } = defineProps<{ index: number }>();
             </UFormField>
             <div class="flex gap-4">
                 <UFormField label="Repetitions" :name="`intervals.${index}.repeatCount`" required class="w-full">
-                    <UInputNumber v-model="intervals![index]!.repeatCount" class="w-full" :min="1" />
+                    <UInputNumber v-model="intervals![index]!.repeatCount" class="w-full" :min="COUNT_MIN" />
                 </UFormField>
                 <UFormField label="Duration" :name="`intervals.${index}.duration`" required class="w-full">
                     <UInputNumber
                         v-model="intervals![index]!.duration"
                         class="w-full"
                         :step="0.1"
-                        :min="1"
+                        :min="COUNT_MIN"
                         :format-options="{ style: 'unit', unit: 'second' }"
                     />
                 </UFormField>

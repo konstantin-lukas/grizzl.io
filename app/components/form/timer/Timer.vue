@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
@@ -48,7 +49,7 @@ watch(state, () => {
 async function onSubmit() {
     start({ force: true });
     for (const interval of state.intervals) {
-        if (interval.id?.length !== 16) delete interval.id;
+        if (interval.id?.length !== ID_LENGTH) delete interval.id;
     }
     $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
         method: createNewTimer ? "POST" : "PUT",
@@ -83,7 +84,7 @@ function onEnd() {
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <UFormField label="Timer Title" name="title" class="w-full" required>
-                        <UInput v-model="state.title" class="w-full" :maxlength="100" />
+                        <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
                     </UFormField>
                     <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
                     <VueDraggable

@@ -1,3 +1,4 @@
+import { ID_LENGTH } from "#shared/constants/data";
 import { boolean, char, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 
@@ -7,7 +8,7 @@ export function generateId() {
 }
 
 export const id = {
-    id: char({ length: 16 }).primaryKey().$defaultFn(generateId),
+    id: char({ length: ID_LENGTH }).primaryKey().$defaultFn(generateId),
 };
 
 export const createdAt = {
