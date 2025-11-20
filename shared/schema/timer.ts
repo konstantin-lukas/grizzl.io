@@ -18,16 +18,6 @@ export const PostTimerSchema = z.object({
     intervals: z.array(PostIntervalSchema).min(1).max(100),
 });
 
-export const GetIntervalSchema = PostIntervalSchema.extend({
-    id: DatabaseIdSchema,
-});
-
-export const GetTimerSchema = PostTimerSchema.omit({ intervals: true }).extend({
-    id: DatabaseIdSchema,
-    createdAt: z.string(),
-    intervals: z.array(GetIntervalSchema).min(1).max(100),
-});
-
 export const PutIntervalSchema = PostIntervalSchema.extend({
     id: DatabaseIdSchema.optional(),
 });
@@ -38,4 +28,13 @@ export const PutTimerSchema = PostTimerSchema.omit({ intervals: true }).extend({
 
 export type PostTimer = z.infer<typeof PostTimerSchema>;
 export type PutTimer = z.infer<typeof PutTimerSchema>;
-export type GetTimer = z.infer<typeof GetTimerSchema>;
+
+type Interval = z.infer<typeof PostIntervalSchema> & {
+    id: string;
+};
+
+export type Timer = Omit<PostTimer, "intervals"> & {
+    id: string;
+    createdAt: string;
+    intervals: Interval[];
+};

@@ -1,4 +1,4 @@
-import type { GetTimer } from "#shared/schema/timer";
+import type { Timer } from "#shared/schema/timer";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "~~/lib/db";
 import { timer, timerInterval } from "~~/lib/db/schema";
@@ -30,5 +30,5 @@ export default async function select(userId: string) {
         .leftJoin(timerInterval, eq(timer.id, timerInterval.timerId))
         .where(and(eq(timer.userId, userId), eq(timer.deleted, false)))
         .groupBy(timer.id)
-        .orderBy(timer.createdAt) as unknown as (GetTimer & { createdAt: string })[];
+        .orderBy(timer.createdAt) as unknown as (Timer & { createdAt: string })[];
 }

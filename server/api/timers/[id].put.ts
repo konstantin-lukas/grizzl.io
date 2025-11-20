@@ -1,6 +1,5 @@
 import { PutTimerSchema } from "#shared/schema/timer";
 import update from "~~/server/utils/db/timer/update";
-import { parseRequestBody } from "~~/server/utils/schema";
 
 export default defineEventHandler(async event => {
     const id = await parseIdParameter(event);

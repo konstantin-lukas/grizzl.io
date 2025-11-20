@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { type GetTimer, PostTimerSchema, type PutTimer } from "#shared/schema/timer";
+import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
-const { initialState = null } = defineProps<{ initialState?: GetTimer }>();
-console.log(initialState);
+const { initialState = null } = defineProps<{ initialState?: Timer }>();
 const emit = defineEmits(["success"]);
 const state = reactive<PutTimer>(
     initialState
@@ -50,17 +49,16 @@ async function onSubmit() {
     for (const interval of state.intervals) {
         if (interval.id?.length !== 16) delete interval.id;
     }
-    $fetch(initialState === null ? "/api/timers" : `/api/timers/${initialState.id}`, {
-        method: initialState === null ? "POST" : "PUT",
+    const createNewTimer = initialState === null;
+    $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
+        method: createNewTimer ? "POST" : "PUT",
         body: state,
     })
         .then(() => {
             emit("success");
             finish();
             toast.add(
-                createToastSuccess(
-                    initialState === null ? "Timer created successfully." : "Timer updated successfully.",
-                ),
+                createToastSuccess(createNewTimer ? "Timer created successfully." : "Timer updated successfully."),
             );
         })
         .catch(error => {

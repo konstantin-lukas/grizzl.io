@@ -17,7 +17,7 @@ export default async function update(
         if (rowCount === null || "deleted" in values) return rowCount;
 
         const promises = values.intervals.map((interval, index) =>
-            timerInterval.id
+            interval.id
                 ? tx
                       .update(timerInterval)
                       .set({
