@@ -1,5 +1,5 @@
 import type { PutTimer } from "#shared/schema/timer";
-import { and, eq } from "drizzle-orm";
+import { and, eq, notInArray } from "drizzle-orm";
 import { db } from "~~/lib/db";
 import { timer, timerInterval } from "~~/lib/db/schema";
 
@@ -14,28 +14,31 @@ export default async function update(
             .set("deleted" in values ? { deleted: values.deleted } : { title: values.title, ttsVoice: values.ttsVoice })
             .where(and(eq(timer.id, id), eq(timer.userId, userId)));
 
-        if (rowCount === null || "deleted" in values) return rowCount;
+        if (!rowCount || "deleted" in values) return rowCount;
+
+        const intervalIds = values.intervals.map(i => i.id).filter((id): id is string => !!id);
+
+        await tx
+            .delete(timerInterval)
+            .where(and(eq(timerInterval.timerId, id), notInArray(timerInterval.id, intervalIds)));
 
         const promises = values.intervals.map((interval, index) => {
-            if (interval.id) {
-                return tx
-                    .update(timerInterval)
-                    .set({
-                        title: interval.title,
-                        index,
-                        repeatCount: interval.repeatCount,
-                        duration: interval.duration,
-                        beatPattern: interval.beatPattern,
-                    })
-                    .where(and(eq(timerInterval.id, interval.id ?? ""), eq(timerInterval.timerId, id)));
-            }
-            return tx.insert(timerInterval).values({
-                timerId: id,
+            const baseValue = {
                 index,
                 title: interval.title,
                 repeatCount: interval.repeatCount,
                 duration: interval.duration,
                 beatPattern: interval.beatPattern,
+            };
+            if (interval.id) {
+                return tx
+                    .update(timerInterval)
+                    .set(baseValue)
+                    .where(and(eq(timerInterval.id, interval.id), eq(timerInterval.timerId, id)));
+            }
+            return tx.insert(timerInterval).values({
+                timerId: id,
+                ...baseValue,
             });
         });
         const results = await Promise.all(promises);
