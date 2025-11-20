@@ -36,5 +36,3 @@ const { isOpen } = useMenu();
         <NavMenuLangSelect />
     </header>
 </template>
-
-<style scoped></style>

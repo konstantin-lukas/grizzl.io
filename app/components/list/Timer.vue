@@ -18,5 +18,3 @@ const props = defineProps<{ timers: Timer[] | undefined }>();
         </TransitionGroup>
     </ul>
 </template>
-
-<style scoped></style>

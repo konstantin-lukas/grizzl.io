@@ -138,5 +138,3 @@ function addBeat(beat: Beat) {
         </div>
     </div>
 </template>
-
-<style scoped></style>
