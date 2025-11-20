@@ -8,13 +8,14 @@ export default async function update(
     userId: string,
     values: { deleted: boolean } | { title: string; ttsVoice: string | null; intervals: PutTimer["intervals"] },
 ) {
+    const isDelete = "deleted" in values;
     return await db.transaction(async tx => {
         const { rowCount } = await tx
             .update(timer)
-            .set("deleted" in values ? { deleted: values.deleted } : { title: values.title, ttsVoice: values.ttsVoice })
+            .set(isDelete ? { deleted: values.deleted } : { title: values.title, ttsVoice: values.ttsVoice })
             .where(and(eq(timer.id, id), eq(timer.userId, userId)));
 
-        if (!rowCount || "deleted" in values) return rowCount;
+        if (!rowCount || isDelete) return rowCount;
 
         const intervalIds = values.intervals.map(i => i.id).filter((id): id is string => !!id);
 
