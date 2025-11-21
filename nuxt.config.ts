@@ -1,4 +1,4 @@
-import LOCALES from "./shared/constants/i18n";
+import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "fs";

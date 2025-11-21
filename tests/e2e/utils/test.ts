@@ -1,4 +1,4 @@
-import I18n from "@@/shared/constants/i18n";
+import { LOCALES } from "@@/shared/constants/i18n";
 import { test } from "@e2e/fixtures";
 
 export function withLocale(locale: string, callback: Parameters<typeof test.describe>[2]) {
@@ -9,17 +9,17 @@ export function withLocale(locale: string, callback: Parameters<typeof test.desc
 }
 
 export function forEachLocale<T>(
-    callback: (locale: (typeof I18n)[0], texts: T) => void,
-    texts: Record<(typeof I18n)[0]["language"], T>,
+    callback: (locale: (typeof LOCALES)[0], texts: T) => void,
+    texts: Record<(typeof LOCALES)[0]["language"], T>,
 ): void;
 
-export function forEachLocale(callback: (locale: (typeof I18n)[0], texts?: undefined) => void): void;
+export function forEachLocale(callback: (locale: (typeof LOCALES)[0], texts?: undefined) => void): void;
 
 export function forEachLocale<T>(
-    callback: (locale: (typeof I18n)[0], texts?: T) => void,
-    texts?: Record<(typeof I18n)[0]["language"], T>,
+    callback: (locale: (typeof LOCALES)[0], texts?: T) => void,
+    texts?: Record<(typeof LOCALES)[0]["language"], T>,
 ) {
-    for (const locale of I18n) {
+    for (const locale of LOCALES) {
         test.describe("", { tag: `@${locale.language}` }, () => {
             test.use({ locale: locale.language });
             callback(locale, texts && texts[locale.language]);

@@ -10,7 +10,7 @@ const languages = [
 ] as const;
 type LanguageCode = (typeof languages)[number]["locale"] extends `${infer T}-${string}` ? T : never;
 
-const LOCALES = languages.map(({ locale, zodLocale, fnsLocale, uiLocale }) => ({
+export const LOCALES = languages.map(({ locale, zodLocale, fnsLocale, uiLocale }) => ({
     code: locale.split("-")[0],
     language: locale,
     zodLocale,
@@ -23,5 +23,3 @@ const LOCALES = languages.map(({ locale, zodLocale, fnsLocale, uiLocale }) => ({
     fnsLocale: typeof fnsEn;
     uiLocale: typeof uiEn;
 }[];
-
-export default LOCALES;

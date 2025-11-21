@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LOCALES from "#shared/constants/i18n";
+import { LOCALES } from "#shared/constants/i18n";
 
 const { locale, setLocale } = useI18n();
 const selectedLang = ref(locale.value);

@@ -1,4 +1,4 @@
-import LOCALES from "#shared/constants/i18n";
+import { LOCALES } from "#shared/constants/i18n";
 import { DatabaseIdSchema } from "#shared/schema/id";
 import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
