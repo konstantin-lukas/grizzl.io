@@ -19,23 +19,27 @@ const backgroundImage = computed(
 );
 const transform = computed(() => `rotate(${ringProgress.value}turn)`);
 
-watchEffect(() => {
-    const animateTimer = () => {
-        if (!props.duration || !props.id) return;
-        elapsedTime.value = Date.now() - startTime.value;
-        const progress = elapsedTime.value / props.duration;
-        if (progress >= 1) {
-            startTime.value = Date.now();
-            ringProgress.value = 0;
-            elapsedTime.value = 0;
-            emit("finish");
-            return;
-        }
-        ringProgress.value = progress;
-        requestAnimationFrame(animateTimer);
-    };
-    animateTimer();
-});
+watch(
+    props,
+    () => {
+        const animateTimer = () => {
+            if (!props.duration || !props.id) return;
+            elapsedTime.value = Date.now() - startTime.value;
+            const progress = elapsedTime.value / props.duration;
+            if (progress >= 1) {
+                startTime.value = Date.now();
+                ringProgress.value = 0;
+                elapsedTime.value = 0;
+                emit("finish");
+                return;
+            }
+            ringProgress.value = progress;
+            requestAnimationFrame(animateTimer);
+        };
+        animateTimer();
+    },
+    { immediate: true },
+);
 </script>
 
 <template>

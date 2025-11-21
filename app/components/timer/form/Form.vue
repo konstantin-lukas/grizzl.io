@@ -15,7 +15,7 @@ const state = reactive<PutTimer>(
               ...initialState,
               intervals: initialState.intervals.map(interval => ({
                   ...interval,
-                  duration: Math.floor(interval.duration / 1000),
+                  duration: interval.duration / 1000,
               })),
           }
         : {
