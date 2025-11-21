@@ -88,7 +88,7 @@ function onEnd() {
                     <UFormField label="Timer Title" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
                     </UFormField>
-                    <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
+                    <TimerFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
                     <VueDraggable
                         v-model="state.intervals"
                         :animation="250"
@@ -100,7 +100,7 @@ function onEnd() {
                         @end="onEnd"
                     >
                         <TransitionGroup name="draggable-list">
-                            <FormTimerInterval
+                            <TimerFormInterval
                                 v-for="[index, interval] in state.intervals.entries()"
                                 :key="interval.id"
                                 v-model:intervals="state.intervals"

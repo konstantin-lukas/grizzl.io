@@ -26,11 +26,11 @@ watch(open, () => {
             <div class="flex justify-start gap-4">
                 <Button aria-label="Start" icon="heroicons:play-solid" @click="emit('start', timer)" />
                 <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
-                <FormTimerDelete :timer="props.timer" />
+                <TimerFormDelete :timer="props.timer" />
             </div>
 
             <OverlayDrawer v-model:open="open">
-                <FormTimer :initial-state="props.timer" @success="open = false" />
+                <TimerForm :initial-state="props.timer" @success="open = false" />
                 <template #title>Create a new timer</template>
                 <template #description>
                     Choose between different types of timer intervals to create a fully customized timer

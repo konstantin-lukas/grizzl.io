@@ -8,7 +8,7 @@ const props = defineProps<{ timers: Timer[] | undefined }>();
 <template>
     <ul class="relative">
         <TransitionGroup name="list">
-            <ListTimerItem
+            <TimerListItem
                 v-for="[index, timer] in props.timers?.entries()"
                 :key="timer.id"
                 :is-last="index === props.timers!.length - 1"

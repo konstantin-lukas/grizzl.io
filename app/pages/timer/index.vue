@@ -16,13 +16,13 @@ const activeTimer = ref<Timer | null>(null);
                 <div v-if="activeTimer">Running timer {{ activeTimer.title }}</div>
                 <div v-else class="absolute w-full">
                     <OverlayDrawer v-model:open="open">
-                        <FormTimer @success="open = false" />
+                        <TimerForm @success="open = false" />
                         <template #title>Create a new timer</template>
                         <template #description>
                             Choose between different types of timer intervals to create a fully customized timer
                         </template>
                     </OverlayDrawer>
-                    <ListTimer :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
+                    <TimerList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                     <Transition name="fade">
                         <DataEmpty
                             v-if="data && data.length === 0"
