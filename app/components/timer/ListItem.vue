@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/schema/timer";
+import { formatDuration } from "date-fns";
 
-const emit = defineEmits(["create"]);
+const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
 const open = ref(false);
 watch(open, () => {
     if (!open.value) refreshNuxtData("/api/timers");
 });
+
+const duration = useComputedOnLocaleChange(() =>
+    formatDuration({
+        seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000,
+    }),
+);
 </script>
 
 <template>
@@ -18,27 +25,26 @@ watch(open, () => {
                 <TypoH1 class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH1>
                 <span>
                     {{ props.timer.intervals.length }}
-                    {{ `Interval${props.timer.intervals.length === 1 ? "" : "s"}` }} (~{{
-                        Math.trunc(props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000)
-                    }}s)
+                    {{ `Interval${props.timer.intervals.length === 1 ? "" : "s"}` }} ({{ duration }})
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button aria-label="Start" icon="heroicons:play-solid" />
+                <Button aria-label="Start" icon="heroicons:play-solid" @click="emit('start', timer)" />
                 <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
-                <FormTimerDelete :timer="props.timer" />
+                <TimerFormDelete :timer="props.timer" />
             </div>
-
             <OverlayDrawer v-model:open="open">
-                <FormTimer :initial-state="props.timer" @success="open = false" />
+                <TimerFormUpsert :initial-state="props.timer" @success="open = false" />
                 <template #title>Create a new timer</template>
                 <template #description>
                     Choose between different types of timer intervals to create a fully customized timer
                 </template>
             </OverlayDrawer>
         </div>
-        <div v-if="props.isLast" class="center absolute w-full">
-            <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
-        </div>
+        <Transition name="fade">
+            <div v-if="props.isLast" class="center absolute w-full">
+                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
+            </div>
+        </Transition>
     </li>
 </template>

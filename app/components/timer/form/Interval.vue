@@ -56,7 +56,7 @@ const { index } = defineProps<{ index: number }>();
                     required
                     class="w-full"
                 >
-                    <InputBeatPattern
+                    <TimerBeatPatternInput
                         :beats="intervals![index]!.beatPattern"
                         :bar-length="intervals![index]!.duration"
                         class="w-full"
@@ -69,6 +69,6 @@ const { index } = defineProps<{ index: number }>();
         <div class="relative w-full cursor-move overflow-hidden py-6" data-handle>
             <UIcon name="mdi:drag-horizontal" class="absolute top-1/2 left-1/2 size-12 -translate-1/2" />
         </div>
-        <FormTimerIntervalControls v-model:intervals="intervals" :index="index" />
+        <TimerFormIntervalControls v-model:intervals="intervals" :index="index" />
     </fieldset>
 </template>

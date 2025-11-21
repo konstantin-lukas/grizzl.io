@@ -1,8 +1,8 @@
+import { LOCALES } from "#shared/constants/i18n";
 import { DatabaseIdSchema } from "#shared/schema/id";
 import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { z } from "zod";
-import LOCALES from "~~/i18n/locales";
 
 export async function safeParseRequestBody<T extends ZodType>(event: H3Event<EventHandlerRequest>, schema: T) {
     const cookies = parseCookies(event);

@@ -52,7 +52,7 @@ things running on localhost.
 
 ### Adding Languages
 To extend the app with another language, you have to provide all translations files located at `i18n/locales` for
-the locale of your language. You also have to extend the `locales` constant located in the `i18n/locales.ts` file. 
+the locale of your language. You also have to extend the `languages` constant located in the `shared/constants/i18n.ts` file. 
 That's it! Your new language should now be available.
 
 

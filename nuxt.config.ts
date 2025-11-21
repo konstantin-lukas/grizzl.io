@@ -1,4 +1,4 @@
-import LOCALES from "./i18n/locales";
+import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "fs";
@@ -69,6 +69,16 @@ export function checkTranslationFileConsistency() {
             }
         }
     }
+}
+
+function getTranslationFiles(locale: string) {
+    const dirPath = path.join(process.cwd(), "i18n", "locales", locale);
+    if (!fs.existsSync(dirPath)) {
+        throw new Error(`Locale directory does not exist: ${dirPath}`);
+    }
+
+    const files = fs.readdirSync(dirPath);
+    return files.filter(file => file.endsWith(".json")).map(file => path.join(locale, file));
 }
 
 checkTranslationFileConsistency();
@@ -175,7 +185,11 @@ export default defineNuxtConfig({
         strategy: "no_prefix",
         defaultLocale: "en",
         baseUrl: process.env.NUXT_PUBLIC_ORIGIN,
-        locales: LOCALES as LocaleObject[],
+        locales: LOCALES.map(({ code, language }) => ({
+            code,
+            language,
+            files: getTranslationFiles(language),
+        })) as LocaleObject[],
         detectBrowserLanguage: {
             useCookie: true,
             cookieKey: "i18n_redirected",

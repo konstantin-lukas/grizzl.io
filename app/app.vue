@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import * as locales from "@nuxt/ui/locale";
+import { LOCALES } from "#shared/constants/i18n";
+import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
-import * as zodLocales from "zod/locales";
 
 const { locale } = useI18n();
-onMounted(() => {
-    z.config(zodLocales[locale.value]());
-});
+const uiLocale = ref();
+watch(
+    locale,
+    () => {
+        const localeInformation = LOCALES.find(loc => loc.code === locale.value)!;
+        uiLocale.value = localeInformation.uiLocale;
+        z.config(localeInformation.zodLocale);
+        setDefaultOptions({ locale: localeInformation.fnsLocale });
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
-    <UApp :locale="locales[locale]">
+    <UApp :locale="uiLocale">
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
