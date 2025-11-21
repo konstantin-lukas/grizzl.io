@@ -13,7 +13,7 @@ const activeTimer = ref<Timer | null>(null);
     <LayoutWrapper :class="{ 'max-w-xl': true }">
         <div class="relative min-h-main-height-no-padding w-full">
             <Transition name="swipe">
-                <div v-if="activeTimer">Running timer {{ activeTimer.title }}</div>
+                <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
                 <div v-else class="absolute w-full">
                     <OverlayDrawer v-model:open="open">
                         <TimerForm @success="open = false" />
