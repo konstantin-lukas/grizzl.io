@@ -14,7 +14,7 @@ const activeTimer = ref<Timer | null>(null);
         <div class="relative min-h-main-height-no-padding w-full">
             <Transition name="swipe">
                 <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
-                <div v-else class="absolute w-full">
+                <div v-else class="absolute min-h-main-height-no-padding w-full">
                     <OverlayDrawer v-model:open="open">
                         <TimerForm @success="open = false" />
                         <template #title>Create a new timer</template>
