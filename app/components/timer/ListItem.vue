@@ -11,7 +11,7 @@ watch(open, () => {
 
 const duration = useComputedOnLocaleChange(() =>
     formatDuration({
-        seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1200,
+        seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000,
     }),
 );
 </script>

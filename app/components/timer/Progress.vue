@@ -12,7 +12,6 @@ const progress = computed(() => {
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
 });
-// { minutes: 30, seconds: 7 }
 
 const backgroundImage = computed(
     () => `conic-gradient(var(--ui-primary) ${ringProgress.value}turn, var(--ui-border) 0)`,
