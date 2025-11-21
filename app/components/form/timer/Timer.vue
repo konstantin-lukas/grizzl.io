@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
+import { deepCopy } from "#shared/utils/object";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
@@ -48,12 +49,13 @@ watch(state, () => {
 
 async function onSubmit() {
     start({ force: true });
-    for (const interval of state.intervals) {
+    const submissionState = deepCopy(state);
+    for (const interval of submissionState.intervals) {
         if (interval.id?.length !== ID_LENGTH) delete interval.id;
     }
     $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
         method: createNewTimer ? "POST" : "PUT",
-        body: state,
+        body: submissionState,
     })
         .then(() => {
             emit("success");
@@ -73,7 +75,7 @@ function onEnd() {
 </script>
 
 <template>
-    <UForm :schema="PostTimerSchema" :state="state" @submit.prevent="onSubmit" @error="error => console.log(error)">
+    <UForm :schema="PostTimerSchema" :state="state" @submit.prevent="onSubmit">
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
                 class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
