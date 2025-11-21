@@ -16,7 +16,7 @@ const activeTimer = ref<Timer | null>(null);
                 <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
                 <div v-else class="absolute min-h-main-height-no-padding w-full">
                     <OverlayDrawer v-model:open="open">
-                        <TimerForm @success="open = false" />
+                        <TimerFormUpsert @success="open = false" />
                         <template #title>Create a new timer</template>
                         <template #description>
                             Choose between different types of timer intervals to create a fully customized timer

@@ -34,7 +34,7 @@ const duration = useComputedOnLocaleChange(() =>
                 <TimerFormDelete :timer="props.timer" />
             </div>
             <OverlayDrawer v-model:open="open">
-                <TimerForm :initial-state="props.timer" @success="open = false" />
+                <TimerFormUpsert :initial-state="props.timer" @success="open = false" />
                 <template #title>Create a new timer</template>
                 <template #description>
                     Choose between different types of timer intervals to create a fully customized timer
