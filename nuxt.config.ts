@@ -1,4 +1,4 @@
-import I18n from "./shared/constants/i18n";
+import LOCALES from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "fs";
@@ -185,7 +185,11 @@ export default defineNuxtConfig({
         strategy: "no_prefix",
         defaultLocale: "en",
         baseUrl: process.env.NUXT_PUBLIC_ORIGIN,
-        locales: I18n.map(loc => ({ ...loc, files: getTranslationFiles(loc.language) })) as LocaleObject[],
+        locales: LOCALES.map(({ code, language }) => ({
+            code,
+            language,
+            files: getTranslationFiles(language),
+        })) as LocaleObject[],
         detectBrowserLanguage: {
             useCookie: true,
             cookieKey: "i18n_redirected",
