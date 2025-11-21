@@ -51,4 +51,10 @@ export default withNuxt([
             "vue/no-multiple-template-root": "off",
         },
     },
+    {
+        files: ["app/**/*"],
+        rules: {
+            "no-console": "error",
+        },
+    },
 ]);
