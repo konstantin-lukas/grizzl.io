@@ -9,10 +9,12 @@ watch(open, () => {
     if (!open.value) refreshNuxtData("/api/timers");
 });
 
-const duration = useComputedOnLocaleChange(() =>
-    formatDuration({
-        seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000,
-    }),
+const duration = useComputedOnLocaleChange(
+    () =>
+        formatDuration({
+            seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000,
+        }),
+    () => props.timer.intervals,
 );
 </script>
 

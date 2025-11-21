@@ -12,5 +12,6 @@ const activeTimer = computed(() => {
     <section aria-labelledby="timer-name" class="w-full">
         <TypoH1 id="timer-name">{{ timer.title }}</TypoH1>
         <TimerProgress :id="activeTimer?.id" :duration="activeTimer?.duration" @finish="activeIntervalIndex++" />
+        <TimerControls @reset="activeIntervalIndex = 0" />
     </section>
 </template>

@@ -3,6 +3,7 @@ import type { Timer } from "#shared/schema/timer";
 
 const open = ref(false);
 const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
+
 watch(open, () => {
     if (!open.value) refresh();
 });

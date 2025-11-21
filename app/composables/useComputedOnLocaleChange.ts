@@ -1,8 +1,10 @@
-export default function useComputedOnLocaleChange<T>(callback: () => T) {
+import type { ComputedGetter } from "vue";
+
+export default function useComputedOnLocaleChange<T>(callback: () => T | null, getter?: ComputedGetter<unknown>) {
     const { locale } = useI18n();
-    const state = ref<T>();
+    const state = ref<T | null>(null);
     watch(
-        locale,
+        [locale, getter],
         () => {
             state.value = callback();
         },

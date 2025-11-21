@@ -21,14 +21,14 @@ const transform = computed(() => `rotate(${ringProgress.value}turn)`);
 watch(
     props,
     () => {
+        startTime.value = Date.now();
+        ringProgress.value = 0;
+        elapsedTime.value = 0;
         const animateTimer = () => {
             if (!props.duration || !props.id) return;
             elapsedTime.value = Date.now() - startTime.value;
             const progress = elapsedTime.value / props.duration;
             if (progress >= 1) {
-                startTime.value = Date.now();
-                ringProgress.value = 0;
-                elapsedTime.value = 0;
                 emit("finish");
                 return;
             }
