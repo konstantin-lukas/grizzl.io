@@ -13,11 +13,13 @@ const activeInterval = computed(() => {
 <template>
     <section aria-labelledby="timer-name" class="w-full">
         <TypoH1 id="timer-name">{{ timer.title }}</TypoH1>
-        <Transition name="swipe">
-            <TypoH2 v-if="activeInterval?.title" class="line-clamp-1 text-neutral-600 dark:text-neutral-400">
-                {{ activeInterval?.title }}
-            </TypoH2>
-        </Transition>
+        <div class="h-6 w-full">
+            <Transition name="swipe" mode="out-in">
+                <TypoH2 :key="activeInterval?.id" class="line-clamp-1 text-neutral-600 dark:text-neutral-400">
+                    {{ activeInterval?.title }}
+                </TypoH2>
+            </Transition>
+        </div>
         <TimerProgress :id="activeInterval?.id" :duration="activeInterval?.duration" @finish="activeIntervalIndex++" />
         <TimerControls @reset="activeIntervalIndex = 0" @close="emit('close')" />
     </section>
