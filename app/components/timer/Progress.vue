@@ -3,36 +3,30 @@ import { intervalToDuration } from "date-fns";
 
 const props = defineProps<{ duration?: number; id?: string }>();
 const emit = defineEmits(["finish"]);
-const ringProgress = ref(0 / (props.duration ?? 1));
-const startTime = ref(Date.now());
-const elapsedTime = ref(0);
+const { progress, startTime, elapsedTime, reset } = useTimer(props.duration);
 
-const progress = computed(() => {
+const time = computed(() => {
     const d = intervalToDuration({ start: 0, end: elapsedTime.value });
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
 });
 
-const backgroundImage = computed(
-    () => `conic-gradient(var(--ui-primary) ${ringProgress.value}turn, var(--ui-border) 0)`,
-);
-const transform = computed(() => `rotate(${ringProgress.value}turn)`);
+const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
+const transform = computed(() => `rotate(${progress.value}turn)`);
 
 watch(
     props,
     () => {
-        startTime.value = Date.now();
-        ringProgress.value = 0;
-        elapsedTime.value = 0;
+        reset();
         const animateTimer = () => {
             if (!props.duration || !props.id) return;
             elapsedTime.value = Date.now() - startTime.value;
-            const progress = elapsedTime.value / props.duration;
-            if (progress >= 1) {
+            const newProgress = elapsedTime.value / props.duration;
+            if (newProgress >= 1) {
                 emit("finish");
                 return;
             }
-            ringProgress.value = progress;
+            progress.value = newProgress;
             requestAnimationFrame(animateTimer);
         };
         animateTimer();
@@ -42,12 +36,12 @@ watch(
 </script>
 
 <template>
-    <div class="relative my-16 aspect-square w-full overflow-hidden rounded-full">
+    <div class="relative mx-auto my-16 aspect-square w-full max-w-96 overflow-hidden rounded-full">
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
                 class="center aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >
-                {{ progress }}
+                {{ time }}
             </span>
         </div>
         <span
