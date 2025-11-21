@@ -44,17 +44,22 @@ watch(
 <template>
     <div class="relative my-16 aspect-square w-full overflow-hidden rounded-full">
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
-            <span class="center aspect-square w-[calc(100%-3rem)] scale-[calc(1/1.1)] rounded-full bg-back text-6xl">
+            <span
+                class="center aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
+            >
                 {{ progress }}
             </span>
         </div>
-        <span v-if="props.id" class="absolute top-0 left-1/2 block size-6 -translate-x-1/2 rounded-full bg-primary" />
+        <span
+            v-if="props.id"
+            class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
+        />
         <div
             v-if="props.id"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
-            <span class="absolute top-0 left-1/2 block size-6 -translate-x-1/2 rounded-full bg-primary" />
+            <span class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
         </div>
     </div>
 </template>
