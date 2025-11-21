@@ -209,6 +209,22 @@
         transform: scale(90%);
     }
 
+    .swipe-enter-active,
+    .swipe-leave-active {
+        transition: all 0.25s ease;
+        position: absolute;
+    }
+
+    .swipe-enter-from {
+        opacity: 0;
+        transform: translateX(5rem);
+    }
+
+    .swipe-leave-to {
+        opacity: 0;
+        transform: translateX(-5rem);
+    }
+
     .fade-pure-enter-active,
     .fade-pure-leave-active {
         transition: opacity 0.25s ease;

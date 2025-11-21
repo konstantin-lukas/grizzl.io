@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/schema/timer";
 
-const emit = defineEmits(["create"]);
+const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
 const open = ref(false);
 watch(open, () => {
@@ -24,7 +24,7 @@ watch(open, () => {
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button aria-label="Start" icon="heroicons:play-solid" />
+                <Button aria-label="Start" icon="heroicons:play-solid" @click="emit('start', timer)" />
                 <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
                 <FormTimerDelete :timer="props.timer" />
             </div>
@@ -37,8 +37,10 @@ watch(open, () => {
                 </template>
             </OverlayDrawer>
         </div>
-        <div v-if="props.isLast" class="center absolute w-full">
-            <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
-        </div>
+        <Transition name="fade">
+            <div v-if="props.isLast" class="center absolute w-full">
+                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
+            </div>
+        </Transition>
     </li>
 </template>
