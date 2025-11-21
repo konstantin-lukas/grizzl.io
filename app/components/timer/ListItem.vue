@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/schema/timer";
 import { formatDuration } from "date-fns";
-import useComputedLocale from "~/composables/useLocaleChange";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
@@ -10,7 +9,7 @@ watch(open, () => {
     if (!open.value) refreshNuxtData("/api/timers");
 });
 
-const duration = useComputedLocale(() =>
+const duration = useComputedOnLocaleChange(() =>
     formatDuration({
         seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1200,
     }),

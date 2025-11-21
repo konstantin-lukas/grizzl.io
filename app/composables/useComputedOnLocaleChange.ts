@@ -1,4 +1,4 @@
-export default function useComputedLocale<T>(callback: () => T) {
+export default function useComputedOnLocaleChange<T>(callback: () => T) {
     const { locale } = useI18n();
     const state = ref<T>();
     watch(
