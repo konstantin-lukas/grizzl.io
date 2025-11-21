@@ -1,16 +1,28 @@
 <script setup lang="ts">
-import { TimerSchema } from "#shared/schema/timer";
-import type { TimerPostWithId } from "#shared/types/timer";
+import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
+import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
 
+const { initialState = null } = defineProps<{ initialState?: Timer }>();
+const createNewTimer = initialState === null;
 const emit = defineEmits(["success"]);
-const state = reactive<TimerPostWithId>({
-    title: "",
-    ttsVoice: undefined,
-    intervals: [{ title: "", repeatCount: 1, duration: 2, id: nanoid() }],
-});
+const state = reactive<PutTimer>(
+    initialState
+        ? {
+              ...initialState,
+              intervals: initialState.intervals.map(interval => ({
+                  ...interval,
+                  duration: Math.floor(interval.duration / 1000),
+              })),
+          }
+        : {
+              title: "",
+              ttsVoice: null,
+              intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3, id: nanoid(), beatPattern: null }],
+          },
+);
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 const isDragging = ref(false);
@@ -36,14 +48,19 @@ watch(state, () => {
 
 async function onSubmit() {
     start({ force: true });
-    $fetch("/api/timers", {
-        method: "POST",
+    for (const interval of state.intervals) {
+        if (interval.id?.length !== ID_LENGTH) delete interval.id;
+    }
+    $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
+        method: createNewTimer ? "POST" : "PUT",
         body: state,
     })
         .then(() => {
             emit("success");
             finish();
-            toast.add(createToastSuccess("Timer created successfully."));
+            toast.add(
+                createToastSuccess(createNewTimer ? "Timer created successfully." : "Timer updated successfully."),
+            );
         })
         .catch(error => {
             toast.add(createToastError(error));
@@ -56,7 +73,7 @@ function onEnd() {
 </script>
 
 <template>
-    <UForm :schema="TimerSchema" :state="state" @submit.prevent="onSubmit">
+    <UForm :schema="PostTimerSchema" :state="state" @submit.prevent="onSubmit" @error="error => console.log(error)">
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
                 class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
@@ -67,7 +84,7 @@ function onEnd() {
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <UFormField label="Timer Title" name="title" class="w-full" required>
-                        <UInput v-model="state.title" class="w-full" :maxlength="100" />
+                        <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
                     </UFormField>
                     <FormTimerVoiceSelect v-model:tts-voice="state.ttsVoice" />
                     <VueDraggable
@@ -84,12 +101,7 @@ function onEnd() {
                             <FormTimerInterval
                                 v-for="[index, interval] in state.intervals.entries()"
                                 :key="interval.id"
-                                v-model:title="interval.title"
-                                v-model:beat-pattern="interval.beatPattern"
-                                v-model:repeat-count="interval.repeatCount"
-                                v-model:duration="interval.duration"
                                 v-model:intervals="state.intervals"
-                                :interval="interval"
                                 :index="index"
                                 :style="{ transition: isDragging ? 'none' : '' }"
                             />
@@ -102,11 +114,11 @@ function onEnd() {
             <div class="flex w-120 justify-center gap-4 px-8">
                 <Button
                     type="submit"
-                    icon="heroicons:plus-circle-16-solid"
+                    :icon="createNewTimer ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
                     class="flex w-full justify-center"
                     :disabled="isLoading"
                 >
-                    Erstellen
+                    {{ createNewTimer ? "Erstellen" : "Speichern" }}
                 </Button>
             </div>
         </div>

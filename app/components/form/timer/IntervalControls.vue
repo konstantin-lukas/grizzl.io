@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { TimerIntervalWithId } from "#shared/types/timer";
+import { LIST_MAX, LIST_MIN } from "#shared/constants/data";
+import type { PutTimer } from "#shared/schema/timer";
 import { nanoid } from "nanoid";
 
-const intervals = defineModel<TimerIntervalWithId[]>("intervals");
+const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
 </script>
 
@@ -15,10 +16,10 @@ const { index } = defineProps<{ index: number }>();
             icon="heroicons:document-duplicate"
             variant="subtle"
             aria-label="Duplicate interval"
-            :disabled="intervals?.length === 100"
+            :disabled="intervals?.length === LIST_MAX"
             @click="
                 () => {
-                    if (intervals?.length === 100) return;
+                    if (intervals?.length === LIST_MAX) return;
                     const newIntervals = duplicateNthElement(intervals!, index);
                     newIntervals[index + 1] = {
                         ...newIntervals[index + 1]!,
@@ -58,10 +59,10 @@ const { index } = defineProps<{ index: number }>();
             color="error"
             variant="subtle"
             aria-label="Delete interval"
-            :disabled="intervals!.length === 1"
+            :disabled="intervals!.length === LIST_MIN"
             @click="
                 () => {
-                    if (intervals!.length === 1) return;
+                    if (intervals!.length === LIST_MIN) return;
                     intervals = deleteNthElement(intervals!, index);
                 }
             "

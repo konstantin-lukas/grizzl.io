@@ -1,8 +1,8 @@
-import type { TimerType } from "#shared/schema/timer";
+import type { PostTimer } from "#shared/schema/timer";
 import { db } from "~~/lib/db";
 import { timer, timerInterval } from "~~/lib/db/schema";
 
-export default async function insert(userId: string, { title, ttsVoice, intervals }: TimerType) {
+export default async function insert(userId: string, { title, ttsVoice, intervals }: PostTimer) {
     return await db.transaction(async tx => {
         const [{ timerId }] = (await tx
             .insert(timer)

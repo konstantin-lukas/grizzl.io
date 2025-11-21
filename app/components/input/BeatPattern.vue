@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { BEAT_PATTERN_MAX } from "#shared/constants/data";
 import { Beat, BeatSymbol } from "#shared/enum/timer";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
@@ -13,7 +14,7 @@ const commonButtonProps = computed(
         ({
             content: { sideOffset: 9 },
             variant: "ghost",
-            disabled: beats.length === 16,
+            disabled: beats.length === BEAT_PATTERN_MAX,
         }) as const,
 );
 
@@ -62,7 +63,7 @@ onBeforeUnmount(() => {
 });
 
 function addBeat(beat: Beat) {
-    if (beats.length === 16) return;
+    if (beats.length === BEAT_PATTERN_MAX) return;
     emit("update:beats", [...beats, beat]);
     emitFormChange();
 }
@@ -137,5 +138,3 @@ function addBeat(beat: Beat) {
         </div>
     </div>
 </template>
-
-<style scoped></style>

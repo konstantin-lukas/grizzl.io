@@ -24,6 +24,7 @@ useHead({
                 <teleport to="body">
                     <NuxtLoadingIndicator />
                 </teleport>
+                <DataOffline />
                 <NavMenu />
                 <NavMenuButton />
                 <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-elements" class="min-h-main-height">

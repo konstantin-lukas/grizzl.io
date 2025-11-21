@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import type { TimerType } from "#shared/schema/timer";
+import type { Timer } from "#shared/schema/timer";
 
-const emit = defineEmits(["delete"]);
-const props = defineProps<{ timers: (TimerType & { id: string })[] | undefined }>();
-const confirmDeleteTimer = ref<{ id: string; title: string } | undefined>(undefined);
+const emit = defineEmits(["create"]);
+const props = defineProps<{ timers: Timer[] | undefined }>();
 </script>
 
 <template>
-    <TransitionGroup name="list" tag="ul" class="relative">
-        <ListTimerItem
-            v-for="timer in props.timers"
-            :key="timer.id"
-            :timer="timer"
-            @delete="confirmDeleteTimer = timer"
-        />
-    </TransitionGroup>
-    <FormTimerDelete
-        :timer="confirmDeleteTimer"
-        @success="
-            () => {
-                emit('delete');
-                confirmDeleteTimer = undefined;
-            }
-        "
-        @cancel="confirmDeleteTimer = undefined"
-    />
+    <ul class="relative">
+        <TransitionGroup name="list">
+            <ListTimerItem
+                v-for="[index, timer] in props.timers?.entries()"
+                :key="timer.id"
+                :is-last="index === props.timers!.length - 1"
+                :timer="timer"
+                @create="emit('create')"
+            />
+        </TransitionGroup>
+    </ul>
 </template>
-
-<style scoped></style>

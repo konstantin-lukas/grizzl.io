@@ -52,7 +52,8 @@ CREATE TABLE "timer" (
 	"user_id" char(16) NOT NULL,
 	"title" varchar(100) NOT NULL,
 	"tts_voice" varchar(200),
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"deleted" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "timer_interval" (

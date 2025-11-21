@@ -19,5 +19,3 @@ watch(locale, newLocale => {
         @update:model-value="setLocale($event as never)"
     />
 </template>
-
-<style scoped></style>
