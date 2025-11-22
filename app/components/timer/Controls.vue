@@ -13,7 +13,7 @@ const { reset } = useTimer();
             @click="
                 () => {
                     emit('reset');
-                    reset();
+                    reset(true);
                 }
             "
         />

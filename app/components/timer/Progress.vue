@@ -1,15 +1,21 @@
 <script setup lang="ts">
+import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
 
-const props = defineProps<{ duration?: number; id?: string; repetitions?: number }>();
+const props = defineProps<{ interval?: Timer["intervals"][number]; rounds: number }>();
 const emit = defineEmits(["finish"]);
-const { progress, startTime, elapsedTime, repetition, reset } = useTimer(props.duration);
+const { progress, startTime, elapsedTime, repetition, round, reset } = useTimer(props.interval?.duration);
 
 const time = computed(() => {
-    if (!props.duration) return "––:––";
-    const d = intervalToDuration({ start: 0, end: props.duration - elapsedTime.value });
+    if (!props.interval?.duration) return "––:––";
+    const d = intervalToDuration({ start: 0, end: props.interval.duration - elapsedTime.value });
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
+});
+
+const activeRound = computed(() => {
+    if (round.value > props.rounds) return "–/–";
+    return `${round.value}/${props.rounds}`;
 });
 
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
@@ -20,11 +26,12 @@ watch(
     () => {
         reset();
         const animateTimer = () => {
-            if (!props.duration || !props.id) return;
+            if (!props.interval?.duration || !props.interval?.id) return;
             elapsedTime.value = Date.now() - startTime.value;
-            const newProgress = elapsedTime.value / props.duration;
+            const newProgress = elapsedTime.value / props.interval.duration;
             if (newProgress >= 1) {
-                if (repetition.value === props?.repetitions) {
+                round.value++;
+                if (repetition.value === props?.interval.repeatCount) {
                     emit("finish");
                     return;
                 }
@@ -45,17 +52,21 @@ watch(
     <div class="relative mx-auto my-16 aspect-square w-full max-w-96 overflow-hidden rounded-full">
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
-                class="center aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
+                class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >
-                {{ time }}
+                <span>{{ time }}</span>
+                <span
+                    class="absolute top-[calc(50%+1.25rem)] text-xl text-neutral-600 xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)] sm:text-2xl dark:text-neutral-400"
+                    >{{ activeRound }}</span
+                >
             </span>
         </div>
         <span
-            v-if="props.id"
+            v-if="props.interval?.id"
             class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="props.id"
+            v-if="props.interval?.id"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >

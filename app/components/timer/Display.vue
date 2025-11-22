@@ -6,7 +6,7 @@ const emit = defineEmits(["close"]);
 const { timer } = defineProps<{ timer: Timer }>();
 const activeIntervalIndex = ref(0);
 const activeInterval = computed(() => {
-    return timer.intervals.length > activeIntervalIndex.value ? timer.intervals[activeIntervalIndex.value] : null;
+    return timer.intervals.length > activeIntervalIndex.value ? timer.intervals[activeIntervalIndex.value] : undefined;
 });
 </script>
 
@@ -24,9 +24,8 @@ const activeInterval = computed(() => {
             </Transition>
         </div>
         <TimerProgress
-            :id="activeInterval?.id"
-            :duration="activeInterval?.duration"
-            :repetitions="activeInterval?.repeatCount"
+            :interval="activeInterval"
+            :rounds="timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0)"
             @finish="activeIntervalIndex++"
         />
         <TimerControls @reset="activeIntervalIndex = 0" @close="emit('close')" />
