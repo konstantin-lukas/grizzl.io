@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { intervalToDuration } from "date-fns";
 
-const props = defineProps<{ duration?: number; id?: string }>();
+const props = defineProps<{ duration?: number; id?: string; repetitions?: number }>();
 const emit = defineEmits(["finish"]);
-const { progress, startTime, elapsedTime, reset } = useTimer(props.duration);
+const { progress, startTime, elapsedTime, repetition, reset } = useTimer(props.duration);
 
 const time = computed(() => {
     if (!props.duration) return "––:––";
@@ -24,8 +24,13 @@ watch(
             elapsedTime.value = Date.now() - startTime.value;
             const newProgress = elapsedTime.value / props.duration;
             if (newProgress >= 1) {
-                emit("finish");
-                return;
+                if (repetition.value === props?.repetitions) {
+                    emit("finish");
+                    return;
+                }
+                progress.value = 0;
+                startTime.value = Date.now();
+                repetition.value++;
             }
             progress.value = newProgress;
             requestAnimationFrame(animateTimer);

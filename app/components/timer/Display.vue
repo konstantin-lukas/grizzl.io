@@ -23,7 +23,12 @@ const activeInterval = computed(() => {
                 </TypoH2>
             </Transition>
         </div>
-        <TimerProgress :id="activeInterval?.id" :duration="activeInterval?.duration" @finish="activeIntervalIndex++" />
+        <TimerProgress
+            :id="activeInterval?.id"
+            :duration="activeInterval?.duration"
+            :repetitions="activeInterval?.repeatCount"
+            @finish="activeIntervalIndex++"
+        />
         <TimerControls @reset="activeIntervalIndex = 0" @close="emit('close')" />
     </section>
 </template>
