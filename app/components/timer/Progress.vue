@@ -2,18 +2,35 @@
 import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
 
-const props = defineProps<{ interval?: Timer["intervals"][number]; rounds: number; voiceUri: string | null }>();
+const props = defineProps<{
+    interval?: Timer["intervals"][number];
+    rounds: number;
+    voiceUri: string | null;
+    duration: number;
+}>();
 const emit = defineEmits(["finish"]);
-const { progress, startTime, elapsedTime, repetition, round, playing, lastIntervalTitleRead, reset } = useTimer(
-    props.interval?.duration,
-);
+const {
+    progress,
+    startTime,
+    intervalStartTime,
+    elapsedIntervalTime,
+    elapsedTime,
+    repetition,
+    round,
+    playing,
+    lastIntervalTitleRead,
+    reset,
+} = useTimer(props.interval?.duration);
 
-const time = computed(() => {
-    if (!props.interval?.duration) return "––:––";
-    const d = intervalToDuration({ start: 0, end: props.interval.duration - elapsedTime.value });
+const formatDuration = (elapsed: number, max?: number) => {
+    if (!max) return "––:––";
+    const d = intervalToDuration({ start: 0, end: max - elapsed });
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
-});
+};
+
+const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
+const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
 
 const speak = useSpeakUtterance();
 
@@ -38,8 +55,9 @@ watch(
 
 const animateTimer = () => {
     if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
+    elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
     elapsedTime.value = Date.now() - startTime.value;
-    const newProgress = elapsedTime.value / props.interval.duration;
+    const newProgress = elapsedIntervalTime.value / props.interval.duration;
     if (newProgress >= 1) {
         round.value++;
         if (repetition.value === props?.interval.repeatCount) {
@@ -47,7 +65,7 @@ const animateTimer = () => {
             return;
         }
         progress.value = 0;
-        startTime.value = Date.now();
+        intervalStartTime.value = Date.now();
         repetition.value++;
     }
     progress.value = newProgress;
@@ -65,10 +83,12 @@ watch(round, r => {
 
 watch(playing, p => {
     if (p) {
+        intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
         startTime.value = Date.now() - elapsedTime.value;
         animateTimer();
     }
 });
+const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
 
 <template>
@@ -77,19 +97,27 @@ watch(playing, p => {
             <span
                 class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >
-                <span>{{ time }}</span>
                 <span
-                    class="absolute top-[calc(50%+1.25rem)] text-xl text-neutral-600 xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)] sm:text-2xl dark:text-neutral-400"
-                    >{{ activeRound }}</span
+                    class="bottom-[calc(50%+1.25rem)] xs:bottom-[calc(50%+1.5rem)] sm:bottom-[calc(50%+1.75rem)]"
+                    :class="baseClass"
                 >
+                    {{ remainingTime }}
+                </span>
+                <span>{{ remainingTimeInInterval }}</span>
+                <span
+                    class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
+                    :class="baseClass"
+                >
+                    {{ activeRound }}
+                </span>
             </span>
         </div>
         <span
-            v-if="props.interval?.id && elapsedTime > 0"
+            v-if="props.interval?.id && elapsedIntervalTime > 0"
             class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="props.interval?.id && elapsedTime > 0"
+            v-if="props.interval?.id && elapsedIntervalTime > 0"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
