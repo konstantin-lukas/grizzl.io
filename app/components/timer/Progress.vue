@@ -23,11 +23,16 @@ const activeRound = computed(() => {
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
 
+const lastIntervalTitleRead = ref<string | undefined>(undefined);
+
 watch(
-    () => props.interval?.title,
-    title => {
+    () => [props.interval?.title, playing.value] as const,
+    ([t, p]) => {
         const voice = props.voiceUri;
-        if (title && voice) speak(title, voice);
+        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
+            speak(t, voice);
+            lastIntervalTitleRead.value = props.interval?.id;
+        }
     },
 );
 
