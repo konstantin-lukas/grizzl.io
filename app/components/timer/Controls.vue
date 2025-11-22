@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits(["reset", "close"]);
+const emit = defineEmits(["reset"]);
 const props = defineProps<{ rounds: number }>();
 const { reset, round, playing } = useTimer();
 const togglePlayback = () => {
@@ -27,17 +27,6 @@ const togglePlayback = () => {
             @click="
                 () => {
                     emit('reset');
-                    reset(true);
-                }
-            "
-        />
-        <Button
-            size="xl"
-            icon="heroicons:arrow-uturn-left-16-solid"
-            aria-label="Close"
-            @click="
-                () => {
-                    emit('close');
                     reset(true);
                 }
             "

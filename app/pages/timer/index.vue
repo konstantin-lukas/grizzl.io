@@ -3,6 +3,7 @@ import type { Timer } from "#shared/schema/timer";
 
 const open = ref(false);
 const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
+const { reset } = useTimer();
 
 watch(open, () => {
     if (!open.value) refresh();
@@ -13,8 +14,17 @@ const activeTimer = ref<Timer | null>(null);
 <template>
     <LayoutWrapper :class="{ 'max-w-xl': true }">
         <div class="relative min-h-main-height-no-padding w-full">
+            <ButtonReturn
+                :show="!!activeTimer"
+                @click="
+                    () => {
+                        reset(true);
+                        activeTimer = null;
+                    }
+                "
+            />
             <Transition name="swipe">
-                <TimerDisplay v-if="activeTimer" :timer="activeTimer" @close="activeTimer = null" />
+                <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
                 <div v-else class="absolute min-h-main-height-no-padding w-full">
                     <OverlayDrawer v-model:open="open">
                         <TimerFormUpsert @success="open = false" />

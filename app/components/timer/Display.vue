@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/schema/timer";
 
-const emit = defineEmits(["close"]);
-
 const { timer } = defineProps<{ timer: Timer }>();
 const activeIntervalIndex = ref(0);
 const activeInterval = computed(() => {
@@ -25,6 +23,6 @@ const rounds = computed(() => timer.intervals.reduce((prev, curr) => prev + curr
             </Transition>
         </div>
         <TimerProgress :interval="activeInterval" :rounds :voice-uri="timer.ttsVoice" @finish="activeIntervalIndex++" />
-        <TimerControls :rounds @reset="activeIntervalIndex = 0" @close="emit('close')" />
+        <TimerControls :rounds @reset="activeIntervalIndex = 0" />
     </section>
 </template>
