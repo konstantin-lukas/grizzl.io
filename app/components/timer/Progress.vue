@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
+import beep from "~/assets/sound/intermittent_beep.wav";
 
 const props = defineProps<{
     interval?: Timer["intervals"][number];
@@ -18,6 +19,7 @@ const {
     repetition,
     round,
     playing,
+    mute,
     lastIntervalTitleRead,
     reset,
 } = useTimer(props.interval?.duration);
@@ -47,7 +49,7 @@ watch(
     ([t, p]) => {
         const voice = props.voiceUri;
         if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
-            speak(t, voice);
+            setTimeout(() => speak(t, voice), 500);
             lastIntervalTitleRead.value = props.interval?.id;
         }
     },
@@ -59,6 +61,10 @@ const animateTimer = () => {
     elapsedTime.value = Date.now() - startTime.value;
     const newProgress = elapsedIntervalTime.value / props.interval.duration;
     if (newProgress >= 1) {
+        if (!mute.value) {
+            const beat = new Audio(beep);
+            beat.play();
+        }
         round.value++;
         if (repetition.value === props?.interval.repeatCount) {
             emit("finish");

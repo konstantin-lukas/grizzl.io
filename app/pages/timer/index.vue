@@ -3,7 +3,7 @@ import type { Timer } from "#shared/schema/timer";
 
 const open = ref(false);
 const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
-const { reset } = useTimer();
+const { reset, mute } = useTimer();
 
 watch(open, () => {
     if (!open.value) refresh();
@@ -20,6 +20,7 @@ const activeTimer = ref<Timer | null>(null);
                     () => {
                         reset(true);
                         activeTimer = null;
+                        mute = false;
                     }
                 "
             />

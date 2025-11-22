@@ -8,6 +8,7 @@ export default function useTimer(duration: number = 1) {
     const round = useState("timer-round", () => 1);
     const playing = useState("timer-playing", () => false);
     const lastIntervalTitleRead = useState<string | undefined>("timer-last-interval-timer-read", () => undefined);
+    const mute = useState("timer-mute", () => false);
 
     const reset = (fullyReset = false) => {
         progress.value = 0;
@@ -38,6 +39,7 @@ export default function useTimer(duration: number = 1) {
         round,
         playing,
         lastIntervalTitleRead,
+        mute,
         reset,
     };
 }
