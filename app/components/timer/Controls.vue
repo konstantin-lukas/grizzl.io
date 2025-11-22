@@ -24,6 +24,7 @@ const togglePlayback = () => {
             size="xl"
             icon="heroicons:arrow-path-16-solid"
             aria-label="Reset"
+            variant="subtle"
             @click="
                 () => {
                     emit('reset');
