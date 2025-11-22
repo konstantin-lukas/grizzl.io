@@ -8,6 +8,7 @@ const activeIntervalIndex = ref(0);
 const activeInterval = computed(() => {
     return timer.intervals.length > activeIntervalIndex.value ? timer.intervals[activeIntervalIndex.value] : undefined;
 });
+const rounds = computed(() => timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0));
 </script>
 
 <template>
@@ -23,11 +24,7 @@ const activeInterval = computed(() => {
                 </TypoH2>
             </Transition>
         </div>
-        <TimerProgress
-            :interval="activeInterval"
-            :rounds="timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0)"
-            @finish="activeIntervalIndex++"
-        />
-        <TimerControls @reset="activeIntervalIndex = 0" @close="emit('close')" />
+        <TimerProgress :interval="activeInterval" :rounds :voice-uri="timer.ttsVoice" @finish="activeIntervalIndex++" />
+        <TimerControls :rounds @reset="activeIntervalIndex = 0" @close="emit('close')" />
     </section>
 </template>
