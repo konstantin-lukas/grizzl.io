@@ -4,11 +4,8 @@ import { formatDuration } from "date-fns";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
-const open = ref(false);
-watch(open, () => {
-    if (!open.value) refreshNuxtData("/api/timers");
-});
 
+const open = ref(false);
 const duration = useComputedOnLocaleChange(
     () =>
         formatDuration({
@@ -16,6 +13,10 @@ const duration = useComputedOnLocaleChange(
         }),
     () => props.timer.intervals,
 );
+
+watch(open, () => {
+    if (!open.value) refreshNuxtData("/api/timers");
+});
 </script>
 
 <template>

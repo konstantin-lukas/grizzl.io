@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const emit = defineEmits(["reset"]);
 const props = defineProps<{ rounds: number }>();
+
 const { reset, round, playing, mute } = useTimer();
+
 const togglePlayback = () => {
     playing.value = !playing.value;
     if (round.value > props.rounds && playing.value) {

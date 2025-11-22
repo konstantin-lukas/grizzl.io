@@ -1,11 +1,15 @@
 <script setup lang="ts">
 const emit = defineEmits(["click"]);
-const isOnline = useOnlineStatus();
 const props = defineProps<{ show: boolean }>();
-const baseStyle = "size-6 absolute top-1/2 left-1/2 -translate-1/2";
-const ui = computed(() => ({
-    leadingIcon: isOnline.value ? `text-front ${baseStyle}` : `text-back ${baseStyle}`,
-}));
+
+const isOnline = useOnlineStatus();
+
+const ui = computed(() => {
+    const baseStyle = "size-6 absolute top-1/2 left-1/2 -translate-1/2";
+    return {
+        leadingIcon: isOnline.value ? `text-front ${baseStyle}` : `text-back ${baseStyle}`,
+    };
+});
 </script>
 
 <template>

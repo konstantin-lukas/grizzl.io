@@ -3,13 +3,14 @@ import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
 import beep from "~/assets/sound/intermittent_beep.wav";
 
+const emit = defineEmits(["finish"]);
 const props = defineProps<{
     interval?: Timer["intervals"][number];
     rounds: number;
     voiceUri: string | null;
     duration: number;
 }>();
-const emit = defineEmits(["finish"]);
+
 const {
     progress,
     startTime,
@@ -24,36 +25,7 @@ const {
     reset,
 } = useTimer(props.interval?.duration);
 
-const formatDuration = (elapsed: number, max?: number) => {
-    if (!max) return "––:––";
-    const d = intervalToDuration({ start: 0, end: max - elapsed });
-    const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
-    return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
-};
-
-const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
-const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
-
 const speak = useSpeakUtterance();
-
-const activeRound = computed(() => {
-    if (round.value > props.rounds) return "–/–";
-    return `${round.value}/${props.rounds}`;
-});
-
-const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
-const transform = computed(() => `rotate(${progress.value}turn)`);
-
-watch(
-    () => [props.interval?.title, playing.value] as const,
-    ([t, p]) => {
-        const voice = props.voiceUri;
-        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
-            setTimeout(() => speak(t, voice), 500);
-            lastIntervalTitleRead.value = props.interval?.id;
-        }
-    },
-);
 
 const animateTimer = () => {
     if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
@@ -77,6 +49,33 @@ const animateTimer = () => {
     progress.value = newProgress;
     requestAnimationFrame(animateTimer);
 };
+
+const formatDuration = (elapsed: number, max?: number) => {
+    if (!max) return "––:––";
+    const d = intervalToDuration({ start: 0, end: max - elapsed });
+    const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
+    return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
+};
+
+const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
+const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
+const activeRound = computed(() => {
+    if (round.value > props.rounds) return "–/–";
+    return `${round.value}/${props.rounds}`;
+});
+const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
+const transform = computed(() => `rotate(${progress.value}turn)`);
+
+watch(
+    () => [props.interval?.title, playing.value] as const,
+    ([t, p]) => {
+        const voice = props.voiceUri;
+        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
+            setTimeout(() => speak(t, voice), 500);
+            lastIntervalTitleRead.value = props.interval?.id;
+        }
+    },
+);
 
 watch(props, () => {
     reset();

@@ -5,10 +5,11 @@ const open = ref(false);
 const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
 const { reset, mute } = useTimer();
 
+const activeTimer = ref<Timer | null>(null);
+
 watch(open, () => {
     if (!open.value) refresh();
 });
-const activeTimer = ref<Timer | null>(null);
 </script>
 
 <template>

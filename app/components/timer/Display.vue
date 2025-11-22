@@ -2,6 +2,7 @@
 import type { Timer } from "#shared/schema/timer";
 
 const { timer } = defineProps<{ timer: Timer }>();
+
 const activeIntervalIndex = ref(0);
 const activeInterval = computed(() => {
     return timer.intervals.length > activeIntervalIndex.value ? timer.intervals[activeIntervalIndex.value] : undefined;
