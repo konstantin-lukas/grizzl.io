@@ -4,16 +4,19 @@ import { formatDuration } from "date-fns";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
+
 const open = ref(false);
+const duration = useComputedOnLocaleChange(
+    () =>
+        formatDuration({
+            seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration * curr.repeatCount, 0) / 1000,
+        }),
+    () => props.timer.intervals,
+);
+
 watch(open, () => {
     if (!open.value) refreshNuxtData("/api/timers");
 });
-
-const duration = useComputedOnLocaleChange(() =>
-    formatDuration({
-        seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration, 0) / 1000,
-    }),
-);
 </script>
 
 <template>
@@ -24,8 +27,8 @@ const duration = useComputedOnLocaleChange(() =>
             <div class="min-w-0 shrink-1">
                 <TypoH1 class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH1>
                 <span>
-                    {{ props.timer.intervals.length }}
-                    {{ `Interval${props.timer.intervals.length === 1 ? "" : "s"}` }} ({{ duration }})
+                    {{ props.timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0) }}
+                    {{ `Rund${props.timer.intervals.length === 1 ? "" : "en"}` }} ({{ duration }})
                 </span>
             </div>
             <div class="flex justify-start gap-4">

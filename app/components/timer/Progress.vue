@@ -1,61 +1,128 @@
 <script setup lang="ts">
+import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
+import beep from "~/assets/sound/intermittent_beep.wav";
 
-const props = defineProps<{ duration?: number; id?: string }>();
 const emit = defineEmits(["finish"]);
-const ringProgress = ref(0 / (props.duration ?? 1));
-const startTime = ref(Date.now());
-const elapsedTime = ref(0);
+const props = defineProps<{
+    interval?: Timer["intervals"][number];
+    rounds: number;
+    voiceUri: string | null;
+    duration: number;
+}>();
 
-const progress = computed(() => {
-    const d = intervalToDuration({ start: 0, end: elapsedTime.value });
+const {
+    progress,
+    startTime,
+    intervalStartTime,
+    elapsedIntervalTime,
+    elapsedTime,
+    repetition,
+    round,
+    playing,
+    mute,
+    lastIntervalTitleRead,
+    reset,
+} = useTimer(props.interval?.duration);
+
+const speak = useSpeakUtterance();
+
+const animateTimer = () => {
+    if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
+    elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
+    elapsedTime.value = Date.now() - startTime.value;
+    const newProgress = elapsedIntervalTime.value / props.interval.duration;
+    if (newProgress >= 1) {
+        if (!mute.value) {
+            const beat = new Audio(beep);
+            beat.play();
+        }
+        round.value++;
+        if (repetition.value === props?.interval.repeatCount) {
+            emit("finish");
+            return;
+        }
+        progress.value = 0;
+        intervalStartTime.value = Date.now();
+        repetition.value++;
+    }
+    progress.value = newProgress;
+    requestAnimationFrame(animateTimer);
+};
+
+const formatDuration = (elapsed: number, max?: number) => {
+    if (!max) return "––:––";
+    const d = intervalToDuration({ start: 0, end: max - elapsed });
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
-});
+};
 
-const backgroundImage = computed(
-    () => `conic-gradient(var(--ui-primary) ${ringProgress.value}turn, var(--ui-border) 0)`,
-);
-const transform = computed(() => `rotate(${ringProgress.value}turn)`);
+const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
+const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
+const activeRound = computed(() => {
+    if (round.value > props.rounds) return "–/–";
+    return `${round.value}/${props.rounds}`;
+});
+const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
+const transform = computed(() => `rotate(${progress.value}turn)`);
 
 watch(
-    props,
-    () => {
-        const animateTimer = () => {
-            if (!props.duration || !props.id) return;
-            elapsedTime.value = Date.now() - startTime.value;
-            const progress = elapsedTime.value / props.duration;
-            if (progress >= 1) {
-                startTime.value = Date.now();
-                ringProgress.value = 0;
-                elapsedTime.value = 0;
-                emit("finish");
-                return;
-            }
-            ringProgress.value = progress;
-            requestAnimationFrame(animateTimer);
-        };
-        animateTimer();
+    () => [props.interval?.title, playing.value] as const,
+    ([t, p]) => {
+        const voice = props.voiceUri;
+        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
+            setTimeout(() => speak(t, voice), 500);
+            lastIntervalTitleRead.value = props.interval?.id;
+        }
     },
-    { immediate: true },
 );
+
+watch(props, () => {
+    reset();
+    animateTimer();
+});
+
+watch(round, r => {
+    if (r > props.rounds) playing.value = false;
+});
+
+watch(playing, p => {
+    if (p) {
+        intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
+        startTime.value = Date.now() - elapsedTime.value;
+        animateTimer();
+    }
+});
+const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
 
 <template>
-    <div class="relative my-16 aspect-square w-full overflow-hidden rounded-full">
+    <div class="relative mx-auto my-16 aspect-square w-full max-w-96 overflow-hidden rounded-full">
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
-                class="center aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
+                class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >
-                {{ progress }}
+                <span
+                    class="bottom-[calc(50%+1.25rem)] xs:bottom-[calc(50%+1.5rem)] sm:bottom-[calc(50%+1.75rem)]"
+                    :class="baseClass"
+                >
+                    {{ remainingTime }}
+                </span>
+                <span>{{ remainingTimeInInterval }}</span>
+                <span
+                    class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
+                    :class="baseClass"
+                >
+                    {{ activeRound }}
+                </span>
             </span>
         </div>
         <span
-            v-if="props.id"
+            v-if="props.interval?.id && elapsedIntervalTime > 0"
             class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="props.id"
+            v-if="props.interval?.id && elapsedIntervalTime > 0"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
