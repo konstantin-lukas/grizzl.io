@@ -12,10 +12,13 @@ const activeInterval = computed(() => {
 
 <template>
     <section aria-labelledby="timer-name" class="w-full">
-        <TypoH1 id="timer-name">{{ timer.title }}</TypoH1>
+        <TypoH1 id="timer-name" class="line-clamp-2 w-full text-center">{{ timer.title }}</TypoH1>
         <div class="h-6 w-full">
             <Transition name="swipe" mode="out-in">
-                <TypoH2 :key="activeInterval?.id" class="line-clamp-1 text-neutral-600 dark:text-neutral-400">
+                <TypoH2
+                    :key="activeInterval?.id"
+                    class="line-clamp-1 w-full text-center text-neutral-600 dark:text-neutral-400"
+                >
                     {{ activeInterval?.title }}
                 </TypoH2>
             </Transition>

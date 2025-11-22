@@ -6,7 +6,8 @@ const emit = defineEmits(["finish"]);
 const { progress, startTime, elapsedTime, reset } = useTimer(props.duration);
 
 const time = computed(() => {
-    const d = intervalToDuration({ start: 0, end: elapsedTime.value });
+    if (!props.duration) return "––:––";
+    const d = intervalToDuration({ start: 0, end: props.duration - elapsedTime.value });
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
 });
