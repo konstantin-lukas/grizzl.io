@@ -4,7 +4,9 @@ import { intervalToDuration } from "date-fns";
 
 const props = defineProps<{ interval?: Timer["intervals"][number]; rounds: number; voiceUri: string | null }>();
 const emit = defineEmits(["finish"]);
-const { progress, startTime, elapsedTime, repetition, round, playing, reset } = useTimer(props.interval?.duration);
+const { progress, startTime, elapsedTime, repetition, round, playing, lastIntervalTitleRead, reset } = useTimer(
+    props.interval?.duration,
+);
 
 const time = computed(() => {
     if (!props.interval?.duration) return "––:––";
@@ -22,8 +24,6 @@ const activeRound = computed(() => {
 
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
-
-const lastIntervalTitleRead = ref<string | undefined>(undefined);
 
 watch(
     () => [props.interval?.title, playing.value] as const,

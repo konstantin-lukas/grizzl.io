@@ -5,6 +5,7 @@ export default function useTimer(duration: number = 1) {
     const repetition = useState("timer-repetition", () => 1);
     const round = useState("timer-round", () => 1);
     const playing = useState("timer-playing", () => false);
+    const lastIntervalTitleRead = useState<string | undefined>("timer-last-interval-timer-read", () => undefined);
 
     const reset = (finishTimer = false) => {
         progress.value = 0;
@@ -14,6 +15,7 @@ export default function useTimer(duration: number = 1) {
         if (finishTimer) {
             playing.value = false;
             round.value = 1;
+            lastIntervalTitleRead.value = undefined;
         }
     };
 
@@ -21,5 +23,5 @@ export default function useTimer(duration: number = 1) {
         () => duration,
         () => reset(),
     );
-    return { progress, startTime, elapsedTime, repetition, round, playing, reset };
+    return { progress, startTime, elapsedTime, repetition, round, playing, lastIntervalTitleRead, reset };
 }
