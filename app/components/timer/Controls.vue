@@ -18,12 +18,6 @@ const togglePlayback = () => {
     <div class="flex justify-center gap-6">
         <Button
             size="xl"
-            :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-            aria-label="Start"
-            @click="togglePlayback"
-        />
-        <Button
-            size="xl"
             icon="heroicons:arrow-path-16-solid"
             aria-label="Reset"
             variant="subtle"
@@ -33,6 +27,12 @@ const togglePlayback = () => {
                     reset(true);
                 }
             "
+        />
+        <Button
+            size="xl"
+            :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+            aria-label="Start"
+            @click="togglePlayback"
         />
         <Button
             size="xl"
