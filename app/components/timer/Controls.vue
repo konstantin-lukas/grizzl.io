@@ -19,7 +19,7 @@ const togglePlayback = () => {
         <Button
             size="xl"
             icon="heroicons:arrow-path-16-solid"
-            aria-label="Reset"
+            :aria-label="$t('ui.reset')"
             variant="subtle"
             @click="
                 () => {
@@ -31,13 +31,13 @@ const togglePlayback = () => {
         <Button
             size="xl"
             :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-            aria-label="Start"
+            :aria-label="playing ? $t('ui.pause') : $t('ui.start')"
             @click="togglePlayback"
         />
         <Button
             size="xl"
             :icon="mute ? 'heroicons:speaker-x-mark' : 'heroicons:speaker-wave'"
-            :aria-label="mute ? 'Unmute' : 'Mute'"
+            :aria-label="mute ? $t('ui.unmute') : $t('ui.mute')"
             variant="subtle"
             :color="mute ? 'neutral' : 'primary'"
             @click="mute = !mute"

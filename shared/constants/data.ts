@@ -1,4 +1,5 @@
 export const ID_LENGTH = 16;
+export const TITLE_MIN = 1;
 export const TITLE_MAX = 100;
 export const LONG_TITLE_MAX = 200;
 export const LIST_MIN = 1;
@@ -6,3 +7,5 @@ export const LIST_MAX = 100;
 export const BEAT_PATTERN_MIN = 2;
 export const BEAT_PATTERN_MAX = 16;
 export const COUNT_MIN = 1;
+export const COUNT_MAX = 100;
+export const TIMER_DURATION_MAX = 60 * 60;

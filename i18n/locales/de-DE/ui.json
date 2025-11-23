@@ -10,6 +10,19 @@
         "cancel": "Abbrechen",
         "install": "Installieren",
         "create": "Erstellen",
-        "pickProvider": "Wähle einen Dienst, um dich anzumelden."
+        "noEntries": "Keine Einträge gefunden",
+        "pickProvider": "Wähle einen Dienst, um dich anzumelden.",
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Zurücksetzen",
+        "mute": "Stummschalten",
+        "unmute": "Stummschaltung aufheben",
+        "goBack": "Zurück",
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "play": "Abspielen",
+        "duplicate": "Duplizieren",
+        "moveUp": "Nach oben bewegen",
+        "moveDown": "Nach unten bewegen"
     }
 }

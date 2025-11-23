@@ -27,26 +27,36 @@ watch(open, () => {
             <div class="min-w-0 shrink-1">
                 <TypoH1 class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH1>
                 <span>
-                    {{ props.timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0) }}
-                    {{ `Rund${props.timer.intervals.length === 1 ? "" : "en"}` }} ({{ duration }})
+                    {{
+                        $t(
+                            "timer.round",
+                            props.timer.intervals.reduce((prev, curr) => prev + curr.repeatCount, 0),
+                        )
+                    }}
+                    ({{ duration }})
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button aria-label="Start" icon="heroicons:play-solid" @click="emit('start', timer)" />
-                <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
+                <Button :aria-label="$t('ui.start')" icon="heroicons:play-solid" @click="emit('start', timer)" />
+                <Button
+                    :aria-label="$t('ui.edit')"
+                    variant="subtle"
+                    icon="heroicons:pencil-square"
+                    @click="open = true"
+                />
                 <TimerFormDelete :timer="props.timer" />
             </div>
             <OverlayDrawer v-model:open="open">
                 <TimerFormUpsert :initial-state="props.timer" @success="open = false" />
-                <template #title>Create a new timer</template>
-                <template #description>
-                    Choose between different types of timer intervals to create a fully customized timer
-                </template>
+                <template #title>{{ $t("timer.aria.drawer.edit") }}</template>
+                <template #description>{{ $t("timer.aria.drawer.description") }}</template>
             </OverlayDrawer>
         </div>
         <Transition name="fade">
             <div v-if="props.isLast" class="center absolute w-full">
-                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
+                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')">{{
+                    $t("ui.create")
+                }}</Button>
             </div>
         </Transition>
     </li>

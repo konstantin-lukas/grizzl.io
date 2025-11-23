@@ -10,7 +10,16 @@ watch(
     () => {
         const localeInformation = LOCALES.find(loc => loc.code === locale.value)!;
         uiLocale.value = localeInformation.uiLocale;
-        z.config(localeInformation.zodLocale);
+        z.config({
+            ...localeInformation.zodLocale,
+            customError: ({ code, origin, minimum, maximum, ...rest }) => {
+                if ($te(`zod.${origin}.${code}`)) {
+                    if (typeof minimum === "number") return $t(`zod.${origin}.${code}`, minimum);
+                    if (typeof maximum === "number") return $t(`zod.${origin}.${code}`, maximum);
+                    return $t(`zod.${origin}.${code}`, rest);
+                }
+            },
+        });
         setDefaultOptions({ locale: localeInformation.fnsLocale });
     },
     { immediate: true },

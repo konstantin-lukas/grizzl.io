@@ -1,6 +1,33 @@
 {
     "timer": {
-        "noTimersTitle": "No Timers Found",
-        "noTimersDescription": "You haven't created any timers yet. Create one to get started."
+        "round": "1 round | {n} rounds",
+        "form": {
+            "title": "Timer title",
+            "ttsVoice": "Text-to-speech voice for reading interval titles",
+            "ttsInfo": "Not all voices are available on all devices",
+            "ttsPreview": "Enter some text to preview the selected voice",
+            "ttsDisable": "Don't read interval titles",
+            "interval": {
+                "title": "Interval title",
+                "titlePlaceholder": "Displayed while interval is running",
+                "type": "Interval type",
+                "temporal": "Standard",
+                "rhythm": "Rhythm",
+                "repetitions": "Repetitions",
+                "duration": "Duration",
+                "beatPattern": "Beat pattern",
+                "addAccent": "Add accented beat",
+                "addBeat": "Add beat",
+                "addPause": "Add pause",
+                "deleteBeat": "Delete beat"
+            }
+        },
+        "aria": {
+            "drawer": {
+                "edit": "Edit a timer",
+                "create": "Create a timer",
+                "description": "Choose between different types of timer intervals to create a fully customized timer"
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@ function onEnd() {
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
-                    <UFormField label="Timer Title" name="title" class="w-full" required>
+                    <UFormField :label="$t('timer.form.title')" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
                     </UFormField>
                     <TimerFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
@@ -119,7 +119,7 @@ function onEnd() {
                     class="flex w-full justify-center"
                     :disabled="isLoading"
                 >
-                    {{ createNewTimer ? "Erstellen" : "Speichern" }}
+                    {{ createNewTimer ? $t("ui.create") : $t("ui.save") }}
                 </Button>
             </div>
         </div>

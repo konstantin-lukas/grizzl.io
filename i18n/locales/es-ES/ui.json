@@ -10,6 +10,19 @@
         "cancel": "Cancelar",
         "install": "Instalar",
         "create": "Crear",
-        "pickProvider": "Elige un servicio para iniciar sesión."
+        "noEntries": "No se encontraron entradas",
+        "pickProvider": "Elige un servicio para iniciar sesión.",
+        "start": "Iniciar",
+        "pause": "Pausar",
+        "reset": "Restablecer",
+        "mute": "Silenciar",
+        "unmute": "Reactivar sonido",
+        "goBack": "Volver",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "play": "Reproducir",
+        "duplicate": "Duplicar",
+        "moveUp": "Mover arriba",
+        "moveDown": "Mover abajo"
     }
 }

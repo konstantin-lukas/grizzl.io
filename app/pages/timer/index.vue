@@ -30,17 +30,14 @@ watch(open, () => {
                 <div v-else class="absolute min-h-main-height-no-padding w-full">
                     <OverlayDrawer v-model:open="open">
                         <TimerFormUpsert @success="open = false" />
-                        <template #title>Create a new timer</template>
-                        <template #description>
-                            Choose between different types of timer intervals to create a fully customized timer
-                        </template>
+                        <template #title>{{ $t("timer.aria.drawer.create") }}</template>
+                        <template #description>{{ $t("timer.aria.drawer.description") }}</template>
                     </OverlayDrawer>
                     <TimerList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                     <Transition name="fade">
                         <DataEmpty
                             v-if="data && data.length === 0"
-                            :title="$t('timer.noTimersTitle')"
-                            class="absolute top-1/2 left-1/2 -translate-1/2"
+                            class="absolute top-1/2 left-1/2 w-full -translate-1/2"
                             @open="() => (open = true)"
                         />
                     </Transition>

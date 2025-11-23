@@ -1,6 +1,33 @@
 {
     "timer": {
-        "noTimersTitle": "タイマーが見つかりません",
-        "noTimersDescription": "まだタイマーを作成していません。一度作成してみましょう。"
+        "round": "{n}ラウンド",
+        "form": {
+            "title": "タイマー名",
+            "ttsVoice": "インターバル名を読み上げる読み上げ音声",
+            "ttsInfo": "利用できる音声はデバイスによって異なります",
+            "ttsPreview": "選択した音声をプレビューするテキスト",
+            "ttsDisable": "インターバル名を読み上げない",
+            "interval": {
+                "title": "インターバル名",
+                "titlePlaceholder": "インターバル実行中に表示されます",
+                "type": "インターバルの種類",
+                "temporal": "普通",
+                "rhythm": "リズム",
+                "repetitions": "回数",
+                "duration": "時間",
+                "beatPattern": "ビートパターン",
+                "addAccent": "アクセントビートを追加",
+                "addBeat": "ビートを追加",
+                "addPause": "休符を追加",
+                "deleteBeat": "ビートを削除"
+            }
+        },
+        "aria": {
+            "drawer": {
+                "edit": "タイマーを編集",
+                "create": "タイマーを作成",
+                "description": "さまざまなインターバルタイプから選んで、完全にカスタム可能なタイマーを作成できます"
+            }
+        }
     }
 }

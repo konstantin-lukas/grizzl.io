@@ -15,7 +15,7 @@ const { index } = defineProps<{ index: number }>();
             :content="{ side: 'top', sideOffset: 13 }"
             icon="heroicons:document-duplicate"
             variant="subtle"
-            aria-label="Duplicate interval"
+            :aria-label="$t('ui.duplicate')"
             :disabled="intervals?.length === LIST_MAX"
             @click="
                 () => {
@@ -33,7 +33,7 @@ const { index } = defineProps<{ index: number }>();
             :content="{ side: 'top', sideOffset: 13 }"
             icon="heroicons:arrow-small-up"
             variant="subtle"
-            aria-label="Move interval up"
+            :aria-label="$t('ui.moveUp')"
             :disabled="index === 0"
             @click="
                 () => {
@@ -45,7 +45,7 @@ const { index } = defineProps<{ index: number }>();
             :content="{ side: 'top', sideOffset: 13 }"
             icon="heroicons:arrow-small-down"
             variant="subtle"
-            aria-label="Move interval down"
+            :aria-label="$t('ui.moveDown')"
             :disabled="index === intervals!.length - 1"
             @click="
                 () => {
@@ -58,7 +58,7 @@ const { index } = defineProps<{ index: number }>();
             icon="heroicons:trash"
             color="error"
             variant="subtle"
-            aria-label="Delete interval"
+            :aria-label="$t('ui.delete')"
             :disabled="intervals!.length === LIST_MIN"
             @click="
                 () => {

@@ -5,12 +5,12 @@ const emit = defineEmits(["open"]);
 <template>
     <UEmpty
         variant="naked"
+        :title="$t('ui.noEntries')"
         icon="heroicons:inbox"
         :actions="[
             {
                 icon: 'heroicons:plus-small',
                 label: $t('ui.create'),
-                size: 'xl',
                 onClick: () => {
                     emit('open');
                 },

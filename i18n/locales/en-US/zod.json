@@ -1,0 +1,13 @@
+{
+    "zod": {
+        "array": {
+            "too_small": "Provide at least 1 element. | Provide at least {n} elements."
+        },
+        "string": {
+            "too_small": "The provided text has to be at least 1 character long. | The provided text has to be at least {n} characters long."
+        },
+        "number": {
+            "too_big": "The provided number may be no larger than {n}."
+        }
+    }
+}

@@ -6,5 +6,11 @@ const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, async () => {
 </script>
 
 <template>
-    <Button aria-label="Löschen" color="error" variant="subtle" icon="heroicons:trash" :on-async-click="execute" />
+    <Button
+        :aria-label="$t('ui.delete')"
+        color="error"
+        variant="subtle"
+        icon="heroicons:trash"
+        :on-async-click="execute"
+    />
 </template>

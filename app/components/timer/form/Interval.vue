@@ -12,33 +12,54 @@ const { index } = defineProps<{ index: number }>();
         class="group relative rounded-md border border-border-accented bg-back transition-[margin] focus-within:mb-12 sm:focus-within:mb-0"
     >
         <div class="center w-full gap-4 p-4">
-            <UFormField label="Interval Title" :name="`intervals.${index}.title`" class="w-full">
+            <UFormField :label="$t('timer.form.interval.title')" :name="`intervals.${index}.title`" class="w-full">
                 <UInput
                     v-model="intervals![index]!.title"
                     class="w-full"
                     :maxlength="TITLE_MAX"
-                    placeholder="Displayed during interval"
+                    :placeholder="$t('timer.form.interval.titlePlaceholder')"
                 />
             </UFormField>
-            <UFormField label="Interval Type" :name="`intervals.${index}.type`" required class="z-1 w-full">
+            <UFormField
+                :label="$t('timer.form.interval.type')"
+                :name="`intervals.${index}.type`"
+                required
+                class="z-1 w-full"
+            >
                 <USelect
-                    :items="['Temporal', 'Rhythm']"
-                    :default-value="intervals![index]!.beatPattern ? 'Rhythm' : 'Temporal'"
+                    :items="[$t('timer.form.interval.temporal'), $t('timer.form.interval.rhythm')]"
+                    :default-value="
+                        intervals![index]!.beatPattern
+                            ? $t('timer.form.interval.rhythm')
+                            : $t('timer.form.interval.temporal')
+                    "
                     class="w-full"
                     :portal="false"
                     @update:model-value="
                         value => {
                             intervals![index]!.beatPattern =
-                                value === 'Temporal' ? null : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
+                                value === $t('timer.form.interval.temporal')
+                                    ? null
+                                    : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
                         }
                     "
                 />
             </UFormField>
             <div class="flex gap-4">
-                <UFormField label="Repetitions" :name="`intervals.${index}.repeatCount`" required class="w-full">
+                <UFormField
+                    :label="$t('timer.form.interval.repetitions')"
+                    :name="`intervals.${index}.repeatCount`"
+                    required
+                    class="w-full"
+                >
                     <UInputNumber v-model="intervals![index]!.repeatCount" class="w-full" :min="COUNT_MIN" />
                 </UFormField>
-                <UFormField label="Duration" :name="`intervals.${index}.duration`" required class="w-full">
+                <UFormField
+                    :label="$t('timer.form.interval.duration')"
+                    :name="`intervals.${index}.duration`"
+                    required
+                    class="w-full"
+                >
                     <UInputNumber
                         v-model="intervals![index]!.duration"
                         class="w-full"
@@ -51,7 +72,7 @@ const { index } = defineProps<{ index: number }>();
             <Transition name="fade">
                 <UFormField
                     v-if="intervals![index]!.beatPattern !== null"
-                    label="Beat Pattern"
+                    :label="$t('timer.form.interval.beatPattern')"
                     :name="`intervals.${index}.beatPattern`"
                     required
                     class="w-full"

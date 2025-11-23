@@ -10,6 +10,19 @@
         "cancel": "Cancel",
         "install": "Install",
         "create": "Create",
-        "pickProvider": "Please choose a service to sign in."
+        "noEntries": "No entries found",
+        "pickProvider": "Please choose a service to sign in.",
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Reset",
+        "mute": "Mute",
+        "unmute": "Unmute",
+        "goBack": "Go back",
+        "edit": "Edit",
+        "delete": "Delete",
+        "play": "Play",
+        "duplicate": "Duplicate",
+        "moveUp": "Move up",
+        "moveDown": "Move down"
     }
 }
