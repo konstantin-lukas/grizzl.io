@@ -17,6 +17,7 @@ const {
     elapsedTime,
     round,
     playing,
+    mute,
     interval,
     lastIntervalTitleRead,
     reset,
@@ -46,7 +47,7 @@ watch(
     ([t, p]) => {
         const voice = props.voiceUri;
         if (t && voice && p && lastIntervalTitleRead.value !== interval.value?.id) {
-            setTimeout(() => speak(t, voice), 500);
+            if (!mute.value) setTimeout(() => speak(t, voice), 500);
             lastIntervalTitleRead.value = interval.value?.id;
         }
     },
