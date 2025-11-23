@@ -12,9 +12,9 @@ watch(
         uiLocale.value = localeInformation.uiLocale;
         z.config({
             ...localeInformation.zodLocale,
-            customError: ({ code, origin }) => {
+            customError: ({ code, origin, ...rest }) => {
                 if ($te(`zod.${origin}.${code}`)) {
-                    return $t(`zod.${origin}.${code}`);
+                    return $t(`zod.${origin}.${code}`, rest);
                 }
             },
         });

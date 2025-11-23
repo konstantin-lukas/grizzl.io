@@ -1,7 +1,10 @@
 {
     "zod": {
         "string": {
-            "too_small": "Too small"
+            "too_small": "The provided text has to be at least {minimum} characters long."
+        },
+        "int": {
+            "too_big": "The provided number has to be smaller than {maximum}."
         }
     }
 }
