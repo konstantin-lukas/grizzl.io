@@ -23,6 +23,7 @@ const {
 } = useTimer();
 
 const speak = useSpeakUtterance();
+const animateTimer = useAnimateTimer(emit);
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -39,8 +40,6 @@ const activeRound = computed(() => {
 });
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
-
-const animateTimer = useAnimateTimer(emit);
 
 watch(
     () => [interval.value?.title, playing.value] as const,

@@ -37,7 +37,7 @@ const togglePlayback = () => {
         <Button
             size="xl"
             :icon="mute ? 'heroicons:speaker-x-mark' : 'heroicons:speaker-wave'"
-            :aria-label="mute ? 'Unmute beeps' : 'Mute beeps'"
+            :aria-label="mute ? 'Unmute' : 'Mute'"
             variant="subtle"
             :color="mute ? 'neutral' : 'primary'"
             @click="mute = !mute"

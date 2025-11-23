@@ -30,7 +30,7 @@ export default function useAnimateTimer(emit: (e: "finish") => void) {
             const nextBeat = Math.floor(moduloTime / beatLength);
             if (currentBeat.value < nextBeat) {
                 currentBeat.value = nextBeat;
-                if (interval.value.beatPattern[nextBeat] !== Beat.PAUSE) {
+                if (!mute.value && interval.value.beatPattern[nextBeat] !== Beat.PAUSE) {
                     const beat = new Audio(
                         interval.value.beatPattern[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio,
                     );
