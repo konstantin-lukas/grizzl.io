@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
 import { intervalToDuration } from "date-fns";
-import accentedAudio from "~/assets/sound/accented_beat.wav";
-import beatAudio from "~/assets/sound/beat.wav";
-import beep from "~/assets/sound/intermittent_beep.wav";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
@@ -18,11 +15,8 @@ const {
     intervalStartTime,
     elapsedIntervalTime,
     elapsedTime,
-    repetition,
     round,
     playing,
-    mute,
-    currentBeat,
     interval,
     lastIntervalTitleRead,
     reset,
@@ -46,45 +40,7 @@ const activeRound = computed(() => {
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
 
-const animateTimer = () => {
-    if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
-    elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
-    elapsedTime.value = Date.now() - startTime.value;
-
-    if (interval.value.beatPattern && interval.value.beatPattern.length > 0) {
-        const barLengthInMs = interval.value.duration;
-        const moduloTime = (Date.now() - intervalStartTime.value) % barLengthInMs;
-        const beatLength = barLengthInMs / interval.value.beatPattern.length;
-        const nextBeat = Math.floor(moduloTime / beatLength);
-        if (currentBeat.value < nextBeat) {
-            currentBeat.value = nextBeat;
-            if (interval.value.beatPattern[nextBeat] !== Beat.PAUSE) {
-                const beat = new Audio(
-                    interval.value.beatPattern[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio,
-                );
-                beat.play();
-            }
-        }
-    }
-
-    const newProgress = elapsedIntervalTime.value / interval.value.duration;
-    if (newProgress >= 1) {
-        if (!mute.value) {
-            const beat = new Audio(beep);
-            beat.play();
-        }
-        round.value++;
-        if (repetition.value === interval.value.repeatCount) {
-            emit("finish");
-            return;
-        }
-        progress.value = 0;
-        intervalStartTime.value = Date.now();
-        repetition.value++;
-    }
-    progress.value = newProgress;
-    requestAnimationFrame(animateTimer);
-};
+const animateTimer = useAnimateTimer(emit);
 
 watch(
     () => [interval.value?.title, playing.value] as const,
