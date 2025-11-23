@@ -11,7 +11,6 @@ const emit = defineEmits(["open"]);
             {
                 icon: 'heroicons:plus-small',
                 label: $t('ui.create'),
-                size: 'xl',
                 onClick: () => {
                     emit('open');
                 },

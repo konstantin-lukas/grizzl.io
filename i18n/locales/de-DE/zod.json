@@ -1,0 +1,7 @@
+{
+    "zod": {
+        "string": {
+            "too_small": "Zu klein"
+        }
+    }
+}

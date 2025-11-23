@@ -10,7 +10,14 @@ watch(
     () => {
         const localeInformation = LOCALES.find(loc => loc.code === locale.value)!;
         uiLocale.value = localeInformation.uiLocale;
-        z.config(localeInformation.zodLocale);
+        z.config({
+            ...localeInformation.zodLocale,
+            customError: ({ code, origin }) => {
+                if ($te(`zod.${origin}.${code}`)) {
+                    return $t(`zod.${origin}.${code}`);
+                }
+            },
+        });
         setDefaultOptions({ locale: localeInformation.fnsLocale });
     },
     { immediate: true },

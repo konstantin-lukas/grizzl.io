@@ -13,19 +13,21 @@ const ui = computed(() => {
 </script>
 
 <template>
-    <Teleport to="#back-button-portal">
-        <Transition name="fade">
-            <div v-if="props.show" class="fixed top-4 right-4 z-30 size-10">
-                <Button
-                    icon="heroicons:arrow-uturn-left-16-solid"
-                    variant="ghost"
-                    color="neutral"
-                    :ui
-                    class="size-10"
-                    aria-label="Close"
-                    @click="emit('click')"
-                />
-            </div>
-        </Transition>
-    </Teleport>
+    <ClientOnly>
+        <Teleport to="#back-button-portal">
+            <Transition name="fade">
+                <div v-if="props.show" class="fixed top-4 right-4 z-30 size-10">
+                    <Button
+                        icon="heroicons:arrow-uturn-left-16-solid"
+                        variant="ghost"
+                        color="neutral"
+                        :ui
+                        class="size-10"
+                        aria-label="Close"
+                        @click="emit('click')"
+                    />
+                </div>
+            </Transition>
+        </Teleport>
+    </ClientOnly>
 </template>
