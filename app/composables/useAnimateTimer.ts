@@ -3,7 +3,7 @@ import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 import beep from "~/assets/sound/intermittent_beep.wav";
 
-export default function useAnimateTimer(emit: (e: "finish") => void) {
+export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, voiceUri: string | null) {
     const {
         progress,
         startTime,
@@ -15,8 +15,11 @@ export default function useAnimateTimer(emit: (e: "finish") => void) {
         playing,
         mute,
         currentBeat,
+        lastIntervalTitleRead,
         interval,
+        reset,
     } = useTimer();
+    const speak = useSpeakUtterance();
 
     const animateTimer = () => {
         if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
@@ -57,6 +60,36 @@ export default function useAnimateTimer(emit: (e: "finish") => void) {
         progress.value = newProgress;
         requestAnimationFrame(animateTimer);
     };
+
+    watch(
+        () => [interval.value?.title, playing.value] as const,
+        ([t, p]) => {
+            const voice = voiceUri;
+            if (t && voice && p && lastIntervalTitleRead.value !== interval.value?.id) {
+                if (!mute.value) setTimeout(() => speak(t, voice), 500);
+                lastIntervalTitleRead.value = interval.value?.id;
+            }
+        },
+    );
+
+    watch(interval, () => {
+        reset();
+        animateTimer();
+    });
+
+    watch(round, r => {
+        if (r > rounds) playing.value = false;
+    });
+
+    watch(playing, p => {
+        if (p) {
+            intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
+            startTime.value = Date.now() - elapsedTime.value;
+            // This sits in a timeout to avoid the animation loop starting while the old one is running.
+            // It prevents the first beat being played twice when clicking the play button after the timer has completed.
+            setTimeout(() => animateTimer(), 0);
+        }
+    });
 
     return animateTimer;
 }

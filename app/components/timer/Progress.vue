@@ -9,22 +9,8 @@ const props = defineProps<{
     duration: number;
 }>();
 
-const {
-    progress,
-    startTime,
-    intervalStartTime,
-    elapsedIntervalTime,
-    elapsedTime,
-    round,
-    playing,
-    mute,
-    interval,
-    lastIntervalTitleRead,
-    reset,
-} = useTimer();
-
-const speak = useSpeakUtterance();
-const animateTimer = useAnimateTimer(emit);
+useAnimateTimer(emit, props.rounds, props.voiceUri);
+const { progress, elapsedIntervalTime, elapsedTime, round, interval } = useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -42,35 +28,6 @@ const activeRound = computed(() => {
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
 
-watch(
-    () => [interval.value?.title, playing.value] as const,
-    ([t, p]) => {
-        const voice = props.voiceUri;
-        if (t && voice && p && lastIntervalTitleRead.value !== interval.value?.id) {
-            if (!mute.value) setTimeout(() => speak(t, voice), 500);
-            lastIntervalTitleRead.value = interval.value?.id;
-        }
-    },
-);
-
-watch(interval, () => {
-    reset();
-    animateTimer();
-});
-
-watch(round, r => {
-    if (r > props.rounds) playing.value = false;
-});
-
-watch(playing, p => {
-    if (p) {
-        intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
-        startTime.value = Date.now() - elapsedTime.value;
-        // This sits in a timeout to avoid the animation loop starting while the old one is running.
-        // It prevents the first beat being played twice when clicking the play button after the timer has completed.
-        setTimeout(() => animateTimer(), 0);
-    }
-});
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
 
