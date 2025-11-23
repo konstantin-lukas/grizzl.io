@@ -57,13 +57,13 @@ const animateTimer = () => {
         const beatLength = barLengthInMs / interval.value.beatPattern.length;
         const nextBeat = Math.floor(moduloTime / beatLength);
         if (currentBeat.value < nextBeat) {
+            currentBeat.value = nextBeat;
             if (interval.value.beatPattern[nextBeat] !== Beat.PAUSE) {
                 const beat = new Audio(
                     interval.value.beatPattern[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio,
                 );
                 beat.play();
             }
-            currentBeat.value = nextBeat;
         }
     }
 
@@ -110,7 +110,9 @@ watch(playing, p => {
     if (p) {
         intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
         startTime.value = Date.now() - elapsedTime.value;
-        animateTimer();
+        // This sits in a timeout to avoid the animation loop starting while the old one is running.
+        // It prevents the first beat being played twice when clicking the play button after the timer has completed.
+        setTimeout(() => animateTimer(), 0);
     }
 });
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
