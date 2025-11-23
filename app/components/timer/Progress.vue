@@ -24,6 +24,7 @@ const {
     round,
     playing,
     mute,
+    currentBeat,
     lastIntervalTitleRead,
     reset,
 } = useTimer(props.interval?.duration);
@@ -45,7 +46,6 @@ const activeRound = computed(() => {
 });
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
-const currentBeat = ref(-1);
 
 const animateTimer = () => {
     if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
@@ -99,7 +99,6 @@ watch(
 );
 
 watch(props, () => {
-    currentBeat.value = -1;
     reset();
     animateTimer();
 });

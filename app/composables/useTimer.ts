@@ -9,12 +9,14 @@ export default function useTimer(duration: number = 1) {
     const playing = useState("timer-playing", () => false);
     const lastIntervalTitleRead = useState<string | undefined>("timer-last-interval-timer-read", () => undefined);
     const mute = useState("timer-mute", () => false);
+    const currentBeat = useState("timer-current-beat", () => -1);
 
     const reset = (fullyReset = false) => {
         progress.value = 0;
         intervalStartTime.value = Date.now();
         elapsedIntervalTime.value = 0;
         repetition.value = 1;
+        currentBeat.value = -1;
         if (fullyReset) {
             playing.value = false;
             round.value = 1;
@@ -39,6 +41,7 @@ export default function useTimer(duration: number = 1) {
         round,
         playing,
         lastIntervalTitleRead,
+        currentBeat,
         mute,
         reset,
     };
