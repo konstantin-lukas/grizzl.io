@@ -18,12 +18,6 @@ const togglePlayback = () => {
     <div class="flex justify-center gap-6">
         <Button
             size="xl"
-            :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-            aria-label="Start"
-            @click="togglePlayback"
-        />
-        <Button
-            size="xl"
             icon="heroicons:arrow-path-16-solid"
             aria-label="Reset"
             variant="subtle"
@@ -36,8 +30,14 @@ const togglePlayback = () => {
         />
         <Button
             size="xl"
+            :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+            aria-label="Start"
+            @click="togglePlayback"
+        />
+        <Button
+            size="xl"
             :icon="mute ? 'heroicons:speaker-x-mark' : 'heroicons:speaker-wave'"
-            :aria-label="mute ? 'Unmute beeps' : 'Mute beeps'"
+            :aria-label="mute ? 'Unmute' : 'Mute'"
             variant="subtle"
             :color="mute ? 'neutral' : 'primary'"
             @click="mute = !mute"

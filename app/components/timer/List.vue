@@ -9,7 +9,7 @@ const props = defineProps<{ timers: Timer[] | undefined }>();
     <ul class="relative">
         <TransitionGroup name="list">
             <TimerListItem
-                v-for="[index, timer] in props.timers?.entries()"
+                v-for="(timer, index) in props.timers"
                 :key="timer.id"
                 :is-last="index === props.timers!.length - 1"
                 :timer="timer"

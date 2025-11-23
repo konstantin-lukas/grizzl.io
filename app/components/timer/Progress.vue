@@ -1,54 +1,16 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/schema/timer";
+import { Beat } from "#shared/enum/timer";
 import { intervalToDuration } from "date-fns";
-import beep from "~/assets/sound/intermittent_beep.wav";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
-    interval?: Timer["intervals"][number];
     rounds: number;
     voiceUri: string | null;
     duration: number;
 }>();
 
-const {
-    progress,
-    startTime,
-    intervalStartTime,
-    elapsedIntervalTime,
-    elapsedTime,
-    repetition,
-    round,
-    playing,
-    mute,
-    lastIntervalTitleRead,
-    reset,
-} = useTimer(props.interval?.duration);
-
-const speak = useSpeakUtterance();
-
-const animateTimer = () => {
-    if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
-    elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
-    elapsedTime.value = Date.now() - startTime.value;
-    const newProgress = elapsedIntervalTime.value / props.interval.duration;
-    if (newProgress >= 1) {
-        if (!mute.value) {
-            const beat = new Audio(beep);
-            beat.play();
-        }
-        round.value++;
-        if (repetition.value === props?.interval.repeatCount) {
-            emit("finish");
-            return;
-        }
-        progress.value = 0;
-        intervalStartTime.value = Date.now();
-        repetition.value++;
-    }
-    progress.value = newProgress;
-    requestAnimationFrame(animateTimer);
-};
+useAnimateTimer(emit, props.rounds, props.voiceUri);
+const { progress, elapsedIntervalTime, elapsedTime, round, interval } = useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -57,7 +19,7 @@ const formatDuration = (elapsed: number, max?: number) => {
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
 };
 
-const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
+const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, interval.value?.duration));
 const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
 const activeRound = computed(() => {
     if (round.value > props.rounds) return "–/–";
@@ -66,38 +28,11 @@ const activeRound = computed(() => {
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
 const transform = computed(() => `rotate(${progress.value}turn)`);
 
-watch(
-    () => [props.interval?.title, playing.value] as const,
-    ([t, p]) => {
-        const voice = props.voiceUri;
-        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
-            setTimeout(() => speak(t, voice), 500);
-            lastIntervalTitleRead.value = props.interval?.id;
-        }
-    },
-);
-
-watch(props, () => {
-    reset();
-    animateTimer();
-});
-
-watch(round, r => {
-    if (r > props.rounds) playing.value = false;
-});
-
-watch(playing, p => {
-    if (p) {
-        intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
-        startTime.value = Date.now() - elapsedTime.value;
-        animateTimer();
-    }
-});
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
 
 <template>
-    <div class="relative mx-auto my-16 aspect-square w-full max-w-96 overflow-hidden rounded-full">
+    <div class="relative mx-auto my-16 aspect-square w-[90%] max-w-96 overflow-hidden rounded-full xs:w-full">
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
                 class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
@@ -118,15 +53,31 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             </span>
         </div>
         <span
-            v-if="props.interval?.id && elapsedIntervalTime > 0"
+            v-if="interval?.id && elapsedIntervalTime > 0"
             class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="props.interval?.id && elapsedIntervalTime > 0"
+            v-if="interval?.id && elapsedIntervalTime > 0"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
             <span class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
+        </div>
+        <div
+            v-for="(beat, index) in interval?.beatPattern"
+            :key="index"
+            class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
+            :style="{ transform: `rotate(${index / (interval?.beatPattern?.length ?? 1)}turn)` }"
+        >
+            <span
+                v-if="beat !== Beat.PAUSE"
+                :class="
+                    index / (interval?.beatPattern?.length ?? 1) < progress
+                        ? 'border-b-primary'
+                        : 'border-b-border-accented'
+                "
+                class="absolute top-8 left-1/2 block size-0 -translate-x-1/2 border-r-12 border-b-12 border-l-12 border-r-transparent border-l-transparent"
+            />
         </div>
     </div>
 </template>
