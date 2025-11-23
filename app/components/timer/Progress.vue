@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
-import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
@@ -8,7 +7,6 @@ import beep from "~/assets/sound/intermittent_beep.wav";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
-    interval?: Timer["intervals"][number];
     rounds: number;
     voiceUri: string | null;
     duration: number;
@@ -25,9 +23,10 @@ const {
     playing,
     mute,
     currentBeat,
+    interval,
     lastIntervalTitleRead,
     reset,
-} = useTimer(props.interval?.duration);
+} = useTimer();
 
 const speak = useSpeakUtterance();
 
@@ -38,7 +37,7 @@ const formatDuration = (elapsed: number, max?: number) => {
     return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
 };
 
-const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, props.interval?.duration));
+const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, interval.value?.duration));
 const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
 const activeRound = computed(() => {
     if (round.value > props.rounds) return "–/–";
@@ -48,19 +47,19 @@ const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progr
 const transform = computed(() => `rotate(${progress.value}turn)`);
 
 const animateTimer = () => {
-    if (!props.interval?.duration || !props.interval?.id || !playing.value) return;
+    if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
     elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
     elapsedTime.value = Date.now() - startTime.value;
 
-    if (props.interval.beatPattern && props.interval.beatPattern.length > 0) {
-        const barLengthInMs = props.interval.duration;
+    if (interval.value.beatPattern && interval.value.beatPattern.length > 0) {
+        const barLengthInMs = interval.value.duration;
         const moduloTime = (Date.now() - intervalStartTime.value) % barLengthInMs;
-        const beatLength = barLengthInMs / props.interval.beatPattern.length;
+        const beatLength = barLengthInMs / interval.value.beatPattern.length;
         const nextBeat = Math.floor(moduloTime / beatLength);
         if (currentBeat.value < nextBeat) {
-            if (props.interval.beatPattern[nextBeat] !== Beat.PAUSE) {
+            if (interval.value.beatPattern[nextBeat] !== Beat.PAUSE) {
                 const beat = new Audio(
-                    props.interval.beatPattern[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio,
+                    interval.value.beatPattern[nextBeat] === Beat.ACCENTED ? accentedAudio : beatAudio,
                 );
                 beat.play();
             }
@@ -68,14 +67,14 @@ const animateTimer = () => {
         }
     }
 
-    const newProgress = elapsedIntervalTime.value / props.interval.duration;
+    const newProgress = elapsedIntervalTime.value / interval.value.duration;
     if (newProgress >= 1) {
         if (!mute.value) {
             const beat = new Audio(beep);
             beat.play();
         }
         round.value++;
-        if (repetition.value === props?.interval.repeatCount) {
+        if (repetition.value === interval.value.repeatCount) {
             emit("finish");
             return;
         }
@@ -88,17 +87,17 @@ const animateTimer = () => {
 };
 
 watch(
-    () => [props.interval?.title, playing.value] as const,
+    () => [interval.value?.title, playing.value] as const,
     ([t, p]) => {
         const voice = props.voiceUri;
-        if (t && voice && p && lastIntervalTitleRead.value !== props.interval?.id) {
+        if (t && voice && p && lastIntervalTitleRead.value !== interval.value?.id) {
             setTimeout(() => speak(t, voice), 500);
-            lastIntervalTitleRead.value = props.interval?.id;
+            lastIntervalTitleRead.value = interval.value?.id;
         }
     },
 );
 
-watch(props, () => {
+watch(interval, () => {
     reset();
     animateTimer();
 });
@@ -139,26 +138,26 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             </span>
         </div>
         <span
-            v-if="props.interval?.id && elapsedIntervalTime > 0"
+            v-if="interval?.id && elapsedIntervalTime > 0"
             class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="props.interval?.id && elapsedIntervalTime > 0"
+            v-if="interval?.id && elapsedIntervalTime > 0"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
             <span class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
         </div>
         <div
-            v-for="(beat, index) in props.interval?.beatPattern"
+            v-for="(beat, index) in interval?.beatPattern"
             :key="index"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
-            :style="{ transform: `rotate(${index / (props.interval?.beatPattern?.length ?? 1)}turn)` }"
+            :style="{ transform: `rotate(${index / (interval?.beatPattern?.length ?? 1)}turn)` }"
         >
             <span
                 v-if="beat !== Beat.PAUSE"
                 :class="
-                    index / (props.interval?.beatPattern?.length ?? 1) < progress
+                    index / (interval?.beatPattern?.length ?? 1) < progress
                         ? 'border-b-primary'
                         : 'border-b-border-accented'
                 "

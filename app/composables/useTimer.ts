@@ -1,5 +1,7 @@
-export default function useTimer(duration: number = 1) {
-    const progress = useState("timer-progress", () => 0 / duration);
+import type { Timer } from "#shared/schema/timer";
+
+export default function useTimer() {
+    const progress = useState("timer-progress", () => 0);
     const intervalStartTime = useState("timer-start-interval-time", () => Date.now());
     const startTime = useState("timer-start-time", () => Date.now());
     const elapsedTime = useState("timer-elapsed-time", () => 0);
@@ -10,6 +12,7 @@ export default function useTimer(duration: number = 1) {
     const lastIntervalTitleRead = useState<string | undefined>("timer-last-interval-timer-read", () => undefined);
     const mute = useState("timer-mute", () => false);
     const currentBeat = useState("timer-current-beat", () => -1);
+    const interval = useState<Timer["intervals"][number] | undefined>("timer-interval", () => undefined);
 
     const reset = (fullyReset = false) => {
         progress.value = 0;
@@ -26,11 +29,6 @@ export default function useTimer(duration: number = 1) {
         }
     };
 
-    watch(
-        () => duration,
-        () => reset(),
-    );
-
     return {
         progress,
         intervalStartTime,
@@ -43,6 +41,7 @@ export default function useTimer(duration: number = 1) {
         lastIntervalTitleRead,
         currentBeat,
         mute,
+        interval,
         reset,
     };
 }
