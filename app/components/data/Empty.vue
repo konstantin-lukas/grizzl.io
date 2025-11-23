@@ -5,6 +5,7 @@ const emit = defineEmits(["open"]);
 <template>
     <UEmpty
         variant="naked"
+        :title="$t('ui.noEntries')"
         icon="heroicons:inbox"
         :actions="[
             {

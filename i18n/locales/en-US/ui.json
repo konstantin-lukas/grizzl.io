@@ -10,6 +10,7 @@
         "cancel": "Cancel",
         "install": "Install",
         "create": "Create",
+        "noEntries": "No entries found",
         "pickProvider": "Please choose a service to sign in."
     }
 }

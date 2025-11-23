@@ -1,6 +1,3 @@
 {
-    "timer": {
-        "noTimersTitle": "No se encontraron temporizadores",
-        "noTimersDescription": "Aún no has creado ningún temporizador. Crea uno para comenzar."
-    }
+    "timer": {}
 }

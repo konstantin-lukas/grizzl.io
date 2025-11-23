@@ -39,8 +39,7 @@ watch(open, () => {
                     <Transition name="fade">
                         <DataEmpty
                             v-if="data && data.length === 0"
-                            :title="$t('timer.noTimersTitle')"
-                            class="absolute top-1/2 left-1/2 -translate-1/2"
+                            class="absolute top-1/2 left-1/2 w-full -translate-1/2"
                             @open="() => (open = true)"
                         />
                     </Transition>
