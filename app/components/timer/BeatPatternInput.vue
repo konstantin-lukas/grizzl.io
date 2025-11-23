@@ -129,7 +129,7 @@ function addBeat(beat: Beat) {
         <USeparator v-if="beats.length > 0" />
         <div v-if="beats.length > 0" class="min-h-9.5">
             <UIcon
-                v-for="[index, beat] in beats.entries()"
+                v-for="(beat, index) in beats"
                 :key="index"
                 class="size-8"
                 :class="{ 'bg-primary': index === currentBeat }"

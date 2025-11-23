@@ -100,7 +100,7 @@ function onEnd() {
                     >
                         <TransitionGroup name="draggable-list">
                             <TimerFormInterval
-                                v-for="[index, interval] in state.intervals.entries()"
+                                v-for="(interval, index) in state.intervals"
                                 :key="interval.id"
                                 v-model:intervals="state.intervals"
                                 :index="index"
