@@ -19,6 +19,10 @@
         "unmute": "Reactivar sonido",
         "goBack": "Volver",
         "edit": "Editar",
-        "delete": "Eliminar"
+        "delete": "Eliminar",
+        "play": "Reproducir",
+        "duplicate": "Duplicar",
+        "moveUp": "Mover arriba",
+        "moveDown": "Mover abajo"
     }
 }

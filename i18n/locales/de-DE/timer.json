@@ -1,3 +1,33 @@
 {
-    "timer": {}
+    "timer": {
+        "round": "1 Runde | {n} Runden",
+        "form": {
+            "title": "Timer-Titel",
+            "ttsVoice": "Text-to-Speech-Stimme zum Vorlesen der Intervalltitel",
+            "ttsInfo": "Nicht alle Stimmen sind auf allen Geräten verfügbar",
+            "ttsPreview": "Gib einen Text ein, um die ausgewählte Stimme vorzuhören",
+            "ttsDisable": "Intervalltitel nicht vorlesen",
+            "interval": {
+                "title": "Intervalltitel",
+                "titlePlaceholder": "Wird angezeigt, während das Intervall läuft",
+                "type": "Intervalltyp",
+                "temporal": "Standard",
+                "rhythm": "Rhythmus",
+                "repetitions": "Wiederholungen",
+                "duration": "Dauer",
+                "beatPattern": "Taktmuster",
+                "addAccent": "Betonten Schlag hinzufügen",
+                "addBeat": "Schlag hinzufügen",
+                "addPause": "Pause hinzufügen",
+                "deleteBeat": "Schlag löschen"
+            }
+        },
+        "aria": {
+            "drawer": {
+                "edit": "Einen Timer bearbeiten",
+                "create": "Einen Timer erstellen",
+                "description": "Wähle zwischen verschiedenen Intervalltypen, um einen vollständig angepassten Timer zu erstellen"
+            }
+        }
+    }
 }

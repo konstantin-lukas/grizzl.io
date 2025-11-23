@@ -1,3 +1,33 @@
 {
-    "timer": {}
+    "timer": {
+        "round": "1 ronda | {n} rondas",
+        "form": {
+            "title": "Título del temporizador",
+            "ttsVoice": "Voz de texto a voz para leer los títulos de los intervalos",
+            "ttsInfo": "No todas las voces están disponibles en todos los dispositivos",
+            "ttsPreview": "Ingresa un texto para previsualizar la voz seleccionada",
+            "ttsDisable": "No leer los títulos de los intervalos",
+            "interval": {
+                "title": "Título del intervalo",
+                "titlePlaceholder": "Se muestra mientras el intervalo está en ejecución",
+                "type": "Tipo de intervalo",
+                "temporal": "Normal",
+                "rhythm": "Ritmo",
+                "repetitions": "Repeticiones",
+                "duration": "Duración",
+                "beatPattern": "Patrón de golpes",
+                "addAccent": "Añadir golpe acentuado",
+                "addBeat": "Añadir golpe",
+                "addPause": "Añadir pausa",
+                "deleteBeat": "Eliminar golpe"
+            }
+        },
+        "aria": {
+            "drawer": {
+                "edit": "Editar un temporizador",
+                "create": "Crear un temporizador",
+                "description": "Elige entre diferentes tipos de intervalos para crear un temporizador totalmente personalizado"
+            }
+        }
+    }
 }

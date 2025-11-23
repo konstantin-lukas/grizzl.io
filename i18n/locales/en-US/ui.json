@@ -19,6 +19,10 @@
         "unmute": "Unmute",
         "goBack": "Go back",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "play": "Play",
+        "duplicate": "Duplicate",
+        "moveUp": "Move up",
+        "moveDown": "Move down"
     }
 }

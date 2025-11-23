@@ -79,7 +79,7 @@ function addBeat(beat: Beat) {
                 <Button
                     :content="{ side: 'right', align: 'center' }"
                     :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-                    :aria-label="playingComponentId ? $t('ui.pause') : $t('ui.start')"
+                    :aria-label="playingComponentId ? $t('ui.pause') : $t('ui.play')"
                     variant="ghost"
                     :disabled="beats.length === 0"
                     @click="
@@ -94,19 +94,19 @@ function addBeat(beat: Beat) {
                 <Button
                     v-bind="commonButtonProps"
                     icon="mdi:exclamation-thick"
-                    aria-label="Add accented beat"
+                    :aria-label="$t('timer.form.interval.addAccent')"
                     @click="addBeat(Beat.ACCENTED)"
                 />
                 <Button
                     v-bind="commonButtonProps"
                     icon="mdi:music-note-quarter"
-                    aria-label="Add Beat"
+                    :aria-label="$t('timer.form.interval.addBeat')"
                     @click="addBeat(Beat.NORMAL)"
                 />
                 <Button
                     v-bind="commonButtonProps"
                     icon="mdi:music-rest-quarter"
-                    aria-label="Add Pause"
+                    :aria-label="$t('timer.form.interval.addPause')"
                     @click="addBeat(Beat.PAUSE)"
                 />
                 <Button
@@ -114,7 +114,7 @@ function addBeat(beat: Beat) {
                     :disabled="beats.length === 0"
                     icon="mdi:music-note-off"
                     color="error"
-                    aria-label="Delete"
+                    :aria-label="$t('timer.form.interval.deleteBeat')"
                     @click="
                         () => {
                             if (beats.length > 0) {
