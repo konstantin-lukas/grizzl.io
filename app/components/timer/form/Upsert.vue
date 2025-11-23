@@ -119,7 +119,7 @@ function onEnd() {
                     class="flex w-full justify-center"
                     :disabled="isLoading"
                 >
-                    {{ createNewTimer ? "Erstellen" : "Speichern" }}
+                    {{ createNewTimer ? $t("ui.create") : $t("ui.save") }}
                 </Button>
             </div>
         </div>

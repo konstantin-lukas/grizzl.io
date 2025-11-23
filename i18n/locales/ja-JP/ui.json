@@ -11,6 +11,14 @@
         "install": "インストール",
         "create": "作成",
         "noEntries": "エントリーが見つかりません",
-        "pickProvider": "サインインするサービスを選択してください。"
+        "pickProvider": "サインインするサービスを選択してください。",
+        "start": "スタート",
+        "pause": "一時停止",
+        "reset": "リセット",
+        "mute": "ミュート",
+        "unmute": "ミュート解除",
+        "goBack": "戻る",
+        "edit": "編集",
+        "delete": "削除"
     }
 }

@@ -32,8 +32,13 @@ watch(open, () => {
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button aria-label="Start" icon="heroicons:play-solid" @click="emit('start', timer)" />
-                <Button aria-label="Bearbeiten" variant="subtle" icon="heroicons:pencil-square" @click="open = true" />
+                <Button :aria-label="$t('ui.start')" icon="heroicons:play-solid" @click="emit('start', timer)" />
+                <Button
+                    :aria-label="$t('ui.edit')"
+                    variant="subtle"
+                    icon="heroicons:pencil-square"
+                    @click="open = true"
+                />
                 <TimerFormDelete :timer="props.timer" />
             </div>
             <OverlayDrawer v-model:open="open">
@@ -46,7 +51,9 @@ watch(open, () => {
         </div>
         <Transition name="fade">
             <div v-if="props.isLast" class="center absolute w-full">
-                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')"> Erstellen </Button>
+                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')">{{
+                    $t("ui.create")
+                }}</Button>
             </div>
         </Transition>
     </li>

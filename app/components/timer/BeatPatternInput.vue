@@ -79,7 +79,7 @@ function addBeat(beat: Beat) {
                 <Button
                     :content="{ side: 'right', align: 'center' }"
                     :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
-                    :aria-label="playingComponentId ? 'Pause Playback' : 'Start Playback'"
+                    :aria-label="playingComponentId ? $t('ui.pause') : $t('ui.start')"
                     variant="ghost"
                     :disabled="beats.length === 0"
                     @click="

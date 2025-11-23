@@ -23,7 +23,7 @@ const ui = computed(() => {
                         color="neutral"
                         :ui
                         class="size-10"
-                        aria-label="Close"
+                        :aria-label="$t('ui.goBack')"
                         @click="emit('click')"
                     />
                 </div>

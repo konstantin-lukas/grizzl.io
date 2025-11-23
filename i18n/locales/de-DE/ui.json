@@ -11,6 +11,14 @@
         "install": "Installieren",
         "create": "Erstellen",
         "noEntries": "Keine Einträge gefunden",
-        "pickProvider": "Wähle einen Dienst, um dich anzumelden."
+        "pickProvider": "Wähle einen Dienst, um dich anzumelden.",
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Zurücksetzen",
+        "mute": "Stummschalten",
+        "unmute": "Stummschaltung aufheben",
+        "goBack": "Zurück",
+        "edit": "Bearbeiten",
+        "delete": "Löschen"
     }
 }

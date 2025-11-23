@@ -11,6 +11,14 @@
         "install": "Instalar",
         "create": "Crear",
         "noEntries": "No se encontraron entradas",
-        "pickProvider": "Elige un servicio para iniciar sesión."
+        "pickProvider": "Elige un servicio para iniciar sesión.",
+        "start": "Iniciar",
+        "pause": "Pausar",
+        "reset": "Restablecer",
+        "mute": "Silenciar",
+        "unmute": "Reactivar sonido",
+        "goBack": "Volver",
+        "edit": "Editar",
+        "delete": "Eliminar"
     }
 }
