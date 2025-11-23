@@ -12,8 +12,10 @@ watch(
         uiLocale.value = localeInformation.uiLocale;
         z.config({
             ...localeInformation.zodLocale,
-            customError: ({ code, origin, ...rest }) => {
+            customError: ({ code, origin, minimum, maximum, ...rest }) => {
                 if ($te(`zod.${origin}.${code}`)) {
+                    if (typeof minimum === "number") return $t(`zod.${origin}.${code}`, minimum);
+                    if (typeof maximum === "number") return $t(`zod.${origin}.${code}`, maximum);
                     return $t(`zod.${origin}.${code}`, rest);
                 }
             },

@@ -1,7 +1,13 @@
 {
     "zod": {
+        "array": {
+            "too_small": "Proporciona al menos 1 elemento. | Proporciona al menos {n} elementos."
+        },
         "string": {
-            "too_small": "Zu klein"
+            "too_small": "El texto proporcionado debe tener al menos 1 carácter. | El texto proporcionado debe tener al menos {n} caracteres."
+        },
+        "number": {
+            "too_big": "El número proporcionado no puede ser mayor que {n}."
         }
     }
 }

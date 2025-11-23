@@ -1,7 +1,13 @@
 {
     "zod": {
+        "array": {
+            "too_small": "Gib mindestens 1 Element an. | Gib mindestens {n} Elemente an."
+        },
         "string": {
-            "too_small": "Zu klein"
+            "too_small": "Der eingegebene Text muss mindestens 1 Zeichen lang sein. | Der eingegebene Text muss mindestens {n} Zeichen lang sein."
+        },
+        "number": {
+            "too_big": "Die angegebene Zahl darf nicht größer als {n} sein."
         }
     }
 }
