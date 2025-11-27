@@ -23,6 +23,7 @@
         "play": "Play",
         "duplicate": "Duplicate",
         "moveUp": "Move up",
-        "moveDown": "Move down"
+        "moveDown": "Move down",
+        "undo": "Undo"
     }
 }

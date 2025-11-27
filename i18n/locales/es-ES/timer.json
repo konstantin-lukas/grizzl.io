@@ -30,6 +30,14 @@
                 "create": "Crear un temporizador",
                 "description": "Elige entre diferentes tipos de intervalos para crear un temporizador totalmente personalizado"
             }
+        },
+        "toast": {
+            "createdTitle": "Temporizador creado",
+            "createdDescription": "Se creó un nuevo temporizador titulado “{title}”.",
+            "updatedTitle": "Temporizador actualizado",
+            "updatedDescription": "El temporizador titulado “{title}” se actualizó.",
+            "deletedTitle": "Temporizador eliminado",
+            "deletedDescription": "El temporizador titulado “{title}” se eliminó."
         }
     }
 }

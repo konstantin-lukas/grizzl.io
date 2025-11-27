@@ -23,6 +23,7 @@
         "play": "Abspielen",
         "duplicate": "Duplizieren",
         "moveUp": "Nach oben bewegen",
-        "moveDown": "Nach unten bewegen"
+        "moveDown": "Nach unten bewegen",
+        "undo": "Rückgängig machen"
     }
 }

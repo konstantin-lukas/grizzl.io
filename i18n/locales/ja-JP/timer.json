@@ -30,6 +30,14 @@
                 "create": "タイマーを作成",
                 "description": "さまざまなインターバルタイプから選んで、完全にカスタム可能なタイマーを作成できます"
             }
+        },
+        "toast": {
+            "createdTitle": "タイマーを作成しました",
+            "createdDescription": "「{title}」というタイトルのタイマーが作成されました。",
+            "updatedTitle": "タイマーを更新しました",
+            "updatedDescription": "「{title}」というタイトルのタイマーが更新されました。",
+            "deletedTitle": "タイマーを削除しました",
+            "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。"
         }
     }
 }

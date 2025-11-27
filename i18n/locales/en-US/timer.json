@@ -30,6 +30,14 @@
                 "create": "Create a timer",
                 "description": "Choose between different types of timer intervals to create a fully customized timer"
             }
+        },
+        "toast": {
+            "createdTitle": "Timer Created",
+            "createdDescription": "A new timer titled “{title}” was created.",
+            "updatedTitle": "Timer Updated",
+            "updatedDescription": "The timer titled “{title}” was updated.",
+            "deletedTitle": "Timer Deleted",
+            "deletedDescription": "The timer titled “{title}” was deleted."
         }
     }
 }
