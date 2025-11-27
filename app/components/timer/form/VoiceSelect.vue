@@ -3,6 +3,22 @@ const ttsVoice = defineModel<string | null>("ttsVoice");
 
 const ttsVoices = useVoices();
 const speak = useSpeakUtterance();
+const displayWarning = ref(false);
+const id = useId();
+const alertId = computed(() => (displayWarning.value ? `${id}-alert` : null));
+
+watchEffect(() => {
+    if (ttsVoices.value.length === 0) return;
+    const isVoiceInvalid =
+        typeof ttsVoice.value === "string" && ttsVoices.value.every(({ voiceURI }) => voiceURI !== ttsVoice.value);
+
+    if (isVoiceInvalid) {
+        ttsVoice.value = null;
+        displayWarning.value = true;
+    } else if (ttsVoice.value) {
+        displayWarning.value = isVoiceInvalid;
+    }
+});
 
 const utteranceText = ref("");
 const voiceOptions = computed(() => [
@@ -13,7 +29,7 @@ const voiceOptions = computed(() => [
 
 <template>
     <UFormField v-if="ttsVoices.length > 0" :label="$t('timer.form.ttsVoice')" name="ttsVoice" class="w-full">
-        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full">
+        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full" :aria-describedby="alertId">
             <template #trailing>
                 <UTooltip
                     :text="$t('timer.form.ttsInfo')"
@@ -28,6 +44,19 @@ const voiceOptions = computed(() => [
                 </UTooltip>
             </template>
         </USelect>
+        <Transition name="fade">
+            <UAlert
+                v-if="displayWarning"
+                :id="alertId"
+                color="warning"
+                class="mt-4"
+                variant="subtle"
+                role="alert"
+                :title="$t('timer.ttsUnavailableTitle')"
+                :description="$t('timer.ttsUnavailableDescription')"
+                icon="heroicons:exclamation-triangle"
+            />
+        </Transition>
     </UFormField>
     <Transition name="fade">
         <div v-if="ttsVoices.length > 0 && ttsVoice !== null" class="flex w-full gap-4">

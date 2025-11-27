@@ -1,6 +1,8 @@
 {
     "timer": {
         "round": "1 Runde | {n} Runden",
+        "ttsUnavailableTitle": "Text-to-Speech-Stimme nicht verfügbar",
+        "ttsUnavailableDescription": "Die ausgewählte Text-to-Speech-Stimme ist auf diesem Gerät nicht verfügbar. Intervalltitel werden nicht vorgelesen, solange du die Stimme nicht änderst.",
         "form": {
             "title": "Timer-Titel",
             "ttsVoice": "Text-to-Speech-Stimme zum Vorlesen der Intervalltitel",

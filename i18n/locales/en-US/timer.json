@@ -1,6 +1,8 @@
 {
     "timer": {
         "round": "1 round | {n} rounds",
+        "ttsUnavailableTitle": "Text-to-Speech Voice Unavailable",
+        "ttsUnavailableDescription": "The selected text-to-speech voice is unavailable on this device. Interval titles won't be read unless you change the selected voice.",
         "form": {
             "title": "Timer title",
             "ttsVoice": "Text-to-speech voice for reading interval titles",

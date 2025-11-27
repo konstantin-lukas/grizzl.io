@@ -1,6 +1,8 @@
 {
     "timer": {
         "round": "1 ronda | {n} rondas",
+        "ttsUnavailableTitle": "Voz de texto a voz no disponible",
+        "ttsUnavailableDescription": "La voz de texto a voz seleccionada no está disponible en este dispositivo. Los títulos de los intervalos no se leerán a menos que cambies la voz seleccionada.",
         "form": {
             "title": "Título del temporizador",
             "ttsVoice": "Voz de texto a voz para leer los títulos de los intervalos",
