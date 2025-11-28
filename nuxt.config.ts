@@ -215,6 +215,11 @@ export default defineNuxtConfig({
         public: {
             version: process.env.NUXT_PUBLIC_VERSION,
             appEnv: process.env.NUXT_PUBLIC_APP_ENV,
+            legalEntity: process.env.NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY,
+            legalStreet: process.env.NUXT_PUBLIC_LEGAL_STREET,
+            legalCity: process.env.NUXT_PUBLIC_LEGAL_ZIP_AND_CITY,
+            legalPhone: process.env.NUXT_PUBLIC_LEGAL_PHONE,
+            legalEmail: process.env.NUXT_PUBLIC_LEGAL_EMAIL,
         },
     },
 });
