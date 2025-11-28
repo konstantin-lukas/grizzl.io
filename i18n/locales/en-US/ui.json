@@ -24,6 +24,7 @@
         "duplicate": "Duplicate",
         "moveUp": "Move up",
         "moveDown": "Move down",
-        "undo": "Undo"
+        "undo": "Undo",
+        "offline": "Offline"
     }
 }

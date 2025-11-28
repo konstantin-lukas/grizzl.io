@@ -24,6 +24,7 @@
         "duplicate": "Duplizieren",
         "moveUp": "Nach oben bewegen",
         "moveDown": "Nach unten bewegen",
-        "undo": "Rückgängig machen"
+        "undo": "Rückgängig machen",
+        "offline": "Offline"
     }
 }

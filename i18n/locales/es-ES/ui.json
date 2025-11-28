@@ -24,6 +24,7 @@
         "duplicate": "Duplicar",
         "moveUp": "Mover arriba",
         "moveDown": "Mover abajo",
-        "undo": "Deshacer"
+        "undo": "Deshacer",
+        "offline": "Offline"
     }
 }
