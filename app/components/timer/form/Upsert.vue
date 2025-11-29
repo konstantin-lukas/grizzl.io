@@ -59,7 +59,6 @@ async function onSubmit() {
     })
         .then(() => {
             emit("success");
-            finish();
             toast.add(
                 createToastSuccess(
                     createNewTimer ? $t("timer.toast.createdTitle") : $t("timer.toast.updatedTitle"),
@@ -71,7 +70,8 @@ async function onSubmit() {
         })
         .catch(error => {
             toast.add(createToastError(error));
-        });
+        })
+        .finally(finish);
 }
 
 function onEnd() {
