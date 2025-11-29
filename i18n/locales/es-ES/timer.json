@@ -1,6 +1,8 @@
 {
     "timer": {
         "round": "1 ronda | {n} rondas",
+        "ttsUnavailableTitle": "Voz de texto a voz no disponible",
+        "ttsUnavailableDescription": "La voz de texto a voz seleccionada no está disponible en este dispositivo. Los títulos de los intervalos no se leerán a menos que cambies la voz seleccionada.",
         "form": {
             "title": "Título del temporizador",
             "ttsVoice": "Voz de texto a voz para leer los títulos de los intervalos",
@@ -28,6 +30,14 @@
                 "create": "Crear un temporizador",
                 "description": "Elige entre diferentes tipos de intervalos para crear un temporizador totalmente personalizado"
             }
+        },
+        "toast": {
+            "createdTitle": "Temporizador creado",
+            "createdDescription": "Se creó un nuevo temporizador titulado “{title}”.",
+            "updatedTitle": "Temporizador actualizado",
+            "updatedDescription": "El temporizador titulado “{title}” se actualizó.",
+            "deletedTitle": "Temporizador eliminado",
+            "deletedDescription": "El temporizador titulado “{title}” se eliminó."
         }
     }
 }

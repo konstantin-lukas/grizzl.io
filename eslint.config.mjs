@@ -49,6 +49,7 @@ export default withNuxt([
             "wrap-iife": "error",
             "yoda": "error",
             "vue/no-multiple-template-root": "off",
+            "vue/html-self-closing": "off",
         },
     },
     {

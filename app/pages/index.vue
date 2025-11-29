@@ -13,7 +13,7 @@ const session = authClient.useSession();
             <div class="flex w-full flex-col items-center justify-center gap-6 pt-20 xl:hidden">
                 <SvgGrizzlLogo class="max-w-120 fill-front" />
                 <div class="mt-4 mb-8 grid w-full grid-cols-1 gap-4 2xs:grid-cols-2 xs:gap-6 sm:gap-8 md:grid-cols-3">
-                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label="label" :icon class="w-auto" />
+                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </div>
             </div>
             <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
@@ -45,10 +45,10 @@ const session = authClient.useSession();
             </div>
             <div class="hidden w-1/2 grid-cols-2 xl:grid">
                 <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
-                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label :icon />
+                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
                 <UMarquee orientation="vertical" class="h-dvh items-start pl-8" :overlay="false" reverse>
-                    <LayoutHeroCard v-for="[label, icon] in APP_NAV" :key="label" :label :icon />
+                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
             </div>
         </div>

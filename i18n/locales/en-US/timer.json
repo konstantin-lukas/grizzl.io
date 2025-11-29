@@ -1,6 +1,8 @@
 {
     "timer": {
         "round": "1 round | {n} rounds",
+        "ttsUnavailableTitle": "Text-to-Speech Voice Unavailable",
+        "ttsUnavailableDescription": "The selected text-to-speech voice is unavailable on this device. Interval titles won't be read unless you change the selected voice.",
         "form": {
             "title": "Timer title",
             "ttsVoice": "Text-to-speech voice for reading interval titles",
@@ -28,6 +30,14 @@
                 "create": "Create a timer",
                 "description": "Choose between different types of timer intervals to create a fully customized timer"
             }
+        },
+        "toast": {
+            "createdTitle": "Timer Created",
+            "createdDescription": "A new timer titled “{title}” was created.",
+            "updatedTitle": "Timer Updated",
+            "updatedDescription": "The timer titled “{title}” was updated.",
+            "deletedTitle": "Timer Deleted",
+            "deletedDescription": "The timer titled “{title}” was deleted."
         }
     }
 }

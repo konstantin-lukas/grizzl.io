@@ -19,10 +19,10 @@ export function createToastError(error: ApiError) {
     } as const;
 }
 
-export function createToastSuccess(message: string) {
+export function createToastSuccess(title: string, description?: string) {
     return {
-        title: "Success",
-        description: message,
+        title,
+        description,
         color: "success",
     } as const;
 }

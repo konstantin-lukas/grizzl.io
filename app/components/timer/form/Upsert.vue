@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
+import { ellipsize } from "#shared/utils/string";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
@@ -58,14 +59,19 @@ async function onSubmit() {
     })
         .then(() => {
             emit("success");
-            finish();
             toast.add(
-                createToastSuccess(createNewTimer ? "Timer created successfully." : "Timer updated successfully."),
+                createToastSuccess(
+                    createNewTimer ? $t("timer.toast.createdTitle") : $t("timer.toast.updatedTitle"),
+                    $t(createNewTimer ? "timer.toast.createdDescription" : "timer.toast.updatedDescription", {
+                        title: ellipsize(state.title, 15),
+                    }),
+                ),
             );
         })
         .catch(error => {
             toast.add(createToastError(error));
-        });
+        })
+        .finally(finish);
 }
 
 function onEnd() {

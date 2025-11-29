@@ -23,6 +23,8 @@
         "play": "Reproducir",
         "duplicate": "Duplicar",
         "moveUp": "Mover arriba",
-        "moveDown": "Mover abajo"
+        "moveDown": "Mover abajo",
+        "undo": "Deshacer",
+        "offline": "Offline"
     }
 }

@@ -1,16 +1,27 @@
-export default function useSoftDelete(resource: string, refresh?: () => Promise<void>) {
+export default function useSoftDelete(
+    resource: string,
+    options?: {
+        refresh?: () => Promise<void>;
+        successTitle?: string;
+        successDescription?: string;
+        interpolations?: Record<string, string>;
+    },
+) {
     const toast = useToast();
     const { start, finish } = useLoadingIndicator();
+    const { t } = useI18n();
     async function execute() {
         await $fetch(resource, { method: "PATCH", body: { deleted: true } })
             .then(() => {
                 toast.add({
-                    title: "Successfully deleted",
-                    orientation: "horizontal",
+                    title: options?.successTitle && t(options?.successTitle),
+                    description:
+                        options?.successDescription && t(options?.successDescription, options.interpolations ?? {}),
+                    orientation: "vertical",
                     color: "success",
                     actions: [
                         {
-                            label: "Undo",
+                            label: t("ui.undo"),
                             icon: "heroicons:arrow-turn-down-left",
                             color: "neutral",
                             variant: "outline",
@@ -19,7 +30,7 @@ export default function useSoftDelete(resource: string, refresh?: () => Promise<
                                 $fetch(resource, { method: "PATCH", body: { deleted: false } })
                                     .catch(error => toast.add(createToastError(error)))
                                     .finally(async () => {
-                                        await refresh?.();
+                                        await options?.refresh?.();
                                         finish();
                                     });
                             },
@@ -31,7 +42,7 @@ export default function useSoftDelete(resource: string, refresh?: () => Promise<
                 toast.add(createToastError(error));
             })
             .finally(() => {
-                refresh?.();
+                options?.refresh?.();
             });
     }
 
