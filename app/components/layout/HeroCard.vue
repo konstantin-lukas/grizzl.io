@@ -28,7 +28,6 @@ const { label, icon, disabled } = defineProps<{
             </div>
             <span
                 v-if="disabled"
-                aria-hidden="true"
                 class="absolute top-1/2 left-1/2 -translate-1/2 rotate-20 rounded-full bg-error px-4 py-1 whitespace-nowrap text-theme-white"
             >
                 Coming soon!
