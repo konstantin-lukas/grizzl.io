@@ -13,7 +13,7 @@ const { label, icon, disabled } = defineProps<{
         :is="disabled ? 'div' : h(NuxtLink)"
         :to="disabled ? null : label"
         :class="{ 'pointer-events-none': disabled }"
-        :aria-hidden="disabled"
+        :aria-hidden="disabled || undefined"
     >
         <UCard
             class="center aspect-square w-48"
@@ -28,7 +28,7 @@ const { label, icon, disabled } = defineProps<{
             </div>
             <span
                 v-if="disabled"
-                class="absolute top-1/2 left-1/2 -translate-1/2 rotate-20 rounded-full bg-rose-700 px-4 py-1 whitespace-nowrap text-theme-white"
+                class="absolute top-1/2 left-1/2 -translate-1/2 rotate-20 rounded-full bg-error px-4 py-1 whitespace-nowrap text-theme-white"
             >
                 Coming soon!
             </span>
