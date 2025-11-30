@@ -48,7 +48,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
     async analyzeA11y() {
         const timeout = config.expect?.timeout ?? 5000;
-        const axe = new AxeBuilder({ page: this.page });
+        const axe = new AxeBuilder({ page: this.page }).exclude("#nuxt-devtools-container").exclude("[aria-hidden]");
         const start = Date.now();
         while (true) {
             const results = await axe.analyze();

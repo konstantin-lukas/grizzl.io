@@ -20,6 +20,7 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         reset,
     } = useTimer();
     const speak = useSpeakUtterance();
+    const ttsVoices = useVoices();
 
     const animateTimer = () => {
         if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
@@ -65,7 +66,8 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         () => [interval.value?.title, playing.value] as const,
         ([t, p]) => {
             const voice = voiceUri;
-            if (t && voice && p && lastIntervalTitleRead.value !== interval.value?.id) {
+            const isVoiceValid = (uri: string | null): uri is string => ttsVoices.value.some(v => v.voiceURI === uri);
+            if (t && p && lastIntervalTitleRead.value !== interval.value?.id && isVoiceValid(voice)) {
                 if (!mute.value) setTimeout(() => speak(t, voice), 500);
                 lastIntervalTitleRead.value = interval.value?.id;
             }

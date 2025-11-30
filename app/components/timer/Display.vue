@@ -3,8 +3,16 @@ import type { Timer } from "#shared/schema/timer";
 
 const { timer } = defineProps<{ timer: Timer }>();
 const { interval } = useTimer();
+const ttsVoices = useVoices();
 
 const activeIntervalIndex = ref(0);
+const displayWarning = computed(
+    () =>
+        ttsVoices.value.length > 0 &&
+        typeof timer.ttsVoice === "string" &&
+        ttsVoices.value.every(({ voiceURI }) => voiceURI !== timer.ttsVoice),
+);
+
 watch(
     activeIntervalIndex,
     () => {
@@ -29,6 +37,16 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                     {{ interval?.title }}
                 </TypoH2>
             </Transition>
+        </div>
+        <div v-if="displayWarning" class="mt-8">
+            <UAlert
+                color="warning"
+                class="mx-auto"
+                variant="subtle"
+                :title="$t('timer.ttsUnavailableTitle')"
+                :description="$t('timer.ttsUnavailableDescription')"
+                icon="heroicons:exclamation-triangle"
+            />
         </div>
         <TimerProgress :rounds :voice-uri="timer.ttsVoice" :duration @finish="activeIntervalIndex++" />
         <TimerControls :rounds @reset="activeIntervalIndex = 0" />
