@@ -1,3 +1,4 @@
+import { icons } from "./config/icons.json";
 import { EnvSchema } from "./lib/env";
 import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
@@ -44,23 +45,12 @@ export default defineNuxtConfig({
             short_name: "Grizzl",
             description: "Your everything in one app for daily tasks.",
             start_url: "/",
-            display: "standalone",
-            display_override: ["fullscreen", "minimal-ui"],
+            display: "fullscreen",
+            display_override: ["standalone", "minimal-ui"],
             background_color: "#ffffff",
             theme_color: "#000000",
             id: "/",
-            icons: [
-                {
-                    src: "/web-app-manifest-192x192.png",
-                    sizes: "192x192",
-                    type: "image/png",
-                },
-                {
-                    src: "/web-app-manifest-512x512.png",
-                    sizes: "512x512",
-                    type: "image/png",
-                },
-            ],
+            icons,
             screenshots: [
                 {
                     src: "/desktop-screenshot.png",
