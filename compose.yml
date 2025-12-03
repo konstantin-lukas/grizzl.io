@@ -62,7 +62,7 @@ services:
         image: mcr.microsoft.com/playwright:v1.56.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         extra_hosts:
-          - "grizzl.localhost:127.0.0.1"
+            - "grizzl.localhost:127.0.0.1"
         volumes:
             - .:/home/grizzl
             - /tmp/.X11-unix:/tmp/.X11-unix
