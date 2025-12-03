@@ -28,9 +28,9 @@ export const EnvSchema = z
         NUXT_PUBLIC_ORIGIN: z.literal("https://grizzl.io"),
         NUXT_PUBLIC_VERSION: z.string().regex(/^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/),
 
-        POSTGRES_USER: NotLiteral("admin"),
-        POSTGRES_PASSWORD: NotLiteral("admin"),
-        POSTGRES_DB: NotLiteral("admin"),
+        POSTGRES_USER: z.undefined(),
+        POSTGRES_PASSWORD: z.undefined(),
+        POSTGRES_DB: z.undefined(),
 
         DB_HOST: NotLiteral("postgres"),
         DB_NAME: NotLiteral("grizzl"),
