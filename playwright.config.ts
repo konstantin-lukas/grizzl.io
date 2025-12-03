@@ -28,10 +28,6 @@ export default defineConfig<ConfigOptions>({
     projects: [
         {
             name: "API",
-            use: {
-                ...devices["Desktop Firefox"],
-                baseURL: "http://grizzl.localhost",
-            },
             testMatch: apiTestDir,
         },
         {
