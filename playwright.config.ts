@@ -1,6 +1,7 @@
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 import { defineConfig, devices } from "playwright/test";
 
+const apiTestDir = "api/**/*.spec.ts";
 export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,
@@ -26,30 +27,39 @@ export default defineConfig<ConfigOptions>({
     },
     projects: [
         {
-            name: "chromium",
+            name: "API",
+            testMatch: apiTestDir,
+        },
+        {
+            name: "Web - Chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
+            testIgnore: apiTestDir,
         },
         {
-            name: "firefox",
+            name: "Web - Firefox",
             use: { ...devices["Desktop Firefox"] },
+            testIgnore: apiTestDir,
         },
         {
-            name: "webkit",
+            name: "Web - Webkit",
             use: { ...devices["Desktop Safari"] },
+            testIgnore: apiTestDir,
         },
         {
-            name: "Mobile Chrome",
+            name: "Web - Mobile Chrome",
             use: {
                 ...devices["Pixel 5"],
                 permissions: ["clipboard-read", "clipboard-write"],
             },
+            testIgnore: apiTestDir,
         },
         {
-            name: "Mobile Safari",
+            name: "Web - Mobile Safari",
             use: { ...devices["iPhone 12"] },
+            testIgnore: apiTestDir,
         },
     ],
 });
