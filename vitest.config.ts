@@ -32,7 +32,7 @@ export default defineConfig({
             await defineVitestProject({
                 test: {
                     name: "nuxt",
-                    include: ["tests/nuxt/**/*.{test,spec}.ts"],
+                    include: ["tests/nuxt/**/*.test.ts"],
                     environment: "nuxt",
                     env: {
                         DB_PASSWORD: "nuts",
