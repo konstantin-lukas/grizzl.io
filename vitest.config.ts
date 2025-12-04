@@ -12,6 +12,7 @@ export default defineConfig({
                 "app/components/**/*",
                 "app/composables/**/*",
             ],
+            reporter: ["text", "lcov", "json"],
         },
         projects: [
             {

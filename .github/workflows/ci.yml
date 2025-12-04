@@ -87,6 +87,12 @@ jobs:
             - name: Unit And Nuxt Tests
               run: npm run vitest
 
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v4
+              with:
+                files: ./coverage/lcov.info
+                fail_ci_if_error: true
+
     playwright:
         needs: install-deps
         runs-on: ubuntu-latest
