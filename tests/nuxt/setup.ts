@@ -3,7 +3,7 @@ import { DOMWrapper, config } from "@vue/test-utils";
 
 declare module "@vue/test-utils" {
     interface VueWrapper {
-        findByTestId: (id: string) => VueWrapper;
+        findByTestId: (id: string) => DOMWrapper<Element>;
     }
 }
 
