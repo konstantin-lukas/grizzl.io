@@ -4,6 +4,15 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
+        coverage: {
+            include: [
+                "app/utils/**/*",
+                "server/utils/**/*",
+                "shared/utils/**/*",
+                "app/components/**/*",
+                "app/composables/**/*",
+            ],
+        },
         projects: [
             {
                 test: {
