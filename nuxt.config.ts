@@ -5,7 +5,7 @@ import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 
-EnvSchema.parse(process.env);
+if (process.env.NODE_ENV !== "test") EnvSchema.parse(process.env);
 checkTranslationFileConsistency();
 
 export default defineNuxtConfig({
