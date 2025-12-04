@@ -61,7 +61,7 @@ jobs:
             - name: Perform Typecheck
               run: npx nuxt typecheck
 
-    unit-tests:
+    vitest:
         needs: install-deps
         runs-on: ubuntu-latest
 
@@ -84,10 +84,10 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Unit Tests
-              run: npm run unit
+            - name: Unit And Nuxt Tests
+              run: npm run vitest
 
-    e2e-tests:
+    playwright:
         needs: install-deps
         runs-on: ubuntu-latest
 
@@ -116,7 +116,7 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Run end-to-end tests
+            - name: Run End-to-End And API Tests
               run: npx playwright test
 
             - uses: actions/upload-artifact@v4
