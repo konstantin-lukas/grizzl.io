@@ -22,12 +22,22 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
 
+### Tests
+This project is very thoroughly tested. There are roughly five types of tests in this project:
+1. Unit tests for utilities (located at tests/unit)
+2. Unit tests for composables (located at tests/nuxt/composables)
+3. Unit tests for components (located at tests/nuxt/components)
+4. Functional tests for the API (located at tests/e2e/spec/api)
+5. End-to-end test to simulate user interactions (located at tests/e2e)
+
 ### Shell Scripts
 The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any
 command, just check the respective file in `bin`. Here's an explanation of what each command does:
 - `backup`: (Production Only) Extracts and unzips backups from the database backup container.
-- `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
+- `test/e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
    Start the project before envoking this command. You can pass any Playwright flags to this command as well.
+- `test/unit`: Runs the unit tests with vitest.
+- `test/nuxt`: Runs the tests that need the nuxt environment with vitest.
 - `generate`: Generates a new migration from the schemas in `lib/db/schemas` and puts it in `lib/db/migrations`
 - `logs`: View the logs of any container. Provide the service name of the container as the first argument. The second
    argument is optional and specifies the amount of lines from the logs you want to see.
@@ -38,7 +48,6 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `start`: Starts the project in the specified mode for local operation. Can be `dev`, `test`, or `prod`. Defaults to `dev`.
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
-- `unit`: Runs the unit tests with vitest.
 
 ### E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script

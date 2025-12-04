@@ -15,7 +15,7 @@ export const EnvSchema = z
         OAUTH_TWITCH_ID: NonEmptyString,
         OAUTH_TWITCH_SECRET: NonEmptyString,
 
-        BETTER_AUTH_SECRET: NotLiteral("ultra-secure-password"),
+        BETTER_AUTH_SECRET: NotLiteral("ultra-ultra-ultra-secure-password"),
         BETTER_AUTH_URL: NotLiteral("http://grizzl.localhost"),
 
         NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: NotLiteral("John Doe"),
@@ -48,7 +48,7 @@ export const EnvSchema = z
             OAUTH_TWITCH_ID: EmptyString,
             OAUTH_TWITCH_SECRET: EmptyString,
 
-            BETTER_AUTH_SECRET: z.literal("ultra-secure-password"),
+            BETTER_AUTH_SECRET: z.literal("ultra-ultra-ultra-secure-password"),
             BETTER_AUTH_URL: z.literal("http://grizzl.localhost"),
 
             NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: z.literal("John Doe"),
