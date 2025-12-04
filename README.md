@@ -24,7 +24,7 @@ just one step less to get the project running.
 
 ### Tests
 This project is very thoroughly tested. There are roughly five types of tests in this project:
-1. Unit tests for utility function (located at tests/unit)
+1. Unit tests for utilities (located at tests/unit)
 2. Unit tests for composables (located at tests/nuxt/composables)
 3. Unit tests for components (located at tests/nuxt/components)
 4. Functional tests for the API (located at tests/e2e/spec/api)

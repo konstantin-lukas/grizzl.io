@@ -47,7 +47,7 @@ services:
             DB_USERNAME: grizzl_user
             DB_PASSWORD: password
             DB_NAME: grizzl
-            BETTER_AUTH_SECRET: ultra-secure-password
+            BETTER_AUTH_SECRET: ultra-ultra-ultra-secure-password
             BETTER_AUTH_URL: http://grizzl.localhost
             NUXT_PUBLIC_ORIGIN: http://grizzl.localhost
         restart: unless-stopped
