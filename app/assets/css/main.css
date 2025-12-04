@@ -11,6 +11,7 @@
     --ease-bezier: cubic-bezier(0.4, 0, 0.2, 1);
     --ui-bg: var(--color-theme-white);
     --ui-primary: var(--color-theme-dark);
+    --ui-error: var(--color-rose-600);
     --ui-bg-inverted: var(--color-theme-black);
     --ui-bg-elevated: rgba(24, 24, 31, 0.15);
     --color-border-accented: var(--ui-border-accented);
@@ -28,6 +29,7 @@
 }
 
 :root:where(.dark, .dark *) {
+    --ui-error: var(--color-rose-500);
     --color-front: var(--color-theme-white);
     --color-back: var(--color-theme-black);
     --ui-primary: var(--color-theme-light);
