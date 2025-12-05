@@ -34,10 +34,11 @@ This project is very thoroughly tested. There are roughly five types of tests in
 The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any
 command, just check the respective file in `bin`. Here's an explanation of what each command does:
 - `backup`: (Production Only) Extracts and unzips backups from the database backup container.
-- `test/e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
+- `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
    Start the project before envoking this command. You can pass any Playwright flags to this command as well.
-- `test/unit`: Runs the unit tests with vitest.
-- `test/nuxt`: Runs the tests that need the nuxt environment with vitest.
+- `unit`: Runs the unit tests with vitest.
+- `components`: Runs component tests with vitest.
+- `composables`: Runs composable tests with vitest.
 - `generate`: Generates a new migration from the schemas in `lib/db/schemas` and puts it in `lib/db/migrations`
 - `logs`: View the logs of any container. Provide the service name of the container as the first argument. The second
    argument is optional and specifies the amount of lines from the logs you want to see.
