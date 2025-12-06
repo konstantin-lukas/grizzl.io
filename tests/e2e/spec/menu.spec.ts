@@ -49,6 +49,10 @@ forEachLocale((locale, texts) => {
             await homePage.loc.menuButton.click();
             for (const { locator, text, href } of links) {
                 await expect(locator).toHaveText(text);
+                if (href === "") {
+                    await expect(locator).not.toHaveAttribute("href");
+                    continue;
+                }
                 await expect(locator).toHaveAttribute("href", href);
             }
         });
