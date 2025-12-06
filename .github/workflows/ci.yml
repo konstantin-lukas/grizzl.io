@@ -65,11 +65,6 @@ jobs:
         needs: install-deps
         runs-on: ubuntu-latest
 
-        strategy:
-          fail-fast: true
-          matrix:
-            project: [nuxt/components, nuxt/composables, unit]
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
