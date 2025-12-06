@@ -16,7 +16,7 @@ const {
             :data-test-id="dataTestId"
             :to="disabled ? null : to"
             class="group relative flex h-full w-full justify-center gap-4 overflow-hidden rounded-full text-back select-none"
-            :aria-hidden="disabled ?? null"
+            :aria-hidden="disabled || null"
         >
             <span
                 class="w-full transition-transform"
