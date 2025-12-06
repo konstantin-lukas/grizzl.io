@@ -5,10 +5,11 @@ const apiTestDir = "api/**/*.spec.ts";
 export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,
-    forbidOnly: true,
+    maxFailures: process.env.CI ? 1 : undefined,
+    forbidOnly: !!process.env.CI,
     retries: 0,
     workers: 1,
-    reporter: "html",
+    reporter: process.env.CI ? [["github"], ["html"]] : "line",
     globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
@@ -27,11 +28,11 @@ export default defineConfig<ConfigOptions>({
     },
     projects: [
         {
-            name: "API",
+            name: "api",
             testMatch: apiTestDir,
         },
         {
-            name: "Web - Chromium",
+            name: "chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 permissions: ["clipboard-read", "clipboard-write"],
@@ -39,17 +40,17 @@ export default defineConfig<ConfigOptions>({
             testIgnore: apiTestDir,
         },
         {
-            name: "Web - Firefox",
+            name: "firefox",
             use: { ...devices["Desktop Firefox"] },
             testIgnore: apiTestDir,
         },
         {
-            name: "Web - Webkit",
+            name: "safari",
             use: { ...devices["Desktop Safari"] },
             testIgnore: apiTestDir,
         },
         {
-            name: "Web - Mobile Chrome",
+            name: "mobile_chrome",
             use: {
                 ...devices["Pixel 5"],
                 permissions: ["clipboard-read", "clipboard-write"],
@@ -57,7 +58,7 @@ export default defineConfig<ConfigOptions>({
             testIgnore: apiTestDir,
         },
         {
-            name: "Web - Mobile Safari",
+            name: "mobile_safari",
             use: { ...devices["iPhone 12"] },
             testIgnore: apiTestDir,
         },
