@@ -15,11 +15,6 @@ export default defineNuxtConfig({
     css: ["~/assets/css/main.css"],
     typescript: {
         typeCheck: true,
-        tsConfig: {
-            compilerOptions: {
-                noUncheckedIndexedAccess: true,
-            },
-        },
     },
     app: {
         head: {
