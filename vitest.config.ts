@@ -31,12 +31,22 @@ export default defineConfig({
             },
             await defineVitestProject({
                 test: {
-                    name: "nuxt",
-                    include: ["tests/nuxt/**/*.test.ts"],
+                    name: "components",
+                    include: ["tests/nuxt/components/**/*.test.ts"],
                     environment: "nuxt",
-                    env: {
-                        DB_PASSWORD: "nuts",
+                    setupFiles: "../tests/nuxt/setup.ts",
+                    environmentOptions: {
+                        nuxt: {
+                            domEnvironment: "happy-dom",
+                        },
                     },
+                },
+            }),
+            await defineVitestProject({
+                test: {
+                    name: "composables",
+                    include: ["tests/nuxt/composables/**/*.test.ts"],
+                    environment: "nuxt",
                     setupFiles: "../tests/nuxt/setup.ts",
                     environmentOptions: {
                         nuxt: {

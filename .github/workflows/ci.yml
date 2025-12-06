@@ -65,6 +65,11 @@ jobs:
         needs: install-deps
         runs-on: ubuntu-latest
 
+        strategy:
+          fail-fast: true
+          matrix:
+            project: [nuxt/components, nuxt/composables, unit]
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -128,7 +133,7 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Run End-to-End And API Tests
+            - name: Run Playwright Tests
               run: CI=true npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
