@@ -1,7 +1,7 @@
 import { tryCatchSync } from "@@/shared/utils/result";
-import { expect, it } from "vitest";
+import { expect, test } from "vitest";
 
-it("should catch errors and return them as a value", () => {
+test("should catch errors and return them as a value", () => {
     const { error, data } = tryCatchSync(() => {
         throw new Error();
     });
@@ -9,7 +9,7 @@ it("should catch errors and return them as a value", () => {
     expect(data).toBeNull();
 });
 
-it("should catch errors and return them as a value", () => {
+test("should return the callback output", () => {
     const { error, data } = tryCatchSync(() => {
         return 42;
     });
