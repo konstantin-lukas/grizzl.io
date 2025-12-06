@@ -1,6 +1,7 @@
 {
     "menu": {
         "selectLanguage": "¿Qué idioma le gustaría que usemos?",
+        "comingSoon": "¡Próximamente!",
         "aria": {
             "toggleMenu": "Mostrar u ocultar el menú.",
             "toggleTheme": "Cambiar el tema de la aplicación.",
