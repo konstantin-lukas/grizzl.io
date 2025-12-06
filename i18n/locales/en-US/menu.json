@@ -1,6 +1,7 @@
 {
     "menu": {
         "selectLanguage": "Which language would you like us to use?",
+        "comingSoon": "Coming soon!",
         "aria": {
             "toggleMenu": "Toggle the menu.",
             "toggleTheme": "Toggle the app theme.",

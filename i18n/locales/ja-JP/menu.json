@@ -1,6 +1,7 @@
 {
     "menu": {
         "selectLanguage": "どの言語を使用しますか？",
+        "comingSoon": "近日公開！",
         "aria": {
             "toggleMenu": "メニューを切り替えます。",
             "toggleTheme": "アプリのテーマを切り替えます。",
