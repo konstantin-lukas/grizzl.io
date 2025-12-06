@@ -1,5 +1,4 @@
 import { defineVitestProject } from "@nuxt/test-utils/config";
-import path from "path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -15,20 +14,16 @@ export default defineConfig({
             reporter: ["text", "lcov", "json"],
         },
         projects: [
-            {
+            await defineVitestProject({
                 test: {
                     name: "unit",
                     typecheck: {
                         tsconfig: "tests/tsconfig.json",
                     },
-                    alias: {
-                        "@@": __dirname,
-                        "@unit": path.resolve(__dirname, "./tests/unit"),
-                    },
                     include: ["tests/unit/**/*.test.ts"],
                     environment: "node",
                 },
-            },
+            }),
             await defineVitestProject({
                 test: {
                     name: "components",
