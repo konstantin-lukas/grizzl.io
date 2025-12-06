@@ -99,7 +99,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [API, Chromium, Firefox, Safari, MobileChrome, MobileSafari]
+                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
 
         steps:
             - name: Checkout code

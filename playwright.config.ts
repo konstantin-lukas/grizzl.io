@@ -28,11 +28,11 @@ export default defineConfig<ConfigOptions>({
     },
     projects: [
         {
-            name: "API",
+            name: "api",
             testMatch: apiTestDir,
         },
         {
-            name: "Chromium",
+            name: "chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 permissions: ["clipboard-read", "clipboard-write"],
@@ -40,17 +40,17 @@ export default defineConfig<ConfigOptions>({
             testIgnore: apiTestDir,
         },
         {
-            name: "Firefox",
+            name: "firefox",
             use: { ...devices["Desktop Firefox"] },
             testIgnore: apiTestDir,
         },
         {
-            name: "Safari",
+            name: "safari",
             use: { ...devices["Desktop Safari"] },
             testIgnore: apiTestDir,
         },
         {
-            name: "MobileChrome",
+            name: "mobile_chrome",
             use: {
                 ...devices["Pixel 5"],
                 permissions: ["clipboard-read", "clipboard-write"],
@@ -58,7 +58,7 @@ export default defineConfig<ConfigOptions>({
             testIgnore: apiTestDir,
         },
         {
-            name: "MobileSafari",
+            name: "mobile_safari",
             use: { ...devices["iPhone 12"] },
             testIgnore: apiTestDir,
         },
