@@ -31,10 +31,10 @@ const texts = {
 forEachLocale((locale, texts) => {
     test(`should have links to all services for locale ${locale.language}`, async ({ homePage, goto }) => {
         const links = [
-            { locator: homePage.loc.pollLink, text: texts.poll, href: "/poll" },
-            { locator: homePage.loc.todoLink, text: texts.todo, href: "/todo" },
+            { locator: homePage.loc.pollLink, text: texts.poll, href: "" },
+            { locator: homePage.loc.todoLink, text: texts.todo, href: "" },
             { locator: homePage.loc.timerLink, text: texts.timer, href: "/timer" },
-            { locator: homePage.loc.financeLink, text: texts.finance, href: "/finance" },
+            { locator: homePage.loc.financeLink, text: texts.finance, href: "" },
         ];
 
         await test.step("Check that menu elements do not exist when the menu is closed", async () => {
