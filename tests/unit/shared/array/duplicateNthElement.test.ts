@@ -1,0 +1,57 @@
+import { duplicateNthElement } from "@@/shared/utils/array";
+import { expect, test } from "vitest";
+
+test.each([
+    {
+        name: "duplicate middle element",
+        array: [1, 2, 3, 4],
+        n: 1,
+        expected: [1, 2, 2, 3, 4],
+    },
+    {
+        name: "duplicate first element",
+        array: [1, 2, 3],
+        n: 0,
+        expected: [1, 1, 2, 3],
+    },
+    {
+        name: "duplicate last element",
+        array: [1, 2, 3],
+        n: 2,
+        expected: [1, 2, 3, 3],
+    },
+    {
+        name: "n out of bounds (negative)",
+        array: [1, 2, 3],
+        n: -1,
+        expected: [1, 2, 3],
+    },
+    {
+        name: "n out of bounds (too large)",
+        array: [1, 2, 3],
+        n: 5,
+        expected: [1, 2, 3],
+    },
+    {
+        name: "empty array",
+        array: [],
+        n: 0,
+        expected: [],
+    },
+    {
+        name: "single element array, duplicate first",
+        array: [42],
+        n: 0,
+        expected: [42, 42],
+    },
+    {
+        name: "array with objects",
+        array: [{ a: 1 }, { b: 2 }],
+        n: 1,
+        expected: [{ a: 1 }, { b: 2 }, { b: 2 }],
+    },
+])("should duplicate: $name", ({ array, n, expected }) => {
+    const result = duplicateNthElement<unknown>(array, n);
+    expect(result).toEqual(expected);
+    expect(result).not.toBe(array);
+});
