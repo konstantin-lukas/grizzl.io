@@ -99,7 +99,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [API, Web - Chromium, Web - Firefox, Web - Webkit, Web - Mobile Chrome, Web - Mobile Safari]
+                project: [API, Chromium, Firefox, Safari, MobileChrome, MobileSafari]
 
         steps:
             - name: Checkout code
@@ -118,7 +118,7 @@ jobs:
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
             - name: Install Playwright Browsers
-              run: npx playwright install --with-deps
+              run: CI=true npx playwright install --with-deps
 
             - name: Start Isolated Container Stack
               run: |
