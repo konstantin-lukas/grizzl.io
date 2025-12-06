@@ -9,14 +9,14 @@ const { createErrorSpy } = vi.hoisted(() => {
         createErrorSpy: vi.fn().mockImplementation(value => value),
     };
 });
-const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(value => value);
-const consoleLogMock = vi.spyOn(console, "log").mockImplementation(value => value);
+const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(() => undefined);
+const consoleLogMock = vi.spyOn(console, "log").mockImplementation(() => undefined);
 mockNuxtImport("createError", () => {
     return createErrorSpy;
 });
 
 beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 });
 
 const errorMessage = "Oh no!";
@@ -50,7 +50,7 @@ test.each([
     });
 });
 
-test.each(HTTP_CODES)("should throw an error with the correct status code and message", (code, key, message) => {
+test.each(HTTP_CODES)("should throw an error with the correct status code and message for %s", (code, key, message) => {
     expect(() => throwError(errorMessage, key)).toThrow();
     expect(createErrorSpy).toHaveBeenCalledWith({
         statusCode: code,
