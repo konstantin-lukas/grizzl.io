@@ -9,7 +9,7 @@ export default defineConfig<ConfigOptions>({
     forbidOnly: !!process.env.CI,
     retries: 0,
     workers: 1,
-    reporter: process.env.CI ? "github" : "line",
+    reporter: process.env.CI ? [["github", "html"]] : "line",
     globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
