@@ -7,18 +7,16 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         super(db, "timer");
     }
 
-    async insert() {
-        const userId = (await this.user).id;
+    async insert(options: { deleted?: boolean; userId?: string } = {}) {
         const count = 5;
-        const data = Array.from({ length: count }).map(() => ({
+        const userId = (await this.user).id;
+        const dates = faker.helpers.uniqueArray(faker.date.past, count);
+        const data = Array.from({ length: count }).map((_, index) => ({
             title: faker.string.alphanumeric({ length: 100 }),
-            userId,
-            ttsVoice: null,
-            ...this.defaultDeleted,
-            ...this.defaultCreatedAt,
-            ...this.defaultId,
+            createdAt: dates[index],
+            deleted: !!options.deleted,
+            userId: options.userId ?? userId,
         }));
-        await this.db.insert(this.schema).values(data);
-        return data;
+        return this.db.insert(this.schema).values(data).returning();
     }
 }

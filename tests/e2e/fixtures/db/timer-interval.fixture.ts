@@ -9,17 +9,14 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
     }
 
     async insert(timerId: string) {
-        const count = 2;
-        const data = Array.from({ length: count }).map((_, index) => ({
+        const data = Array.from({ length: 2 }).map((_, index) => ({
             timerId,
             title: faker.string.alphanumeric({ length: 100 }),
             index,
             repeatCount: 2,
             duration: 3,
             beatPattern: index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null,
-            ...this.defaultId,
         }));
-        await this.db.insert(this.schema).values(data);
-        return data;
+        return this.db.insert(this.schema).values(data).returning();
     }
 }
