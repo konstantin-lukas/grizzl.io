@@ -1,7 +1,28 @@
+import UserFixture from "@e2e/fixtures/db/user.fixture";
 import type { FullConfig } from "@playwright/test";
 import { expect, firefox, selectors } from "@playwright/test";
+import * as schema from "@schema";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
 export default async function GlobalSetup(config: FullConfig) {
+    const pool = new Pool({
+        host: "localhost",
+        database: "grizzl",
+        user: "admin",
+        password: "admin",
+        ssl: false,
+    });
+
+    const db = drizzle(pool, {
+        casing: "snake_case",
+        schema,
+    });
+
+    const user = new UserFixture(db);
+    await user.reset();
+    await user.insert();
+
     const { baseURL, storageState, testIdAttribute } = config.projects[0].use;
     selectors.setTestIdAttribute(testIdAttribute!);
 
