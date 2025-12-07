@@ -27,7 +27,7 @@ watch(open, () => {
             />
             <Transition name="swipe">
                 <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
-                <div v-else class="absolute min-h-main-height-no-padding w-full">
+                <div v-else class="min-h-main-height-no-padding w-full">
                     <OverlayDrawer v-model:open="open">
                         <TimerFormUpsert @success="open = false" />
                         <template #title>{{ $t("timer.aria.drawer.create") }}</template>
