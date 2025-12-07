@@ -1,3 +1,4 @@
+import { generateId } from "@@/lib/mixins";
 import * as schema from "@schema";
 import { eq, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
@@ -17,6 +18,18 @@ export default abstract class BaseFixture<T extends ExcludeEnum<keyof typeof sch
             const result = await this.db.select().from(schema.user).where(eq(schema.user.email, "user@test.com"));
             return result[0];
         })();
+    }
+
+    get defaultId() {
+        return { id: generateId() };
+    }
+
+    get defaultCreatedAt() {
+        return { createdAt: new Date() };
+    }
+
+    get defaultDeleted() {
+        return { deleted: false };
     }
 
     async reset() {

@@ -1,7 +1,7 @@
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 import { defineConfig, devices } from "playwright/test";
 
-const apiTestDir = "api/**/*.spec.ts";
+const apiTestDir = "api/**/*.test.ts";
 export default defineConfig<ConfigOptions>({
     testDir: "./tests/e2e/spec",
     fullyParallel: false,

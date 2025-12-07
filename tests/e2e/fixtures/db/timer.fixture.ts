@@ -13,7 +13,12 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         const data = Array.from({ length: count }).map(() => ({
             title: faker.string.alphanumeric({ length: 100 }),
             userId,
+            ttsVoice: null,
+            ...this.defaultDeleted,
+            ...this.defaultCreatedAt,
+            ...this.defaultId,
         }));
         await this.db.insert(this.schema).values(data);
+        return data;
     }
 }
