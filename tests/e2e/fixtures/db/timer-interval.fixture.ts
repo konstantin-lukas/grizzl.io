@@ -14,9 +14,13 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
             title: faker.string.alphanumeric({ length: 100 }),
             index,
             repeatCount: 2,
-            duration: 3,
+            duration: 3000,
             beatPattern: index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null,
         }));
         return this.db.insert(this.schema).values(data).returning();
+    }
+
+    async select() {
+        return this.db.select().from(this.schema);
     }
 }

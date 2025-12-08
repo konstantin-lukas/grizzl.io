@@ -6,5 +6,5 @@ export default defineEventHandler(async event => {
     const timer = await parseRequestBody(event, PostTimerSchema);
     const data = await tryThrow(insert(event.context.user.id, timer));
     setStatus(event, "CREATED");
-    return { data };
+    setHeader(event, "Location", `/api/timers/${data}`);
 });

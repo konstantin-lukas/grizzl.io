@@ -15,13 +15,13 @@ const state = reactive<PutTimer>(
               ...initialState,
               intervals: initialState.intervals.map(interval => ({
                   ...interval,
-                  duration: interval.duration / 1000,
+                  duration: interval.duration,
               })),
           }
         : {
               title: "",
               ttsVoice: null,
-              intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3, id: nanoid(), beatPattern: null }],
+              intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3000, id: nanoid(), beatPattern: null }],
           },
 );
 const previousIntervalCount = ref(state.intervals.length);
