@@ -16,19 +16,6 @@ const data = {
     ],
 };
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
-test("should allow creating a new timer with valid values", async ({ request, db }) => {
-    const response = await request.post("/api/timers", { data });
-    const apiTimer = response.headers().location;
-    expect(response.status()).toBe(201);
-    const timers = await db.timer.select();
-    expect(timers).toHaveLength(1);
-    expect(apiTimer).toBe(`/api/timers/${timers[0].id}`);
-});
-
 function createInvalidTypeIntervalTestCases(
     property: keyof (typeof data)["intervals"][number],
     valid: (typeof types)[number][0][],
@@ -93,6 +80,19 @@ for (const [name, data] of badRequestTestCases) {
         expect(response.status()).toBe(400);
     });
 }
+
+test.beforeEach(async ({ db }) => {
+    await db.timer.reset();
+});
+
+test("should allow creating a new timer with valid values", async ({ request, db }) => {
+    const response = await request.post("/api/timers", { data });
+    const apiTimer = response.headers().location;
+    expect(response.status()).toBe(201);
+    const timers = await db.timer.select();
+    expect(timers).toHaveLength(1);
+    expect(apiTimer).toBe(`/api/timers/${timers[0].id}`);
+});
 
 test("should ignore any provided id for determining ownership", async ({ request, db }) => {
     await request.post("/api/timers", { data: { ...data, userId: "2222222222222222" } });
