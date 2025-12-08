@@ -1,4 +1,4 @@
-export const types = [
+const types = [
     ["string", "42"],
     ["int", 42],
     ["float", 42.5],

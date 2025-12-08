@@ -1,4 +1,3 @@
-import type { types } from "@@/tests/utils/helpers";
 import { createInvalidTypeTestCases } from "@@/tests/utils/helpers";
 import { omit } from "@@/tests/utils/object";
 import { expect, test } from "@e2e/fixtures";
@@ -19,7 +18,7 @@ const data = {
 
 function createInvalidTypeIntervalTestCases(
     property: keyof (typeof data)["intervals"][number],
-    valid: (typeof types)[number][0][],
+    valid: Parameters<typeof createInvalidTypeTestCases>[2]["valid"],
 ) {
     return createInvalidTypeTestCases(data.intervals[0], property, {
         valid,
