@@ -13,12 +13,17 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
     property: keyof T,
     options: {
         valid?: (typeof types)[number][0][];
+        caseName?: (property: string, type: string) => string;
+        dataTransform?: (data: T, property: string, value: (typeof types)[number][1]) => unknown;
     },
 ) {
     const testCases = [];
     for (const [type, value] of types) {
         if (!(options.valid ?? []).includes(type)) {
-            testCases.push([`property ${property as string} is a ${type}`, { ...data, [property]: value }]);
+            testCases.push([
+                options.caseName?.(property as string, type) ?? `property ${property as string} is a ${type}`,
+                options.dataTransform?.(data, property as string, value) ?? { ...data, [property]: value },
+            ]);
         }
     }
     return testCases;

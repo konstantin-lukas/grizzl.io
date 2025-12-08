@@ -1,6 +1,7 @@
+import type { types } from "@@/tests/utils/helpers";
+import { createInvalidTypeTestCases } from "@@/tests/utils/helpers";
 import { omit } from "@@/tests/utils/object";
 import { expect, test } from "@e2e/fixtures";
-import { createInvalidTypeTestCases, types } from "@e2e/utils/helpers";
 import { faker } from "@faker-js/faker";
 
 const data = {
@@ -20,16 +21,14 @@ function createInvalidTypeIntervalTestCases(
     property: keyof (typeof data)["intervals"][number],
     valid: (typeof types)[number][0][],
 ) {
-    const testCases = [];
-    for (const [type, value] of types) {
-        if (!valid.includes(type)) {
-            testCases.push([
-                `property ${property} on an interval is a ${type}`,
-                { ...data, intervals: [{ ...data.intervals[0], [property]: value }] },
-            ]);
-        }
-    }
-    return testCases;
+    return createInvalidTypeTestCases(data.intervals[0], property, {
+        valid,
+        caseName: (property, type) => `property ${property} on an interval is a ${type}`,
+        dataTransform: (interval, property, value) => ({
+            ...data,
+            intervals: [{ ...interval, [property]: value }],
+        }),
+    });
 }
 
 const badRequestTestCases = [
@@ -74,16 +73,16 @@ const badRequestTestCases = [
     ...createInvalidTypeIntervalTestCases("repeatCount", ["int"]),
 ];
 
+test.beforeEach(async ({ db }) => {
+    await db.timer.reset();
+});
+
 for (const [name, data] of badRequestTestCases) {
     test(`should reject creating a timer when ${name}`, async ({ request }) => {
         const response = await request.post("/api/timers", { data });
         expect(response.status()).toBe(400);
     });
 }
-
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
 
 test("should allow creating a new timer with valid values", async ({ request, db }) => {
     const response = await request.post("/api/timers", { data });
