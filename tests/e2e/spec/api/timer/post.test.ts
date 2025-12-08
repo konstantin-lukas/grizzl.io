@@ -1,10 +1,7 @@
 import { omit } from "@@/tests/utils/object";
 import { expect, test } from "@e2e/fixtures";
+import { createInvalidTypeTestCases, types } from "@e2e/utils/helpers";
 import { faker } from "@faker-js/faker";
-
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
 
 const data = {
     title: "Upper Body Workout",
@@ -19,6 +16,10 @@ const data = {
     ],
 };
 
+test.beforeEach(async ({ db }) => {
+    await db.timer.reset();
+});
+
 test("should allow creating a new timer with valid values", async ({ request, db }) => {
     const response = await request.post("/api/timers", { data });
     const apiTimer = response.headers().location;
@@ -28,74 +29,30 @@ test("should allow creating a new timer with valid values", async ({ request, db
     expect(apiTimer).toBe(`/api/timers/${timers[0].id}`);
 });
 
-function createInvalidTypeTestCases(
-    property: keyof typeof data,
-    valid: ("string" | "int" | "float" | "boolean" | "null" | "object" | "array")[],
-) {
-    const testCases = [];
-    if (!valid.includes("string")) testCases.push([`property ${property} is a string`, { ...data, [property]: "42" }]);
-    if (!valid.includes("int")) testCases.push([`property ${property} is an int`, { ...data, [property]: 42 }]);
-    if (!valid.includes("float")) testCases.push([`property ${property} is a float`, { ...data, [property]: 42.5 }]);
-    if (!valid.includes("object")) testCases.push([`property ${property} is an object`, { ...data, [property]: {} }]);
-    if (!valid.includes("array")) testCases.push([`property ${property} is an array`, { ...data, [property]: [] }]);
-    if (!valid.includes("boolean"))
-        testCases.push([`property ${property} is a boolean`, { ...data, [property]: true }]);
-    if (!valid.includes("null")) testCases.push([`property ${property} is null`, { ...data, [property]: null }]);
-    return testCases;
-}
-
 function createInvalidTypeIntervalTestCases(
     property: keyof (typeof data)["intervals"][number],
-    valid: ("string" | "int" | "float" | "boolean" | "null" | "object" | "array")[],
+    valid: (typeof types)[number][0][],
 ) {
     const testCases = [];
-    if (!valid.includes("string"))
-        testCases.push([
-            `property ${property} on an interval is a string`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: "42" }] },
-        ]);
-    if (!valid.includes("int"))
-        testCases.push([
-            `property ${property} on an interval is an int`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: 42 }] },
-        ]);
-    if (!valid.includes("float"))
-        testCases.push([
-            `property ${property} on an interval is a float`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: 42.5 }] },
-        ]);
-    if (!valid.includes("object"))
-        testCases.push([
-            `property ${property} on an interval is an object`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: {} }] },
-        ]);
-    if (!valid.includes("array"))
-        testCases.push([
-            `property ${property} on an interval is an array`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: [] }] },
-        ]);
-    if (!valid.includes("boolean"))
-        testCases.push([
-            `property ${property} on an interval is a boolean`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: true }] },
-        ]);
-    if (!valid.includes("null"))
-        testCases.push([
-            `property ${property} is null`,
-            { ...data, intervals: [{ ...data.intervals[0], [property]: null }] },
-        ]);
+    for (const [type, value] of types) {
+        if (!valid.includes(type)) {
+            testCases.push([
+                `property ${property} on an interval is a ${type}`,
+                { ...data, intervals: [{ ...data.intervals[0], [property]: value }] },
+            ]);
+        }
+    }
     return testCases;
 }
-
-const missingInTimerTestCases = [
-    (["title", "ttsVoice", "intervals"] as const).map(property => [`the ${property} is missing`, omit(data, property)]),
-];
 
 const badRequestTestCases = [
     ["the title is empty", { ...data, title: "" }],
     ["the title is too long", { ...data, title: faker.string.alphanumeric({ length: 101 }) }],
     ["the ttsVoice is empty", { ...data, ttsVoice: "" }],
     ["the ttsVoice is too long", { ...data, ttsVoice: faker.string.alphanumeric({ length: 201 }) }],
+    ["the title is missing", omit(data, "title")],
+    ["the ttsVoice is missing", omit(data, "ttsVoice")],
+    ["the intervals is missing", omit(data, "intervals")],
     ["there are no intervals", { ...data, intervals: [] }],
     ["there are too many intervals", { ...data, intervals: Array.from({ length: 101 }).fill(data.intervals[0]) }],
     ["an interval has no duration", { ...data, intervals: omit(data.intervals[0], "duration") }],
@@ -121,10 +78,9 @@ const badRequestTestCases = [
         "an interval has a beatPattern that contains invalid values",
         { ...data, intervals: [{ ...data.intervals[0], beatPattern: ["bananas"] }] },
     ],
-    ...missingInTimerTestCases,
-    ...createInvalidTypeTestCases("title", ["string"]),
-    ...createInvalidTypeTestCases("ttsVoice", ["string", "null"]),
-    ...createInvalidTypeTestCases("intervals", ["null"]),
+    ...createInvalidTypeTestCases(data, "title", { valid: ["string"] }),
+    ...createInvalidTypeTestCases(data, "ttsVoice", { valid: ["string", "null"] }),
+    ...createInvalidTypeTestCases(data, "intervals", { valid: ["null"] }),
     ...createInvalidTypeIntervalTestCases("title", ["string", "null"]),
     ...createInvalidTypeIntervalTestCases("beatPattern", ["null"]),
     ...createInvalidTypeIntervalTestCases("duration", ["int"]),
