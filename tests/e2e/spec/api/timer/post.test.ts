@@ -1,23 +1,7 @@
 import { arr, createInvalidTypeTestCases, str } from "@@/tests/utils/helpers";
 import { omit } from "@@/tests/utils/object";
 import { expect, test } from "@e2e/fixtures";
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*    Base Fixtures                                                                                                   */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-const BASE_INTERVAL = {
-    title: null,
-    repeatCount: 1,
-    duration: 10000,
-    beatPattern: null,
-};
-
-const BASE_TIMER = {
-    title: "Upper Body Workout",
-    ttsVoice: null,
-    intervals: [BASE_INTERVAL],
-};
+import { BASE_INTERVAL, BASE_TIMER } from "@e2e/fixtures/constants/timer";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*    Helpers                                                                                                         */

@@ -1,5 +1,6 @@
 import BaseFixture from "@e2e/fixtures/db/base.fixture";
 import { faker } from "@faker-js/faker";
+import { eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
 export default class TimerFixture extends BaseFixture<"timer"> {
@@ -20,7 +21,8 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         return this.db.insert(this.schema).values(data).returning();
     }
 
-    async select() {
+    async select(id?: string) {
+        if (id) return this.db.select().from(this.schema).where(eq(this.schema.id, id));
         return this.db.select().from(this.schema);
     }
 }
