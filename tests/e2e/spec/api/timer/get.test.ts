@@ -2,9 +2,9 @@ import { sortByCreatedAt } from "@@/tests/utils/sort";
 import { expect, test } from "@e2e/fixtures";
 import type { DBFixtures } from "@e2e/fixtures/db";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*    Helpers                                                                                                         */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
@@ -26,6 +26,14 @@ async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?
         })),
     );
 }
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*    Tests                                                                                                           */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+test.beforeEach(async ({ db }) => {
+    await db.timer.reset();
+});
 
 test("should allow retrieving a list of timers sorted by creation date", async ({ request, db }) => {
     const timers = await buildTimers(db);

@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 const types = [
     ["string", "42"],
     ["int", 42],
@@ -27,4 +29,12 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
         }
     }
     return testCases;
+}
+
+export function str(len: number) {
+    return faker.string.alphanumeric({ length: len });
+}
+
+export function arr<T>(len: number, value: T) {
+    return Array.from({ length: len }).fill(value) as T[];
 }
