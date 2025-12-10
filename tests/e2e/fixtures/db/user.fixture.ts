@@ -16,7 +16,7 @@ export default class UserFixture extends BaseFixture<"user"> {
         return (await this.db.insert(this.schema).values(data).returning())[0];
     }
 
-    async select(email: string) {
+    async select(email: "user@test.com" | "cmontgomeryburns@springfieldnuclear.com") {
         return (await this.db.select().from(this.schema).where(eq(this.schema.email, email)))[0];
     }
 }

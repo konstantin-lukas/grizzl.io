@@ -23,7 +23,7 @@ export default async function update(
             .delete(timerInterval)
             .where(and(eq(timerInterval.timerId, id), notInArray(timerInterval.id, intervalIds)));
 
-        const promises = values.intervals.map((interval, index) => {
+        const promises = values.intervals.map(async (interval, index) => {
             const baseValue = {
                 index,
                 title: interval.title,
@@ -32,10 +32,11 @@ export default async function update(
                 beatPattern: interval.beatPattern,
             };
             if (interval.id) {
-                return tx
+                const updateResult = await tx
                     .update(timerInterval)
                     .set(baseValue)
                     .where(and(eq(timerInterval.id, interval.id), eq(timerInterval.timerId, id)));
+                if (updateResult.rowCount && updateResult.rowCount > 0) return updateResult;
             }
             return tx.insert(timerInterval).values({
                 timerId: id,

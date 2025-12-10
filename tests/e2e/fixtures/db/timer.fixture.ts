@@ -8,8 +8,8 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         super(db, "timer");
     }
 
-    async insert(options: { deleted?: boolean; userId?: string } = {}) {
-        const count = 5;
+    async insert(options: { deleted?: boolean; userId?: string; count?: number } = {}) {
+        const count = options.count ?? 5;
         const userId = (await this.testUser).id;
         const dates = faker.helpers.uniqueArray(faker.date.past, count);
         const data = Array.from({ length: count }).map((_, index) => ({
