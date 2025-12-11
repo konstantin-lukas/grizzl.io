@@ -2,10 +2,6 @@ import { sortByCreatedAt } from "@@/tests/utils/sort";
 import { expect, test } from "@e2e/fixtures";
 import type { DBFixtures } from "@e2e/fixtures/db";
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*    Helpers                                                                                                         */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
         (await db.timer.insert(options)).map(async timer => ({
@@ -26,10 +22,6 @@ async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?
         })),
     );
 }
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*    Tests                                                                                                           */
-/* ------------------------------------------------------------------------------------------------------------------ */
 
 test.beforeEach(async ({ db }) => {
     await db.timer.reset();
