@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { spawnSync } from "child_process";
 import fs from "fs";
 import path from "path";
 import { expect, test } from "vitest";
@@ -13,7 +13,14 @@ function readMigrationFiles() {
 
 test("should match schemas", () => {
     const migrationsBefore = readMigrationFiles();
-    execSync("npx drizzle-kit generate");
+
+    const { stderr, status } = spawnSync("npx", ["drizzle-kit", "generate"], {
+        encoding: "utf-8",
+    });
+
+    expect(stderr).toBe("");
+    expect(status).toBe(0);
+
     const migrationsAfter = readMigrationFiles();
     expect(migrationsBefore.length).toBe(migrationsAfter.length);
     for (let i = 0; i < migrationsBefore.length; i++) {
