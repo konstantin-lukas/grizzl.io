@@ -1,12 +1,22 @@
 import { expect, test } from "@e2e/fixtures";
 import { BASE_INTERVAL, BASE_TIMER, FULL_INTERVAL, FULL_TIMER } from "@e2e/fixtures/constants/timer";
 import { testIdParameter } from "@e2e/utils/helpers";
+import { TIMER_BAD_REQUEST_TEST_CASES } from "@e2e/utils/helpers/timer";
 
 test.beforeEach(async ({ db }) => {
     await db.timer.reset();
 });
 
 testIdParameter("put", "/api/timers", BASE_TIMER);
+
+for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
+    test(`should reject putting a timer when ${name}`, async ({ request, db }) => {
+        await db.timer.insert({ count: 1 });
+        const [timer] = await db.timer.select();
+        const response = await request.put(`/api/timers/${timer.id}`, { data });
+        expect(response.status()).toBe(400);
+    });
+}
 
 test("should allow creating a new interval by not providing an id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
