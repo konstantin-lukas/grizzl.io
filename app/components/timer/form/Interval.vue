@@ -5,6 +5,10 @@ import type { PutTimer } from "#shared/schema/timer";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
+const durationSeconds = computed({
+    get: () => intervals!.value![index]!.duration / 1000,
+    set: v => (intervals!.value![index]!.duration = v * 1000),
+});
 </script>
 
 <template>
@@ -61,7 +65,7 @@ const { index } = defineProps<{ index: number }>();
                     class="w-full"
                 >
                     <UInputNumber
-                        v-model="intervals![index]!.duration"
+                        v-model="durationSeconds"
                         class="w-full"
                         :step="0.1"
                         :min="COUNT_MIN"

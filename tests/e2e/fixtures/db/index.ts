@@ -1,13 +1,15 @@
+import TimerIntervalFixture from "@e2e/fixtures/db/timer-interval.fixture";
 import TimerFixture from "@e2e/fixtures/db/timer.fixture";
+import UserFixture from "@e2e/fixtures/db/user.fixture";
 import * as schema from "@schema";
 import { drizzle } from "drizzle-orm/node-postgres";
-import pkg from "pg";
-
-const { Pool } = pkg;
+import { Pool } from "pg";
 
 function createDBFixtures(db: ReturnType<typeof drizzle>) {
     return {
         timer: new TimerFixture(db),
+        timerInterval: new TimerIntervalFixture(db),
+        user: new UserFixture(db),
     };
 }
 

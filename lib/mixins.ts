@@ -1,4 +1,4 @@
-import { ID_LENGTH } from "#shared/constants/data";
+import { ID_LENGTH } from "../shared/constants/data";
 import { boolean, char, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 

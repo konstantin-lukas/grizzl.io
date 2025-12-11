@@ -1,4 +1,4 @@
-import { ID_LENGTH, LONG_TITLE_MAX, TITLE_MAX } from "#shared/constants/data";
+import { ID_LENGTH, LONG_TITLE_MAX, TITLE_MAX } from "../../../shared/constants/data";
 import { createdAt, deleted, id } from "../../mixins";
 import { user } from "./auth-schema";
 import { char, integer, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";

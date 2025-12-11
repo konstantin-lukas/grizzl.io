@@ -17,17 +17,13 @@ import { z } from "zod";
 const PostIntervalSchema = z.object({
     title: z.nullable(z.string().max(TITLE_MAX)).transform(value => (value === "" ? null : value)),
     repeatCount: z.int().min(COUNT_MIN).max(COUNT_MAX),
-    duration: z
-        .number()
-        .min(COUNT_MIN)
-        .max(TIMER_DURATION_MAX)
-        .transform(value => Math.round(value * 1000)),
+    duration: z.int().min(COUNT_MIN).max(TIMER_DURATION_MAX),
     beatPattern: z.nullable(z.array(z.enum(Beat)).min(BEAT_PATTERN_MIN).max(BEAT_PATTERN_MAX)),
 });
 
 export const PostTimerSchema = z.object({
     title: z.string().min(TITLE_MIN).max(TITLE_MAX),
-    ttsVoice: z.nullable(z.string().max(LONG_TITLE_MAX)),
+    ttsVoice: z.nullable(z.string().min(TITLE_MIN).max(LONG_TITLE_MAX)),
     intervals: z.array(PostIntervalSchema).min(LIST_MIN).max(LIST_MAX),
 });
 
