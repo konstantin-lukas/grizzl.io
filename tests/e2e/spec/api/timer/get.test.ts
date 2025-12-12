@@ -1,6 +1,7 @@
 import { sortByCreatedAt } from "@@/tests/utils/sort";
 import { expect, test } from "@e2e/fixtures";
 import type { DBFixtures } from "@e2e/fixtures/db";
+import { test401WhenLoggedOut } from "@e2e/utils/helpers";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
@@ -55,3 +56,5 @@ test("should not return timers from other users", async ({ request, db }) => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toStrictEqual([]);
 });
+
+test401WhenLoggedOut("get", "/api/timers");
