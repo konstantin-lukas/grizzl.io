@@ -1,6 +1,6 @@
 import { expect, test } from "@e2e/fixtures";
 import { BASE_TIMER, FULL_TIMER } from "@e2e/fixtures/constants/timer";
-import { testIdParameter } from "@e2e/utils/helpers";
+import { test401WhenLoggedOut, testIdParameter } from "@e2e/utils/helpers";
 
 test.beforeEach(async ({ db }) => {
     await db.timer.reset();
@@ -60,3 +60,5 @@ test("should return a 204 even when the data hasn't changed", async ({ request, 
     const [timerAfter] = await getResponseAfter.json();
     expect(timerBefore).toStrictEqual(timerAfter);
 });
+
+test401WhenLoggedOut("patch", "/api/timers");

@@ -1,5 +1,6 @@
 import { expect, test } from "@e2e/fixtures";
 import { BASE_INTERVAL, BASE_TIMER } from "@e2e/fixtures/constants/timer";
+import { test401WhenLoggedOut } from "@e2e/utils/helpers";
 import { TIMER_BAD_REQUEST_TEST_CASES } from "@e2e/utils/helpers/timer";
 
 test.beforeEach(async ({ db }) => {
@@ -34,3 +35,5 @@ test("should transform an empty interval title to null", async ({ request, db })
     const intervals = await db.timerInterval.select();
     expect(intervals[0].title).toBeNull();
 });
+
+test401WhenLoggedOut("post", "/api/timers");

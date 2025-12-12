@@ -1,6 +1,6 @@
 import { expect, test } from "@e2e/fixtures";
 import { BASE_INTERVAL, BASE_TIMER, FULL_INTERVAL, FULL_TIMER } from "@e2e/fixtures/constants/timer";
-import { testIdParameter } from "@e2e/utils/helpers";
+import { test401WhenLoggedOut, testIdParameter } from "@e2e/utils/helpers";
 import { TIMER_BAD_REQUEST_TEST_CASES } from "@e2e/utils/helpers/timer";
 
 test.beforeEach(async ({ db }) => {
@@ -118,3 +118,5 @@ test("should not allow deleting all intervals by providing an unknown id", async
     const postIntervals = await db.timerInterval.select();
     expect(postIntervals).toStrictEqual([{ ...BASE_INTERVAL, id: postIntervals[0].id, index: 0, timerId: timer.id }]);
 });
+
+test401WhenLoggedOut("put", "/api/timers");
