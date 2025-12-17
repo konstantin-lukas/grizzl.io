@@ -26,7 +26,7 @@ const session = authClient.useSession();
             <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
                 <div>
                     <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />
-                    <TypoH1 class="my-4">{{ $t("meta.tagline") }}</TypoH1>
+                    <TypoH2 as="h1" class="my-4">{{ $t("meta.tagline") }}</TypoH2>
                     <p class="text-neutral-600 dark:text-neutral-400">
                         {{ $t("meta.description") }}
                     </p>
@@ -50,7 +50,7 @@ const session = authClient.useSession();
                     </div>
                 </div>
             </div>
-            <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden">
+            <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden" aria-hidden="true">
                 <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
                     <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
@@ -58,7 +58,7 @@ const session = authClient.useSession();
                     <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
             </div>
-            <div class="grid w-1/3 grid-cols-2 justify-center gap-6 not-motion-reduce:xl:hidden">
+            <div class="hidden w-1/3 grid-cols-2 justify-center gap-6 xl:grid not-motion-reduce:xl:hidden">
                 <LayoutHeroCard
                     v-for="[label, icon, disabled] in APP_NAV"
                     :key="label"

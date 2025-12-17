@@ -14,7 +14,7 @@ watch(open, () => {
 
 <template>
     <LayoutWrapper :class="{ 'max-w-xl': true }">
-        <div class="relative min-h-main-height-no-padding w-full">
+        <div class="flex min-h-main-height-no-padding w-full flex-col">
             <ButtonReturn
                 :show="!!activeTimer"
                 @click="
@@ -25,9 +25,10 @@ watch(open, () => {
                     }
                 "
             />
+            <TypoH1 class="mb-8 text-center">My Timers</TypoH1>
             <Transition name="swipe">
                 <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
-                <div v-else class="min-h-main-height-no-padding w-full">
+                <div v-else class="mb-16 flex w-full flex-grow flex-col">
                     <OverlayDrawer v-model:open="open">
                         <TimerFormUpsert @success="open = false" />
                         <template #title>{{ $t("timer.aria.drawer.create") }}</template>
@@ -35,11 +36,9 @@ watch(open, () => {
                     </OverlayDrawer>
                     <TimerList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                     <Transition name="fade">
-                        <DataEmpty
-                            v-if="data && data.length === 0"
-                            class="absolute top-1/2 left-1/2 w-full -translate-1/2"
-                            @open="() => (open = true)"
-                        />
+                        <div v-if="data && data.length === 0" class="center w-full flex-grow">
+                            <DataEmpty @open="() => (open = true)" />
+                        </div>
                     </Transition>
                 </div>
             </Transition>

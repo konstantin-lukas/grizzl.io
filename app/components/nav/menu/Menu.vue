@@ -17,7 +17,12 @@ const { isOpen } = useMenu();
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">
-                    <li v-for="[link, icon, disabled] in APP_NAV" :key="link" class="w-full">
+                    <li
+                        v-for="[link, icon, disabled] in APP_NAV"
+                        :key="link"
+                        class="w-full"
+                        :aria-hidden="disabled ?? null"
+                    >
                         <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`" :disabled>
                             <UIcon :name="icon" size="1.25rem" />
                             {{ $t(`ui.${link}`) }}

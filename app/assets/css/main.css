@@ -297,6 +297,13 @@
         transform: translateX(3rem);
     }
 
+    @media screen and (max-width: 1024px) {
+        .list-enter-from,
+        .list-leave-to {
+            transform: translateX(2rem);
+        }
+    }
+
     /* ensure leaving items are taken out of layout flow so that moving
        animations can be calculated correctly. */
     .list-leave-active {
