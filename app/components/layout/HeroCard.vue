@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
 
-const { label, icon, disabled } = defineProps<{
+const {
+    label,
+    icon,
+    disabled,
+    class: className = "",
+} = defineProps<{
     icon: string;
     label: string;
     disabled?: boolean;
+    class?: string;
 }>();
 </script>
 
@@ -20,6 +26,7 @@ const { label, icon, disabled } = defineProps<{
             :class="{
                 'transition-all hover:scale-110 hover:bg-primary hover:text-back': !disabled,
                 'relative': disabled,
+                [className ?? '']: !!className,
             }"
         >
             <div class="center gap-2" :class="{ 'text-neutral-400 dark:text-neutral-600': disabled }">

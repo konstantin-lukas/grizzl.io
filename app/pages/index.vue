@@ -13,7 +13,14 @@ const session = authClient.useSession();
             <div class="flex w-full flex-col items-center justify-center gap-6 pt-20 xl:hidden">
                 <SvgGrizzlLogo class="max-w-120 fill-front" />
                 <div class="mt-4 mb-8 grid w-full grid-cols-1 gap-4 2xs:grid-cols-2 xs:gap-6 sm:gap-8 md:grid-cols-3">
-                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
+                    <LayoutHeroCard
+                        v-for="[label, icon, disabled] in APP_NAV"
+                        :key="label"
+                        :label
+                        :icon
+                        :disabled
+                        class="w-full"
+                    />
                 </div>
             </div>
             <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
@@ -43,13 +50,23 @@ const session = authClient.useSession();
                     </div>
                 </div>
             </div>
-            <div class="hidden w-1/2 grid-cols-2 xl:grid">
+            <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden">
                 <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
                     <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
                 <UMarquee orientation="vertical" class="h-dvh items-start pl-8" :overlay="false" reverse>
                     <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
                 </UMarquee>
+            </div>
+            <div class="grid w-1/3 grid-cols-2 justify-center gap-6 not-motion-reduce:xl:hidden">
+                <LayoutHeroCard
+                    v-for="[label, icon, disabled] in APP_NAV"
+                    :key="label"
+                    :label
+                    :icon
+                    :disabled
+                    class="w-full"
+                />
             </div>
         </div>
     </div>
