@@ -9,7 +9,6 @@ const emit = defineEmits(["close"]);
         direction="right"
         :handle="false"
         :ui="{
-            handle: '[&>span]:!w-dvw',
             content: 'rounded-none',
         }"
     >
