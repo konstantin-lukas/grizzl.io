@@ -10,6 +10,7 @@
             "ttsPreview": "Enter some text to preview the selected voice",
             "ttsDisable": "Don't read interval titles",
             "interval": {
+                "index": "Interval No. {n}",
                 "title": "Interval title",
                 "titlePlaceholder": "Displayed while interval is running",
                 "type": "Interval type",
