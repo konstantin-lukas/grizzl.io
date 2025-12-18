@@ -87,10 +87,12 @@ function onEnd() {
         :state="state"
         @submit.prevent="onSubmit"
         @error="
-            (e: FormErrorEvent) =>
-                (errors = e.errors
+            (e: FormErrorEvent) => {
+                errors = e.errors
                     .map(error => error.message)
-                    .filter((error, index, array) => array.indexOf(error) === index))
+                    .filter((error, index, array) => array.indexOf(error) === index);
+                scrollContainer?.scrollTo({ behavior: 'smooth', top: 0 });
+            }
         "
     >
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
