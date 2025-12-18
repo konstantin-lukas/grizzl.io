@@ -3,6 +3,7 @@ import { authClient } from "@@/lib/auth-client";
 import { APP_NAV } from "~/constants/nav";
 
 const session = authClient.useSession();
+const { close } = useMenu();
 </script>
 
 <template>
@@ -36,7 +37,12 @@ const session = authClient.useSession();
                         v-if="session.data"
                         size="xl"
                         icon="heroicons:arrow-right-end-on-rectangle"
-                        @click="authClient.signOut()"
+                        @click="
+                            authClient
+                                .signOut()
+                                .then(async () => await navigateTo('/signin'))
+                                .then(close)
+                        "
                     >
                         {{ $t("ui.signOut") }}
                     </Button>
