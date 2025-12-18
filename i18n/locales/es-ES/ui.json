@@ -25,6 +25,7 @@
         "moveUp": "Mover arriba",
         "moveDown": "Mover abajo",
         "undo": "Deshacer",
-        "offline": "Offline"
+        "offline": "Offline",
+        "formErrors": "El envío falló debido a un error | El envío falló debido a {n} errores"
     }
 }

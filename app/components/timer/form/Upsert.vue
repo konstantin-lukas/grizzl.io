@@ -2,6 +2,7 @@
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { ellipsize } from "#shared/utils/string";
+import type { FormErrorEvent, FormErrorWithId } from "#ui/types";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
@@ -31,6 +32,7 @@ const isDragging = ref(false);
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const { start, finish, isLoading } = useLoadingIndicator();
 const toast = useToast();
+const errors = ref<FormErrorWithId[]>([]);
 
 watch(state, () => {
     setTimeout(() => {
@@ -80,7 +82,12 @@ function onEnd() {
 </script>
 
 <template>
-    <UForm :schema="PostTimerSchema" :state="state" @submit.prevent="onSubmit">
+    <UForm
+        :schema="PostTimerSchema"
+        :state="state"
+        @submit.prevent="onSubmit"
+        @error="(e: FormErrorEvent) => (errors = e.errors)"
+    >
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
                 class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
@@ -90,6 +97,22 @@ function onEnd() {
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
+                    <Transition name="fade">
+                        <UAlert
+                            v-if="errors.length > 0"
+                            color="error"
+                            role="alert"
+                            :title="$t('ui.formErrors', errors.length)"
+                            variant="subtle"
+                            icon="heroicons:exclamation-triangle"
+                        >
+                            <template #description>
+                                <ul class="list-disc">
+                                    <li v-for="error in errors" :key="error.id">{{ error.message }}</li>
+                                </ul>
+                            </template>
+                        </UAlert>
+                    </Transition>
                     <UFormField :label="$t('timer.form.title')" name="title" class="w-full" required>
                         <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
                     </UFormField>

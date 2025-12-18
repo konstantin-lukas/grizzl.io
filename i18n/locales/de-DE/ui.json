@@ -25,6 +25,7 @@
         "moveUp": "Nach oben bewegen",
         "moveDown": "Nach unten bewegen",
         "undo": "Rückgängig machen",
-        "offline": "Offline"
+        "offline": "Offline",
+        "formErrors": "Das Absenden ist aufgrund eines Fehlers fehlgeschlagen | Das Absenden ist aufgrund von {n} Fehlern fehlgeschlagen"
     }
 }
