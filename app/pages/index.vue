@@ -52,10 +52,24 @@ const session = authClient.useSession();
             </div>
             <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden" aria-hidden="true">
                 <UMarquee orientation="vertical" class="h-dvh items-end pr-8" :overlay="false">
-                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
+                    <LayoutHeroCard
+                        v-for="[label, icon, disabled] in APP_NAV"
+                        :key="label"
+                        :label
+                        :icon
+                        :disabled
+                        tabindex="-1"
+                    />
                 </UMarquee>
                 <UMarquee orientation="vertical" class="h-dvh items-start pl-8" :overlay="false" reverse>
-                    <LayoutHeroCard v-for="[label, icon, disabled] in APP_NAV" :key="label" :label :icon :disabled />
+                    <LayoutHeroCard
+                        v-for="[label, icon, disabled] in APP_NAV"
+                        :key="label"
+                        :label
+                        :icon
+                        :disabled
+                        tabindex="-1"
+                    />
                 </UMarquee>
             </div>
             <div class="hidden w-1/3 grid-cols-2 justify-center gap-6 xl:grid not-motion-reduce:xl:hidden">

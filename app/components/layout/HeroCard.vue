@@ -19,7 +19,7 @@ const {
         :is="disabled ? 'div' : h(NuxtLink)"
         :to="disabled ? null : label"
         :class="{ 'pointer-events-none': disabled }"
-        :aria-hidden="disabled || undefined"
+        :aria-hidden="disabled || null"
     >
         <UCard
             class="center aspect-square w-48"
