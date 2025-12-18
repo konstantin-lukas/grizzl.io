@@ -1,5 +1,8 @@
+<script setup lang="ts">
+const { as = "h1" } = defineProps<{ as?: string }>();
+</script>
 <template>
-    <h1 class="text-4xl leading-tight text-primary uppercase">
+    <component :is="as" class="text-5xl leading-tight text-front uppercase sm:text-6xl">
         <slot />
-    </h1>
+    </component>
 </template>

@@ -3,6 +3,7 @@ import { LOCALES } from "#shared/constants/i18n";
 import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
 
+const toaster = { duration: 15000 };
 const { locale } = useI18n();
 const uiLocale = ref();
 watch(
@@ -27,7 +28,7 @@ watch(
 </script>
 
 <template>
-    <UApp :locale="uiLocale">
+    <UApp :locale="uiLocale" :toaster>
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>

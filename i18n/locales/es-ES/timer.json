@@ -10,6 +10,7 @@
             "ttsPreview": "Ingresa un texto para previsualizar la voz seleccionada",
             "ttsDisable": "No leer los títulos de los intervalos",
             "interval": {
+                "index": "Intervalo n.º {n}",
                 "title": "Título del intervalo",
                 "titlePlaceholder": "Se muestra mientras el intervalo está en ejecución",
                 "type": "Tipo de intervalo",

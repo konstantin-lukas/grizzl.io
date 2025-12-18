@@ -10,6 +10,7 @@
             "ttsPreview": "選択した音声をプレビューするテキスト",
             "ttsDisable": "インターバル名を読み上げない",
             "interval": {
+                "index": "インターバル{n}",
                 "title": "インターバル名",
                 "titlePlaceholder": "インターバル実行中に表示されます",
                 "type": "インターバルの種類",

@@ -15,6 +15,7 @@ const durationSeconds = computed({
     <fieldset
         class="group relative rounded-md border border-border-accented bg-back transition-[margin] focus-within:mb-12 sm:focus-within:mb-0"
     >
+        <legend class="ml-2 bg-back px-2">{{ $t("timer.form.interval.index", index + 1) }}</legend>
         <div class="center w-full gap-4 p-4">
             <UFormField :label="$t('timer.form.interval.title')" :name="`intervals.${index}.title`" class="w-full">
                 <UInput

@@ -38,7 +38,11 @@ const providers = providerMetaInformation.map<ButtonProps>(([label, icon]) => ({
 <template>
     <div class="flex min-h-main-height items-center justify-center py-main-padding">
         <UPageCard>
-            <UAuthForm :title="$t('ui.signIn')" :description="$t('ui.pickProvider')" icon="heroicons:user" :providers />
+            <UAuthForm :description="$t('ui.pickProvider')" icon="heroicons:user" :providers>
+                <template #title>
+                    <span role="heading" aria-level="1">{{ $t("ui.signIn") }}</span>
+                </template>
+            </UAuthForm>
         </UPageCard>
     </div>
 </template>
