@@ -39,12 +39,11 @@ watch(
 
 watch(playingComponentId, () => {
     if (playingComponentId.value !== componentId) return;
-    startTime.value = Date.now() - currentBeat.value * ((barLength * 1000) / beats.length);
+    startTime.value = Date.now() - currentBeat.value * (barLength / beats.length);
     const animateBeats = () => {
         if (playingComponentId.value !== componentId) return;
-        const barLengthInMs = barLength * 1000;
-        const moduloTime = (Date.now() - startTime.value) % barLengthInMs;
-        const beatLength = barLengthInMs / beats.length;
+        const moduloTime = (Date.now() - startTime.value) % barLength;
+        const beatLength = barLength / beats.length;
         const nextBeat = Math.floor(moduloTime / beatLength);
         if (nextBeat !== currentBeat.value) {
             if (beats[nextBeat] !== Beat.PAUSE) {
