@@ -2,7 +2,7 @@
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/constants/data";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/schema/timer";
 import { ellipsize } from "#shared/utils/string";
-import type { FormErrorEvent, FormErrorWithId } from "#ui/types";
+import type { FormErrorEvent } from "#ui/types";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import { createToastSuccess } from "~/utils/toast";
@@ -32,7 +32,7 @@ const isDragging = ref(false);
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const { start, finish, isLoading } = useLoadingIndicator();
 const toast = useToast();
-const errors = ref<FormErrorWithId[]>([]);
+const errors = ref<string[]>([]);
 
 watch(state, () => {
     setTimeout(() => {
@@ -86,7 +86,12 @@ function onEnd() {
         :schema="PostTimerSchema"
         :state="state"
         @submit.prevent="onSubmit"
-        @error="(e: FormErrorEvent) => (errors = e.errors)"
+        @error="
+            (e: FormErrorEvent) =>
+                (errors = e.errors
+                    .map(error => error.message)
+                    .filter((error, index, array) => array.indexOf(error) === index))
+        "
     >
         <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
             <span
@@ -108,7 +113,7 @@ function onEnd() {
                         >
                             <template #description>
                                 <ul class="list-disc">
-                                    <li v-for="error in errors" :key="error.id">{{ error.message }}</li>
+                                    <li v-for="error in errors" :key="error">{{ error }}</li>
                                 </ul>
                             </template>
                         </UAlert>
