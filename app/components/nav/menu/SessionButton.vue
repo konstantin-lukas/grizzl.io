@@ -2,6 +2,7 @@
 import { authClient } from "~~/lib/auth-client";
 
 const session = authClient.useSession();
+const { close } = useMenu();
 </script>
 
 <template>
@@ -10,7 +11,12 @@ const session = authClient.useSession();
             v-if="session.data"
             class="inline-link group mx-auto mt-4 flex justify-center gap-2"
             data-test-id="session-button"
-            @click="authClient.signOut().then(async () => await navigateTo('/'))"
+            @click="
+                authClient
+                    .signOut()
+                    .then(async () => await navigateTo('/signin'))
+                    .then(close)
+            "
         >
             <UIcon
                 name="heroicons:arrow-right-start-on-rectangle"
@@ -23,6 +29,7 @@ const session = authClient.useSession();
             class="inline-link group mx-auto mt-4 flex justify-center gap-2"
             to="/signin"
             data-test-id="session-button"
+            @click="close"
         >
             <UIcon
                 name="heroicons:arrow-right-end-on-rectangle"

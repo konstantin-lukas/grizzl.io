@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { APP_NAV } from "@/constants/nav";
 
-const { isOpen } = useMenu();
+const { isOpen, close } = useMenu();
 </script>
 
 <template>
@@ -13,7 +13,12 @@ const { isOpen } = useMenu();
     >
         <div class="max-h-full w-full overflow-auto">
             <nav class="center m-auto py-20" :aria-label="$t('menu.aria.mainNav')">
-                <NuxtLink to="/" class="mb-8 block w-[75dvw] sm:w-80" :aria-label="$t('menu.aria.goToHome')">
+                <NuxtLink
+                    to="/"
+                    class="mb-8 block w-[75dvw] sm:w-80"
+                    :aria-label="$t('menu.aria.goToHome')"
+                    @click="close"
+                >
                     <SvgGrizzlLogo class="w-full fill-front" />
                 </NuxtLink>
                 <ul class="flex flex-col gap-6">
@@ -23,7 +28,7 @@ const { isOpen } = useMenu();
                         class="w-full"
                         :aria-hidden="disabled ?? null"
                     >
-                        <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`" :disabled>
+                        <NavBlockLink :to="`/${link}`" :data-test-id="`menu-link-${link}`" :disabled @click="close">
                             <UIcon :name="icon" size="1.25rem" />
                             {{ $t(`ui.${link}`) }}
                         </NavBlockLink>
