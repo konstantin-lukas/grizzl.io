@@ -39,6 +39,10 @@
             "updatedDescription": "The timer titled “{title}” was updated.",
             "deletedTitle": "Timer Deleted",
             "deletedDescription": "The timer titled “{title}” was deleted."
+        },
+        "meta": {
+            "title": "Timer",
+            "description": "Create timers with custom intervals and rhythms. Name each interval and hear it aloud—perfect for workouts, focus sessions, and more."
         }
     }
 }

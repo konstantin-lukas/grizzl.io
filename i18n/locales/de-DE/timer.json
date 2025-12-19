@@ -39,6 +39,10 @@
             "updatedDescription": "Der Timer mit dem Titel „{title}“ wurde aktualisiert.",
             "deletedTitle": "Timer gelöscht",
             "deletedDescription": "Der Timer mit dem Titel „{title}“ wurde gelöscht."
+        },
+        "meta": {
+            "title": "Timer",
+            "description": "Erstelle Timer mit individuellen Intervallen und Rhythmen. Benenne jedes Intervall und lasse es vorlesen – perfekt für Workouts, Konzentrationsphasen und mehr."
         }
     }
 }

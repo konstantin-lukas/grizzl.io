@@ -4,6 +4,7 @@ import { authClient } from "@@/lib/auth-client";
 
 definePageMeta({
     title: "ui.signIn",
+    description: "meta.signInDescription",
 });
 
 async function signIn(provider: string) {
