@@ -26,6 +26,6 @@ test("should be a visible alert with a short message when the user is offline", 
     const wrapper = await mountSuspended(Offline, { scoped: true });
     const banner = wrapper.findByTestId("offline-banner");
     const title = wrapper.findByTestId("offline-banner-title");
-    expect(banner.attributes().role).toBe("alert");
+    expect(banner.attributes("role")).toBe("alert");
     expect(title.text()).toBe("ui.offline");
 });
