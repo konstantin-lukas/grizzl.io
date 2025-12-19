@@ -18,12 +18,13 @@ const stubs = {
 };
 
 test("should display a button with the provided content", async () => {
-    const wrapper = await mountSuspended(Button, { slots: { default: text } });
+    const wrapper = await mountSuspended(Button, { scoped: true, slots: { default: text } });
     expect(wrapper.text()).toBe(text);
 });
 
 test("should add a tooltip if an aria-label is provided", async () => {
     const wrapper = await mountSuspended(Button, {
+        scoped: true,
         props: { "aria-label": text, "data-test-id": "button" },
         global: { stubs },
     });
@@ -35,6 +36,7 @@ test("should add a tooltip if an aria-label is provided", async () => {
 
 test("should not add a tooltip if no aria-label is provided", async () => {
     const wrapper = await mountSuspended(Button, {
+        scoped: true,
         props: { "data-test-id": "button" },
         global: { stubs },
     });
@@ -44,23 +46,12 @@ test("should not add a tooltip if no aria-label is provided", async () => {
     expect(tooltip.exists()).toBe(false);
 });
 
-test("handles click events normally when no async click event handler is provided", async () => {
-    const onClick = vi.fn();
-
-    const wrapper = await mountSuspended(Button, { props: { onClick } });
-    const button = wrapper.find("button");
-
-    await button.trigger("click");
-
-    expect(onClick).toHaveBeenCalledOnce();
-});
-
 test("calls onAsyncClick instead of click event handler and disables button while loading, then re-enables", async () => {
     const deferredClick = deferred();
     const onAsyncClick = vi.fn(() => deferredClick.promise);
     const onClick = vi.fn();
 
-    const wrapper = await mountSuspended(Button, { props: { onAsyncClick, onClick } });
+    const wrapper = await mountSuspended(Button, { scoped: true, props: { onAsyncClick, onClick } });
     const button = wrapper.find("button");
 
     expect(button.attributes("disabled")).toBeUndefined();
@@ -72,6 +63,18 @@ test("calls onAsyncClick instead of click event handler and disables button whil
     expect(onClick).not.toHaveBeenCalled();
 
     deferredClick.resolve();
-    await wrapper.vm.$nextTick();
-    expect(button.attributes("disabled")).toBe("");
+    await vi.waitFor(() => {
+        expect(button.attributes("disabled")).toBeUndefined();
+    });
+});
+
+test("handles click events normally when no async click event handler is provided", async () => {
+    const onClick = vi.fn();
+
+    const wrapper = await mountSuspended(Button, { scoped: true, props: { onClick } });
+    const button = wrapper.find("button");
+
+    await button.trigger("click");
+
+    expect(onClick).toHaveBeenCalledOnce();
 });
