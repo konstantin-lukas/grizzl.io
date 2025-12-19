@@ -5,7 +5,6 @@ const emit = defineEmits(["open"]);
 <template>
     <UEmpty
         variant="naked"
-        :title="$t('ui.noEntries')"
         icon="heroicons:inbox"
         :actions="[
             {
@@ -16,5 +15,9 @@ const emit = defineEmits(["open"]);
                 },
             },
         ]"
-    />
+    >
+        <template #title>
+            <span data-test-id="data-empty-title">{{ $t("ui.noEntries") }}</span>
+        </template>
+    </UEmpty>
 </template>
