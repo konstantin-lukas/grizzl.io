@@ -39,6 +39,9 @@
             "updatedDescription": "Der Timer mit dem Titel „{title}“ wurde aktualisiert.",
             "deletedTitle": "Timer gelöscht",
             "deletedDescription": "Der Timer mit dem Titel „{title}“ wurde gelöscht."
+        },
+        "meta": {
+            "title": "Timer"
         }
     }
 }

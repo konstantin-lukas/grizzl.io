@@ -39,6 +39,9 @@
             "updatedDescription": "「{title}」というタイトルのタイマーが更新されました。",
             "deletedTitle": "タイマーを削除しました",
             "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。"
+        },
+        "meta": {
+            "title": "タイマー"
         }
     }
 }

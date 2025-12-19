@@ -5,7 +5,7 @@ const head = useLocaleHead();
 const title = computed(() => {
     const routeTitle = route.meta.title;
     if (typeof routeTitle === "string") {
-        return `${t(routeTitle)} - ${t("meta.grizzl")}`;
+        return `${t(routeTitle)} | ${t("meta.grizzl")} - ${t("meta.tagline")}`;
     }
     return `${t("meta.grizzl")} - ${t("meta.tagline")}`;
 });

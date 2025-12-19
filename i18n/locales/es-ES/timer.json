@@ -39,6 +39,9 @@
             "updatedDescription": "El temporizador titulado “{title}” se actualizó.",
             "deletedTitle": "Temporizador eliminado",
             "deletedDescription": "El temporizador titulado “{title}” se eliminó."
+        },
+        "meta": {
+            "title": "Temporizador"
         }
     }
 }
