@@ -9,6 +9,7 @@ const activeTimer = ref<Timer | null>(null);
 
 definePageMeta({
     title: "timer.meta.title",
+    description: "timer.meta.description",
 });
 
 watch(open, () => {
