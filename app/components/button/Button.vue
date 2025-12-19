@@ -5,36 +5,56 @@ const {
     onAsyncClick = undefined,
     disabled = undefined,
     ariaLabel = undefined,
+    dataTestId = undefined,
+    onClick = undefined,
     ...props
 } = defineProps<
-    Omit<ButtonProps, "disabled"> & {
-        onAsyncClick?: (event: MouseEvent) => Promise<void> | undefined;
+    Omit<ButtonProps, "disabled" | "onClick"> & {
+        onClick?: (event: MouseEvent) => void | Promise<void>;
+        onAsyncClick?: ((event: MouseEvent) => Promise<void>) | undefined;
         disabled?: boolean | undefined;
         ariaLabel?: string;
+        dataTestId?: string;
     }
 >();
+
 const { isLoading, start, finish } = useLoadingIndicator();
-async function handleClick(event: MouseEvent) {
-    if (!onAsyncClick) return;
-    start({ force: true });
-    await onAsyncClick(event);
-    finish();
+
+async function handler(event: MouseEvent) {
+    if (typeof onAsyncClick !== "undefined") {
+        start({ force: true });
+        await onAsyncClick(event);
+        finish();
+        return;
+    }
+    if (typeof onClick === "function") {
+        onClick(event);
+    }
 }
-const handler = computed(() => (typeof onAsyncClick !== "undefined" ? handleClick : props.onClick));
 </script>
 
 <template>
-    <UTooltip v-if="ariaLabel" :text="ariaLabel">
+    <UTooltip v-if="ariaLabel">
         <UButton
             v-bind="props"
             :aria-label="ariaLabel"
             :disabled="typeof disabled === 'boolean' ? disabled : isLoading"
+            :data-test-id
             @click="handler"
         >
             <slot />
         </UButton>
+        <template #content>
+            <span data-test-id="tooltip">{{ ariaLabel }}</span>
+        </template>
     </UTooltip>
-    <UButton v-else v-bind="props" :disabled="typeof disabled === 'boolean' ? disabled : isLoading" @click="handler">
+    <UButton
+        v-else
+        v-bind="props"
+        :disabled="typeof disabled === 'boolean' ? disabled : isLoading"
+        :data-test-id
+        @click="handler"
+    >
         <slot />
     </UButton>
 </template>
