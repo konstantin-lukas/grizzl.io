@@ -40,8 +40,10 @@ const {
         </component>
         <span
             v-if="disabled"
+            data-test-id="block-link-coming-soon"
             class="absolute top-0 -left-4 -translate-y-1/2 -rotate-5 rounded-full bg-error px-4 py-1 text-sm whitespace-nowrap text-theme-white"
-            >{{ $t("menu.comingSoon") }}</span
         >
+            {{ $t("menu.comingSoon") }}
+        </span>
     </div>
 </template>
