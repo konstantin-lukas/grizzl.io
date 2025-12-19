@@ -13,6 +13,10 @@ export default defineConfig({
             ],
             reporter: ["text", "lcov", "json"],
         },
+        // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604
+        onConsoleLog: log => {
+            return !log.startsWith("<Suspense>");
+        },
         projects: [
             await defineVitestProject({
                 test: {
