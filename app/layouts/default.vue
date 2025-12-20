@@ -5,15 +5,18 @@ const head = useLocaleHead();
 const title = computed(() => {
     const routeTitle = route.meta.title;
     if (typeof routeTitle === "string") {
-        return `${t(routeTitle)} - ${t("meta.grizzl")}`;
+        return `${t(routeTitle)} | ${t("meta.grizzl")} - ${t("meta.tagline")}`;
     }
     return `${t("meta.grizzl")} - ${t("meta.tagline")}`;
+});
+const description = computed(() => {
+    return typeof route.meta.description === "string" ? t(route.meta.description) : t("meta.description");
 });
 const { isOpen, close } = useMenu();
 watch(() => route.fullPath, close);
 useHead({
     title,
-    meta: [{ name: "description", content: t("meta.description") }],
+    meta: [{ name: "description", content: description }],
 });
 </script>
 

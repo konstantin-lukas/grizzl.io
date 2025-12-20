@@ -39,6 +39,10 @@
             "updatedDescription": "El temporizador titulado “{title}” se actualizó.",
             "deletedTitle": "Temporizador eliminado",
             "deletedDescription": "El temporizador titulado “{title}” se eliminó."
+        },
+        "meta": {
+            "title": "Temporizador",
+            "description": "Crea temporizadores con intervalos y ritmos personalizados. Nombra cada intervalo y escúchalo en voz alta, perfecto para entrenamientos, sesiones de concentración y más."
         }
     }
 }
