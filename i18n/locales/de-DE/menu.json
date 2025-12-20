@@ -3,8 +3,8 @@
         "selectLanguage": "Welche Sprache möchten Sie verwenden?",
         "comingSoon": "Bald verfügbar!",
         "aria": {
-            "toggleMenu": "Menü ein- oder ausblenden.",
-            "toggleTheme": "App-Design umschalten.",
+            "toggleMenu": "Menü ein- oder ausblenden",
+            "toggleTheme": "App-Design umschalten",
             "changeLang": "Sprache der App ändern",
             "mainNav": "Hauptnavigation der Seite",
             "goToHome": "Zur Startseite gehen"

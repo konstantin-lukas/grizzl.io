@@ -3,7 +3,7 @@ import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test } from "vitest";
 
 test("should render a card with a link to the respective section", async () => {
-    const props = { label: "banana", icon: "mango" };
+    const props = { label: "timer", icon: "mdi:timer-outline" };
     const wrapper = await mountSuspended(HeroCard, { scoped: true, props });
     const card = wrapper.find("a");
     const label = wrapper.findByTestId("hero-card-label");
@@ -15,7 +15,7 @@ test("should render a card with a link to the respective section", async () => {
 });
 
 test("should render a div without a link and a coming soon label when disabled", async () => {
-    const props = { label: "banana", icon: "mango", disabled: true };
+    const props = { label: "timer", icon: "mdi:timer-outline", disabled: true };
     const wrapper = await mountSuspended(HeroCard, { scoped: true, props });
     const card = wrapper.find("div");
     const label = wrapper.findByTestId("hero-card-label");

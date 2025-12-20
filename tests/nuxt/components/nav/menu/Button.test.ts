@@ -16,3 +16,14 @@ test("should open and close the menu when clicked", async () => {
     await button.trigger("click");
     expect(isOpen.value).toBe(false);
 });
+
+test("should display a tooltip with the correct text", async () => {
+    const wrapper = await mountSuspended(Button, {
+        scoped: true,
+        global: { stubs },
+    });
+    const tooltip = wrapper.findByTestId("tooltip");
+    const button = wrapper.find("button");
+    expect(button.exists()).toBe(true);
+    expect(tooltip.text()).toBe("menu.aria.toggleMenu");
+});

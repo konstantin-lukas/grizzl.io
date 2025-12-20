@@ -43,6 +43,7 @@ async function handler(event: MouseEvent) {
             @click="handler"
         >
             <slot />
+            <slot name="leading" />
         </UButton>
         <template #content>
             <span data-test-id="tooltip">{{ ariaLabel }}</span>
@@ -56,5 +57,6 @@ async function handler(event: MouseEvent) {
         @click="handler"
     >
         <slot />
+        <slot name="leading" />
     </UButton>
 </template>
