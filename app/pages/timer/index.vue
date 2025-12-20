@@ -15,8 +15,6 @@ watch(open, () => {
 <template>
     <LayoutWrapper :class="{ 'max-w-xl': true }">
         <div class="flex min-h-main-height-no-padding w-full flex-col">
-            <TypoH1 class="mb-8 text-center">My Timers</TypoH1>
-            <USeparator class="mb-8" />
             <OverlaySlideover
                 :open="!!activeTimer"
                 @close="
