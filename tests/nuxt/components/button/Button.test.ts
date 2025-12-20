@@ -1,21 +1,11 @@
 import Button from "@@/app/components/button/Button.vue";
+import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { deferred } from "@@/tests/utils/async";
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
 
 const text = "Hello, world!";
-const stubs = {
-    UTooltip: {
-        template: `
-            <div>
-                <slot />
-                <div class="tooltip">
-                    <slot name="content" />
-                </div>
-            </div>
-        `,
-    },
-};
+const stubs = { UTooltip };
 
 test("should display a button with the provided content", async () => {
     const wrapper = await mountSuspended(Button, { scoped: true, slots: { default: text } });
