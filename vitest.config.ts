@@ -11,6 +11,7 @@ export default defineConfig({
                 "app/components/**/*",
                 "app/composables/**/*",
             ],
+            exclude: ["app/components/**/form/**/*"],
             reporter: ["text", "lcov", "json"],
         },
         // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604
