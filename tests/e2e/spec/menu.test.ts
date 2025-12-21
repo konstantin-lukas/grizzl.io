@@ -76,20 +76,23 @@ test("should have a button to toggle the theme", async ({ homePage, goto }) => {
     await goto(homePage.url, { waitUntil: "hydration" });
 
     await test.step("Check that the state before toggling the theme", async () => {
-        await expect(homePage.loc.themeToggleLight).toBeHidden();
-        await expect(homePage.loc.themeToggleDark).toBeHidden();
+        await expect(homePage.loc.lightModeIcon).toBeHidden();
+        await expect(homePage.loc.darkModeIcon).toBeHidden();
         await homePage.loc.menuButton.click();
-        await expect(homePage.loc.themeToggleDark).toBeDisattached();
+        await expect(homePage.loc.lightModeIcon).toBeHidden();
+        await expect(homePage.loc.darkModeIcon).toBeVisible();
         await expect(homePage.loc.root).toContainClass("light");
         await expect(homePage.loc.root).not.toContainClass("dark");
     });
 
     await test.step("Check that the state after toggling the theme", async () => {
-        await homePage.loc.themeToggleLight.click();
+        await homePage.loc.themeToggle.click();
         await expect(homePage.loc.root).toContainClass("dark");
         await expect(homePage.loc.root).not.toContainClass("light");
-        await expect(homePage.loc.themeToggleLight).toBeDisattached();
-        await homePage.loc.themeToggleDark.click();
-        await expect(homePage.loc.themeToggleDark).toBeDisattached();
+        await expect(homePage.loc.lightModeIcon).toBeVisible();
+        await expect(homePage.loc.darkModeIcon).toBeHidden();
+        await homePage.loc.themeToggle.click();
+        await expect(homePage.loc.lightModeIcon).toBeHidden();
+        await expect(homePage.loc.darkModeIcon).toBeVisible();
     });
 });

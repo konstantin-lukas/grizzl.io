@@ -11,8 +11,9 @@ const BASE_LOCATORS = {
     timerLink: "menu-link-timer",
     financeLink: "menu-link-finance",
     todoLink: "menu-link-todo",
-    themeToggleLight: "theme-toggle-light",
-    themeToggleDark: "theme-toggle-dark",
+    themeToggle: "theme-toggle",
+    lightModeIcon: "icon-light-mode",
+    darkModeIcon: "icon-dark-mode",
     inertElements: "inert-elements",
     root: "root",
 };

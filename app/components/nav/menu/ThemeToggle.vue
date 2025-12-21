@@ -17,7 +17,7 @@ const isDark = computed({
         color="neutral"
         variant="ghost"
         class="center absolute top-4 right-4 z-50 h-10 w-10 cursor-pointer"
-        :data-test-id="`theme-toggle-${$colorMode.preference}`"
+        data-test-id="theme-toggle"
         size="xl"
         @click="isDark = !isDark"
     >
