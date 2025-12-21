@@ -71,6 +71,6 @@ test("should have aria-hidden iff it is closed", async () => {
     });
     close();
     await vi.waitFor(() => {
-        expect(menu.attributes("aria-hidden")).toBeDefined();
+        expect(menu.attributes("aria-hidden")).toBe(true);
     });
 });
