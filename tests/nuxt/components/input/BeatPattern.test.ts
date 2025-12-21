@@ -1,4 +1,4 @@
-import BeatPatternInput from "@@/app/components/timer/BeatPatternInput.vue";
+import BeatPattern from "@@/app/components/input/BeatPattern.vue";
 import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
@@ -25,7 +25,7 @@ mockNuxtImport("useFormField", async () => {
 });
 
 test("should display the provided beats by default", async () => {
-    const wrapper = await mountSuspended(BeatPatternInput, {
+    const wrapper = await mountSuspended(BeatPattern, {
         scoped: true,
         props,
         global: { stubs },
@@ -41,7 +41,7 @@ test("should display the provided beats by default", async () => {
 });
 
 test("should allow adding and deleting items with the control buttons", async () => {
-    const wrapper = await mountSuspended(BeatPatternInput, {
+    const wrapper = await mountSuspended(BeatPattern, {
         scoped: true,
         props,
         global: { stubs },
@@ -78,7 +78,7 @@ test("should loop the current beat pattern when clicking the play button", async
         return 0;
     });
 
-    const wrapper = await mountSuspended(BeatPatternInput, {
+    const wrapper = await mountSuspended(BeatPattern, {
         scoped: true,
         props,
         global: { stubs },
@@ -136,7 +136,7 @@ test("should loop the current beat pattern when clicking the play button", async
 test("should apply `border-error` when form field color is error", async () => {
     formFieldColorMock.value = "default";
 
-    const wrapper = await mountSuspended(BeatPatternInput, {
+    const wrapper = await mountSuspended(BeatPattern, {
         scoped: true,
         props,
         global: { stubs },

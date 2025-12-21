@@ -82,7 +82,7 @@ const durationSeconds = computed({
                     required
                     class="w-full"
                 >
-                    <TimerBeatPatternInput
+                    <InputBeatPattern
                         :beats="intervals![index]!.beatPattern"
                         :bar-length="intervals![index]!.duration"
                         class="w-full"

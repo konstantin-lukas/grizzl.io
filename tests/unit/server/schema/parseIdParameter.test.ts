@@ -17,6 +17,7 @@ vi.mock("~~/server/utils/http", () => {
 
 afterEach(() => {
     vi.resetModules();
+    vi.clearAllMocks();
 });
 
 test.each([

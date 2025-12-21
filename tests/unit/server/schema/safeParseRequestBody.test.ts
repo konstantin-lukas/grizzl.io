@@ -6,6 +6,7 @@ const schema = z.string();
 
 afterEach(() => {
     vi.resetModules();
+    vi.clearAllMocks();
 });
 
 test("should default to the English zod locale", async () => {

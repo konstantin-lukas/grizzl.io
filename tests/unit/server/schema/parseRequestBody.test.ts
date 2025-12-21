@@ -18,6 +18,7 @@ vi.mock("~~/server/utils/http", () => {
 
 afterEach(() => {
     vi.resetModules();
+    vi.clearAllMocks();
 });
 
 const schema = z.string();
