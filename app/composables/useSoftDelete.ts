@@ -14,9 +14,9 @@ export default function useSoftDelete(
         await $fetch(resource, { method: "PATCH", body: { deleted: true } })
             .then(() => {
                 toast.add({
-                    title: options?.successTitle && t(options?.successTitle),
+                    title: options?.successTitle && t(options.successTitle),
                     description:
-                        options?.successDescription && t(options?.successDescription, options.interpolations ?? {}),
+                        options?.successDescription && t(options.successDescription, options.interpolations ?? {}),
                     orientation: "vertical",
                     color: "success",
                     actions: [

@@ -1,4 +1,4 @@
-export function useOnlineStatus() {
+export default function useOnlineStatus() {
     const isOnline = useState("online-status", () => true);
     const interval = useState<NodeJS.Timeout | undefined>("online-polling-timeout", () => undefined);
     const instances = useState("online-status-composable-instance-count", () => 0);

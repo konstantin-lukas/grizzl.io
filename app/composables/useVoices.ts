@@ -9,7 +9,6 @@ export default function useVoices() {
         loadVoices();
         speechSynthesis.addEventListener("voiceschanged", loadVoices);
         onBeforeUnmount(() => {
-            if (typeof speechSynthesis === "undefined") return;
             speechSynthesis.removeEventListener("voiceschanged", loadVoices);
         });
     });

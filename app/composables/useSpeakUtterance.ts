@@ -9,6 +9,7 @@ export default function useSpeakUtterance() {
                 utterThis.voice = voice;
             }
         }
+        if (!utterThis.voice) return;
         speechSynthesis.speak(utterThis);
     }
 
