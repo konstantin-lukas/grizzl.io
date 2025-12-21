@@ -1,7 +1,7 @@
 import useComputedOnLocaleChange from "@@/app/composables/useComputedOnLocaleChange";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { beforeEach, expect, test, vi } from "vitest";
-import { nextTick } from "vue";
+import { nextTick, ref } from "vue";
 
 const { i18nState, useI18nMock } = await vi.hoisted(async () => {
     const { ref } = await import("vue");
@@ -46,18 +46,17 @@ test("updates when locale changes", async () => {
 });
 
 test("updates when provided getter changes", async () => {
-    const baseState = { value: 0 };
+    const n = ref(42);
+
     const state = useComputedOnLocaleChange(
-        () => {
-            return baseState.value;
-        },
-        () => baseState.value,
+        () => n.value,
+        () => n.value,
     );
 
-    expect(state.value).toBe(0);
+    expect(state.value).toBe(42);
 
-    baseState.value = 1;
+    n.value = 43;
     await nextTick();
 
-    expect(state.value).toBe(0);
+    expect(state.value).toBe(43);
 });

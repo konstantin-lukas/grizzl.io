@@ -57,7 +57,7 @@ test("speaks an utterance if provided voice exists", () => {
     expect(SpeechSynthesisUtteranceStub).toHaveBeenCalledOnce();
 });
 
-test("does not speak an utterance if the provided voice does not exists", () => {
+test("does not speak an utterance if the provided voice does not exist", () => {
     speechSynthesisStub.speaking = false;
     voices.value = [{ voiceURI: "voice-uri-1" } as never];
 

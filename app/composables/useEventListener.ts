@@ -1,3 +1,4 @@
+import type { Ref } from "vue";
 import { onBeforeUnmount, onMounted, unref, watch } from "vue";
 
 export default function useEventListener(

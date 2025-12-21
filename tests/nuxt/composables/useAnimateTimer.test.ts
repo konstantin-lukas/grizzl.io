@@ -125,8 +125,8 @@ test("should not play audio at the end of the timer if muted", async () => {
 
     animateTimer();
 
-    expect(audioConstructorMock).not.toHaveBeenCalledOnce();
-    expect(audioPlayMock).not.toHaveBeenCalledOnce();
+    expect(audioConstructorMock).not.toHaveBeenCalled();
+    expect(audioPlayMock).not.toHaveBeenCalled();
 });
 
 test("should move on to the next interval if the current interval has completed", async () => {
