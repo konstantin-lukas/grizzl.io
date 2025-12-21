@@ -1,7 +1,7 @@
 import { onBeforeUnmount, onMounted, unref, watch } from "vue";
 
 export function useEventListener(
-    target: EventTarget,
+    target: EventTarget | Ref<EventTarget>,
     event: string,
     listener: (evt: Event) => void,
     options?: boolean | AddEventListenerOptions,
