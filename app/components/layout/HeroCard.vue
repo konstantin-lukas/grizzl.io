@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
+import type { APP_NAV } from "~/constants/nav";
 
 const {
     label,
@@ -7,8 +8,8 @@ const {
     disabled,
     class: className = "",
 } = defineProps<{
-    icon: string;
-    label: string;
+    icon: (typeof APP_NAV)[number][1];
+    label: (typeof APP_NAV)[number][0];
     disabled?: boolean;
     class?: string;
 }>();
@@ -16,10 +17,11 @@ const {
 
 <template>
     <component
-        :is="disabled ? 'div' : h(NuxtLink)"
-        :to="disabled ? null : label"
+        :is="disabled ? 'div' : NuxtLink"
+        data-test-id="hero-card"
+        :to="disabled ? undefined : `/${label}`"
         :class="{ 'pointer-events-none': disabled }"
-        :aria-hidden="disabled || null"
+        :aria-hidden="disabled || undefined"
     >
         <UCard
             class="center aspect-square w-48"
@@ -31,11 +33,14 @@ const {
         >
             <div class="center gap-2" :class="{ 'text-neutral-400 dark:text-neutral-600': disabled }">
                 <UIcon :name="icon" class="size-8 2xs:size-6 xs:size-8" />
-                <span class="xs:text-md text-md 2xs:text-sm">{{ $t(`ui.${label}`) }}</span>
+                <span class="xs:text-md text-md 2xs:text-sm" data-test-id="hero-card-label">
+                    {{ $t(`ui.${label}`) }}
+                </span>
             </div>
             <span
                 v-if="disabled"
                 class="absolute top-1/2 left-1/2 -translate-1/2 rotate-20 rounded-full bg-error px-4 py-1 whitespace-nowrap text-theme-white"
+                data-test-id="hero-card-coming-soon"
             >
                 {{ $t("menu.comingSoon") }}
             </span>

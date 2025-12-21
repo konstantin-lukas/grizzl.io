@@ -21,6 +21,7 @@ const emit = defineEmits(["close"]);
                         color="neutral"
                         class="size-10"
                         :aria-label="$t('ui.goBack')"
+                        data-test-id="go-back-button"
                         @click="emit('close')"
                     />
                 </div>

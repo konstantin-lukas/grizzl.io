@@ -13,6 +13,7 @@ watch(locale, newLocale => {
         v-model="selectedLang"
         class="fixed right-4 bottom-4"
         :locales="LOCALES.map(loc => loc.uiLocale)"
+        data-test-id="lang-select"
         @update:model-value="setLocale($event as never)"
     />
 </template>

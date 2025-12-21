@@ -1,5 +1,5 @@
 import type { H3Event } from "h3";
-import { afterEach, expect, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 
 const { throwError } = vi.hoisted(() => {
     return {
@@ -15,8 +15,9 @@ vi.mock("~~/server/utils/http", () => {
     };
 });
 
-afterEach(() => {
+beforeEach(() => {
     vi.resetModules();
+    vi.clearAllMocks();
 });
 
 test.each([

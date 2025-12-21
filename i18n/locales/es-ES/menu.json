@@ -3,8 +3,8 @@
         "selectLanguage": "¿Qué idioma le gustaría que usemos?",
         "comingSoon": "¡Próximamente!",
         "aria": {
-            "toggleMenu": "Mostrar u ocultar el menú.",
-            "toggleTheme": "Cambiar el tema de la aplicación.",
+            "toggleMenu": "Mostrar u ocultar el menú",
+            "toggleTheme": "Cambiar el tema de la aplicación",
             "changeLang": "Cambiar el idioma de la aplicación",
             "mainNav": "Navegación principal del sitio",
             "goToHome": "Ir a la página de inicio"

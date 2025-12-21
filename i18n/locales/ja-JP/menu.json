@@ -3,8 +3,8 @@
         "selectLanguage": "どの言語を使用しますか？",
         "comingSoon": "近日公開！",
         "aria": {
-            "toggleMenu": "メニューを切り替えます。",
-            "toggleTheme": "アプリのテーマを切り替えます。",
+            "toggleMenu": "メニューの切り替え",
+            "toggleTheme": "アプリのテーマの切り替え",
             "changeLang": "アプリの言語変更",
             "mainNav": "サイトのメインナビゲーション",
             "goToHome": "ホームページへ移動"

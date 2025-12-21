@@ -30,6 +30,9 @@
                 "edit": "Editar un temporizador",
                 "create": "Crear un temporizador",
                 "description": "Elige entre diferentes tipos de intervalos para crear un temporizador totalmente personalizado"
+            },
+            "slideover": {
+                "title": "Reproducción del temporizador"
             }
         },
         "toast": {

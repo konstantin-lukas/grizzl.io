@@ -11,7 +11,12 @@ export default defineConfig({
                 "app/components/**/*",
                 "app/composables/**/*",
             ],
+            exclude: ["app/components/timer/**/*"],
             reporter: ["text", "lcov", "json"],
+        },
+        // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604
+        onConsoleLog: log => {
+            return !log.startsWith("<Suspense>");
         },
         projects: [
             await defineVitestProject({

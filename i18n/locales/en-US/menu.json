@@ -3,8 +3,8 @@
         "selectLanguage": "Which language would you like us to use?",
         "comingSoon": "Coming soon!",
         "aria": {
-            "toggleMenu": "Toggle the menu.",
-            "toggleTheme": "Toggle the app theme.",
+            "toggleMenu": "Toggle the menu",
+            "toggleTheme": "Toggle the app theme",
             "changeLang": "Change App Language",
             "mainNav": "Main site navigation",
             "goToHome": "Go to home page"

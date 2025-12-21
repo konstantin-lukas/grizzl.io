@@ -25,7 +25,7 @@ watch(open, () => {
             class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 sm:flex-row sm:items-center"
         >
             <div class="min-w-0 shrink-1">
-                <TypoH2 class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH2>
+                <TypoH2 as="h1" class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH2>
                 <span>
                     {{
                         $t(

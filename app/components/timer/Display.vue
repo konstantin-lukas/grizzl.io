@@ -32,6 +32,7 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
             <Transition name="swipe" mode="out-in">
                 <TypoH2
                     :key="interval?.id"
+                    as="span"
                     class="w-full overflow-hidden text-center text-ellipsis text-neutral-600 dark:text-neutral-400"
                 >
                     {{ interval?.title }}

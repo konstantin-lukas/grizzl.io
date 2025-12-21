@@ -1,17 +1,39 @@
 <script setup lang="ts">
 const isOnline = useOnlineStatus();
-const ui = computed(() => ({
-    leadingIcon: isOnline.value ? "text-front" : "text-back",
-}));
+const colorMode = useColorMode();
+const isDark = computed({
+    get() {
+        return colorMode.value === "dark";
+    },
+    set(_isDark: boolean) {
+        colorMode.preference = _isDark ? "dark" : "light";
+    },
+});
 </script>
 
 <template>
-    <UColorModeButton
+    <Button
         :aria-label="$t('menu.aria.toggleTheme')"
-        class="absolute top-4 right-4"
-        :data-test-id="`theme-toggle-${$colorMode.value}`"
+        color="neutral"
+        variant="ghost"
+        class="center absolute top-4 right-4 z-50 h-10 w-10 cursor-pointer"
+        data-test-id="theme-toggle"
         size="xl"
-        :ui
-        @click="$colorMode.preference = $colorMode.preference === 'dark' ? 'light' : 'dark'"
-    />
+        @click="isDark = !isDark"
+    >
+        <template #leading>
+            <UIcon
+                class="hidden size-8 dark:inline-block"
+                :class="isOnline ? 'text-front' : 'text-back'"
+                name="material-symbols:light-mode-outline-rounded"
+                data-test-id="icon-light-mode"
+            />
+            <UIcon
+                class="size-8 dark:hidden"
+                :class="isOnline ? 'text-front' : 'text-back'"
+                name="material-symbols:dark-mode-outline-rounded"
+                data-test-id="icon-dark-mode"
+            />
+        </template>
+    </Button>
 </template>

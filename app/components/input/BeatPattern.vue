@@ -79,6 +79,7 @@ function addBeat(beat: Beat) {
                     :content="{ side: 'right', align: 'center' }"
                     :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
                     :aria-label="playingComponentId ? $t('ui.pause') : $t('ui.play')"
+                    :data-test-id="`beat-pattern-input-${playingComponentId === componentId ? 'pause' : 'play'}-button`"
                     variant="ghost"
                     :disabled="beats.length === 0"
                     @click="
@@ -94,18 +95,21 @@ function addBeat(beat: Beat) {
                     v-bind="commonButtonProps"
                     icon="mdi:exclamation-thick"
                     :aria-label="$t('timer.form.interval.addAccent')"
+                    data-test-id="beat-pattern-input-add-accent-button"
                     @click="addBeat(Beat.ACCENTED)"
                 />
                 <Button
                     v-bind="commonButtonProps"
                     icon="mdi:music-note-quarter"
                     :aria-label="$t('timer.form.interval.addBeat')"
+                    data-test-id="beat-pattern-input-add-beat-button"
                     @click="addBeat(Beat.NORMAL)"
                 />
                 <Button
                     v-bind="commonButtonProps"
                     icon="mdi:music-rest-quarter"
                     :aria-label="$t('timer.form.interval.addPause')"
+                    data-test-id="beat-pattern-input-add-pause-button"
                     @click="addBeat(Beat.PAUSE)"
                 />
                 <Button
@@ -114,6 +118,7 @@ function addBeat(beat: Beat) {
                     icon="mdi:music-note-off"
                     color="error"
                     :aria-label="$t('timer.form.interval.deleteBeat')"
+                    data-test-id="beat-pattern-input-delete-button"
                     @click="
                         () => {
                             if (beats.length > 0) {
@@ -132,6 +137,7 @@ function addBeat(beat: Beat) {
                 :key="index"
                 class="size-8"
                 :class="{ 'bg-primary': index === currentBeat }"
+                :data-test-id="`beat-pattern-input-beat-${index}`"
                 :name="BeatSymbol[beat]"
             />
         </div>
