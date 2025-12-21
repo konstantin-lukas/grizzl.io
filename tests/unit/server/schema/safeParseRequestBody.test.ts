@@ -1,10 +1,10 @@
 import type { EventHandlerRequest, H3Event } from "h3";
-import { afterEach, expect, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import { z } from "zod";
 
 const schema = z.string();
 
-afterEach(() => {
+beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
 });

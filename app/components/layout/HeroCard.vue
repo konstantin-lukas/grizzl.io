@@ -19,9 +19,9 @@ const {
     <component
         :is="disabled ? 'div' : NuxtLink"
         data-test-id="hero-card"
-        :to="disabled ? null : `/${label}`"
+        :to="disabled ? undefined : `/${label}`"
         :class="{ 'pointer-events-none': disabled }"
-        :aria-hidden="disabled || null"
+        :aria-hidden="disabled || undefined"
     >
         <UCard
             class="center aspect-square w-48"
