@@ -57,8 +57,9 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
             progress.value = 0;
             intervalStartTime.value = Date.now();
             repetition.value++;
+        } else {
+            progress.value = newProgress;
         }
-        progress.value = newProgress;
         requestAnimationFrame(animateTimer);
     };
 
