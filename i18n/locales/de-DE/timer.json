@@ -30,6 +30,9 @@
                 "edit": "Einen Timer bearbeiten",
                 "create": "Einen Timer erstellen",
                 "description": "Wähle zwischen verschiedenen Intervalltypen, um einen vollständig angepassten Timer zu erstellen"
+            },
+            "slideover": {
+                "title": "Timer-Wiedergabe"
             }
         },
         "toast": {

@@ -21,6 +21,7 @@ const togglePlayback = () => {
             icon="heroicons:arrow-path-16-solid"
             :aria-label="$t('ui.reset')"
             variant="subtle"
+            data-test-id="timer-controls-reset-button"
             @click="
                 () => {
                     emit('reset');
@@ -32,12 +33,14 @@ const togglePlayback = () => {
             size="xl"
             :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
             :aria-label="playing ? $t('ui.pause') : $t('ui.start')"
+            :data-test-id="`timer-controls-${playing ? 'pause' : 'play'}-button`"
             @click="togglePlayback"
         />
         <Button
             size="xl"
             :icon="mute ? 'heroicons:speaker-x-mark' : 'heroicons:speaker-wave'"
             :aria-label="mute ? $t('ui.unmute') : $t('ui.mute')"
+            :data-test-id="`timer-controls-${mute ? 'unmute' : 'mute'}-button`"
             variant="subtle"
             :color="mute ? 'neutral' : 'primary'"
             @click="mute = !mute"
