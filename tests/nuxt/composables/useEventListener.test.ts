@@ -1,4 +1,4 @@
-import { useEventListener } from "@@/app/composables/useEventListener";
+import useEventListener from "@@/app/composables/useEventListener";
 import { withSetup } from "@@/tests/utils/nuxt";
 import { expect, test, vi } from "vitest";
 import { ref } from "vue";

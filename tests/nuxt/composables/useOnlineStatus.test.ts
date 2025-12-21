@@ -1,4 +1,4 @@
-import { useOnlineStatus } from "@@/app/composables/useOnlineStatus";
+import useOnlineStatus from "@@/app/composables/useOnlineStatus";
 import { withSetup } from "@@/tests/utils/nuxt";
 import { clearNuxtState } from "nuxt/app";
 import { beforeEach, expect, test, vi } from "vitest";
