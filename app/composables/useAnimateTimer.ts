@@ -87,9 +87,9 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         if (p) {
             intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
             startTime.value = Date.now() - elapsedTime.value;
-            // This sits in a timeout to avoid the animation loop starting while the old one is running.
+            // This gets put in the microtask queue to avoid the animation loop starting while the old one is running.
             // It prevents the first beat being played twice when clicking the play button after the timer has completed.
-            setTimeout(() => animateTimer(), 0);
+            queueMicrotask(() => animateTimer());
         }
     });
 
