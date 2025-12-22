@@ -22,8 +22,8 @@ test("allows creating a new timer when no timers exist", async ({ timerPage, db 
 
     await timerPage.createTimer({ title });
 
-    await timerPage.expect("listItemTitle").toHaveText(title);
-    await timerPage.expect("listItemLength").toHaveText("1 round (3 seconds)");
+    await timerPage.expect("listItemTitles").toHaveText(title);
+    await timerPage.expect("listItemLengths").toHaveText("1 round (3 seconds)");
 
     const [timer] = await db.timer.select();
     expect(timer.title).toBe(title);
@@ -45,12 +45,29 @@ test("allows editing an existing timer", async ({ timerPage, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(timer.id);
     await timerPage.goto();
+
     await timerPage.expect().toHaveScreenshot();
-    await timerPage.expect("listItemTitle").toHaveText(timer.title);
+    await timerPage.expect("listItemTitles").toHaveText(timer.title);
+
     await timerPage.click("listItemEditButtons");
     await timerPage.fill("titleInput", newTitle);
     await timerPage.click("submitButton");
-    await timerPage.expect("listItemTitle").toHaveText(newTitle);
+
+    await timerPage.expect("listItemTitles").toHaveText(newTitle);
     const [updatedTimer] = await db.timer.select(timer.id);
     expect(updatedTimer.title).toBe(newTitle);
+});
+
+test("allows soft-deleting an existing timer", async ({ timerPage, db }) => {
+    const [timer] = await db.timer.insert({ count: 1 });
+    await db.timerInterval.insert(timer.id);
+    await timerPage.goto();
+
+    expect(timer.deleted).toBe(false);
+    await timerPage.expect("listItemTitles").toHaveText(timer.title);
+    await timerPage.click("listItemDeleteButtons");
+    await timerPage.expect("listItemTitles").toBeDisattached();
+
+    const [updatedTimer] = await db.timer.select(timer.id);
+    expect(updatedTimer.deleted).toBe(true);
 });
