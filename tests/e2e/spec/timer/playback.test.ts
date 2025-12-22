@@ -150,4 +150,9 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
 
         await timerPage.expect("activeRound").toHaveText("2/2");
     });
+
+    await test.step("Reset timer and check that displayed round is reset", async () => {
+        await timerPage.click("resetButton");
+        await timerPage.expect("activeRound").toHaveText("1/2");
+    });
 });
