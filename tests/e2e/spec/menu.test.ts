@@ -99,6 +99,7 @@ test("has a button to toggle the theme", async ({ homePage }) => {
 
 test("contains no unexpected changes in accessibility or visual appearance", async ({ homePage }) => {
     await homePage.goto();
-    await homePage.analyzeA11y();
+    await homePage.click("menuButton");
     await homePage.expect().toHaveScreenshot();
+    await homePage.analyzeA11y();
 });
