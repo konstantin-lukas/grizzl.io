@@ -18,7 +18,6 @@ const {
 <template>
     <component
         :is="disabled ? 'div' : NuxtLink"
-        data-test-id="hero-card"
         :to="disabled ? undefined : `/${label}`"
         :class="{ 'pointer-events-none': disabled }"
         :aria-hidden="disabled || undefined"

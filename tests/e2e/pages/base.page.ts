@@ -88,4 +88,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
     async click(what: keyof T | keyof typeof BASE_LOCATORS) {
         return this.locators[what].click();
     }
+
+    expectFilter(what: keyof T | keyof typeof BASE_LOCATORS, filter?: Parameters<Locator["filter"]>[0]) {
+        return expect(this.locators[what].filter(filter));
+    }
 }
