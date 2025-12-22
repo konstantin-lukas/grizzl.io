@@ -49,6 +49,17 @@ export default abstract class BasePage<T extends Record<string, string>> {
         await this.page.evaluate(() => {
             const el = document.getElementById("nuxt-devtools-container");
             if (el) el.remove();
+
+            const css = `*, *::before, *::after {
+              transition: none !important;
+              animation: none !important;
+              animation-duration: 0s !important;
+              animation-delay: 0s !important;
+              scroll-behavior: auto !important;
+            }`;
+            const style = document.createElement("style");
+            style.appendChild(document.createTextNode(css));
+            document.documentElement.appendChild(style);
         });
         return result;
     }
@@ -88,19 +99,41 @@ export default abstract class BasePage<T extends Record<string, string>> {
     expect(): ReturnType<typeof expect<Page>>;
     expect(
         what: keyof T | keyof typeof BASE_LOCATORS,
-        filter?: Parameters<Locator["filter"]>[0],
+        options?: { filter?: Parameters<Locator["filter"]>[0]; nth?: number },
     ): ReturnType<typeof expect<(typeof this.locators)[keyof T | keyof typeof BASE_LOCATORS]>>;
-    expect(what?: keyof T | keyof typeof BASE_LOCATORS, filter?: Parameters<Locator["filter"]>[0]) {
+    expect(
+        what?: keyof T | keyof typeof BASE_LOCATORS,
+        options?: { filter?: Parameters<Locator["filter"]>[0]; nth?: number },
+    ) {
         if (!what) return expect(this.page);
-        if (!filter) return expect(this.locators[what]);
-        return expect(this.locators[what].filter(filter));
+        if (!options?.filter) {
+            if (typeof options?.nth === "number") {
+                return expect(this.locators[what].nth(options.nth));
+            }
+            return expect(this.locators[what]);
+        }
+        if (typeof options?.nth === "number") {
+            return expect(this.locators[what].nth(options.nth).filter(options.filter));
+        }
+        return expect(this.locators[what].filter(options.filter));
     }
 
-    async click(what: keyof T | keyof typeof BASE_LOCATORS) {
+    async click(what: keyof T | keyof typeof BASE_LOCATORS, options: { nth?: number } = {}) {
+        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).click();
         return this.locators[what].click();
     }
 
-    async fill(what: keyof T | keyof typeof BASE_LOCATORS, value: string, options?: Parameters<Locator["fill"]>[1]) {
+    async fill(
+        what: keyof T | keyof typeof BASE_LOCATORS,
+        value: string,
+        options?: Parameters<Locator["fill"]>[1] & { nth?: number },
+    ) {
+        if (typeof options?.nth === "number") return this.locators[what].nth(options.nth).fill(value, options);
         return this.locators[what].fill(value, options);
+    }
+
+    async focus(what: keyof T | keyof typeof BASE_LOCATORS, options: { nth?: number } = {}) {
+        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).focus();
+        return this.locators[what].focus();
     }
 }
