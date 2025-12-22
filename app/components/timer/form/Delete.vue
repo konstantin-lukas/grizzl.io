@@ -12,6 +12,7 @@ const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, {
 
 <template>
     <Button
+        data-test-id="timer-list-item-delete-button"
         :aria-label="$t('ui.delete')"
         color="error"
         variant="subtle"

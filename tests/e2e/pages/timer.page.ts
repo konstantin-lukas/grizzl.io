@@ -8,9 +8,13 @@ const LOCATORS = {
     voicePreviewButton: "timer-upsert-voice-preview-button",
     voicePreviewInput: "timer-upsert-voice-preview-input",
     submitButton: "timer-upsert-submit-button",
-    timerListItemTitle: "timer-list-item-title",
-    timerListItemLength: "timer-list-item-length",
+    listItemTitle: "timer-list-item-title",
+    listItemLength: "timer-list-item-length",
+    listItemPlayButtons: "timer-list-item-play-button",
+    listItemEditButtons: "timer-list-item-edit-button",
+    listItemDeleteButtons: "timer-list-item-delete-button",
     formErrors: "timer-upsert-form-errors-alert",
+    createButton: "timer-create-button",
 };
 
 export default class TimerPage extends BasePage<typeof LOCATORS> {

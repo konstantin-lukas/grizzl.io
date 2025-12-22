@@ -42,11 +42,17 @@ watch(open, () => {
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button :aria-label="$t('ui.start')" icon="heroicons:play-solid" @click="emit('start', timer)" />
+                <Button
+                    :aria-label="$t('ui.start')"
+                    icon="heroicons:play-solid"
+                    data-test-id="timer-list-item-play-button"
+                    @click="emit('start', timer)"
+                />
                 <Button
                     :aria-label="$t('ui.edit')"
                     variant="subtle"
                     icon="heroicons:pencil-square"
+                    data-test-id="timer-list-item-edit-button"
                     @click="open = true"
                 />
                 <TimerFormDelete :timer="props.timer" />
@@ -59,7 +65,13 @@ watch(open, () => {
         </div>
         <Transition name="fade">
             <div v-if="props.isLast" class="center absolute w-full">
-                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')">
+                <Button
+                    icon="heroicons:plus"
+                    color="neutral"
+                    size="xl"
+                    data-test-id="timer-create-button"
+                    @click="emit('create')"
+                >
                     {{ $t("ui.create") }}
                 </Button>
             </div>
