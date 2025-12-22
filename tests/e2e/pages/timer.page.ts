@@ -35,6 +35,8 @@ const LOCATORS = {
     resetButton: "timer-controls-reset-button",
     playButton: "timer-controls-play-button",
     beatIndicator: "timer-beat-indicator",
+    title: "timer-title",
+    intervalTitle: "interval-title",
 };
 
 type Interval = { title?: string; duration?: number; repeatCount?: number; type?: number };
