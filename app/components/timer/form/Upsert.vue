@@ -111,6 +111,7 @@ function onEnd() {
                             role="alert"
                             :title="$t('ui.formErrors', errors.length)"
                             variant="subtle"
+                            data-test-id="timer-upsert-form-errors-alert"
                             icon="heroicons:exclamation-triangle"
                         >
                             <template #description>

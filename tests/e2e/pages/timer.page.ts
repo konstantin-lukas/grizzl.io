@@ -9,6 +9,8 @@ const LOCATORS = {
     voicePreviewInput: "timer-upsert-voice-preview-input",
     submitButton: "timer-upsert-submit-button",
     timerListItemTitle: "timer-list-item-title",
+    timerListItemLength: "timer-list-item-length",
+    formErrors: "timer-upsert-form-errors-alert",
 };
 
 export default class TimerPage extends BasePage<typeof LOCATORS> {

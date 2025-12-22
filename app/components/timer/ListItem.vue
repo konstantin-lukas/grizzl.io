@@ -31,7 +31,7 @@ watch(open, () => {
                     data-test-id="timer-list-item-title"
                     >{{ props.timer.title }}</TypoH2
                 >
-                <span>
+                <span data-test-id="timer-list-item-length">
                     {{
                         $t(
                             "timer.round",

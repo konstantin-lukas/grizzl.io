@@ -23,4 +23,16 @@ test("allows creating a new timer when no timers exist", async ({ timerPage }) =
     await timerPage.createTimer(timer);
 
     await timerPage.expect("timerListItemTitle").toHaveText(timer.title);
+    await timerPage.expect("timerListItemLength").toHaveText("1 round (3 seconds)");
+});
+
+test("displays an alert if there were form validation errors", async ({ timerPage }) => {
+    await timerPage.goto();
+
+    await timerPage.click("emptyButton");
+    await timerPage.click("submitButton");
+
+    const errorTitle = "The Submission Failed Due An Error";
+    const errorDescription = "The provided text has to be at least 1 character long.";
+    await timerPage.expect("formErrors").toHaveText(errorTitle + errorDescription);
 });
