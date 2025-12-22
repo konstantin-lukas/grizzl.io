@@ -43,7 +43,10 @@ test("allows playing a created timer", async ({ timerPage, db }) => {
     await timerPage.expect("activeRound").toHaveText("1/1");
 });
 
-test("shows indicators for beats on timer progress circle but not for pauses", async ({ timerPage, db }) => {
+test("shows indicators for beats on timer progress and information on timer and interval lengths", async ({
+    timerPage,
+    db,
+}) => {
     const beatPattern = [
         Beat.ACCENTED,
         Beat.PAUSE,
@@ -67,10 +70,19 @@ test("shows indicators for beats on timer progress circle but not for pauses", a
         count: 1,
         beatPattern,
     });
+    await db.timerInterval.insert(timer.id, {
+        count: 1,
+        index: 1,
+        duration: 3000,
+        repeatCount: 4,
+    });
 
     await timerPage.goto();
     await timerPage.click("listItemPlayButtons");
 
+    await timerPage.expect("remainingTime").toHaveText("00:03");
+    await timerPage.expect("remainingIntervalTime").toHaveText("00:18");
+    await timerPage.expect("activeRound").toHaveText("1/6");
     await timerPage.expect("beatIndicator").toHaveCount(8);
     await timerPage.expect().toHaveScreenshot({
         maxDiffPixelRatio: 0.02,

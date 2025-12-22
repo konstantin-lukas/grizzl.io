@@ -10,17 +10,23 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
 
     async insert(
         timerId: string,
-        options: { count?: number; repeatCount?: number; duration?: number; beatPattern?: Beat[] | null } = {},
+        options: {
+            count?: number;
+            repeatCount?: number;
+            duration?: number;
+            beatPattern?: Beat[] | null;
+            index?: number;
+        } = {},
     ) {
-        const { count = 2, repeatCount = 2, duration = 3000, beatPattern } = options;
+        const { count = 2, repeatCount = 2, duration = 3000, beatPattern, index } = options;
         const getBeatPattern = (index: number) => (index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null);
-        const data = Array.from({ length: count }).map((_, index) => ({
+        const data = Array.from({ length: count }).map((_, i) => ({
             timerId,
-            title: str(100, { base: index.toString() }),
-            index,
+            title: str(100, { base: i.toString() }),
+            index: index ?? i,
             repeatCount,
             duration,
-            beatPattern: beatPattern === undefined ? getBeatPattern(index) : beatPattern,
+            beatPattern: beatPattern === undefined ? getBeatPattern(i) : beatPattern,
         }));
         return this.db.insert(this.schema).values(data).returning();
     }
