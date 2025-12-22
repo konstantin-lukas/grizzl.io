@@ -58,7 +58,7 @@ test("allows editing an existing timer", async ({ timerPage, db }) => {
     expect(updatedTimer.title).toBe(newTitle);
 });
 
-test("allows soft-deleting an existing timer", async ({ timerPage, db }) => {
+test("allows deleting and restoring an existing timer", async ({ timerPage, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(timer.id);
     await timerPage.goto();
@@ -70,4 +70,10 @@ test("allows soft-deleting an existing timer", async ({ timerPage, db }) => {
 
     const [updatedTimer] = await db.timer.select(timer.id);
     expect(updatedTimer.deleted).toBe(true);
+
+    await timerPage.click("undeleteButton");
+    await timerPage.expect("listItemTitles").toHaveText(timer.title);
+
+    const [restoredTimer] = await db.timer.select(timer.id);
+    expect(restoredTimer.deleted).toBe(false);
 });

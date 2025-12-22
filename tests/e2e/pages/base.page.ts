@@ -21,6 +21,7 @@ const BASE_LOCATORS = {
     darkModeIcon: "icon-dark-mode",
     inertElements: "inert-elements",
     emptyButton: "empty-create-button",
+    undeleteButton: "undo-soft-delete-button",
     root: "root",
 };
 

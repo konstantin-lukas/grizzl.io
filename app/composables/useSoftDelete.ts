@@ -21,6 +21,7 @@ export default function useSoftDelete(
                     color: "success",
                     actions: [
                         {
+                            ...{ "data-test-id": "undo-soft-delete-button" },
                             label: t("ui.undo"),
                             icon: "heroicons:arrow-turn-down-left",
                             color: "neutral",
