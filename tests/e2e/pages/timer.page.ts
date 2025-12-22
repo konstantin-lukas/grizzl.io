@@ -4,14 +4,10 @@ import type { Page } from "@playwright/test";
 const LOCATORS = {
     // TIMER FORM
     titleInput: "timer-upsert-title-input",
-    voiceSelect: "timer-upsert-voice-select",
-    voiceOptions: "timer-upsert-voice-select-option",
-    voicePreviewButton: "timer-upsert-voice-preview-button",
-    voicePreviewInput: "timer-upsert-voice-preview-input",
     submitButton: "timer-upsert-submit-button",
-    legends: "interval-legend",
 
     // TIMER FORM - INTERVAL
+    legends: "interval-legend",
     formErrors: "timer-upsert-form-errors-alert",
     duplicateButtons: "interval-duplicate-button",
     moveUpButtons: "interval-move-up-button",
@@ -40,13 +36,9 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
         super(page, LOCATORS, "/timer");
     }
 
-    async createTimer(data: { title: string; intervals?: Interval[]; ttsVoice?: number }, submit = true) {
-        const { title, intervals = [], ttsVoice } = data;
+    async createTimer(data: { title: string; intervals?: Interval[] }, submit = true) {
+        const { title, intervals = [] } = data;
         await this.fill("titleInput", title);
-        if (typeof ttsVoice === "number") {
-            await this.click("voiceSelect");
-            await this.click("voiceOptions", { nth: ttsVoice });
-        }
         await this.duplicateNthInterval(0, intervals.length - 1);
         for (const [index, interval] of intervals.entries()) {
             await this.fillNthInterval(index, interval);

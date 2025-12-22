@@ -29,13 +29,7 @@ const voiceOptions = computed(() => [
 
 <template>
     <UFormField v-if="ttsVoices.length > 0" :label="$t('timer.form.ttsVoice')" name="ttsVoice" class="w-full">
-        <USelect
-            v-model="ttsVoice!"
-            :items="voiceOptions"
-            class="w-full"
-            :aria-describedby="alertId"
-            data-test-id="timer-upsert-voice-select"
-        >
+        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full" :aria-describedby="alertId">
             <template #trailing>
                 <UTooltip
                     :text="$t('timer.form.ttsInfo')"
@@ -48,9 +42,6 @@ const voiceOptions = computed(() => [
                         class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
                     />
                 </UTooltip>
-            </template>
-            <template #item="{ item }">
-                <span data-test-id="timer-upsert-voice-select-option">{{ item.label }}</span>
             </template>
         </USelect>
         <Transition name="fade">
@@ -73,19 +64,13 @@ const voiceOptions = computed(() => [
                 icon="heroicons:speaker-wave"
                 :aria-label="$t('ui.play')"
                 :content="{ side: 'left' }"
-                data-test-id="timer-upsert-voice-preview-button"
                 @click="
                     () => {
                         if (ttsVoice) speak(utteranceText, ttsVoice);
                     }
                 "
             />
-            <UInput
-                v-model="utteranceText"
-                class="w-full"
-                :placeholder="$t('timer.form.ttsPreview')"
-                data-test-id="timer-upsert-voice-preview-input"
-            />
+            <UInput v-model="utteranceText" class="w-full" :placeholder="$t('timer.form.ttsPreview')" />
         </div>
     </Transition>
 </template>
