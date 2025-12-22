@@ -5,7 +5,7 @@ const texts = {
     "de-DE": {
         poll: "Umfragen",
         todo: "To-do",
-        timer: "Stoppuhr",
+        timer: "Timer",
         finance: "Finanzen",
     },
     "en-US": {
@@ -29,70 +29,76 @@ const texts = {
 };
 
 forEachLocale((locale, texts) => {
-    test(`should have links to all services for locale ${locale.language}`, async ({ homePage, goto }) => {
+    test(`has links to all services for locale ${locale.language}`, async ({ homePage }) => {
         const links = [
-            { locator: homePage.loc.pollLink, text: texts.poll, href: "" },
-            { locator: homePage.loc.todoLink, text: texts.todo, href: "" },
-            { locator: homePage.loc.timerLink, text: texts.timer, href: "/timer" },
-            { locator: homePage.loc.financeLink, text: texts.finance, href: "" },
+            { locator: "pollLink", text: texts.poll, href: "" },
+            { locator: "todoLink", text: texts.todo, href: "" },
+            { locator: "timerLink", text: texts.timer, href: "/timer" },
+            { locator: "financeLink", text: texts.finance, href: "" },
         ];
 
         await test.step("Check that menu elements do not exist when the menu is closed", async () => {
-            await goto(homePage.url, { waitUntil: "hydration" });
-            await expect(homePage.loc.menuButton).toBeVisible();
+            await homePage.goto();
+            await homePage.expect("menuButton").toBeVisible();
             for (const { locator } of links) {
-                await expect(locator).toBeHidden();
+                await homePage.expect(locator).toBeHidden();
             }
         });
 
         await test.step("Open the menu and check that all links exist", async () => {
-            await homePage.loc.menuButton.click();
+            await homePage.click("menuButton");
             for (const { locator, text, href } of links) {
-                await expect(locator).toHaveText(text);
+                await homePage.expect(locator).toHaveText(text);
                 if (href === "") {
-                    await expect(locator).not.toHaveAttribute("href");
+                    await homePage.expect(locator).not.toHaveAttribute("href");
                     continue;
                 }
-                await expect(locator).toHaveAttribute("href", href);
+                await homePage.expect(locator).toHaveAttribute("href", href);
             }
         });
     });
 }, texts);
 
-test("should make all other page elements not focusable when open", async ({ homePage, goto }) => {
-    await goto(homePage.url, { waitUntil: "hydration" });
+test("makes all other page elements not focusable when open", async ({ homePage }) => {
+    await homePage.goto();
     await homePage.forEach("inertElements", async el => {
         await expect(el).not.toHaveAttribute("inert");
     });
     await homePage.analyzeA11y();
-    await homePage.loc.menuButton.click();
+    await homePage.click("menuButton");
     await homePage.forEach("inertElements", async el => {
         await expect(el).toHaveAttribute("inert");
     });
     await homePage.analyzeA11y();
 });
 
-test("should have a button to toggle the theme", async ({ homePage, goto }) => {
-    await goto(homePage.url, { waitUntil: "hydration" });
+test("has a button to toggle the theme", async ({ homePage }) => {
+    await homePage.goto();
 
     await test.step("Check that the state before toggling the theme", async () => {
-        await expect(homePage.loc.lightModeIcon).toBeHidden();
-        await expect(homePage.loc.darkModeIcon).toBeHidden();
-        await homePage.loc.menuButton.click();
-        await expect(homePage.loc.lightModeIcon).toBeHidden();
-        await expect(homePage.loc.darkModeIcon).toBeVisible();
-        await expect(homePage.loc.root).toContainClass("light");
-        await expect(homePage.loc.root).not.toContainClass("dark");
+        await homePage.expect("lightModeIcon").toBeHidden();
+        await homePage.expect("darkModeIcon").toBeHidden();
+        await homePage.click("menuButton");
+        await homePage.expect("lightModeIcon").toBeHidden();
+        await homePage.expect("darkModeIcon").toBeVisible();
+        await homePage.expect("root").toContainClass("light");
+        await homePage.expect("root").not.toContainClass("dark");
     });
 
     await test.step("Check that the state after toggling the theme", async () => {
-        await homePage.loc.themeToggle.click();
-        await expect(homePage.loc.root).toContainClass("dark");
-        await expect(homePage.loc.root).not.toContainClass("light");
-        await expect(homePage.loc.lightModeIcon).toBeVisible();
-        await expect(homePage.loc.darkModeIcon).toBeHidden();
-        await homePage.loc.themeToggle.click();
-        await expect(homePage.loc.lightModeIcon).toBeHidden();
-        await expect(homePage.loc.darkModeIcon).toBeVisible();
+        await homePage.click("themeToggle");
+        await homePage.expect("root").toContainClass("dark");
+        await homePage.expect("root").not.toContainClass("light");
+        await homePage.expect("lightModeIcon").toBeVisible();
+        await homePage.expect("darkModeIcon").toBeHidden();
+        await homePage.click("themeToggle");
+        await homePage.expect("lightModeIcon").toBeHidden();
+        await homePage.expect("darkModeIcon").toBeVisible();
     });
+});
+
+test("contains no unexpected changes in accessibility or visual appearance", async ({ homePage }) => {
+    await homePage.goto();
+    await homePage.analyzeA11y();
+    await homePage.expect().toHaveScreenshot();
 });

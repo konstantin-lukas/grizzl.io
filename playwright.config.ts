@@ -25,6 +25,9 @@ export default defineConfig<ConfigOptions>({
         nuxt: {
             host: "http://grizzl.localhost",
         },
+        contextOptions: {
+            reducedMotion: "reduce",
+        },
     },
     projects: [
         {
