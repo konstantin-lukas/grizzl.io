@@ -37,7 +37,7 @@ test("allows playing a created timer", async ({ timerPage, db }) => {
     await timerPage.click("resetButton");
 
     await timerPage.expect("title").toHaveText(timer.title);
-    await timerPage.expect("intervalTitle").toHaveText("");
+    await timerPage.expect("intervalTitle").toHaveText(interval.title!);
     await timerPage.expect("remainingTime").toHaveText("00:01");
     await timerPage.expect("remainingIntervalTime").toHaveText("00:01");
     await timerPage.expect("activeRound").toHaveText("1/1");
