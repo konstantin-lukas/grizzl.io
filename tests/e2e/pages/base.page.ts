@@ -79,17 +79,15 @@ export default abstract class BasePage<T extends Record<string, string>> {
     expect(): ReturnType<typeof expect<Page>>;
     expect(
         what: keyof T | keyof typeof BASE_LOCATORS,
+        filter?: Parameters<Locator["filter"]>[0],
     ): ReturnType<typeof expect<(typeof this.locators)[keyof T | keyof typeof BASE_LOCATORS]>>;
-    expect(what?: keyof T | keyof typeof BASE_LOCATORS) {
+    expect(what?: keyof T | keyof typeof BASE_LOCATORS, filter?: Parameters<Locator["filter"]>[0]) {
         if (!what) return expect(this.page);
-        return expect(this.locators[what]);
+        if (!filter) return expect(this.locators[what]);
+        return expect(this.locators[what].filter(filter));
     }
 
     async click(what: keyof T | keyof typeof BASE_LOCATORS) {
         return this.locators[what].click();
-    }
-
-    expectFilter(what: keyof T | keyof typeof BASE_LOCATORS, filter?: Parameters<Locator["filter"]>[0]) {
-        return expect(this.locators[what].filter(filter));
     }
 }
