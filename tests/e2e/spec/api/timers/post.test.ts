@@ -8,13 +8,13 @@ test.beforeEach(async ({ db }) => {
 });
 
 for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
-    test(`should reject creating a timer when ${name}`, async ({ request }) => {
+    test(`rejects creating a timer when ${name}`, async ({ request }) => {
         const response = await request.post("/api/timers", { data });
         expect(response.status()).toBe(400);
     });
 }
 
-test("should allow creating a new timer with valid values", async ({ request, db }) => {
+test("allows creating a new timer with valid values", async ({ request, db }) => {
     const response = await request.post("/api/timers", { data: BASE_TIMER });
     const apiTimer = response.headers().location;
     expect(response.status()).toBe(201);
@@ -23,14 +23,14 @@ test("should allow creating a new timer with valid values", async ({ request, db
     expect(apiTimer).toBe(`/api/timers/${timers[0].id}`);
 });
 
-test("should ignore any provided id for determining ownership", async ({ request, db }) => {
+test("ignores any provided id for determining ownership", async ({ request, db }) => {
     await request.post("/api/timers", { data: { ...BASE_TIMER, userId: "2222222222222222" } });
     const timers = await db.timer.select();
     const user = await db.user.select("user@test.com");
     expect(timers[0].userId).toBe(user.id);
 });
 
-test("should transform an empty interval title to null", async ({ request, db }) => {
+test("transforms an empty interval title to null", async ({ request, db }) => {
     await request.post("/api/timers", { data: { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, title: "" }] } });
     const intervals = await db.timerInterval.select();
     expect(intervals[0].title).toBeNull();

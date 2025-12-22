@@ -13,8 +13,13 @@ export default defineConfig<ConfigOptions>({
     globalSetup: "./tests/e2e/global.setup.ts",
     expect: {
         timeout: 20000,
+        toHaveScreenshot: {
+            maxDiffPixelRatio: 0.02,
+            animations: "disabled",
+        },
     },
     timeout: 30000,
+    snapshotDir: "./tests/e2e/snapshots",
     use: {
         trace: "retain-on-failure",
         testIdAttribute: "data-test-id",
@@ -24,6 +29,9 @@ export default defineConfig<ConfigOptions>({
         storageState: "tests/e2e/storage.json",
         nuxt: {
             host: "http://grizzl.localhost",
+        },
+        contextOptions: {
+            reducedMotion: "reduce",
         },
     },
     projects: [

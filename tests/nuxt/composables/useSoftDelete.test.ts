@@ -79,11 +79,12 @@ test("should make a call to the provided resource and add a toast with an undo o
             color: "success",
             actions: [
                 {
-                    label: "ui.undo",
-                    icon: "heroicons:arrow-turn-down-left",
-                    color: "neutral",
-                    variant: "outline",
-                    onClick: expect.any(Function),
+                    "data-test-id": "undo-soft-delete-button",
+                    "label": "ui.undo",
+                    "icon": "heroicons:arrow-turn-down-left",
+                    "color": "neutral",
+                    "variant": "outline",
+                    "onClick": expect.any(Function),
                 },
             ],
         }),

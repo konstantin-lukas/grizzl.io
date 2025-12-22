@@ -15,13 +15,16 @@ const durationSeconds = computed({
     <fieldset
         class="group relative rounded-md border border-border-accented bg-back transition-[margin] focus-within:mb-12 sm:focus-within:mb-0"
     >
-        <legend class="ml-2 bg-back px-2">{{ $t("timer.form.interval.index", index + 1) }}</legend>
+        <legend class="ml-2 bg-back px-2" data-test-id="interval-legend">
+            {{ $t("timer.form.interval.index", index + 1) }}
+        </legend>
         <div class="center w-full gap-4 p-4">
             <UFormField :label="$t('timer.form.interval.title')" :name="`intervals.${index}.title`" class="w-full">
                 <UInput
                     v-model="intervals![index]!.title"
                     class="w-full"
                     :maxlength="TITLE_MAX"
+                    data-test-id="interval-title-input"
                     :placeholder="$t('timer.form.interval.titlePlaceholder')"
                 />
             </UFormField>
@@ -38,6 +41,7 @@ const durationSeconds = computed({
                             ? $t('timer.form.interval.rhythm')
                             : $t('timer.form.interval.temporal')
                     "
+                    data-test-id="interval-type-select"
                     class="w-full"
                     :portal="false"
                     @update:model-value="
@@ -48,7 +52,11 @@ const durationSeconds = computed({
                                     : [Beat.ACCENTED, Beat.NORMAL, Beat.NORMAL, Beat.NORMAL];
                         }
                     "
-                />
+                >
+                    <template #item="{ item }">
+                        <span data-test-id="interval-type-option">{{ item }}</span>
+                    </template>
+                </USelect>
             </UFormField>
             <div class="flex gap-4">
                 <UFormField
@@ -57,7 +65,12 @@ const durationSeconds = computed({
                     required
                     class="w-full"
                 >
-                    <UInputNumber v-model="intervals![index]!.repeatCount" class="w-full" :min="COUNT_MIN" />
+                    <UInputNumber
+                        v-model="intervals![index]!.repeatCount"
+                        class="w-full"
+                        :min="COUNT_MIN"
+                        data-test-id="interval-repetitions-input"
+                    />
                 </UFormField>
                 <UFormField
                     :label="$t('timer.form.interval.duration')"
@@ -69,6 +82,7 @@ const durationSeconds = computed({
                         v-model="durationSeconds"
                         class="w-full"
                         :step="0.1"
+                        data-test-id="interval-duration-input"
                         :min="COUNT_MIN"
                         :format-options="{ style: 'unit', unit: 'second' }"
                     />
@@ -83,6 +97,7 @@ const durationSeconds = computed({
                     class="w-full"
                 >
                     <InputBeatPattern
+                        data-test-id="interval-beat-pattern-input"
                         :beats="intervals![index]!.beatPattern"
                         :bar-length="intervals![index]!.duration"
                         class="w-full"

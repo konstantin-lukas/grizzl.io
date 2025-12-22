@@ -8,7 +8,7 @@ test.beforeEach(async ({ db }) => {
 
 testIdParameter("patch", "/api/timers", { deleted: true });
 
-test("should only allow a user to edit their own timers", async ({ request, db }) => {
+test("only allows a user to edit their own timers", async ({ request, db }) => {
     const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
     const [timer] = await db.timer.insert({ userId: otherUser.id });
     expect(timer.deleted).toBe(false);
@@ -18,7 +18,7 @@ test("should only allow a user to edit their own timers", async ({ request, db }
     expect(patchedTimer.id).toBe(timer.id);
 });
 
-test("should only allow patching the deleted property", async ({ request, db }) => {
+test("only allows patching the deleted property", async ({ request, db }) => {
     const [timer] = await db.timer.insert();
     const response = await request.patch(`/api/timers/${timer.id}`, { data: { ...FULL_TIMER, deleted: true } });
     expect(response.status()).toBe(204);
@@ -26,7 +26,7 @@ test("should only allow patching the deleted property", async ({ request, db }) 
     expect(patchedTimer).toStrictEqual({ ...timer, deleted: true });
 });
 
-test("should only modify the requested timer", async ({ request, db }) => {
+test("only modifies the requested timer", async ({ request, db }) => {
     const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
     const [otherTimer] = await db.timer.insert({ userId: otherUser.id });
     const [timer] = await db.timer.insert();
@@ -39,7 +39,7 @@ test("should only modify the requested timer", async ({ request, db }) => {
     expect(otherTimerAfterPatch).toStrictEqual(otherTimer);
 });
 
-test("should allow undoing a delete", async ({ request, db }) => {
+test("allows undoing a delete", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ deleted: true });
     expect(timer.deleted).toBe(true);
     await request.patch(`/api/timers/${timer.id}`, { data: { ...BASE_TIMER, deleted: false } });
@@ -47,7 +47,7 @@ test("should allow undoing a delete", async ({ request, db }) => {
     expect(patchedTimer.deleted).toBe(false);
 });
 
-test("should return a 204 even when the data hasn't changed", async ({ request, db }) => {
+test("returns a 204 even when the data hasn't changed", async ({ request, db }) => {
     const [t] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(t.id);
     const getResponseBefore = await request.get("/api/timers");

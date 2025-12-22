@@ -17,6 +17,7 @@ const { close } = useMenu();
                     <LayoutHeroCard
                         v-for="[label, icon, disabled] in APP_NAV"
                         :key="label"
+                        :data-test-id="`home-hero-card-${label}`"
                         :label
                         :icon
                         :disabled
@@ -37,6 +38,7 @@ const { close } = useMenu();
                         v-if="session.data"
                         size="xl"
                         icon="heroicons:arrow-right-end-on-rectangle"
+                        data-test-id="home-sign-out-button"
                         @click="
                             authClient
                                 .signOut()
@@ -46,7 +48,13 @@ const { close } = useMenu();
                     >
                         {{ $t("ui.signOut") }}
                     </Button>
-                    <Button v-else to="/signin" size="xl" icon="heroicons:arrow-right-end-on-rectangle">
+                    <Button
+                        v-else
+                        to="/signin"
+                        size="xl"
+                        icon="heroicons:arrow-right-end-on-rectangle"
+                        data-test-id="home-sign-in-button"
+                    >
                         {{ $t("ui.signIn") }}
                     </Button>
                     <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
@@ -71,6 +79,7 @@ const { close } = useMenu();
                     <LayoutHeroCard
                         v-for="[label, icon, disabled] in APP_NAV"
                         :key="label"
+                        :data-test-id="`home-hero-card-${label}`"
                         :label
                         :icon
                         :disabled
@@ -82,6 +91,7 @@ const { close } = useMenu();
                 <LayoutHeroCard
                     v-for="[label, icon, disabled] in APP_NAV"
                     :key="label"
+                    :data-test-id="`home-hero-card-${label}`"
                     :label
                     :icon
                     :disabled

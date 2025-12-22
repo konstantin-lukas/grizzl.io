@@ -10,7 +10,7 @@ test.beforeEach(async ({ db }) => {
 testIdParameter("put", "/api/timers", BASE_TIMER);
 
 for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
-    test(`should reject putting a timer when ${name}`, async ({ request, db }) => {
+    test(`rejects putting a timer when ${name}`, async ({ request, db }) => {
         await db.timer.insert({ count: 1 });
         const [timer] = await db.timer.select();
         const response = await request.put(`/api/timers/${timer.id}`, { data });
@@ -18,7 +18,7 @@ for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
     });
 }
 
-test("should allow creating a new interval by not providing an id", async ({ request, db }) => {
+test("allows creating a new interval by not providing an id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     await request.put(`/api/timers/${timer.id}`, { data: BASE_TIMER });
     const intervals = await db.timerInterval.select();
@@ -26,7 +26,7 @@ test("should allow creating a new interval by not providing an id", async ({ req
     expect(intervals).toStrictEqual([{ ...BASE_INTERVAL, timerId: timer.id, index: 0 }]);
 });
 
-test("should allow editing intervals by their id", async ({ request, db }) => {
+test("allows editing intervals by their id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const [timerInterval] = await db.timerInterval.insert(timer.id);
     await request.put(`/api/timers/${timer.id}`, {
@@ -36,7 +36,7 @@ test("should allow editing intervals by their id", async ({ request, db }) => {
     expect(intervals).toStrictEqual([{ ...BASE_INTERVAL, id: timerInterval.id, timerId: timer.id, index: 0 }]);
 });
 
-test("should not allow editing other user's intervals", async ({ request, db }) => {
+test("does not allow editing other user's intervals", async ({ request, db }) => {
     const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
     const [myTimer] = await db.timer.insert({ count: 1 });
     const [otherUsersTimer] = await db.timer.insert({ count: 1, userId: otherUser.id });
@@ -50,7 +50,7 @@ test("should not allow editing other user's intervals", async ({ request, db }) 
     expect(intervals.find(interval => interval.id === myInterval.id)).not.toStrictEqual(myInterval);
 });
 
-test("should return a 204 even when the data hasn't changed", async ({ request, db }) => {
+test("returns a 204 even when the data hasn't changed", async ({ request, db }) => {
     const [t] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(t.id);
     const getResponseBefore = await request.get("/api/timers");
@@ -62,7 +62,7 @@ test("should return a 204 even when the data hasn't changed", async ({ request, 
     expect(timerBefore).toStrictEqual(timerAfter);
 });
 
-test("should only allow putting certain properties", async ({ request, db }) => {
+test("only allows putting certain properties", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const [timerInterval] = await db.timerInterval.insert(timer.id);
     expect(await db.timerInterval.select()).toHaveLength(2);
@@ -88,7 +88,7 @@ test("should only allow putting certain properties", async ({ request, db }) => 
     });
 });
 
-test("should not allow deleting all intervals by providing an empty array", async ({ request, db }) => {
+test("does not allow deleting all intervals by providing an empty array", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(timer.id);
     const preIntervals = await db.timerInterval.select();
@@ -104,7 +104,7 @@ test("should not allow deleting all intervals by providing an empty array", asyn
     expect(preIntervals).toStrictEqual(postIntervals);
 });
 
-test("should not allow deleting all intervals by providing an unknown id", async ({ request, db }) => {
+test("does not allow deleting all intervals by providing an unknown id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const preIntervals = await db.timerInterval.insert(timer.id);
     expect(preIntervals).toHaveLength(2);

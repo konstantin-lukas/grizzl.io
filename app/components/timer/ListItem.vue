@@ -25,8 +25,14 @@ watch(open, () => {
             class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 sm:flex-row sm:items-center"
         >
             <div class="min-w-0 shrink-1">
-                <TypoH2 as="h1" class="mb-1 line-clamp-2 overflow-hidden break-words">{{ props.timer.title }}</TypoH2>
-                <span>
+                <TypoH2
+                    as="h1"
+                    class="mb-1 line-clamp-2 overflow-hidden break-words"
+                    data-test-id="timer-list-item-title"
+                >
+                    {{ props.timer.title }}
+                </TypoH2>
+                <span data-test-id="timer-list-item-length">
                     {{
                         $t(
                             "timer.round",
@@ -37,11 +43,17 @@ watch(open, () => {
                 </span>
             </div>
             <div class="flex justify-start gap-4">
-                <Button :aria-label="$t('ui.start')" icon="heroicons:play-solid" @click="emit('start', timer)" />
+                <Button
+                    :aria-label="$t('ui.start')"
+                    icon="heroicons:play-solid"
+                    data-test-id="timer-list-item-play-button"
+                    @click="emit('start', timer)"
+                />
                 <Button
                     :aria-label="$t('ui.edit')"
                     variant="subtle"
                     icon="heroicons:pencil-square"
+                    data-test-id="timer-list-item-edit-button"
                     @click="open = true"
                 />
                 <TimerFormDelete :timer="props.timer" />
@@ -54,7 +66,13 @@ watch(open, () => {
         </div>
         <Transition name="fade">
             <div v-if="props.isLast" class="center absolute w-full">
-                <Button icon="heroicons:plus" color="neutral" size="xl" @click="emit('create')">
+                <Button
+                    icon="heroicons:plus"
+                    color="neutral"
+                    size="xl"
+                    data-test-id="timer-create-button"
+                    @click="emit('create')"
+                >
                     {{ $t("ui.create") }}
                 </Button>
             </div>
