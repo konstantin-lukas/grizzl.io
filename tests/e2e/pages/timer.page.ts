@@ -34,6 +34,7 @@ const LOCATORS = {
     activeRound: "timer-active-round",
     resetButton: "timer-controls-reset-button",
     playButton: "timer-controls-play-button",
+    pauseButton: "timer-controls-pause-button",
     beatIndicator: "timer-beat-indicator",
     title: "timer-title",
     intervalTitle: "interval-title",

@@ -39,12 +39,12 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             >
                 <span
                     class="bottom-[calc(50%+1.25rem)] xs:bottom-[calc(50%+1.5rem)] sm:bottom-[calc(50%+1.75rem)]"
-                    data-test-id="timer-remaining-interval-time"
+                    data-test-id="timer-remaining-time"
                     :class="baseClass"
                 >
                     {{ remainingTime }}
                 </span>
-                <span data-test-id="timer-remaining-time">{{ remainingTimeInInterval }}</span>
+                <span data-test-id="timer-remaining-interval-time">{{ remainingTimeInInterval }}</span>
                 <span
                     class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
                     data-test-id="timer-active-round"
