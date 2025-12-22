@@ -1,4 +1,4 @@
-import { icons } from "./config/icons.json";
+import pwa from "./config/pwa";
 import { EnvSchema } from "./lib/env";
 import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
@@ -39,62 +39,7 @@ export default defineNuxtConfig({
         "@nuxt/fonts",
         "@vite-pwa/nuxt",
     ],
-    pwa: {
-        manifest: {
-            name: "Grizzl - The Bear That Does It All",
-            short_name: "Grizzl",
-            description: "Your everything in one app for daily tasks.",
-            start_url: "/",
-            display: "fullscreen",
-            display_override: ["standalone", "minimal-ui"],
-            background_color: "#ffffff",
-            theme_color: "#000000",
-            id: "/",
-            icons,
-            screenshots: [
-                {
-                    src: "/desktop-screenshot.png",
-                    sizes: "1920x1080",
-                    type: "image/png",
-                    form_factor: "wide",
-                },
-                {
-                    src: "/mobile-screenshot.png",
-                    sizes: "325x441",
-                    type: "image/png",
-                    form_factor: "narrow",
-                },
-            ],
-        },
-        client: {
-            installPrompt: true,
-        },
-        workbox: {
-            runtimeCaching: [
-                {
-                    urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
-                    method: "GET",
-                    handler: "CacheFirst",
-                    options: {
-                        cacheName: "images-cache",
-                        expiration: {
-                            maxEntries: 60,
-                            maxAgeSeconds: 10 * 24 * 60 * 60,
-                        },
-                    },
-                },
-                {
-                    urlPattern: /\/api\/.*$/,
-                    method: "GET",
-                    handler: "NetworkFirst",
-                    options: {
-                        cacheName: "api-cache",
-                        networkTimeoutSeconds: 10,
-                    },
-                },
-            ],
-        },
-    },
+    pwa,
     i18n: {
         strategy: "no_prefix",
         defaultLocale: "en",
