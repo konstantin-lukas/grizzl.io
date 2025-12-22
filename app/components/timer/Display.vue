@@ -27,9 +27,9 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
 
 <template>
     <section aria-labelledby="timer-name" class="center w-full">
-        <TypoH1 id="timer-name" class="line-clamp-2 w-full text-center" data-test-id="timer-title">{{
-            timer.title
-        }}</TypoH1>
+        <TypoH1 id="timer-name" class="line-clamp-2 w-full text-center" data-test-id="timer-title">
+            {{ timer.title }}
+        </TypoH1>
         <div class="relative h-6 w-full" :aria-live="timer.ttsVoice && !displayWarning ? 'off' : 'polite'">
             <Transition name="swipe" mode="out-in">
                 <TypoH2

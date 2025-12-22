@@ -13,9 +13,9 @@ const { titleAs = "h1" } = defineProps<{ titleAs?: string }>();
             >
                 {{ $t("ui.noEntries") }}
             </component>
-            <Button icon="heroicons:plus-small" data-test-id="empty-create-button" @click="emit('open')">{{
-                $t("ui.create")
-            }}</Button>
+            <Button icon="heroicons:plus-small" data-test-id="empty-create-button" @click="emit('open')">
+                {{ $t("ui.create") }}
+            </Button>
         </template>
     </UEmpty>
 </template>

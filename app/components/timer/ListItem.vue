@@ -29,8 +29,9 @@ watch(open, () => {
                     as="h1"
                     class="mb-1 line-clamp-2 overflow-hidden break-words"
                     data-test-id="timer-list-item-title"
-                    >{{ props.timer.title }}</TypoH2
                 >
+                    {{ props.timer.title }}
+                </TypoH2>
                 <span data-test-id="timer-list-item-length">
                     {{
                         $t(

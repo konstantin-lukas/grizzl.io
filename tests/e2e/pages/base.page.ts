@@ -22,6 +22,7 @@ const BASE_LOCATORS = {
     inertElements: "inert-elements",
     emptyButton: "empty-create-button",
     undeleteButton: "undo-soft-delete-button",
+    goBack: "go-back-button",
     root: "root",
 };
 

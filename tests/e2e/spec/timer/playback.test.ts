@@ -5,7 +5,7 @@ test.beforeEach(async ({ db }) => {
     await db.timer.reset();
 });
 
-test("allows playing a created timer", async ({ timerPage, db }) => {
+test("allows playing a created timer and going back", async ({ timerPage, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const [interval] = await db.timerInterval.insert(timer.id, {
         count: 1,
@@ -35,6 +35,15 @@ test("allows playing a created timer", async ({ timerPage, db }) => {
     await timerPage.expect().toHaveScreenshot();
 
     await timerPage.click("resetButton");
+
+    await timerPage.expect("title").toHaveText(timer.title);
+    await timerPage.expect("intervalTitle").toHaveText(interval.title!);
+    await timerPage.expect("remainingIntervalTime").toHaveText("00:01");
+    await timerPage.expect("remainingTime").toHaveText("00:01");
+    await timerPage.expect("activeRound").toHaveText("1/1");
+
+    await timerPage.click("goBack");
+    await timerPage.click("listItemPlayButtons");
 
     await timerPage.expect("title").toHaveText(timer.title);
     await timerPage.expect("intervalTitle").toHaveText(interval.title!);
