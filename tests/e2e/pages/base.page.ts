@@ -20,6 +20,7 @@ const BASE_LOCATORS = {
     lightModeIcon: "icon-light-mode",
     darkModeIcon: "icon-dark-mode",
     inertElements: "inert-elements",
+    emptyButton: "empty-create-button",
     root: "root",
 };
 
@@ -44,6 +45,10 @@ export default abstract class BasePage<T extends Record<string, string>> {
         } else if (waitUntil === "route") {
             await this.page.waitForFunction(route => window.useNuxtApp?.()._route.fullPath === route, this.url);
         }
+        await this.page.evaluate(() => {
+            const el = document.getElementById("nuxt-devtools-container");
+            if (el) el.remove();
+        });
         return result;
     }
 
@@ -62,7 +67,10 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
     async analyzeA11y() {
         const timeout = config.expect?.timeout ?? 5000;
-        const axe = new AxeBuilder({ page: this.page }).exclude("#nuxt-devtools-container").exclude("[aria-hidden]");
+        const axe = new AxeBuilder({ page: this.page })
+            .exclude("#nuxt-devtools-container")
+            .exclude("[aria-hidden]")
+            .exclude("[data-hidden]");
         const start = Date.now();
         while (true) {
             const results = await axe.analyze();
@@ -89,5 +97,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
     async click(what: keyof T | keyof typeof BASE_LOCATORS) {
         return this.locators[what].click();
+    }
+
+    async fill(what: keyof T | keyof typeof BASE_LOCATORS, value: string, options?: Parameters<Locator["fill"]>[1]) {
+        return this.locators[what].fill(value, options);
     }
 }

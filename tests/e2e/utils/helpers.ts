@@ -30,11 +30,3 @@ export function testRedirectWhenLoggedOut(path: string) {
         });
     });
 }
-
-export function testPageIntegrity(path: string) {
-    test("contains no unexpected changes in accessibility or visual appearance", async ({ page, goto, homePage }) => {
-        await goto(path, { waitUntil: "hydration" });
-        await homePage.analyzeA11y();
-        await expect(page).toHaveScreenshot();
-    });
-}

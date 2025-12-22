@@ -121,7 +121,12 @@ function onEnd() {
                         </UAlert>
                     </Transition>
                     <UFormField :label="$t('timer.form.title')" name="title" class="w-full" required>
-                        <UInput v-model="state.title" class="w-full" :maxlength="TITLE_MAX" />
+                        <UInput
+                            v-model="state.title"
+                            class="w-full"
+                            :maxlength="TITLE_MAX"
+                            data-test-id="timer-upsert-title-input"
+                        />
                     </UFormField>
                     <TimerFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
                     <VueDraggable
@@ -153,6 +158,7 @@ function onEnd() {
                     type="submit"
                     :icon="createNewTimer ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
                     class="flex w-full justify-center"
+                    data-test-id="timer-upsert-submit-button"
                     :disabled="isLoading"
                 >
                     {{ createNewTimer ? $t("ui.create") : $t("ui.save") }}

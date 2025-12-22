@@ -1,6 +1,6 @@
 import { Beat } from "@@/shared/enum/timer";
+import { str } from "@@/tests/utils/helpers";
 import BaseFixture from "@e2e/fixtures/db/base.fixture";
-import { faker } from "@faker-js/faker";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
 export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
@@ -11,7 +11,7 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
     async insert(timerId: string) {
         const data = Array.from({ length: 2 }).map((_, index) => ({
             timerId,
-            title: faker.string.alphanumeric({ length: 100 }),
+            title: str(100, { base: index.toString() }),
             index,
             repeatCount: 2,
             duration: 3000,

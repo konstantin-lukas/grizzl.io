@@ -3,6 +3,8 @@ import { withoutAuth } from "@e2e/utils/auth";
 
 test("contains a link to all available sections and a sign out button", async ({ homePage }) => {
     await homePage.goto();
+    await homePage.expect().toHaveScreenshot();
+    await homePage.analyzeA11y();
     await homePage.expect("signOutButton").toBeVisible();
     await homePage.expect("signInButton").toBeDisattached();
     await homePage.expect("timerHero", { visible: true }).toHaveCount(1);

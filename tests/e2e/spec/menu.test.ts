@@ -35,7 +35,7 @@ forEachLocale((locale, texts) => {
             { locator: "todoLink", text: texts.todo, href: "" },
             { locator: "timerLink", text: texts.timer, href: "/timer" },
             { locator: "financeLink", text: texts.finance, href: "" },
-        ];
+        ] as const;
 
         await test.step("Check that menu elements do not exist when the menu is closed", async () => {
             await homePage.goto();

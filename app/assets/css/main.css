@@ -26,6 +26,7 @@
     --spacing-main-height-no-padding: calc(100dvh - var(--spacing-main-padding) * 2);
     --breakpoint-xs: 25rem;
     --breakpoint-2xs: 20rem;
+    --ui-text: var(--color-front);
 }
 
 :root:where(.dark, .dark *) {
@@ -50,6 +51,10 @@
     :root[lang="ja-JP"],
     :root[lang="ja-JP"] body {
         font-family: "Noto Sans JP", Jost, sans-serif;
+    }
+
+    legend {
+        font-weight: 500;
     }
 
     button,
