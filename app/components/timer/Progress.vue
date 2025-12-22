@@ -39,13 +39,15 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             >
                 <span
                     class="bottom-[calc(50%+1.25rem)] xs:bottom-[calc(50%+1.5rem)] sm:bottom-[calc(50%+1.75rem)]"
+                    data-test-id="timer-remaining-interval-time"
                     :class="baseClass"
                 >
                     {{ remainingTime }}
                 </span>
-                <span>{{ remainingTimeInInterval }}</span>
+                <span data-test-id="timer-remaining-time">{{ remainingTimeInInterval }}</span>
                 <span
                     class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
+                    data-test-id="timer-active-round"
                     :class="baseClass"
                 >
                     {{ activeRound }}
@@ -71,6 +73,7 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
         >
             <span
                 v-if="beat !== Beat.PAUSE"
+                data-test-id="timer-beat-indicator"
                 :class="
                     index / (interval?.beatPattern?.length ?? 1) < progress
                         ? 'border-b-primary'

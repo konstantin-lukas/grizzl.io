@@ -6,13 +6,13 @@ test.beforeEach(async ({ db }) => {
     await db.timer.reset();
 });
 
-testRedirectWhenLoggedOut("/timer");
-
 const title = str(100);
 const intervals = [
     { title: str(10), duration: 42, repeatCount: 3, type: 0 },
     { title: str(15), duration: 69, repeatCount: 1, type: 1 },
 ];
+
+testRedirectWhenLoggedOut("/timer");
 
 test("allows creating a new timer when no timers exist", async ({ timerPage, db }) => {
     await timerPage.goto();

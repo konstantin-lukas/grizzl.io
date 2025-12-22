@@ -27,6 +27,14 @@ const LOCATORS = {
     listItemEditButtons: "timer-list-item-edit-button",
     listItemDeleteButtons: "timer-list-item-delete-button",
     createButton: "timer-create-button",
+
+    // TIMER PLAYBACK
+    remainingTime: "timer-remaining-time",
+    remainingIntervalTime: "timer-remaining-interval-time",
+    activeRound: "timer-active-round",
+    resetButton: "timer-controls-reset-button",
+    playButton: "timer-controls-play-button",
+    beatIndicator: "timer-beat-indicator",
 };
 
 type Interval = { title?: string; duration?: number; repeatCount?: number; type?: number };
