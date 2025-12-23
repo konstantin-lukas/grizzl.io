@@ -9,10 +9,7 @@ concurrency:
     group: ${{ github.workflow }}
 
 jobs:
-    call-ci-workflow:
-        uses: ./.github/workflows/ci.yml
     deploy:
-        needs: call-ci-workflow
         runs-on: ubuntu-latest
         environment: production
         steps:
