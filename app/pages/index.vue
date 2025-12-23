@@ -57,11 +57,13 @@ const { close } = useMenu();
                     >
                         {{ $t("ui.signIn") }}
                     </Button>
-                    <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
-                        <Button variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
-                            {{ $t("ui.install") }}
-                        </Button>
-                    </div>
+                    <Transition name="fade">
+                        <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
+                            <Button variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
+                                {{ $t("ui.install") }}
+                            </Button>
+                        </div>
+                    </Transition>
                 </div>
             </div>
             <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden" aria-hidden="true">

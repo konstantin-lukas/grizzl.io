@@ -37,7 +37,7 @@ const providers = providerMetaInformation.map<ButtonProps>(([label, icon]) => ({
 </script>
 
 <template>
-    <div class="flex min-h-main-height items-center justify-center py-main-padding">
+    <div class="flex min-h-main-height items-center justify-center px-8 py-main-padding">
         <UPageCard>
             <UAuthForm :description="$t('ui.pickProvider')" icon="heroicons:user" :providers>
                 <template #title>

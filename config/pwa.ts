@@ -8,7 +8,7 @@ const pwa: ModuleOptions = {
         description: "Your everything in one app for daily tasks.",
         start_url: "/",
         display: "fullscreen",
-        display_override: ["standalone", "minimal-ui"],
+        display_override: ["fullscreen", "standalone", "minimal-ui"],
         background_color: "#ffffff",
         theme_color: "#000000",
         id: "/",

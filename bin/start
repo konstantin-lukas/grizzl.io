@@ -19,7 +19,7 @@ case "$ENV" in
     ;;
   *)
     echo "Unknown environment: $ENV"
-    echo "Usage: $0 [dev|prod|test|wsl]"
+    echo "Usage: $0 [dev|prod|test]"
     exit 1
     ;;
 esac
