@@ -1,5 +1,5 @@
 import { sendRedirect } from "#imports";
-import { PROTECTED_PATHS } from "#shared/constants/auth";
+import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/constants/auth";
 import { DatabaseIdSchema } from "#shared/schema/id";
 import { auth } from "~~/lib/auth";
 
@@ -20,7 +20,7 @@ export default defineEventHandler(async event => {
         return;
     }
 
-    if (event.path.startsWith("/api") && !event.path.startsWith("/api/auth")) {
+    if (event.path.startsWith("/api") && !PUBLIC_API_PATHS.some(path => event.path.startsWith(path))) {
         throwError("You need to sign in to perform this action.", "UNAUTHORIZED");
     }
 
