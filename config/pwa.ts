@@ -8,7 +8,7 @@ const pwa: Partial<ModuleOptions> = {
         description: "Your everything in one app for daily tasks.",
         start_url: "/",
         display: "fullscreen",
-        display_override: ["standalone", "minimal-ui"],
+        display_override: ["fullscreen", "standalone", "minimal-ui"],
         background_color: "#ffffff",
         theme_color: "#000000",
         id: "/",
@@ -36,21 +36,15 @@ const pwa: Partial<ModuleOptions> = {
             {
                 urlPattern: ({ request }: { request: Request }) =>
                     request.mode === "navigate" && request.destination === "document",
-                handler: "NetworkFirst",
+                handler: "NetworkOnly",
                 method: "GET",
-                options: {
-                    cacheName: "page-cache",
-                    networkTimeoutSeconds: 5,
-                    expiration: { maxEntries: 100, maxAgeSeconds: 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
             },
             {
                 urlPattern: ({ request }: { request: Request }) =>
                     request.destination === "script" ||
                     request.destination === "style" ||
                     request.destination === "worker",
-                handler: "NetworkFirst",
+                handler: "StaleWhileRevalidate",
                 method: "GET",
                 options: {
                     cacheName: "asset-cache",
@@ -86,16 +80,6 @@ const pwa: Partial<ModuleOptions> = {
                     cacheName: "font-cache",
                     expiration: { maxEntries: 30, maxAgeSeconds: 365 * 24 * 60 * 60 },
                     cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith("/api/"),
-                method: "GET",
-                handler: "NetworkFirst",
-                options: {
-                    cacheName: "api-cache",
-                    networkTimeoutSeconds: 10,
-                    expiration: { maxEntries: 50, maxAgeSeconds: 5 * 60 },
                 },
             },
         ],
