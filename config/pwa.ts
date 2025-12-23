@@ -37,7 +37,7 @@ const pwa: ModuleOptions = {
         installPrompt: true,
     },
     injectManifest: {
-        globPatterns: ["**/*.{js,json,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm}"],
+        globPatterns: ["**/*.{js,json,css,html,txt,svg,png,ico,webp}"],
         globIgnores: ["manifest**.webmanifest"],
     },
     devOptions: {
