@@ -1,7 +1,7 @@
 import icons from "./icons";
 import type { ModuleOptions } from "@vite-pwa/nuxt";
 
-const pwa: Partial<ModuleOptions> = {
+const pwa: ModuleOptions = {
     manifest: {
         name: "Grizzl - The Bear That Does It All",
         short_name: "Grizzl",
@@ -28,78 +28,26 @@ const pwa: Partial<ModuleOptions> = {
             },
         ],
     },
+    srcDir: "../service-worker",
+    filename: "grizzl-sw.ts",
+    scope: "/",
+    injectRegister: false,
+    includeManifestIcons: false,
     client: {
         installPrompt: true,
     },
-    workbox: {
-        runtimeCaching: [
-            {
-                urlPattern: ({ request }: { request: Request }) =>
-                    request.mode === "navigate" && request.destination === "document",
-                handler: "NetworkFirst",
-                method: "GET",
-                options: {
-                    cacheName: "page-cache",
-                    networkTimeoutSeconds: 5,
-                    expiration: { maxEntries: 100, maxAgeSeconds: 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ request }: { request: Request }) =>
-                    request.destination === "script" ||
-                    request.destination === "style" ||
-                    request.destination === "worker",
-                handler: "NetworkFirst",
-                method: "GET",
-                options: {
-                    cacheName: "asset-cache",
-                    expiration: { maxEntries: 300, maxAgeSeconds: 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ request }: { request: Request }) => request.destination === "image",
-                method: "GET",
-                handler: "CacheFirst",
-                options: {
-                    cacheName: "image-cache",
-                    expiration: { maxEntries: 100, maxAgeSeconds: 7 * 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ request }: { request: Request }) => request.destination === "audio",
-                handler: "CacheFirst",
-                method: "GET",
-                options: {
-                    cacheName: "audio-cache",
-                    expiration: { maxEntries: 15, maxAgeSeconds: 7 * 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ request }: { request: Request }) => request.destination === "font",
-                handler: "CacheFirst",
-                method: "GET",
-                options: {
-                    cacheName: "font-cache",
-                    expiration: { maxEntries: 30, maxAgeSeconds: 365 * 24 * 60 * 60 },
-                    cacheableResponse: { statuses: [200] },
-                },
-            },
-            {
-                urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith("/api/"),
-                method: "GET",
-                handler: "NetworkFirst",
-                options: {
-                    cacheName: "api-cache",
-                    networkTimeoutSeconds: 10,
-                    expiration: { maxEntries: 50, maxAgeSeconds: 5 * 60 },
-                },
-            },
-        ],
+    injectManifest: {
+        globPatterns: ["**/*.{js,json,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm}"],
+        globIgnores: ["manifest**.webmanifest"],
     },
+    devOptions: {
+        enabled: false,
+        suppressWarnings: true,
+        navigateFallback: "/",
+        navigateFallbackAllowlist: [/^\/$/],
+        type: "module",
+    },
+    strategies: "injectManifest",
 };
 
 export default pwa;
