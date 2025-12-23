@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.0...v1.0.1) (2025-12-23)
+
+
+### Bug Fixes
+
+* add padding to signin page ([325c57a](https://github.com/konstantin-lukas/grizzl.io/commit/325c57abe7d506d3c85e3df3362a60e9c3f7f0f7))
+* allow access to nuxt icons ([c02c47e](https://github.com/konstantin-lukas/grizzl.io/commit/c02c47eebc430fb65c5ee7f9399d562371d93f6b))
+* change pwa config ([a5a0d48](https://github.com/konstantin-lukas/grizzl.io/commit/a5a0d48d9148ac2540fcb810495761551adb1610))
+* transition to install button ([33c35c9](https://github.com/konstantin-lukas/grizzl.io/commit/33c35c951f656eff375a046a792500442e6e69a9))
+
 ## 1.0.0 (2025-12-23)
 
 
