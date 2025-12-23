@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.1...v1.0.2) (2025-12-23)
+
+
+### Bug Fixes
+
+* exclude font files from cache ([efd029a](https://github.com/konstantin-lukas/grizzl.io/commit/efd029ac9efe4a0fae03a69fef8114b41bd92c73))
+* update service worker ([54fc3d4](https://github.com/konstantin-lukas/grizzl.io/commit/54fc3d4910cbd1f642ec8beee88934a2c7de0de3))
+
 ## [1.0.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.0...v1.0.1) (2025-12-23)
 
 
