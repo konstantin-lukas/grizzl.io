@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.2...v1.0.3) (2025-12-23)
+
+
+### Bug Fixes
+
+* try new client-side middleware ([039e8a2](https://github.com/konstantin-lukas/grizzl.io/commit/039e8a2eafc2fca574735426648437e85803c3a3))
+
 ## [1.0.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.1...v1.0.2) (2025-12-23)
 
 
