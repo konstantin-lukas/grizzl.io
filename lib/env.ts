@@ -31,9 +31,9 @@ export const EnvProductionSchema = z.object({
     POSTGRES_PASSWORD: z.undefined(),
     POSTGRES_DB: z.undefined(),
 
-    DB_HOST: NotLiteral("postgres"),
-    DB_NAME: NotLiteral("grizzl"),
-    DB_USERNAME: NotLiteral("grizzl_user"),
+    DB_HOST: z.literal("postgres"),
+    DB_NAME: z.literal("grizzl"),
+    DB_USERNAME: z.literal("grizzl_user"),
     DB_PASSWORD: NotLiteral("password"),
 });
 
