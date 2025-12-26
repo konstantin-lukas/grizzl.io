@@ -54,7 +54,7 @@ services:
             context: .
             dockerfile: Dockerfile
             args:
-              <<: *public
+                <<: *public
         environment:
             <<: *public
             DB_HOST: ${DB_HOST}
