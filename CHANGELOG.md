@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.4](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.3...v1.0.4) (2025-12-26)
+
+
+### Bug Fixes
+
+* change the way environment variables are tested from build time to server start ([f6de0ab](https://github.com/konstantin-lukas/grizzl.io/commit/f6de0ab34425155ef5bf9b1a9ce63b486abe163c))
+* format compose.test.yml ([22eb05e](https://github.com/konstantin-lukas/grizzl.io/commit/22eb05e3f7f51b4f8b9ee3671687c9a8d4255fe5))
+* remove postgres env vars from dev env schema ([6a02247](https://github.com/konstantin-lukas/grizzl.io/commit/6a0224799c4ed291588c0f7944e449657725f261))
+
 ## [1.0.3](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.2...v1.0.3) (2025-12-23)
 
 
