@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.4...v1.0.5) (2025-12-26)
+
+
+### Bug Fixes
+
+* adjust incorrect schema ([361ac54](https://github.com/konstantin-lukas/grizzl.io/commit/361ac542e240dd59c16648032405a6e0dd5b3202))
+
 ## [1.0.4](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.3...v1.0.4) (2025-12-26)
 
 
