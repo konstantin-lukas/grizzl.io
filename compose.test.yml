@@ -1,3 +1,13 @@
+x-public: &public
+    NUXT_PUBLIC_APP_ENV: test
+    NUXT_PUBLIC_VERSION: ${NUXT_PUBLIC_VERSION}
+    NUXT_PUBLIC_ORIGIN: ${NUXT_PUBLIC_ORIGIN}
+    NUXT_PUBLIC_LEGAL_EMAIL: ${NUXT_PUBLIC_LEGAL_EMAIL}
+    NUXT_PUBLIC_LEGAL_PHONE: ${NUXT_PUBLIC_LEGAL_PHONE}
+    NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY}
+    NUXT_PUBLIC_LEGAL_STREET: ${NUXT_PUBLIC_LEGAL_STREET}
+    NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${NUXT_PUBLIC_LEGAL_ZIP_AND_CITY}
+
 services:
     postgres:
         container_name: grizzl-postgres
@@ -43,16 +53,25 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            args:
+                <<: *public
         environment:
-            NUXT_PUBLIC_APP_ENV: test
-            DB_HOST: postgres
-            DB_USERNAME: grizzl_user
-            DB_PASSWORD: password
-            DB_NAME: grizzl
-            BETTER_AUTH_SECRET: ultra-ultra-ultra-secure-password
-            BETTER_AUTH_URL: http://grizzl.localhost
-            NUXT_PUBLIC_ORIGIN: http://grizzl.localhost
-        restart: unless-stopped
+            <<: *public
+            DB_HOST: ${DB_HOST}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+            BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+            BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+            OAUTH_GITHUB_ID: ${OAUTH_GITHUB_ID}
+            OAUTH_GITHUB_SECRET: ${OAUTH_GITHUB_SECRET}
+            OAUTH_DISCORD_ID: ${OAUTH_DISCORD_ID}
+            OAUTH_DISCORD_SECRET: ${OAUTH_DISCORD_SECRET}
+            OAUTH_REDDIT_ID: ${OAUTH_REDDIT_ID}
+            OAUTH_REDDIT_SECRET: ${OAUTH_REDDIT_SECRET}
+            OAUTH_TWITCH_ID: ${OAUTH_TWITCH_ID}
+            OAUTH_TWITCH_SECRET: ${OAUTH_TWITCH_SECRET}
+        restart: no
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:
             postgres:
