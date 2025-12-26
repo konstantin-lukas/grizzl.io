@@ -28,7 +28,7 @@ const { close } = useMenu();
             <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
                 <div>
                     <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />
-                    <TypoH2 as="h1" class="my-4">{{ $t("meta.tagline") }}</TypoH2>
+                    <TypoH1 class="my-4">{{ $t("meta.tagline") }}</TypoH1>
                     <p class="text-neutral-600 dark:text-neutral-400">
                         {{ $t("meta.description") }}
                     </p>
