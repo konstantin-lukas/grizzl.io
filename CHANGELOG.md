@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.5...v1.0.6) (2025-12-26)
+
+
+### Bug Fixes
+
+* add missing env var to deployment ([0e617fc](https://github.com/konstantin-lukas/grizzl.io/commit/0e617fca3f863f7d65da88f3b3b83040ffa8691b))
+
 ## [1.0.5](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.4...v1.0.5) (2025-12-26)
 
 
