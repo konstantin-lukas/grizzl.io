@@ -1,3 +1,13 @@
+x-public: &public
+    NUXT_PUBLIC_APP_ENV: production
+    NUXT_PUBLIC_VERSION: ${NUXT_PUBLIC_VERSION}
+    NUXT_PUBLIC_ORIGIN: ${NUXT_PUBLIC_ORIGIN}
+    NUXT_PUBLIC_LEGAL_EMAIL: ${NUXT_PUBLIC_LEGAL_EMAIL}
+    NUXT_PUBLIC_LEGAL_PHONE: ${NUXT_PUBLIC_LEGAL_PHONE}
+    NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY}
+    NUXT_PUBLIC_LEGAL_STREET: ${NUXT_PUBLIC_LEGAL_STREET}
+    NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${NUXT_PUBLIC_LEGAL_ZIP_AND_CITY}
+
 services:
     postgres:
         container_name: grizzl-postgres
@@ -69,17 +79,17 @@ services:
         command: ["sh", "-c", "npm ci && npx drizzle-kit migrate"]
         networks:
             - grizzl_net
-        restart: "no"
+        restart: no
 
     webserver:
         container_name: grizzl-web-server
         build:
             context: .
             dockerfile: Dockerfile
+            args:
+                <<: *public
         environment:
-            NUXT_PUBLIC_APP_ENV: ${NUXT_PUBLIC_APP_ENV:-production}
-            NUXT_PUBLIC_VERSION: ${NUXT_PUBLIC_VERSION}
-            NUXT_PUBLIC_ORIGIN: ${NUXT_PUBLIC_ORIGIN}
+            <<: *public
             DB_HOST: ${DB_HOST}
             DB_USERNAME: ${DB_USERNAME}
             DB_PASSWORD: ${DB_PASSWORD}
@@ -94,12 +104,7 @@ services:
             OAUTH_REDDIT_SECRET: ${OAUTH_REDDIT_SECRET}
             OAUTH_TWITCH_ID: ${OAUTH_TWITCH_ID}
             OAUTH_TWITCH_SECRET: ${OAUTH_TWITCH_SECRET}
-            NUXT_PUBLIC_LEGAL_EMAIL: ${NUXT_PUBLIC_LEGAL_EMAIL}
-            NUXT_PUBLIC_LEGAL_PHONE: ${NUXT_PUBLIC_LEGAL_PHONE}
-            NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY: ${NUXT_PUBLIC_LEGAL_RESPONSIBLE_ENTITY}
-            NUXT_PUBLIC_LEGAL_STREET: ${NUXT_PUBLIC_LEGAL_STREET}
-            NUXT_PUBLIC_LEGAL_ZIP_AND_CITY: ${NUXT_PUBLIC_LEGAL_ZIP_AND_CITY}
-        restart: unless-stopped
+        restart: no
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:
             postgres:

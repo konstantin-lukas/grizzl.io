@@ -1,11 +1,9 @@
 import pwa from "./config/pwa";
-import { EnvSchema } from "./lib/env";
 import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 
-if (process.env.NODE_ENV !== "test") EnvSchema.parse(process.env);
 checkTranslationFileConsistency();
 
 export default defineNuxtConfig({
