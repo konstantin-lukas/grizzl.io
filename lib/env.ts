@@ -60,10 +60,6 @@ export const EnvSchema = z.object({
     NUXT_PUBLIC_ORIGIN: z.literal("http://grizzl.localhost"),
     NUXT_PUBLIC_VERSION: z.literal("development"),
 
-    POSTGRES_USER: z.undefined(),
-    POSTGRES_PASSWORD: z.undefined(),
-    POSTGRES_DB: z.undefined(),
-
     DB_HOST: z.literal("postgres"),
     DB_NAME: z.literal("grizzl"),
     DB_USERNAME: z.literal("grizzl_user"),
