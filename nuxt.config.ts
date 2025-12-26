@@ -1,4 +1,5 @@
 import pwa from "./config/pwa";
+import ui from "./config/ui";
 import { EnvSchema } from "./lib/env";
 import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
@@ -16,6 +17,7 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
     },
+    appConfig: { ui },
     app: {
         head: {
             link: [
