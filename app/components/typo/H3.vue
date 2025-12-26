@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-lg leading-tight text-primary sm:text-xl">
+    <h3 class="leading-tight text-primary text-xl">
         <slot />
     </h3>
 </template>
