@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
     },
-    appConfig: { ui },
+    appConfig: { ui } as never,
     app: {
         head: {
             link: [
