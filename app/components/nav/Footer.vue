@@ -1,7 +1,7 @@
 <template>
     <div class="relative" data-test-id="inert-elements">
-        <footer class="absolute -top-footer-height h-footer-height">
-            <nav class="mx-4 flex h-full items-center justify-start gap-4 sm:gap-8">
+        <footer class="absolute -top-footer-height h-footer-height w-full">
+            <nav class="flex h-full w-full items-center justify-center gap-4 px-4 xs:justify-start sm:gap-8">
                 <NuxtLink class="inline-link" to="/legal-notice" data-test-id="legal-notice-link">
                     {{ $t("footer.legalNotice") }}
                 </NuxtLink>
