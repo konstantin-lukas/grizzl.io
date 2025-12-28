@@ -10,7 +10,7 @@ test("should be closed by default", async () => {
     const wrapper = await mountSuspended(Slideover, {
         scoped: true,
         slots,
-        props: { portal: false },
+        props: { portal: false, open: false },
     });
     const slideover = wrapper.find("[role='dialog']");
     expect(slideover.exists()).toBe(false);
