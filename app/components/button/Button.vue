@@ -34,7 +34,7 @@ async function handler(event: MouseEvent) {
 </script>
 
 <template>
-    <UTooltip v-if="ariaLabel">
+    <UTooltip v-if="ariaLabel" :ui="{ content: 'hover-none:!hidden' }">
         <UButton
             v-bind="props"
             :aria-label="ariaLabel"
