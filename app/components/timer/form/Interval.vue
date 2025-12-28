@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { COUNT_MIN, TITLE_MAX } from "#shared/constants/data";
+import { Beat } from "#shared/enum/timer";
 import type { PutTimer } from "#shared/schema/timer";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
