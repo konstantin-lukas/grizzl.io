@@ -104,7 +104,7 @@ test("allows creating timers with multiple intervals", async ({ timerPage, db })
     expect(createdIntervals[1].repeatCount).toBe(intervals[1].repeatCount);
     expect(createdIntervals[1].beatPattern).toEqual(["high", "low", "low", "low"]);
 
-    await timerPage.expect("listItemLengths").toHaveText("4 rounds (195 seconds)");
+    await timerPage.expect("listItemLengths").toHaveText("4 rounds (3 minutes 15 seconds)");
 });
 
 test("allows changing interval order and deleting intervals", async ({ timerPage }) => {

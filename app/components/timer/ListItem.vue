@@ -7,10 +7,15 @@ const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
 
 const open = ref(false);
 const duration = useComputedOnLocaleChange(
-    () =>
-        formatDuration({
-            seconds: props.timer.intervals.reduce((prev, curr) => prev + curr.duration * curr.repeatCount, 0) / 1000,
-        }),
+    () => {
+        const timeInSeconds = Math.floor(
+            props.timer.intervals.reduce((prev, curr) => prev + curr.duration * curr.repeatCount, 0) / 1000,
+        );
+        return formatDuration({
+            minutes: Math.floor(timeInSeconds / 60),
+            seconds: timeInSeconds % 60,
+        });
+    },
     () => props.timer.intervals,
 );
 

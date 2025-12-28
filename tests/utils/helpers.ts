@@ -34,7 +34,7 @@ export function str(len: number, options: { base?: string } = {}): string {
     return base.repeat(len);
 }
 
-export function arr<T extends number | string>(source: T | (() => T), length: number) {
+export function arr<T extends number | string | object>(source: T | (() => T), length: number) {
     if (typeof source === "function") {
         const set = new Set<T>();
         const maxAttempts = 1000 * length;

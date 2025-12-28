@@ -6,6 +6,7 @@ const speak = useSpeakUtterance();
 const displayWarning = ref(false);
 const id = useId();
 const alertId = computed(() => (displayWarning.value ? `${id}-alert` : null));
+const tooltipOpen = ref(false);
 
 watchEffect(() => {
     if (ttsVoices.value.length === 0) return;
@@ -28,22 +29,28 @@ const voiceOptions = computed(() => [
 </script>
 
 <template>
-    <UFormField v-if="ttsVoices.length > 0" :label="$t('timer.form.ttsVoice')" name="ttsVoice" class="w-full">
-        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full" :aria-describedby="alertId">
-            <template #trailing>
+    <UFormField v-if="ttsVoices.length > 0" name="ttsVoice" class="w-full">
+        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full" :aria-describedby="alertId" />
+        <template #label>
+            <span class="allow-tooltip flex items-center">
+                {{ $t("timer.form.ttsVoice") }}
                 <UTooltip
                     :text="$t('timer.form.ttsInfo')"
                     :delay-duration="0"
-                    :content="{ side: 'right', align: 'center', sideOffset: 20 }"
+                    class="ml-1"
+                    :open="tooltipOpen"
+                    :content="{ side: 'top' }"
+                    @update:open="o => (tooltipOpen = o)"
                 >
                     <UIcon
                         name="mdi:information-outline"
                         tabindex="0"
                         class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
+                        @touchstart="tooltipOpen = true"
                     />
                 </UTooltip>
-            </template>
-        </USelect>
+            </span>
+        </template>
         <Transition name="fade">
             <UAlert
                 v-if="displayWarning"

@@ -17,6 +17,7 @@ export default defineEventHandler(async event => {
 
     if (session?.user.id && DatabaseIdSchema.safeParse(session.user.id).success) {
         context.user = session.user;
+        if (event.path === "/signin") return sendRedirect(event, "/");
         return;
     }
 

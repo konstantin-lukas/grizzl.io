@@ -81,7 +81,6 @@ const durationSeconds = computed({
                     <UInputNumber
                         v-model="durationSeconds"
                         class="w-full"
-                        :step="0.1"
                         data-test-id="interval-duration-input"
                         :min="COUNT_MIN"
                         :format-options="{ style: 'unit', unit: 'second' }"

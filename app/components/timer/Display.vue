@@ -32,14 +32,14 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
         </TypoH1>
         <div class="relative h-6 w-full" :aria-live="timer.ttsVoice && !displayWarning ? 'off' : 'polite'">
             <Transition name="swipe" mode="out-in">
-                <TypoH2
+                <span
+                    id="interval-title"
                     :key="interval?.id"
-                    as="span"
                     data-test-id="interval-title"
-                    class="block w-full overflow-hidden text-center text-ellipsis text-neutral-600 dark:text-neutral-400"
+                    class="block w-full overflow-hidden text-center text-xl leading-tight text-nowrap text-ellipsis text-neutral-600 uppercase sm:text-2xl dark:text-neutral-400"
                 >
                     {{ interval?.title }}
-                </TypoH2>
+                </span>
             </Transition>
         </div>
         <div v-if="displayWarning" class="mt-8">
@@ -52,7 +52,14 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 icon="heroicons:exclamation-triangle"
             />
         </div>
-        <TimerProgress :rounds :voice-uri="timer.ttsVoice" :duration @finish="activeIntervalIndex++" />
+        <TimerProgress
+            :timer
+            :rounds
+            :voice-uri="timer.ttsVoice"
+            :duration
+            :index="activeIntervalIndex"
+            @finish="activeIntervalIndex++"
+        />
         <TimerControls :rounds @reset="activeIntervalIndex = 0" />
     </section>
 </template>

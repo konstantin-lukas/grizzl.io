@@ -13,7 +13,6 @@ it("initializes state with expected defaults", async () => {
     const { composable } = await withSetup(() => useTimer());
 
     expect(composable.progress.value).toBe(0);
-    expect(composable.elapsedTime.value).toBe(0);
     expect(composable.elapsedIntervalTime.value).toBe(0);
     expect(composable.repetition.value).toBe(1);
     expect(composable.round.value).toBe(1);
@@ -22,7 +21,6 @@ it("initializes state with expected defaults", async () => {
     expect(composable.currentBeat.value).toBe(-1);
     expect(composable.interval.value).toBeUndefined();
     expect(composable.lastIntervalTitleRead.value).toBeUndefined();
-    expect(composable.startTime.value).toBe(Date.now());
     expect(composable.intervalStartTime.value).toBe(Date.now());
 });
 
@@ -36,8 +34,6 @@ it("reset(false) resets per-interval fields only", async () => {
     composable.playing.value = true;
     composable.round.value = 4;
     composable.lastIntervalTitleRead.value = "foo";
-    composable.elapsedTime.value = 999;
-    composable.startTime.value = 111;
     composable.intervalStartTime.value = 1;
 
     composable.reset(false);
@@ -50,8 +46,6 @@ it("reset(false) resets per-interval fields only", async () => {
     expect(composable.playing.value).toBe(true);
     expect(composable.round.value).toBe(4);
     expect(composable.lastIntervalTitleRead.value).toBe("foo");
-    expect(composable.elapsedTime.value).toBe(999);
-    expect(composable.startTime.value).toBe(111);
 });
 
 it("reset(true) fully resets all fields", async () => {
@@ -64,8 +58,6 @@ it("reset(true) fully resets all fields", async () => {
     composable.playing.value = true;
     composable.round.value = 9;
     composable.lastIntervalTitleRead.value = "bar";
-    composable.elapsedTime.value = 333;
-    composable.startTime.value = 444;
     composable.intervalStartTime.value = 555;
 
     composable.reset(true);
@@ -78,8 +70,6 @@ it("reset(true) fully resets all fields", async () => {
     expect(composable.playing.value).toBe(false);
     expect(composable.round.value).toBe(1);
     expect(composable.lastIntervalTitleRead.value).toBeUndefined();
-    expect(composable.elapsedTime.value).toBe(0);
-    expect(composable.startTime.value).toBe(Date.now());
 });
 
 it("returns the same underlying refs on repeated calls", async () => {
