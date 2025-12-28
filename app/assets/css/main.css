@@ -56,7 +56,7 @@
     }
     :root[lang="ja-JP"],
     :root[lang="ja-JP"] body {
-        font-family: "Noto Sans JP", Jost, sans-serif;
+        font-family: Jost, "Noto Sans JP", sans-serif;
     }
 
     legend {
