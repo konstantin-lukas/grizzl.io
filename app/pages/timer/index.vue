@@ -21,6 +21,7 @@ watch(open, () => {
     <LayoutWrapper :class="{ 'max-w-xl': true }">
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <OverlaySlideover
+                query-key="play"
                 :open="!!activeTimer"
                 @close="
                     () => {
