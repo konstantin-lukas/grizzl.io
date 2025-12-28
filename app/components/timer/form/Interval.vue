@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { COUNT_MIN, TITLE_MAX } from "#shared/constants/data";
-import { Beat } from "#shared/enum/timer";
 import type { PutTimer } from "#shared/schema/timer";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
@@ -81,7 +80,6 @@ const durationSeconds = computed({
                     <UInputNumber
                         v-model="durationSeconds"
                         class="w-full"
-                        :step="0.1"
                         data-test-id="interval-duration-input"
                         :min="COUNT_MIN"
                         :format-options="{ style: 'unit', unit: 'second' }"
