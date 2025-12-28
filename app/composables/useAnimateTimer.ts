@@ -6,10 +6,8 @@ import beep from "~/assets/sound/intermittent_beep.wav";
 export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, voiceUri: string | null) {
     const {
         progress,
-        startTime,
         intervalStartTime,
         elapsedIntervalTime,
-        elapsedTime,
         repetition,
         round,
         playing,
@@ -25,7 +23,6 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
     const animateTimer = () => {
         if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
         elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
-        elapsedTime.value = Date.now() - startTime.value;
 
         if (interval.value.beatPattern && interval.value.beatPattern.length > 0) {
             const barLengthInMs = interval.value.duration;
@@ -87,7 +84,6 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
     watch(playing, p => {
         if (p) {
             intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
-            startTime.value = Date.now() - elapsedTime.value;
             // This gets put in the microtask queue to avoid the animation loop starting while the old one is running.
             // It prevents the first beat being played twice when clicking the play button after the timer has completed.
             queueMicrotask(() => animateTimer());

@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { Beat } from "#shared/enum/timer";
+import type { Timer } from "#shared/schema/timer";
 import { intervalToDuration } from "date-fns";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
     rounds: number;
     voiceUri: string | null;
-    duration: number;
+    timer: Timer;
+    index: number;
 }>();
 
 useAnimateTimer(emit, props.rounds, props.voiceUri);
-const { progress, elapsedIntervalTime, elapsedTime, round, interval } = useTimer();
+const { progress, elapsedIntervalTime, round, interval, repetition } = useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -20,7 +22,17 @@ const formatDuration = (elapsed: number, max?: number) => {
 };
 
 const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, interval.value?.duration));
-const remainingTime = computed(() => formatDuration(elapsedTime.value, props.duration));
+const remainingTime = computed(() =>
+    formatDuration(
+        props.timer.intervals.slice(0, props.index + 1).reduce((prev, { duration, repeatCount }, currentIndex) => {
+            if (currentIndex === props.index) {
+                return prev + elapsedIntervalTime.value + duration * (repetition.value - 1);
+            }
+            return prev + duration * repeatCount;
+        }, 0),
+        props.timer.intervals.reduce((prev, { duration, repeatCount }) => prev + duration * repeatCount, 0),
+    ),
+);
 const activeRound = computed(() => {
     if (round.value > props.rounds) return "–/–";
     return `${round.value}/${props.rounds}`;
@@ -73,8 +85,8 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             <span class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
         </div>
         <div
-            v-for="(beat, index) in interval?.beatPattern"
-            :key="index"
+            v-for="(beat, i) in interval?.beatPattern"
+            :key="i"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform: `rotate(${index / (interval?.beatPattern?.length ?? 1)}turn)` }"
         >

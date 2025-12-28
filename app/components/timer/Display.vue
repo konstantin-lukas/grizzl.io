@@ -52,7 +52,14 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 icon="heroicons:exclamation-triangle"
             />
         </div>
-        <TimerProgress :rounds :voice-uri="timer.ttsVoice" :duration @finish="activeIntervalIndex++" />
+        <TimerProgress
+            :timer
+            :rounds
+            :voice-uri="timer.ttsVoice"
+            :duration
+            :index="activeIntervalIndex"
+            @finish="activeIntervalIndex++"
+        />
         <TimerControls :rounds @reset="activeIntervalIndex = 0" />
     </section>
 </template>
