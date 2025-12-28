@@ -88,13 +88,13 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             v-for="(beat, i) in interval?.beatPattern"
             :key="i"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
-            :style="{ transform: `rotate(${index / (interval?.beatPattern?.length ?? 1)}turn)` }"
+            :style="{ transform: `rotate(${i / (interval?.beatPattern?.length ?? 1)}turn)` }"
         >
             <span
                 v-if="beat !== Beat.PAUSE"
                 data-test-id="timer-beat-indicator"
                 :class="
-                    index / (interval?.beatPattern?.length ?? 1) < progress
+                    i / (interval?.beatPattern?.length ?? 1) < progress
                         ? 'border-b-primary'
                         : 'border-b-border-accented'
                 "
