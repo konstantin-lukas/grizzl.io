@@ -54,6 +54,7 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
             progress.value = 0;
             intervalStartTime.value = Date.now();
             repetition.value++;
+            currentBeat.value = -1;
         } else {
             progress.value = newProgress;
         }
