@@ -31,7 +31,9 @@ watch(open, () => {
                 "
             >
                 <template #title>{{ $t("timer.aria.slideover.title") }}</template>
-                <LayoutWrapper><TimerDisplay v-if="activeTimer" :timer="activeTimer" /></LayoutWrapper>
+                <LayoutWrapper center-vertically>
+                    <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
+                </LayoutWrapper>
             </OverlaySlideover>
             <div class="mb-16 flex w-full flex-grow flex-col">
                 <OverlayDrawer v-model:open="open">
