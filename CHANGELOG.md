@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.6...v1.1.0) (2025-12-28)
+
+
+### Features
+
+* add new caches to service worker ([f09a566](https://github.com/konstantin-lukas/grizzl.io/commit/f09a566ebcdab5974885f212657a1e9a6c8ae289))
+* add touch event handler to tooltip in timer form ([df1f922](https://github.com/konstantin-lukas/grizzl.io/commit/df1f9226037c550350b23ae5a20fb08328c154e7))
+* close slideover on back navigation ([fbb1796](https://github.com/konstantin-lukas/grizzl.io/commit/fbb1796faeb7c08badf22725e741093182dd3de9))
+* increase amount of allowed beats to 30 ([6948011](https://github.com/konstantin-lukas/grizzl.io/commit/69480117e989ca1ab949fa249f90ab7996103c5d))
+* **timer:** display timer length in list in minutes and seconds instead of seconds only ([bc7333c](https://github.com/konstantin-lukas/grizzl.io/commit/bc7333c97112fc4132622948f061f1ee991720d5))
+
+
+### Bug Fixes
+
+* redirect to landing page if logged in and trying to open signin page ([339aa57](https://github.com/konstantin-lukas/grizzl.io/commit/339aa57cd795fc96ae6dadfd5dfe1a06a8f39b63))
+* **timer:** play beats on repetitions of an interval ([72715a2](https://github.com/konstantin-lukas/grizzl.io/commit/72715a2f0dec9245ec7f6b7467b8a4a0834d9b26))
+* **timer:** recalculate overall remaining time constantly so interval progress and overall progress don't go out of sync ([1e86a39](https://github.com/konstantin-lukas/grizzl.io/commit/1e86a39bb9b78b4ffc3d5507875d6b46eea2fce2))
+
 ## [1.0.6](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.5...v1.0.6) (2025-12-26)
 
 
