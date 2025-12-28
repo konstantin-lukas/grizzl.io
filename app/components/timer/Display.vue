@@ -33,6 +33,7 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
         <div class="relative h-6 w-full" :aria-live="timer.ttsVoice && !displayWarning ? 'off' : 'polite'">
             <Transition name="swipe" mode="out-in">
                 <span
+                    id="interval-title"
                     :key="interval?.id"
                     data-test-id="interval-title"
                     class="block w-full overflow-hidden text-center text-xl leading-tight text-nowrap text-ellipsis text-neutral-600 uppercase sm:text-2xl dark:text-neutral-400"

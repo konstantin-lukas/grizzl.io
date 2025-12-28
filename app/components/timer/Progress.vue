@@ -32,7 +32,14 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
 </script>
 
 <template>
-    <div class="relative mx-auto my-16 aspect-square w-[90%] max-w-96 overflow-hidden rounded-full xs:w-full">
+    <div
+        class="relative mx-auto my-16 aspect-square w-[90%] max-w-96 overflow-hidden rounded-full xs:w-full"
+        role="progressbar"
+        :aria-valuemin="0"
+        :aria-valuemax="interval?.duration ?? 0"
+        :aria-valuenow="elapsedIntervalTime"
+        aria-labelledby="interval-title"
+    >
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
                 class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
