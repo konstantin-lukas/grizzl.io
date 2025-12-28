@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
-@source "../../../config/ui.ts";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant hover-none {
