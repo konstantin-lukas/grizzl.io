@@ -33,7 +33,7 @@ const topLevelCases = [
     ["the ttsVoice is missing", omit(BASE_TIMER, "ttsVoice")],
     ["the intervals is missing", omit(BASE_TIMER, "intervals")],
     ["there are no intervals", withTimer("intervals", [])],
-    ["there are too many intervals", withTimer("intervals", arr(101, BASE_INTERVAL))],
+    ["there are too many intervals", withTimer("intervals", arr(BASE_INTERVAL, 101))],
 ];
 
 const intervalLevelCases = [
@@ -46,7 +46,7 @@ const intervalLevelCases = [
     ["an interval duration is too large", withInterval("duration", 3600001)],
     ["an interval has an empty beatPattern", withInterval("beatPattern", [])],
     ["an interval has a beatPattern that's too short", withInterval("beatPattern", ["low"])],
-    ["an interval has a beatPattern that's too long", withInterval("beatPattern", arr(17, "low"))],
+    ["an interval has a beatPattern that's too long", withInterval("beatPattern", arr("low", 31))],
     ["an interval has a beatPattern that contains invalid values", withInterval("beatPattern", ["bananas"])],
 ];
 
