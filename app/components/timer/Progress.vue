@@ -54,7 +54,7 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
     >
         <div class="center aspect-square w-full scale-110 bg-primary" :style="{ backgroundImage }">
             <span
-                class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
+                class="center relative aspect-square w-[calc(100%-2.5rem)] scale-[calc(1/1.1)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >
                 <span
                     class="bottom-[calc(50%+1.25rem)] xs:bottom-[calc(50%+1.5rem)] sm:bottom-[calc(50%+1.75rem)]"
@@ -75,14 +75,14 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
         </div>
         <span
             v-if="interval?.id && elapsedIntervalTime > 0"
-            class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6"
+            class="absolute top-0 left-1/2 block size-5 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
             v-if="interval?.id && elapsedIntervalTime > 0"
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
-            <span class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
+            <span class="absolute top-0 left-1/2 block size-5 -translate-x-1/2 rounded-full bg-primary xs:size-6" />
         </div>
         <div
             v-for="(beat, i) in interval?.beatPattern"
