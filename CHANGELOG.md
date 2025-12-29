@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.1.0...v1.2.0) (2025-12-29)
+
+
+### Features
+
+* acquire wake lock when timer is running ([fafc58d](https://github.com/konstantin-lukas/grizzl.io/commit/fafc58d7a17a22452e37ae6392b42188d49850e0))
+
 ## [1.1.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.0.6...v1.1.0) (2025-12-28)
 
 
