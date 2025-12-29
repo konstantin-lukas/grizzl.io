@@ -1,5 +1,3 @@
-# grizzl.io
-
 <div align="center">
 
    <br>
@@ -14,6 +12,12 @@
    <br>
    <br>
 
+   <p>
+      Grizzl is your all-in-one companion for everyday productivity. Effortlessly manage your finances, share polls with 
+      friends, and stay on track with customizable workout timers. Available on the web and mobile—start simplifying your 
+      life with Grizzl today.
+   </p>
+
    [![Version](https://img.shields.io/github/v/release/konstantin-lukas/grizzl.io)](https://github.com/konstantin-lukas/grizzl.io/releases)
    [![Release Date](https://img.shields.io/github/release-date/konstantin-lukas/grizzl.io)](https://github.com/konstantin-lukas/grizzl.io/releases)
    [![Codecov](https://codecov.io/gh/konstantin-lukas/grizzl.io/graph/badge.svg?token=11ACXCKETJ)](https://codecov.io/gh/konstantin-lukas/grizzl.io)
@@ -23,13 +27,7 @@
 
 </div>
 
-Grizzl is your all-in-one companion for everyday productivity. Effortlessly manage your finances, share polls with 
-friends, and stay on track with customizable workout timers. Available on the web and mobile—start simplifying your 
-life with Grizzl today.
-
-
-
-## Development (Linux)
+# Development (Linux)
 Requirements: git, docker
 
 1. You only need to do this step if your user:group IDs aren't 1000:1000. Add these lines to your `~/.bashrc` or `~/.zshrc` depending on the shell you're using:
@@ -51,7 +49,7 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
 
-### Tests
+## Tests
 This project is very thoroughly tested. There are roughly five types of tests in this project:
 1. Unit tests for utilities (located at tests/unit)
 2. Unit tests for composables (located at tests/nuxt/composables)
@@ -59,7 +57,7 @@ This project is very thoroughly tested. There are roughly five types of tests in
 4. Functional tests for the API (located at tests/e2e/spec/api)
 5. End-to-end test to simulate user interactions (located at tests/e2e)
 
-### Shell Scripts
+## Shell Scripts
 The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any
 command, just check the respective file in `bin`. Here's an explanation of what each command does:
 - `backup`: (Production Only) Extracts and unzips backups from the database backup container.
@@ -79,24 +77,24 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
 
-### E2E Tests (Playwright)
+## E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
 `bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`. The
 Playwright container uses `network_mode: "host"` and is only tested on Linux and WSL. It will most likely not work on
 MacOS or Windows.
 
-### Database
+## Database
 You can connect to the database via `localhost:5432`. The database name is `grizzl`. You can connect as the postgres 
 user with the username and password `admin`.
 
-### Adding Languages
+## Adding Languages
 To extend the app with another language, you have to provide all translations files located at `i18n/locales` for
 the locale of your language. You also have to extend the `languages` constant located in the `shared/constants/i18n.ts` file. 
 That's it! Your new language should now be available.
 
 
 
-## Deployment
+# Deployment
 The following describes the deployment process for this specific repository. A deployment pipeline is triggered
 whenever a new tag matching the pattern `v[0-9]+.[0-9]+.[0-9]+` is pushed. However, you should not do this manually.
 Instead, this repository uses the Release Please action by Google. 
@@ -109,7 +107,7 @@ a new tag and trigger the deployment pipeline. This will not trigger a new CI pi
 requires passing all checks before it can be merged. Note that all deployments have to be approved manually by the
 repository owner.
 
-### Personal Access Token
+## Personal Access Token
 For Google's Release Please action to be able to create new releases, you need to create a personal access token. This
 token is set to expire after a set time. So, it will have to be updated regularly in the 
 [personal access tokens section](https://github.com/settings/personal-access-tokens) of your account settings.
@@ -124,17 +122,17 @@ Then, in the repository settings, go to the
 
 
 
-## Production (for Self-Hosting)
+# Production (for Self-Hosting)
 To set up the app for production, you need get a proxy going that listens to the relevant http(s) ports and redirects
 traffic to the docker containers. This is best done through the `proxy_net` docker network that is used by the
 containers in `compose.production.yml`. You can keep the necessary configuration for this in your own separate repo.
 
-### Database
+## Database
 In production the website creates a nightly backup of the database. You can use the `bin/backup` command to extract and
 unzip all backups from the docker volume. You can then use `bin/restore <database_name> <username> <path_to_sql_file>`
 to take one of these backups and override the current database state.
 
-### Environment Variables
+## Environment Variables
 In production, the `.env` file is ignored. Instead, environment are passed via docker compose. You need to specify which
 variables to pass to each container separately. And for docker compose to receive environment variables from GitHub
 actions, you need to adjust `.github/workflows/cd.yml`. Also, if you want to use an environment variable in the Nuxt
