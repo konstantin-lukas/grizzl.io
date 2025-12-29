@@ -1,19 +1,26 @@
 # grizzl.io
 
 <div align="center">
+
+   <br>
+   <br>
+
    <picture>
        <source media="(prefers-color-scheme: dark)" srcset="app/assets/svg/grizzl_logo_with_text_white.svg">
        <source media="(prefers-color-scheme: light)" srcset="app/assets/svg/grizzl_logo_with_text_black.svg">
        <img src="app/assets/svg/grizzl_logo_with_text_black.svg" alt="Grizzl Logo" width="50%" height="50%">
-     </picture>
+   </picture>
+
+   <br>
+   <br>
 
    [![Version](https://img.shields.io/github/v/release/konstantin-lukas/grizzl.io)](https://github.com/konstantin-lukas/grizzl.io/releases)
    [![Release Date](https://img.shields.io/github/release-date/konstantin-lukas/grizzl.io)](https://github.com/konstantin-lukas/grizzl.io/releases)
    [![Codecov](https://codecov.io/gh/konstantin-lukas/grizzl.io/graph/badge.svg?token=11ACXCKETJ)](https://codecov.io/gh/konstantin-lukas/grizzl.io)
-   [![Activity](https://img.shields.io/github/commit-activity/y/konstantin-lukas/grizzl.io/main)](https://github.com/konstantin-lukas/grizzl.io/commits/main/)
    [![Issues](https://img.shields.io/github/issues/konstantin-lukas/grizzl.io)](https://github.com/konstantin-lukas/grizzl.io/issues)
    [![Monitoring](https://img.shields.io/website?url=https%3A%2F%2Fgrizzl.io)](https://grizzl.io)
    [![MIT License](https://img.shields.io/github/license/konstantin-lukas/grizzl.io)](https://raw.githubusercontent.com/konstantin-lukas/grizzl.io/main/LICENSE)
+
 </div>
 
 Grizzl is your all-in-one companion for everyday productivity. Effortlessly manage your finances, share polls with 
