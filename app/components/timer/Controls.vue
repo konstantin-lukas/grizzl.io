@@ -3,6 +3,12 @@ const emit = defineEmits(["reset"]);
 const props = defineProps<{ rounds: number }>();
 
 const { reset, round, playing, mute } = useTimer();
+const { request, release } = useWakeLock();
+
+watch(playing, p => {
+    if (p) request();
+    else release();
+});
 
 const togglePlayback = () => {
     playing.value = !playing.value;
