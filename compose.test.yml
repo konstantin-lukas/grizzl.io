@@ -98,6 +98,22 @@ services:
             timeout: 60s
             retries: 12
 
+    playwright:
+        container_name: grizzl-playwright-dev
+        image: mcr.microsoft.com/playwright:v1.56.0-noble
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        extra_hosts:
+            - "grizzl.localhost:127.0.0.1"
+        volumes:
+            - .:/home/grizzl
+            - /tmp/.X11-unix:/tmp/.X11-unix
+        working_dir: /home/grizzl
+        network_mode: "host"
+        ipc: host
+        environment:
+            - DISPLAY=${DISPLAY}
+            - TZ=Europe/Berlin
+
     caddy:
         container_name: grizzl-caddy-dev
         image: caddy:2.10-alpine
