@@ -119,10 +119,15 @@ jobs:
             - name: Start Isolated Container Stack
               run: |
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
                   docker compose -f compose.test.yml up -d
 
             - name: Run Playwright Tests
-              run: docker compose run --rm playwright npx playwright test --project="${{ matrix.project }}"
+              run: |
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
+                  docker compose run --rm playwright npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
