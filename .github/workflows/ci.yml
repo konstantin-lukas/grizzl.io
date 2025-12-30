@@ -122,7 +122,7 @@ jobs:
                   docker compose -f compose.test.yml up -d
 
             - name: Run Playwright Tests
-              run: docker compose run --rm playwright CI=true npx playwright test --project="${{ matrix.project }}"
+              run: docker compose run --rm playwright npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}

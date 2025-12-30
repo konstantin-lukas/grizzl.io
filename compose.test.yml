@@ -113,6 +113,7 @@ services:
         environment:
             - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
+            - CI=true
 
     caddy:
         container_name: grizzl-caddy-dev
