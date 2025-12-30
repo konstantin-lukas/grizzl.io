@@ -93,12 +93,7 @@ test("shows indicators for beats on timer progress and information on timer and 
     await timerPage.expect("remainingTime").toHaveText("00:18");
     await timerPage.expect("activeRound").toHaveText("1/6");
     await timerPage.expect("beatIndicator").toHaveCount(8);
-    await timerPage.expect().toHaveScreenshot({
-        maxDiffPixelRatio: 0.02,
-        maxDiffPixels: 500,
-        threshold: 0.01,
-        animations: "disabled",
-    });
+    await timerPage.expect().toHaveScreenshot();
 });
 
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage, db }) => {
