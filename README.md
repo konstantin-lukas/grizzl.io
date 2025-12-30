@@ -81,7 +81,8 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
 `bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`. The
 Playwright container uses `network_mode: "host"` and is only tested on Linux and WSL. It will most likely not work on
-MacOS or Windows.
+MacOS or Windows. If you update or add snapshots, always start the project with `bin/start test` before running tests.
+This makes sure screenshots are generated from the same build used in the CI pipeline.
 
 ## Database
 You can connect to the database via `localhost:5432`. The database name is `grizzl`. You can connect as the postgres 
