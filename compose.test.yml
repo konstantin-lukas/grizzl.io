@@ -112,8 +112,8 @@ services:
         ipc: host
         environment:
             - DISPLAY=${DISPLAY}
-            - TZ=Europe/Berlin
-            - CI=true
+            - TZ=${TZ}
+            - CI=${CI}
 
     caddy:
         container_name: grizzl-caddy-dev
