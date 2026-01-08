@@ -16,13 +16,11 @@ testRedirectWhenLoggedOut("/timer");
 
 test("allows creating a new timer when no timers exist", async ({ timerPage, db }) => {
     await timerPage.goto();
-    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
     await timerPage.analyzeA11y();
 
     await timerPage.click("emptyButton");
 
-    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
     await timerPage.analyzeA11y();
 
@@ -52,7 +50,6 @@ test("allows editing an existing timer", async ({ timerPage, db }) => {
     await db.timerInterval.insert(timer.id);
     await timerPage.goto();
 
-    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
     await timerPage.expect("listItemTitles").toHaveText(timer.title);
 

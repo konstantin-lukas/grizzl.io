@@ -3,7 +3,6 @@ import { withoutAuth } from "@e2e/utils/auth";
 
 test("contains a link to all available sections and a sign out button", async ({ homePage }) => {
     await homePage.goto();
-    await homePage.page.evaluate(() => document.fonts.ready);
     await homePage.expect().toHaveScreenshot();
     await homePage.analyzeA11y();
     await homePage.expect("signOutButton").toBeVisible();
