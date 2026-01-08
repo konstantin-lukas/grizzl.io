@@ -23,6 +23,7 @@ test("allows playing a created timer and going back", async ({ timerPage, db }) 
     await timerPage.expect("remainingTime").toHaveText("00:01");
     await timerPage.expect("activeRound").toHaveText("1/1");
     await timerPage.analyzeA11y();
+    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
 
     await timerPage.click("playButton");
@@ -32,6 +33,7 @@ test("allows playing a created timer and going back", async ({ timerPage, db }) 
     await timerPage.expect("remainingIntervalTime").toHaveText("––:––");
     await timerPage.expect("remainingTime").toHaveText("00:00");
     await timerPage.expect("activeRound").toHaveText("–/–");
+    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
 
     await timerPage.click("resetButton");
@@ -93,6 +95,7 @@ test("shows indicators for beats on timer progress and information on timer and 
     await timerPage.expect("remainingTime").toHaveText("00:18");
     await timerPage.expect("activeRound").toHaveText("1/6");
     await timerPage.expect("beatIndicator").toHaveCount(8);
+    await timerPage.page.evaluate(() => document.fonts.ready);
     await timerPage.expect().toHaveScreenshot();
 });
 
