@@ -4,6 +4,13 @@ on:
     pull_request:
         branches:
             - "main"
+    workflow_dispatch:
+        inputs:
+            update_snapshots:
+                description: Update Playwright screenshot snapshots and commit them
+                required: false
+                type: boolean
+                default: false
 
 jobs:
     install-deps:
@@ -95,6 +102,9 @@ jobs:
         needs: install-deps
         runs-on: ubuntu-24.04
 
+        permissions:
+            contents: write
+
         strategy:
             fail-fast: true
             matrix:
@@ -103,6 +113,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -116,6 +128,15 @@ jobs:
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
+            - name: Restore screenshot snapshots cache
+              id: snapshots-cache
+              uses: actions/cache@v4
+              with:
+                  path: tests/e2e/snapshots
+                  key: ${{ runner.os }}-playwright-snapshots-${{ hashFiles('tests/e2e/snapshots/**') }}
+                  restore-keys: |
+                      ${{ runner.os }}-playwright-snapshots-
+
             - name: Start Isolated Container Stack
               run: |
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
@@ -128,6 +149,43 @@ jobs:
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
                   docker compose run --rm -e CI=true playwright npx playwright test --project="${{ matrix.project }}"
+
+            - name: Update snapshots (manual trigger)
+              if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_snapshots }}
+              run: |
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
+                  docker compose run --rm -e CI=true playwright npx playwright test --project="${{ matrix.project }}" --update-snapshots
+
+            - name: Upload screenshot snapshots artifact
+              uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
+              with:
+                  name: screenshot-snapshots-${{ matrix.project }}
+                  path: tests/e2e/snapshots
+                  retention-days: 30
+
+            - name: Commit updated snapshots (manual trigger)
+              if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_snapshots }}
+              run: |
+                  # Only commit PNG screenshot snapshots, ignore any .yml changes
+                  if git status --porcelain tests/e2e/snapshots | grep -qE '\.png$'; then
+                    git config user.name "github-actions[bot]"
+                    git config user.email "github-actions[bot]@users.noreply.github.com"
+
+                    git add tests/e2e/snapshots/**/*.png
+
+                    # In case nothing got staged (e.g. only yml changed), avoid failing
+                    if git diff --cached --quiet; then
+                      echo "No PNG snapshot changes to commit."
+                      exit 0
+                    fi
+
+                    git commit -m "test: update Playwright screenshot snapshots (\`${{ matrix.project }}\`)"
+                    git push
+                  else
+                    echo "No PNG snapshot changes detected."
+                  fi
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
