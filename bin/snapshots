@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ "$1" ]; then
+  shift
+  docker compose run --rm -e CI=true playwright npx playwright test "$1" --update-snapshots
+else
+  docker compose run --rm -e CI=true playwright npx playwright test --update-snapshots
+fi
