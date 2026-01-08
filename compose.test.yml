@@ -106,12 +106,8 @@ services:
             - "grizzl.localhost:127.0.0.1"
         volumes:
             - .:/home/grizzl
-            - /tmp/.X11-unix:/tmp/.X11-unix
         working_dir: /home/grizzl
-        network_mode: "host"
-        ipc: host
         environment:
-            - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
             - CI=true
 
