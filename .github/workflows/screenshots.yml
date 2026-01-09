@@ -2,10 +2,6 @@ name: Update Playwright Screenshots
 
 on:
     workflow_dispatch:
-        inputs:
-            target_branch:
-                description: "Existing branch to run tests on and commit updated snapshots to"
-                required: true
 
 jobs:
     update-snapshots:
@@ -15,38 +11,42 @@ jobs:
             contents: write
 
         steps:
-            - name: Checkout code
+            - name: Ensure workflow is running on a branch
+              run: |
+                  if [ "${{ github.ref_type }}" != "branch" ]; then
+                    echo "This workflow must be run on a branch."
+                    exit 1
+                  fi
+
+            - name: Checkout selected branch
               uses: actions/checkout@v4
               with:
+                  ref: ${{ github.ref_name }}
                   fetch-depth: 0
-
-            - name: Checkout target branch
-              run: |
-                  git checkout "${{ inputs.target_branch }}"
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                node-version: "24"
+                  node-version: "24"
 
             - name: Restore node_modules cache
               uses: actions/cache@v4
               with:
-                path: |
-                  **/node_modules
-                key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
             - name: Start Isolated Container Stack
               run: |
-                export DOCKER_USER_ID="$(id -u)"
-                export DOCKER_GROUP_ID="$(id -g)"
-                docker compose -f compose.test.yml up -d
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
+                  docker compose -f compose.test.yml up -d
 
             - name: Run Playwright Tests
               run: |
-                export DOCKER_USER_ID="$(id -u)"
-                export DOCKER_GROUP_ID="$(id -g)"
-                docker compose run --rm -e CI=true playwright npx playwright test --update-snapshots
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
+                  docker compose run --rm -e CI=true playwright npx playwright test --update-snapshots
 
             - name: Configure git
               run: |
@@ -63,5 +63,5 @@ jobs:
                     echo "No snapshot changes to commit."
                   else
                     git commit -m "chore(e2e): update screenshots"
-                    git push origin "${{ inputs.target_branch }}"
+                    git push origin "${{ github.ref_name }}"
                   fi
