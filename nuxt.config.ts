@@ -37,7 +37,6 @@ export default defineNuxtConfig({
         "@nuxtjs/color-mode",
         "@nuxtjs/i18n",
         "@nuxt/test-utils/module",
-        "@nuxt/fonts",
         "@vite-pwa/nuxt",
     ],
     pwa,
