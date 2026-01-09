@@ -8,6 +8,399 @@
     }
 }
 
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular Italic"),
+        local("Jost Italic"),
+        url(../../../public/fonts/pGQsCkOuLJPX_xPEZzFHyjri7PycYO2bVMmEj_-mV-g-aeHOVzh6qFkcA6P0gXYSi1jkGQ60TebtOsn1gYbv9Bk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular Italic"),
+        local("Jost Italic"),
+        url(../../../public/fonts/1o9nrJDPE8EyFdhRi1CMpEsM8ybyuTTMM9oh2nbYoUk-gljICsnKRWkM_gd8yQ5PHkSwAyHqpVvXYn6TSqXxzY0.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium Italic"),
+        url(../../../public/fonts/1o9nrJDPE8EyFdhRi1CMpEsM8ybyuTTMM9oh2nbYoUk-gljICsnKRWkM_gd8yQ5PHkSwAyHqpVvXYn6TSqXxzY0.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium Italic"),
+        url(../../../public/fonts/uxf9bHnmhv0H4ZrNPlIesLBd8lL3tXFkOnS4Nncm81s-nJKSom9Dq54mQPodvLVJ7xfLiLlZQWT44MmGUAxmnzk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold Italic"),
+        url(../../../public/fonts/uxf9bHnmhv0H4ZrNPlIesLBd8lL3tXFkOnS4Nncm81s-nJKSom9Dq54mQPodvLVJ7xfLiLlZQWT44MmGUAxmnzk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold Italic"),
+        url(../../../public/fonts/pGQsCkOuLJPX_xPEZzFHyjri7PycYO2bVMmEj_-mV-g-aeHOVzh6qFkcA6P0gXYSi1jkGQ60TebtOsn1gYbv9Bk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 700;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold Italic"),
+        url(../../../public/fonts/uxf9bHnmhv0H4ZrNPlIesLBd8lL3tXFkOnS4Nncm81s-nJKSom9Dq54mQPodvLVJ7xfLiLlZQWT44MmGUAxmnzk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 700;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular"),
+        local("Jost"),
+        url(../../../public/fonts/N2CmVuCq6J94uL2XLbx7rtowDpMDl8wW6hOo-SQGQ5Q-10wNLVsx8mN0r0xp_Jku8zis28Y0cy4bE6vhFm07Lqo.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular"),
+        local("Jost"),
+        url(../../../public/fonts/Cl5hWByjLNrm9Ew_xFu5q2F3elODRzDWv6Su1zgaEBM-QcXAERN1eiNMJ7sMkFe2EMaaNxFxOIPygO2p_x-06jc.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium"),
+        url(../../../public/fonts/Cl5hWByjLNrm9Ew_xFu5q2F3elODRzDWv6Su1zgaEBM-QcXAERN1eiNMJ7sMkFe2EMaaNxFxOIPygO2p_x-06jc.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold"),
+        url(../../../public/fonts/k8KvdIHvgy-kQD0q2Ur5DpRbBtlt5cDdgW9WVKRdWbM-GjYvIBYWw49gSkrisuimFD2_F83ZGI0nOSu1yG_6h-w.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold"),
+        url(../../../public/fonts/k8KvdIHvgy-kQD0q2Ur5DpRbBtlt5cDdgW9WVKRdWbM-GjYvIBYWw49gSkrisuimFD2_F83ZGI0nOSu1yG_6h-w.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold"),
+        url(../../../public/fonts/N2CmVuCq6J94uL2XLbx7rtowDpMDl8wW6hOo-SQGQ5Q-10wNLVsx8mN0r0xp_Jku8zis28Y0cy4bE6vhFm07Lqo.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular Italic"),
+        local("Jost Italic"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-QLjxUhPXT6JzhtaToVavRd8rZeDjQCXbhBe4UgFjwHI.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold Italic"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-6m6c1ulXeoh7b8c3pLO_RYVHqYC-AWKT35D1xgoRXnU.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular"),
+        local("Jost"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-XVjhb_ajx1HzQ1ChEafrHk1eUO_gxbZYVzhe6B38d1s.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-TTrh9_5nvHjgnzaIcdG2QG_58-eu-H75pGvLaZCcGhs.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-rS5ZzNKTI9oT_hVy1frhvVsobFKc4EqpF1ZvQBVXwvY.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Jost Fallback: Arial";
+    src: local("Arial");
+    size-adjust: 96.007%;
+    ascent-override: 111.4502%;
+    descent-override: 39.0596%;
+    line-gap-override: 0%;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular Italic"),
+        local("Jost Italic"),
+        url(../../../public/fonts/uxf9bHnmhv0H4ZrNPlIesLBd8lL3tXFkOnS4Nncm81s-nJKSom9Dq54mQPodvLVJ7xfLiLlZQWT44MmGUAxmnzk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium Italic"),
+        url(../../../public/fonts/pGQsCkOuLJPX_xPEZzFHyjri7PycYO2bVMmEj_-mV-g-aeHOVzh6qFkcA6P0gXYSi1jkGQ60TebtOsn1gYbv9Bk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold Italic"),
+        url(../../../public/fonts/pGQsCkOuLJPX_xPEZzFHyjri7PycYO2bVMmEj_-mV-g-aeHOVzh6qFkcA6P0gXYSi1jkGQ60TebtOsn1gYbv9Bk.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold Italic"),
+        url(../../../public/fonts/1o9nrJDPE8EyFdhRi1CMpEsM8ybyuTTMM9oh2nbYoUk-gljICsnKRWkM_gd8yQ5PHkSwAyHqpVvXYn6TSqXxzY0.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold Italic"),
+        url(../../../public/fonts/1o9nrJDPE8EyFdhRi1CMpEsM8ybyuTTMM9oh2nbYoUk-gljICsnKRWkM_gd8yQ5PHkSwAyHqpVvXYn6TSqXxzY0.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 700;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Regular"),
+        local("Jost"),
+        url(../../../public/fonts/k8KvdIHvgy-kQD0q2Ur5DpRbBtlt5cDdgW9WVKRdWbM-GjYvIBYWw49gSkrisuimFD2_F83ZGI0nOSu1yG_6h-w.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium"),
+        url(../../../public/fonts/k8KvdIHvgy-kQD0q2Ur5DpRbBtlt5cDdgW9WVKRdWbM-GjYvIBYWw49gSkrisuimFD2_F83ZGI0nOSu1yG_6h-w.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium"),
+        url(../../../public/fonts/N2CmVuCq6J94uL2XLbx7rtowDpMDl8wW6hOo-SQGQ5Q-10wNLVsx8mN0r0xp_Jku8zis28Y0cy4bE6vhFm07Lqo.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold"),
+        url(../../../public/fonts/N2CmVuCq6J94uL2XLbx7rtowDpMDl8wW6hOo-SQGQ5Q-10wNLVsx8mN0r0xp_Jku8zis28Y0cy4bE6vhFm07Lqo.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost SemiBold"),
+        url(../../../public/fonts/Cl5hWByjLNrm9Ew_xFu5q2F3elODRzDWv6Su1zgaEBM-QcXAERN1eiNMJ7sMkFe2EMaaNxFxOIPygO2p_x-06jc.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold"),
+        url(../../../public/fonts/Cl5hWByjLNrm9Ew_xFu5q2F3elODRzDWv6Su1zgaEBM-QcXAERN1eiNMJ7sMkFe2EMaaNxFxOIPygO2p_x-06jc.woff2)
+            format(woff2);
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium Italic"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-De26kytb0GdNMxJhLOhjeZEZBgi3Cdo7LuSsCJFp1Xo.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Bold Italic"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-RNi2KCz3jW91lRlYaR0fnyt_l_-TSnZifdk9LPG9FiY.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 700;
+    font-style: italic;
+}
+@font-face {
+    font-family: Jost;
+    src:
+        local("Jost Medium"),
+        url(../../../public/fonts/1ZTlEDqU4DtwDJiND8f6qaugUpa0RIDvQl-v7iM6l54-9tU5NE0cmtR1EbLV8Yd9l0Yd0FMyz8iKG1n7C0pVRAY.woff)
+            format(woff);
+    font-display: swap;
+    font-weight: 500;
+    font-style: normal;
+}
+
 @theme {
     --color-theme-white: #ffffff;
     --color-theme-black: #18181f;
@@ -53,6 +446,7 @@
         color: var(--color-front);
         font-family: Jost, sans-serif;
     }
+
     :root[lang="ja-JP"],
     :root[lang="ja-JP"] body {
         font-family: Jost, "Noto Sans JP", sans-serif;
