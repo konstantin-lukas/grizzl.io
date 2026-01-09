@@ -27,6 +27,7 @@ jobs:
               run: npm ci
 
     update-snapshots:
+        needs: install-deps
         runs-on: ubuntu-latest
 
         permissions:
