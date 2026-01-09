@@ -4,6 +4,28 @@ on:
     workflow_dispatch:
 
 jobs:
+    install-deps:
+        runs-on: ubuntu-24.04
+        outputs:
+            cache-hit: ${{ steps.npm-cache.outputs.cache-hit }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+
+            - name: Cache node_modules
+              id: npm-cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            - name: Install dependencies
+              run: npm ci
+
     update-snapshots:
         runs-on: ubuntu-latest
 
