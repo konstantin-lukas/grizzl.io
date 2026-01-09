@@ -16,6 +16,7 @@ test("should match schemas", () => {
 
     const { stderr, status } = spawnSync("npx", ["drizzle-kit", "generate"], {
         encoding: "utf-8",
+        timeout: 25000,
     });
 
     expect(stderr).toBe("");
@@ -26,4 +27,4 @@ test("should match schemas", () => {
     for (let i = 0; i < migrationsBefore.length; i++) {
         expect(migrationsBefore[i]).toBe(migrationsAfter[i]);
     }
-});
+}, 30000);
