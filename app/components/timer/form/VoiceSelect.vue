@@ -29,8 +29,8 @@ const voiceOptions = computed(() => [
 </script>
 
 <template>
-    <UFormField v-if="ttsVoices.length > 0" name="ttsVoice" class="w-full">
-        <USelect v-model="ttsVoice!" :items="voiceOptions" class="w-full" :aria-describedby="alertId" />
+    <UFormField v-if="voiceOptions[1]?.length !== 0" name="ttsVoice" class="w-full">
+        <USelect v-model="ttsVoice" :items="voiceOptions" class="w-full" :aria-describedby="alertId" />
         <template #label>
             <span class="allow-tooltip flex items-center">
                 {{ $t("timer.form.ttsVoice") }}
