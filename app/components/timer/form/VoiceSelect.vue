@@ -66,7 +66,7 @@ const voiceOptions = computed(() => [
         </Transition>
     </UFormField>
     <Transition name="fade">
-        <div v-if="ttsVoices.length > 0 && ttsVoice !== null" class="flex w-full gap-4">
+        <div v-if="voiceOptions[1]?.length !== 0 && ttsVoice !== null" class="flex w-full gap-4">
             <Button
                 icon="heroicons:speaker-wave"
                 :aria-label="$t('ui.play')"
