@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.2.0...v1.2.1) (2026-01-10)
+
+
+### Bug Fixes
+
+* limit large amount of voices returned by firefox on linux desktop which caused the ui to freeze ([fed285d](https://github.com/konstantin-lukas/grizzl.io/commit/fed285dba7f6e937a09f984bcb341607b04b6565))
+
 ## [1.2.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.1.0...v1.2.0) (2025-12-29)
 
 
