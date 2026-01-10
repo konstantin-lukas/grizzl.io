@@ -55,6 +55,9 @@ export const auth = betterAuth({
             generateId,
         },
     },
+    session: {
+        expiresIn: 60 * 60 * 24 * 90,
+    },
     plugins,
     socialProviders,
 });
