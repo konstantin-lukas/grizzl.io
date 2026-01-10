@@ -113,9 +113,9 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
         await timerPage.expect("remainingIntervalTime").toHaveText("00:45");
 
         await timerPage.click("playButton");
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:00:20"));
+        await timerPage.page.clock.runFor("00:20");
         await timerPage.click("pauseButton");
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:00:40"));
+        await timerPage.page.clock.runFor("00:20");
 
         await timerPage.expect("remainingTime").toHaveText("01:10");
         await timerPage.expect("remainingIntervalTime").toHaveText("00:25");
@@ -123,7 +123,7 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
 
     await test.step("Resume timer, let it run some more, then pause and check remaining times", async () => {
         await timerPage.click("playButton");
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:00:55"));
+        await timerPage.page.clock.runFor("00:15");
         await timerPage.click("pauseButton");
 
         await timerPage.expect("remainingTime").toHaveText("00:55");
@@ -139,7 +139,7 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
 
     await test.step("Start timer, let it run again, then pause and check remaining times", async () => {
         await timerPage.click("playButton");
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:01:00"));
+        await timerPage.page.clock.runFor("00:05");
         await timerPage.click("pauseButton");
 
         await timerPage.expect("remainingTime").toHaveText("01:25");
@@ -148,6 +148,7 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
     });
 
     await test.step("Let timer run until the next interval, then check that displayed round is correct", async () => {
+        await timerPage.page.clock.resume();
         await timerPage.click("playButton");
         await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:01:39"));
         await timerPage.page.clock.resume();

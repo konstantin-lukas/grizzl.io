@@ -7,7 +7,7 @@ on:
 
 jobs:
     install-deps:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         outputs:
             cache-hit: ${{ steps.npm-cache.outputs.cache-hit }}
         steps:
@@ -26,11 +26,12 @@ jobs:
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
             - name: Install dependencies
+              if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
               run: npm ci
 
     code-quality:
         needs: install-deps
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - name: Checkout code
@@ -62,7 +63,7 @@ jobs:
 
     vitest:
         needs: install-deps
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - name: Checkout code
@@ -93,7 +94,7 @@ jobs:
 
     playwright:
         needs: install-deps
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         strategy:
             fail-fast: true

@@ -35,7 +35,7 @@ test("should allow changing the language", async () => {
         },
     });
     const button = wrapper.findByTestId("lang-select");
-    expect(button.text()).toBe("🇬🇧English");
+    expect(button.text()).toBe("🇺🇸English");
     await button.trigger("click");
     const german = document.querySelector("[role='option']:nth-of-type(2)") as HTMLElement;
     expect(german.textContent).toBe("🇩🇪Deutsch");
