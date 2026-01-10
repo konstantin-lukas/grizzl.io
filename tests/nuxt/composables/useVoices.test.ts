@@ -1,6 +1,23 @@
 import useVoices from "@@/app/composables/useVoices";
 import { withSetup } from "@@/tests/utils/nuxt";
+import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+
+const { useI18nMock } = await vi.hoisted(async () => {
+    const { ref } = await import("vue");
+    const locale = ref("en");
+
+    const i18nState = { locale };
+
+    return {
+        i18nState,
+        useI18nMock: vi.fn(() => i18nState),
+    };
+});
+
+mockNuxtImport("useI18n", () => {
+    return useI18nMock;
+});
 
 function createSpeechSynthesisMock() {
     let voices: SpeechSynthesisVoice[] = [];
@@ -46,7 +63,7 @@ test("loads voices on mount and updates on voiceschanged", async () => {
     const { mock, setVoices, dispatch } = createSpeechSynthesisMock();
     vi.stubGlobal("speechSynthesis", mock);
 
-    const v1 = [{ name: "Voice A" } as SpeechSynthesisVoice];
+    const v1 = [{ name: "Voice A", lang: "en", localService: true, voiceURI: "1" } as SpeechSynthesisVoice];
     setVoices(v1);
 
     const { composable } = await withSetup(() => useVoices());
@@ -56,7 +73,10 @@ test("loads voices on mount and updates on voiceschanged", async () => {
     expect(mock.addEventListener).toHaveBeenCalledWith("voiceschanged", expect.any(Function));
     expect(composable.value).toEqual(v1);
 
-    const v2 = [{ name: "Voice B" } as SpeechSynthesisVoice, { name: "Voice C" } as SpeechSynthesisVoice];
+    const v2 = [
+        { name: "Voice B", lang: "en", localService: true, voiceURI: "2" } as SpeechSynthesisVoice,
+        { name: "Voice C", lang: "en", localService: true, voiceURI: "3" } as SpeechSynthesisVoice,
+    ];
     setVoices(v2);
     dispatch("voiceschanged");
 
