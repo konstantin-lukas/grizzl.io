@@ -10,7 +10,7 @@ const pwa: ModuleOptions = {
         display: "standalone",
         display_override: ["standalone", "fullscreen", "minimal-ui"],
         background_color: "#ffffff",
-        theme_color: "#007a55",
+        theme_color: "#047857",
         id: "/",
         icons,
         screenshots: [
