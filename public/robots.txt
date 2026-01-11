@@ -1,0 +1,19 @@
+User-agent: *
+Disallow: /
+Content-Usage: search=n, train-ai=n
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
