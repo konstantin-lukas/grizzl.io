@@ -7,10 +7,10 @@ const pwa: ModuleOptions = {
         short_name: "Grizzl",
         description: "Your everything in one app for daily tasks.",
         start_url: "/",
-        display: "fullscreen",
-        display_override: ["fullscreen", "standalone", "minimal-ui"],
+        display: "standalone",
+        display_override: ["standalone", "fullscreen", "minimal-ui"],
         background_color: "#ffffff",
-        theme_color: "#000000",
+        theme_color: "#007a55",
         id: "/",
         icons,
         screenshots: [

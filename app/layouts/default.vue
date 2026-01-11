@@ -16,7 +16,11 @@ const { isOpen, close } = useMenu();
 watch(() => route.fullPath, close);
 useHead({
     title,
-    meta: [{ name: "description", content: description }],
+    meta: [
+        { name: "description", content: description },
+        { name: "mobile-web-app-capable", content: "yes" },
+        { name: "theme-color", content: "#007a55" },
+    ],
 });
 </script>
 
