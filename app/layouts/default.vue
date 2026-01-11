@@ -19,7 +19,7 @@ useHead({
     meta: [
         { name: "description", content: description },
         { name: "mobile-web-app-capable", content: "yes" },
-        { name: "theme-color", content: "#007a55" },
+        { name: "theme-color", content: "#047857" },
     ],
 });
 </script>
