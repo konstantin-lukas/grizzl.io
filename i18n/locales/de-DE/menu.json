@@ -7,7 +7,8 @@
             "toggleTheme": "App-Design umschalten",
             "changeLang": "Sprache der App ändern",
             "mainNav": "Hauptnavigation der Seite",
-            "goToHome": "Zur Startseite gehen"
+            "goToHome": "Zur Startseite gehen",
+            "title": "Anwendungsmenü"
         }
     }
 }

@@ -63,7 +63,7 @@ test("should have aria-hidden iff it is closed", async () => {
         global: { stubs },
     });
     const { open, close } = useMenu();
-    const menu = wrapper.find("header");
+    const menu = wrapper.get('[data-test-id="menu"]');
     expect(menu.attributes("aria-hidden")).toBe("true");
     open();
     await vi.waitFor(() => {

@@ -23,19 +23,27 @@ const BASE_LOCATORS = {
     emptyButton: "empty-create-button",
     undeleteButton: "undo-soft-delete-button",
     goBack: "go-back-button",
+    menu: "menu",
     root: "root",
+    drawer: "drawer",
+    slideover: "slideover",
 };
 
 export default abstract class BasePage<T extends Record<string, string>> {
     readonly page;
     readonly locators;
     readonly url;
+    console: string[] = [];
+
     protected constructor(page: Page, locators: T, url: string) {
         this.page = page;
         this.locators = Object.fromEntries(
             Object.entries({ ...BASE_LOCATORS, ...locators }).map(([key, value]) => [key, page.getByTestId(value)]),
         ) as Record<keyof T | keyof typeof BASE_LOCATORS, Locator>;
         this.url = url;
+        this.page.on("console", msg => {
+            this.console.push(msg.text());
+        });
     }
 
     async goto(options: GotoOptions = {}) {
@@ -97,6 +105,15 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
     }
 
+    async analyzeHydration() {
+        const keywords = ["Hydration", "hydration", "Mismatch", "mismatch"];
+        for (const keyword of keywords) {
+            for (const log of this.console) {
+                expect(log).not.toContain(keyword);
+            }
+        }
+    }
+
     expect(): ReturnType<typeof expect<Page>>;
     expect(
         what: keyof T | keyof typeof BASE_LOCATORS,
@@ -136,5 +153,16 @@ export default abstract class BasePage<T extends Record<string, string>> {
     async focus(what: keyof T | keyof typeof BASE_LOCATORS, options: { nth?: number } = {}) {
         if (typeof options.nth === "number") return this.locators[what].nth(options.nth).focus();
         return this.locators[what].focus();
+    }
+
+    async swReady() {
+        return this.page.evaluate(() => {
+            return Promise.race([
+                navigator.serviceWorker.ready,
+                new Promise<null>(resolve => {
+                    setTimeout(() => resolve(null), 5000);
+                }),
+            ]);
+        });
     }
 }

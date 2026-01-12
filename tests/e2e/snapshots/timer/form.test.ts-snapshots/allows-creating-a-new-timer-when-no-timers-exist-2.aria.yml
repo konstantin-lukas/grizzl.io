@@ -1,0 +1,20 @@
+- text: Timer title*
+- textbox "Timer title*"
+- group "Interval No. 1":
+  - text: Interval No. 1 Interval title
+  - textbox "Interval title":
+    - /placeholder: Displayed while interval is running
+  - text: Interval type*
+  - combobox "Interval type*"
+  - group:
+    - spinbutton "Repetitions*"
+    - button "Increment"
+    - button "Decrement" [disabled]
+    - textbox: "1"
+  - group:
+    - spinbutton "Duration*"
+    - button "Increment"
+    - button "Decrement"
+    - textbox: "3"
+  - separator
+- button "Create"

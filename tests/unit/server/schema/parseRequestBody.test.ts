@@ -24,7 +24,7 @@ beforeEach(() => {
 const schema = z.string();
 test("should throw an error if the body doesn't match the schema", async () => {
     const { parseRequestBody } = await import("@@/server/utils/schema");
-    expect(parseRequestBody({} as unknown as H3Event, schema)).rejects.toThrow();
+    await expect(parseRequestBody({} as unknown as H3Event, schema)).rejects.toThrow();
 });
 
 test("should return the parsed body if it matches the schema", async () => {

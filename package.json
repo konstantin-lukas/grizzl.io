@@ -11,8 +11,8 @@
         "postinstall": "nuxt prepare",
         "eslint": "eslint",
         "eslint:fix": "eslint --fix",
-        "prettier": "prettier --check './**/*.{ts,tsx,css,json,yml}' --config ./.prettierrc.json",
-        "prettier:fix": "prettier --write './**/*.{ts,tsx,css,json,yml}' --config ./.prettierrc.json",
+        "prettier": "prettier --check './**/*.{ts,tsx,css,json}' --config ./.prettierrc.json",
+        "prettier:fix": "prettier --write './**/*.{ts,tsx,css,json}' --config ./.prettierrc.json",
         "vitest": "vitest run --coverage"
     },
     "dependencies": {

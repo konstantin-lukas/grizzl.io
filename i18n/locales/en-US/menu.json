@@ -7,7 +7,8 @@
             "toggleTheme": "Toggle the app theme",
             "changeLang": "Change App Language",
             "mainNav": "Main site navigation",
-            "goToHome": "Go to home page"
+            "goToHome": "Go to home page",
+            "title": "Application menu"
         }
     }
 }
