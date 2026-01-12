@@ -33,6 +33,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
     readonly page;
     readonly locators;
     readonly url;
+    console: string[] = [];
+
     protected constructor(page: Page, locators: T, url: string) {
         this.page = page;
         this.locators = Object.fromEntries(
@@ -42,6 +44,10 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }
 
     async goto(options: GotoOptions = {}) {
+        this.page.on("console", msg => {
+            this.console.push(msg.text());
+        });
+
         const { waitUntil = "hydration", ...vanillaOptions } = options;
         const isVanillaWaitUntil = waitUntil !== "hydration" && waitUntil !== "route";
         const result = await this.page.goto(this.url, isVanillaWaitUntil ? vanillaOptions : options);
@@ -97,6 +103,15 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await new Promise(resolve => {
                 setTimeout(resolve, 50);
             });
+        }
+    }
+
+    async analyzeHydration() {
+        const keywords = ["Hydration", "hydration", "Mismatch", "mismatch"];
+        for (const keyword of keywords) {
+            for (const log of this.console) {
+                expect(log).not.toContain(keyword);
+            }
         }
     }
 

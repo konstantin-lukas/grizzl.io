@@ -19,6 +19,7 @@ test("allows creating a new timer when no timers exist", async ({ timerPage: pag
     await page.expect().toHaveScreenshot();
     await page.expect("root").toMatchAriaSnapshot();
     await page.analyzeA11y();
+    await page.analyzeHydration();
 
     await page.click("emptyButton");
 

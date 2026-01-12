@@ -14,6 +14,11 @@ test("contains a link to all available sections and a sign out button", async ({
     await page.expect("todoHero", { filter: { visible: true } }).toHaveCount(1);
 });
 
+test("doesn't contain any hydration errors", async ({ homePage: page }) => {
+    await page.goto();
+    await page.analyzeHydration();
+});
+
 withoutAuth(() => {
     test("contains a link to the sign in page", async ({ homePage: page }) => {
         await page.goto();
