@@ -2,11 +2,17 @@
 import { APP_NAV } from "@/constants/nav";
 
 const { isOpen, close } = useMenu();
+useEventListener(window, "keydown", e => {
+    if ((e as KeyboardEvent).key === "Escape") close();
+});
 </script>
 
 <template>
-    <header
+    <div
         id="menu"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="$t('menu.aria.title')"
         data-test-id="menu"
         class="fixed top-0 left-0 z-40 flex h-[100dvh] w-[100dvw] items-center justify-center bg-back/30 transition-all duration-300"
         :class="{ 'invisible opacity-0': !isOpen, 'backdrop-blur-lg': isOpen }"
@@ -47,5 +53,5 @@ const { isOpen, close } = useMenu();
         </div>
         <NavMenuThemeToggle />
         <NavMenuLangSelect />
-    </header>
+    </div>
 </template>

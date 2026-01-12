@@ -40,7 +40,6 @@ useHead({
                 <DataOffline />
                 <NavMenu />
                 <NavMenuButton />
-                <div id="back-button-portal" />
                 <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-elements" class="min-h-main-height">
                     <slot />
                 </main>
