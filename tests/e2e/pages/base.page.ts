@@ -23,7 +23,10 @@ const BASE_LOCATORS = {
     emptyButton: "empty-create-button",
     undeleteButton: "undo-soft-delete-button",
     goBack: "go-back-button",
+    menu: "menu",
     root: "root",
+    drawer: "drawer",
+    slideover: "slideover",
 };
 
 export default abstract class BasePage<T extends Record<string, string>> {

@@ -5,7 +5,7 @@ test.beforeEach(async ({ db }) => {
     await db.timer.reset();
 });
 
-test("allows playing a created timer and going back", async ({ timerPage, db }) => {
+test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const [interval] = await db.timerInterval.insert(timer.id, {
         count: 1,
@@ -14,46 +14,46 @@ test("allows playing a created timer and going back", async ({ timerPage, db }) 
         beatPattern: null,
     });
 
-    await timerPage.goto();
-    await timerPage.click("listItemPlayButtons");
+    await page.goto();
+    await page.click("listItemPlayButtons");
 
-    await timerPage.expect("title").toHaveText(timer.title);
-    await timerPage.expect("intervalTitle").toHaveText(interval.title!);
-    await timerPage.expect("remainingIntervalTime").toHaveText("00:01");
-    await timerPage.expect("remainingTime").toHaveText("00:01");
-    await timerPage.expect("activeRound").toHaveText("1/1");
-    await timerPage.analyzeA11y();
-    await timerPage.expect().toHaveScreenshot();
+    await page.expect("title").toHaveText(timer.title);
+    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("remainingIntervalTime").toHaveText("00:01");
+    await page.expect("remainingTime").toHaveText("00:01");
+    await page.expect("activeRound").toHaveText("1/1");
+    await page.analyzeA11y();
+    await page.expect().toHaveScreenshot();
 
-    await timerPage.click("playButton");
+    await page.click("playButton");
 
-    await timerPage.expect("title").toHaveText(timer.title);
-    await timerPage.expect("intervalTitle").toHaveText("");
-    await timerPage.expect("remainingIntervalTime").toHaveText("––:––");
-    await timerPage.expect("remainingTime").toHaveText("00:00");
-    await timerPage.expect("activeRound").toHaveText("–/–");
-    await timerPage.expect().toHaveScreenshot();
+    await page.expect("title").toHaveText(timer.title);
+    await page.expect("intervalTitle").toHaveText("");
+    await page.expect("remainingIntervalTime").toHaveText("––:––");
+    await page.expect("remainingTime").toHaveText("00:00");
+    await page.expect("activeRound").toHaveText("–/–");
+    await page.expect().toHaveScreenshot();
 
-    await timerPage.click("resetButton");
+    await page.click("resetButton");
 
-    await timerPage.expect("title").toHaveText(timer.title);
-    await timerPage.expect("intervalTitle").toHaveText(interval.title!);
-    await timerPage.expect("remainingIntervalTime").toHaveText("00:01");
-    await timerPage.expect("remainingTime").toHaveText("00:01");
-    await timerPage.expect("activeRound").toHaveText("1/1");
+    await page.expect("title").toHaveText(timer.title);
+    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("remainingIntervalTime").toHaveText("00:01");
+    await page.expect("remainingTime").toHaveText("00:01");
+    await page.expect("activeRound").toHaveText("1/1");
 
-    await timerPage.click("goBack");
-    await timerPage.click("listItemPlayButtons");
+    await page.click("goBack");
+    await page.click("listItemPlayButtons");
 
-    await timerPage.expect("title").toHaveText(timer.title);
-    await timerPage.expect("intervalTitle").toHaveText(interval.title!);
-    await timerPage.expect("remainingIntervalTime").toHaveText("00:01");
-    await timerPage.expect("remainingTime").toHaveText("00:01");
-    await timerPage.expect("activeRound").toHaveText("1/1");
+    await page.expect("title").toHaveText(timer.title);
+    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("remainingIntervalTime").toHaveText("00:01");
+    await page.expect("remainingTime").toHaveText("00:01");
+    await page.expect("activeRound").toHaveText("1/1");
 });
 
 test("shows indicators for beats on timer progress and information on timer and interval lengths", async ({
-    timerPage,
+    timerPage: page,
     db,
 }) => {
     const beatPattern = [
@@ -86,17 +86,17 @@ test("shows indicators for beats on timer progress and information on timer and 
         repeatCount: 4,
     });
 
-    await timerPage.goto();
-    await timerPage.click("listItemPlayButtons");
+    await page.goto();
+    await page.click("listItemPlayButtons");
 
-    await timerPage.expect("remainingIntervalTime").toHaveText("00:03");
-    await timerPage.expect("remainingTime").toHaveText("00:18");
-    await timerPage.expect("activeRound").toHaveText("1/6");
-    await timerPage.expect("beatIndicator").toHaveCount(8);
-    await timerPage.expect().toHaveScreenshot();
+    await page.expect("remainingIntervalTime").toHaveText("00:03");
+    await page.expect("remainingTime").toHaveText("00:18");
+    await page.expect("activeRound").toHaveText("1/6");
+    await page.expect("beatIndicator").toHaveCount(8);
+    await page.expect().toHaveScreenshot();
 });
 
-test("allows pausing, resuming, and resetting timer playback", async ({ timerPage, db }) => {
+test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(timer.id, {
         count: 1,
@@ -104,60 +104,61 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
     });
 
     await test.step("Let timer run for some time, then pause and check remaining times", async () => {
-        await timerPage.page.clock.install({ time: new Date("2024-02-02T07:00:00") });
-        await timerPage.goto();
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:00:00"));
-        await timerPage.click("listItemPlayButtons");
+        await page.page.clock.install({ time: new Date("2024-02-02T07:00:00") });
+        await page.goto();
+        await page.page.clock.pauseAt(new Date("2024-02-02T08:00:00"));
+        await page.click("listItemPlayButtons");
 
-        await timerPage.expect("remainingTime").toHaveText("01:30");
-        await timerPage.expect("remainingIntervalTime").toHaveText("00:45");
+        await page.expect("remainingTime").toHaveText("01:30");
+        await page.expect("remainingIntervalTime").toHaveText("00:45");
+        await page.expect("slideover").toMatchAriaSnapshot();
 
-        await timerPage.click("playButton");
-        await timerPage.page.clock.runFor("00:20");
-        await timerPage.click("pauseButton");
-        await timerPage.page.clock.runFor("00:20");
+        await page.click("playButton");
+        await page.page.clock.runFor("00:20");
+        await page.click("pauseButton");
+        await page.page.clock.runFor("00:20");
 
-        await timerPage.expect("remainingTime").toHaveText("01:10");
-        await timerPage.expect("remainingIntervalTime").toHaveText("00:25");
+        await page.expect("remainingTime").toHaveText("01:10");
+        await page.expect("remainingIntervalTime").toHaveText("00:25");
     });
 
     await test.step("Resume timer, let it run some more, then pause and check remaining times", async () => {
-        await timerPage.click("playButton");
-        await timerPage.page.clock.runFor("00:15");
-        await timerPage.click("pauseButton");
+        await page.click("playButton");
+        await page.page.clock.runFor("00:15");
+        await page.click("pauseButton");
 
-        await timerPage.expect("remainingTime").toHaveText("00:55");
-        await timerPage.expect("remainingIntervalTime").toHaveText("00:10");
+        await page.expect("remainingTime").toHaveText("00:55");
+        await page.expect("remainingIntervalTime").toHaveText("00:10");
     });
 
     await test.step("Reset timer playback and check that remaining times are reset", async () => {
-        await timerPage.click("resetButton");
+        await page.click("resetButton");
 
-        await timerPage.expect("remainingTime").toHaveText("01:30");
-        await timerPage.expect("remainingIntervalTime").toHaveText("00:45");
+        await page.expect("remainingTime").toHaveText("01:30");
+        await page.expect("remainingIntervalTime").toHaveText("00:45");
     });
 
     await test.step("Start timer, let it run again, then pause and check remaining times", async () => {
-        await timerPage.click("playButton");
-        await timerPage.page.clock.runFor("00:05");
-        await timerPage.click("pauseButton");
+        await page.click("playButton");
+        await page.page.clock.runFor("00:05");
+        await page.click("pauseButton");
 
-        await timerPage.expect("remainingTime").toHaveText("01:25");
-        await timerPage.expect("remainingIntervalTime").toHaveText("00:40");
-        await timerPage.expect("activeRound").toHaveText("1/2");
+        await page.expect("remainingTime").toHaveText("01:25");
+        await page.expect("remainingIntervalTime").toHaveText("00:40");
+        await page.expect("activeRound").toHaveText("1/2");
     });
 
     await test.step("Let timer run until the next interval, then check that displayed round is correct", async () => {
-        await timerPage.page.clock.resume();
-        await timerPage.click("playButton");
-        await timerPage.page.clock.pauseAt(new Date("2024-02-02T08:01:39"));
-        await timerPage.page.clock.resume();
+        await page.page.clock.resume();
+        await page.click("playButton");
+        await page.page.clock.pauseAt(new Date("2024-02-02T08:01:39"));
+        await page.page.clock.resume();
 
-        await timerPage.expect("activeRound").toHaveText("2/2");
+        await page.expect("activeRound").toHaveText("2/2");
     });
 
     await test.step("Reset timer and check that displayed round is reset", async () => {
-        await timerPage.click("resetButton");
-        await timerPage.expect("activeRound").toHaveText("1/2");
+        await page.click("resetButton");
+        await page.expect("activeRound").toHaveText("1/2");
     });
 });

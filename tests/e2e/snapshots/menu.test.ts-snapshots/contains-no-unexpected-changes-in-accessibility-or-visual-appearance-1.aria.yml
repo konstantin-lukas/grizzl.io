@@ -1,0 +1,14 @@
+- banner:
+  - navigation "Main site navigation":
+  - link "Go to home page":
+    - /url: /
+    - img
+  - list:
+    - listitem:
+    - link "Timer":
+      - /url: /timer
+    - listitem:
+      - button "Sign Out"
+  - text: development
+  - button "Toggle the app theme"
+  - button "Show popup": 🇺🇸 English

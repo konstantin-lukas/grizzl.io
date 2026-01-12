@@ -1,0 +1,12 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - list
+    - heading "No entries found" [level=1]
+    - button "Create"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy

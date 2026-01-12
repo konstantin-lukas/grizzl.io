@@ -37,7 +37,7 @@ function onClick() {
         }"
     >
         <template #content>
-            <div class="relative m-0 h-dvh w-dvw overflow-auto">
+            <div class="relative m-0 h-dvh w-dvw overflow-auto" data-test-id="slideover">
                 <div class="fixed top-4 left-4 size-10">
                     <Button
                         icon="heroicons:arrow-uturn-left-16-solid"

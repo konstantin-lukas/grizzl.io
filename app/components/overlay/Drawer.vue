@@ -8,7 +8,7 @@
         }"
     >
         <template #content>
-            <div class="mt-0 h-dvh pt-4">
+            <div class="mt-0 h-dvh pt-4" data-test-id="drawer">
                 <slot />
             </div>
         </template>
