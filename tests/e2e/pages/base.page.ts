@@ -156,8 +156,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
         return this.locators[what].focus();
     }
 
-    async swReady(): Promise<ServiceWorkerRegistration | null> {
-        return page.page.evaluate(() => {
+    async swReady() {
+        return this.page.evaluate(() => {
             return Promise.race([
                 navigator.serviceWorker.ready,
                 new Promise<null>(resolve => {
