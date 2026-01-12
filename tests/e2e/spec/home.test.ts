@@ -1,10 +1,13 @@
 import { expect, test } from "@e2e/fixtures";
 import { withoutAuth } from "@e2e/utils/auth";
 
-test("contains a link to all available sections and a sign out button", async ({ homePage: page }) => {
+test("contains a link to all available sections and a sign out button", async ({ homePage: page }, testInfo) => {
     await page.goto();
     await page.expect().toHaveScreenshot();
-    await page.expect("root").toMatchAriaSnapshot();
+    const project = testInfo.project.name;
+    await page.expect("root").toMatchAriaSnapshot({
+        name: `contains-a-link-to-all-available-sections-and-a-sign-out-button-${project.includes("mobile") ? "mobile" : "desktop"}-1.aria.yml`,
+    });
     await page.analyzeA11y();
     await page.expect("signOutButton").toBeVisible();
     await page.expect("signInButton").toBeDisattached();

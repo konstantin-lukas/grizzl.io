@@ -14,7 +14,7 @@ const intervals = [
 
 testRedirectWhenLoggedOut("/timer");
 
-test("should register a service worker if supported", async ({ homePage: page }) => {
+test("should register a service worker if supported", async ({ timerPage: page }) => {
     await page.goto();
     const ready = await page.swReady();
     expect(ready).not.toBe(null);

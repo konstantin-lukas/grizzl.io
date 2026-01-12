@@ -41,13 +41,12 @@ export default abstract class BasePage<T extends Record<string, string>> {
             Object.entries({ ...BASE_LOCATORS, ...locators }).map(([key, value]) => [key, page.getByTestId(value)]),
         ) as Record<keyof T | keyof typeof BASE_LOCATORS, Locator>;
         this.url = url;
-    }
-
-    async goto(options: GotoOptions = {}) {
         this.page.on("console", msg => {
             this.console.push(msg.text());
         });
+    }
 
+    async goto(options: GotoOptions = {}) {
         const { waitUntil = "hydration", ...vanillaOptions } = options;
         const isVanillaWaitUntil = waitUntil !== "hydration" && waitUntil !== "route";
         const result = await this.page.goto(this.url, isVanillaWaitUntil ? vanillaOptions : options);
