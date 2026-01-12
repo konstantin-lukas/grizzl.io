@@ -1,4 +1,4 @@
-import { test } from "@e2e/fixtures";
+import { expect, test } from "@e2e/fixtures";
 import { withoutAuth } from "@e2e/utils/auth";
 
 test("contains a link to all available sections and a sign out button", async ({ homePage: page }) => {
@@ -17,6 +17,12 @@ test("contains a link to all available sections and a sign out button", async ({
 test("doesn't contain any hydration errors", async ({ homePage: page }) => {
     await page.goto();
     await page.analyzeHydration();
+});
+
+test("should register a service worker if supported", async ({ homePage: page }) => {
+    await page.goto();
+    const ready = await page.swReady();
+    expect(ready).not.toBe(null);
 });
 
 withoutAuth(() => {

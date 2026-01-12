@@ -155,4 +155,15 @@ export default abstract class BasePage<T extends Record<string, string>> {
         if (typeof options.nth === "number") return this.locators[what].nth(options.nth).focus();
         return this.locators[what].focus();
     }
+
+    async swReady(): Promise<ServiceWorkerRegistration | null> {
+        return page.page.evaluate(() => {
+            return Promise.race([
+                navigator.serviceWorker.ready,
+                new Promise<null>(resolve => {
+                    setTimeout(() => resolve(null), 5000);
+                }),
+            ]);
+        });
+    }
 }

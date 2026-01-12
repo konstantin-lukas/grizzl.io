@@ -14,6 +14,12 @@ const intervals = [
 
 testRedirectWhenLoggedOut("/timer");
 
+test("should register a service worker if supported", async ({ homePage: page }) => {
+    await page.goto();
+    const ready = await page.swReady();
+    expect(ready).not.toBe(null);
+});
+
 test("allows creating a new timer when no timers exist", async ({ timerPage: page, db }) => {
     await page.goto();
     await page.expect().toHaveScreenshot();
