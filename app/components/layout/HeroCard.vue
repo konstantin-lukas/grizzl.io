@@ -23,7 +23,7 @@ const {
         :aria-hidden="disabled || undefined"
     >
         <UCard
-            class="center aspect-square w-48"
+            class="center w-48 xs:aspect-square"
             :class="{
                 'transition-all hover:scale-110 hover:bg-primary hover:text-back': !disabled,
                 'relative': disabled,
