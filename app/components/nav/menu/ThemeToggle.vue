@@ -16,7 +16,7 @@ const isDark = computed({
         :aria-label="$t('menu.aria.toggleTheme')"
         color="neutral"
         variant="ghost"
-        class="center absolute top-4 right-4 z-50 h-10 w-10 cursor-pointer"
+        class="center absolute top-4 right-4 z-50 size-10 cursor-pointer hover-none:size-12"
         data-test-id="theme-toggle"
         size="xl"
         @click="isDark = !isDark"

@@ -30,7 +30,7 @@ useHead({
             :lang="head.htmlAttrs.lang"
             :dir="head.htmlAttrs.dir"
             data-test-id="root"
-            class="not-xs:text-sm"
+            class="not-xs:text-[0.95rem]"
             translate="no"
         >
             <Body>

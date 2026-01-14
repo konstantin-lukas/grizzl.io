@@ -156,6 +156,7 @@ function onEnd() {
         <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
             <div class="flex w-120 justify-center gap-4 px-8">
                 <Button
+                    size="xl"
                     type="submit"
                     :icon="createNewTimer ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
                     class="flex w-full justify-center"
