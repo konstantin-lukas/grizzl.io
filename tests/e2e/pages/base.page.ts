@@ -171,6 +171,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
         if (openMenu) await this.click("menuButton");
         await this.click("themeToggle");
+        await this.page.click("body", { position: { x: 0, y: 0 } });
         if (closeMenu) {
             await this.click("menuButton");
             await this.page.keyboard.press("Escape");
