@@ -26,13 +26,7 @@ useHead({
 
 <template>
     <div>
-        <Html
-            :lang="head.htmlAttrs.lang"
-            :dir="head.htmlAttrs.dir"
-            data-test-id="root"
-            class="not-xs:text-[0.95rem]"
-            translate="no"
-        >
+        <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir" data-test-id="root" translate="no">
             <Body>
                 <teleport to="body">
                     <NuxtLoadingIndicator />

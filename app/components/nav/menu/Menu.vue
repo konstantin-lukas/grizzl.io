@@ -46,7 +46,9 @@ useEventListener(window, "keydown", e => {
                 </ul>
             </nav>
         </div>
-        <div class="absolute bottom-7 left-6 sm:bottom-5">
+        <div
+            class="absolute bottom-[calc(1.5rem_+_env(safe-area-inset-bottom))] left-6 sm:bottom-[calc(1.25rem_+_env(safe-area-inset-bottom))]"
+        >
             <span class="select-none" data-test-id="app-version">
                 {{ $config.public.version }}
             </span>
