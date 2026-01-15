@@ -441,7 +441,7 @@
 
 @media (min-width: 25rem) {
     :root {
-        --spacing-footer-height: calc(3rem + env(safe-area-inset-bottom))
+        --spacing-footer-height: calc(3rem + env(safe-area-inset-bottom));
     }
 }
 
