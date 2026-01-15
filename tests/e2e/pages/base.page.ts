@@ -165,4 +165,32 @@ export default abstract class BasePage<T extends Record<string, string>> {
             ]);
         });
     }
+
+    async toggleTheme(options?: { openMenu?: boolean; closeMenu?: boolean }) {
+        const { openMenu = true, closeMenu = true } = { ...options };
+
+        if (openMenu) await this.click("menuButton");
+        await this.click("themeToggle");
+        if (closeMenu) {
+            await this.click("menuButton");
+            await this.page.keyboard.press("Escape");
+            await this.page.click("body", { position: { x: 0, y: 0 } });
+        }
+    }
+
+    async expectIntegrity(options?: {
+        ariaSnapshotName?: string;
+        ariaSnapshotTarget?: keyof T | keyof typeof BASE_LOCATORS;
+        skipThemeToggle?: boolean;
+    }) {
+        const { ariaSnapshotName, ariaSnapshotTarget, skipThemeToggle = false } = { ...options };
+        await this.expect(ariaSnapshotTarget ?? "root").toMatchAriaSnapshot({ name: ariaSnapshotName });
+        await this.analyzeA11y();
+        await this.analyzeHydration();
+        await this.expect().toHaveScreenshot();
+        if (skipThemeToggle) return;
+        await this.toggleTheme();
+        await this.expect().toHaveScreenshot();
+        await this.toggleTheme();
+    }
 }

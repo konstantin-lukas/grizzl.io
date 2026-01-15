@@ -87,6 +87,7 @@ test("shows indicators for beats on timer progress and information on timer and 
     });
 
     await page.goto();
+    await page.toggleTheme();
     await page.click("listItemPlayButtons");
 
     await page.expect("remainingIntervalTime").toHaveText("00:03");
