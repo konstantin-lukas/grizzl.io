@@ -38,12 +38,12 @@ function onClick() {
     >
         <template #content>
             <div class="relative m-0 h-dvh w-dvw overflow-auto" data-test-id="slideover">
-                <div class="fixed top-4 left-4 size-10">
+                <div class="fixed top-4 left-4 size-10 hover-none:size-12">
                     <Button
                         icon="heroicons:arrow-uturn-left-16-solid"
                         variant="ghost"
                         color="neutral"
-                        class="size-10"
+                        class="flex size-10 justify-center hover-none:size-12"
                         :aria-label="$t('ui.goBack')"
                         data-test-id="go-back-button"
                         @click="onClick"
