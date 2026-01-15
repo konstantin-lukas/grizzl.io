@@ -33,10 +33,10 @@ async function handler(event: MouseEvent) {
 }
 
 const ui = {
-    base: "hover-none:px-3.5 hover-none:py-2 hover-none:text-base gap-1",
-    leadingIcon: "hover-none:size-6.5",
+    base: "hover-none:px-3 hover-none:py-2 hover-none:text-base gap-1",
+    leadingIcon: "hover-none:size-6",
     leadingAvatarSize: "hover-none:xs",
-    trailingIcon: "hover-none:size-6.5",
+    trailingIcon: "hover-none:size-6",
 };
 </script>
 
