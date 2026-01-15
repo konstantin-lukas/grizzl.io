@@ -8,32 +8,20 @@ const { close } = useMenu();
 
 <template>
     <div
-        class="relative flex min-h-main-height w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-primary/50 to-[100dvh] px-6 xs:px-12 md:px-24 xl:bg-gradient-to-bl xl:to-75% dark:from-primary/25"
+        class="relative flex min-h-main-height w-full flex-col items-center gap-4 from-primary/50 to-[100dvh] xl:justify-center xl:bg-gradient-to-bl xl:to-75% xl:px-24 dark:from-primary/25"
     >
-        <div class="flex max-w-[1280px] flex-col items-center xl:flex-row xl:gap-24">
-            <div class="flex w-full flex-col items-center justify-center gap-6 pt-20 xl:hidden">
-                <SvgGrizzlLogo class="max-w-120 fill-front" />
-                <div class="mt-4 mb-8 grid w-full grid-cols-1 gap-4 2xs:grid-cols-2 xs:gap-6 sm:gap-8 md:grid-cols-3">
-                    <LayoutHeroCard
-                        v-for="[label, icon, disabled] in APP_NAV"
-                        :key="label"
-                        :data-test-id="`home-hero-card-${label}`"
-                        :label
-                        :icon
-                        :disabled
-                        class="w-full"
-                    />
-                </div>
-            </div>
-            <div class="mb-32 flex flex-col items-start gap-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:py-10">
-                <div>
+        <div class="flex w-full max-w-[1280px] flex-col items-center xl:flex-row xl:gap-24">
+            <div
+                class="flex w-full flex-col items-start gap-6 from-primary/25 not-xl:mb-8 not-xl:bg-gradient-to-t not-xl:pt-20 not-xl:pb-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:gap-8 xl:py-10 dark:from-primary/15"
+            >
+                <div class="px-6 xs:px-12 md:px-24 xl:px-0">
                     <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />
-                    <TypoH1 class="my-4">{{ $t("meta.tagline") }}</TypoH1>
+                    <TypoH1 class="mb-2 xl:mt-4 xl:mb-4">{{ $t("meta.tagline") }}</TypoH1>
                     <p class="text-neutral-600 dark:text-neutral-400">
                         {{ $t("meta.description") }}
                     </p>
                 </div>
-                <div class="flex gap-4">
+                <div class="flex gap-4 px-6 xs:px-12 md:px-24 xl:px-0">
                     <Button
                         v-if="session.data"
                         size="xl"
@@ -64,6 +52,21 @@ const { close } = useMenu();
                             </Button>
                         </div>
                     </Transition>
+                </div>
+            </div>
+            <div class="mb-16 flex w-full flex-col items-center justify-center gap-6 xl:hidden">
+                <div
+                    class="mb-8 grid w-full grid-cols-1 gap-4 px-6 xs:grid-cols-2 xs:gap-6 xs:px-12 sm:gap-8 md:grid-cols-3 md:px-24"
+                >
+                    <LayoutHeroCard
+                        v-for="[label, icon, disabled] in APP_NAV"
+                        :key="label"
+                        :data-test-id="`home-hero-card-${label}`"
+                        :label
+                        :icon
+                        :disabled
+                        class="w-full"
+                    />
                 </div>
             </div>
             <div class="hidden w-1/2 grid-cols-2 xl:grid motion-reduce:xl:hidden" aria-hidden="true">

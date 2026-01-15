@@ -31,6 +31,13 @@ async function handler(event: MouseEvent) {
         onClick(event);
     }
 }
+
+const ui = {
+    base: "hover-none:px-3 hover-none:py-2 hover-none:text-base gap-1",
+    leadingIcon: "hover-none:size-6",
+    leadingAvatarSize: "hover-none:xs",
+    trailingIcon: "hover-none:size-6",
+};
 </script>
 
 <template>
@@ -40,6 +47,7 @@ async function handler(event: MouseEvent) {
             :aria-label="ariaLabel"
             :disabled="typeof disabled === 'boolean' ? disabled : isLoading"
             :data-test-id
+            :ui
             @click="handler"
         >
             <slot />
@@ -54,6 +62,7 @@ async function handler(event: MouseEvent) {
         v-bind="props"
         :disabled="typeof disabled === 'boolean' ? disabled : isLoading"
         :data-test-id
+        :ui
         @click="handler"
     >
         <slot />

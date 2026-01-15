@@ -47,7 +47,7 @@ watch(open, () => {
                     ({{ duration }})
                 </span>
             </div>
-            <div class="flex justify-start gap-4">
+            <div class="flex justify-start gap-4 hover-none:gap-5">
                 <Button
                     :aria-label="$t('ui.start')"
                     icon="heroicons:play-solid"
@@ -74,7 +74,6 @@ watch(open, () => {
                 <Button
                     icon="heroicons:plus"
                     color="neutral"
-                    size="xl"
                     data-test-id="timer-create-button"
                     @click="emit('create')"
                 >

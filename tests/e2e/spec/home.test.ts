@@ -3,23 +3,15 @@ import { withoutAuth } from "@e2e/utils/auth";
 
 test("contains a link to all available sections and a sign out button", async ({ homePage: page }, testInfo) => {
     await page.goto();
-    await page.expect().toHaveScreenshot();
     const project = testInfo.project.name;
-    await page.expect("root").toMatchAriaSnapshot({
-        name: `contains-a-link-to-all-available-sections-and-a-sign-out-button-${project.includes("mobile") ? "mobile" : "desktop"}-1.aria.yml`,
-    });
-    await page.analyzeA11y();
+    const ariaSnapshotName = `contains-a-link-to-all-available-sections-and-a-sign-out-button-${project.includes("mobile") ? "mobile" : "desktop"}-1.aria.yml`;
+    await page.expectIntegrity({ ariaSnapshotName });
     await page.expect("signOutButton").toBeVisible();
     await page.expect("signInButton").toBeDisattached();
     await page.expect("timerHero", { filter: { visible: true } }).toHaveCount(1);
     await page.expect("financeHero", { filter: { visible: true } }).toHaveCount(1);
     await page.expect("pollHero", { filter: { visible: true } }).toHaveCount(1);
     await page.expect("todoHero", { filter: { visible: true } }).toHaveCount(1);
-});
-
-test("doesn't contain any hydration errors", async ({ homePage: page }) => {
-    await page.goto();
-    await page.analyzeHydration();
 });
 
 test("should register a service worker if supported", async ({ homePage: page }) => {

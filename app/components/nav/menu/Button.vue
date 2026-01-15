@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { toggle, isOpen } = useMenu();
-const baseClass = tw`absolute left-1/2 h-[3px] w-full origin-center -translate-x-1/2 rounded-full transition-all ease-bezier`;
+const baseClass = tw`absolute left-1/2 h-[3.5px] w-full origin-center -translate-x-1/2 rounded-full transition-all ease-bezier sm:h-[3px]`;
 const isOnline = useOnlineStatus();
 </script>
 
@@ -8,7 +8,7 @@ const isOnline = useOnlineStatus();
     <Button
         color="neutral"
         variant="ghost"
-        class="fixed top-4 left-4 z-50 h-10 w-10 cursor-pointer"
+        class="fixed top-[calc(1rem_+_env(safe-area-inset-top))] left-4 z-50 size-10 cursor-pointer hover-none:size-12"
         :aria-label="$t('menu.aria.toggleMenu')"
         data-test-id="menu-button"
         @click="toggle"

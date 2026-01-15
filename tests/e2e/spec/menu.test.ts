@@ -100,7 +100,9 @@ test("has a button to toggle the theme", async ({ homePage: page }) => {
 test("contains no unexpected changes in accessibility or visual appearance", async ({ homePage: page }) => {
     await page.goto();
     await page.click("menuButton");
-    await page.expect().toHaveScreenshot();
     await page.expect("menu").toMatchAriaSnapshot();
     await page.analyzeA11y();
+    await page.expect().toHaveScreenshot();
+    await page.toggleTheme({ openMenu: false, closeMenu: false });
+    await page.expect().toHaveScreenshot();
 });
