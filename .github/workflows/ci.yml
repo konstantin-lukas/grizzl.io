@@ -126,11 +126,7 @@ jobs:
                   export DOCKER_GROUP_ID="$(id -g)"
               
                   CHANGED_TESTS=$(git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true)
-                  {
-                    echo "CHANGED_TESTS<<EOF"
-                    echo "$CHANGED_TESTS"
-                    echo "EOF"
-                  } >> "$GITHUB_ENV"
+                  "$CHANGED_TESTS" | tr '\n' ' ' >> "$GITHUB_ENV"
               
                   docker compose -f compose.test.yml up -d
 
