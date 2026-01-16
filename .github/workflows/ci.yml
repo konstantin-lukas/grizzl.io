@@ -124,14 +124,11 @@ jobs:
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
-              
-                  CHANGED_TESTS=$(git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true)
-                  "$CHANGED_TESTS" | tr '\n' ' ' >> "$GITHUB_ENV"
-              
                   docker compose -f compose.test.yml up -d
 
             - name: Run New Or Modified Playwright Tests
               run: |
+                  CHANGED_TESTS=$((git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true) | tr '\n' ' ')
                   if [ -z "$CHANGED_TESTS" ]; then
                     echo "No changed Playwright tests found; skipping."
                     exit 0
