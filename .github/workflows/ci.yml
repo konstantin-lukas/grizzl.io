@@ -99,7 +99,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
+                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari, flakiness_check]
 
         steps:
             - name: Checkout code
@@ -126,26 +126,25 @@ jobs:
                   export DOCKER_GROUP_ID="$(id -g)"
                   docker compose -f compose.test.yml up -d
 
-            - name: Run New Or Modified Playwright Tests
+            - name: Run Playwright Tests
               run: |
-                  CHANGED_TESTS=$((git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true) | tr '\n' ' ')
-                  if [ -n "$CHANGED_TESTS" ]; then
+                  if [ ${{ matrix.project }} == "flakiness_check" ]; then
+                    export DOCKER_USER_ID="$(id -u)"
+                    export DOCKER_GROUP_ID="$(id -g)"
+                    CHANGED_TESTS=$((git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true) | tr '\n' ' ')
+                    if [ -n "$CHANGED_TESTS" ]; then
+                      docker compose run --rm -e CI=true playwright \
+                      npx playwright test $CHANGED_TESTS \
+                      --repeat-each=3
+                    else
+                      echo "No new or changed test found; skipping"
+                    fi
+                  else
                     export DOCKER_USER_ID="$(id -u)"
                     export DOCKER_GROUP_ID="$(id -g)"
                     docker compose run --rm -e CI=true playwright \
-                    npx playwright test $CHANGED_TESTS \
-                    --project="${{ matrix.project }}" \
-                    --repeat-each=3
-                  else
-                    echo "No modified Playwright tests detected"
+                      npx playwright test --project="${{ matrix.project }}"
                   fi
-
-            - name: Run All Playwright Tests
-              run: |
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
-                  docker compose run --rm -e CI=true playwright \
-                    npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
