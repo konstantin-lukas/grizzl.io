@@ -105,7 +105,7 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
               with:
-                fetch-depth: 0
+                fetch-depth: 2
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -129,15 +129,21 @@ jobs:
             - name: Run New Or Modified Playwright Tests
               run: |
                   CHANGED_TESTS=$((git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$" || true) | tr '\n' ' ')
-                  if [ -z "$CHANGED_TESTS" ]; then
-                    echo "No changed Playwright tests found; skipping."
-                    exit 0
+                  if [ -n "$CHANGED_TESTS" ]; then
+                    export DOCKER_USER_ID="$(id -u)"
+                    export DOCKER_GROUP_ID="$(id -g)"
+                    docker compose run --rm -e CI=true playwright \
+                    npx playwright test $CHANGED_TESTS \
+                    --project="${{ matrix.project }}" \
+                    --repeat-each=3
+                  else
+                    echo "No modified Playwright tests detected"
                   fi
-                  docker compose run --rm -e CI=true playwright \
-                    npx playwright test "$CHANGED_TESTS" --project="${{ matrix.project }}" --repeat-each=3
 
             - name: Run All Playwright Tests
               run: |
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
                   docker compose run --rm -e CI=true playwright \
                     npx playwright test --project="${{ matrix.project }}"
 
