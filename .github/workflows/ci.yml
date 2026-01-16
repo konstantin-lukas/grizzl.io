@@ -122,13 +122,18 @@ jobs:
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
+                  CHANGED_TESTS=$(git diff origin/main...HEAD --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$")
                   docker compose -f compose.test.yml up -d
 
-            - name: Run Playwright Tests
+            - name: Run New Or Modified Playwright Tests
               run: |
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
-                  docker compose run --rm -e CI=true playwright npx playwright test --project="${{ matrix.project }}"
+                  docker compose run --rm -e CI=true playwright \
+                  npx playwright test $CHANGED_TESTS --project="${{ matrix.project }}" --repeat-each=3
+
+            - name: Run All Playwright Tests
+              run: |
+                  docker compose run --rm -e CI=true playwright \
+                  playwright npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
