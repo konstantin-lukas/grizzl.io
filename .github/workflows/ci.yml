@@ -137,7 +137,7 @@ jobs:
             - name: Run All Playwright Tests
               run: |
                   docker compose run --rm -e CI=true playwright \
-                  playwright npx playwright test --project="${{ matrix.project }}"
+                  npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
