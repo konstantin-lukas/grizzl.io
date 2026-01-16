@@ -126,13 +126,18 @@ jobs:
                   git fetch origin main
               
                   CHANGED_TESTS=$(git diff origin/main...HEAD --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$")
+                  echo "CHANGED_TESTS=$CHANGED_TESTS" >> "$GITHUB_ENV"
               
                   docker compose -f compose.test.yml up -d
 
             - name: Run New Or Modified Playwright Tests
               run: |
+                  if [ -z "$CHANGED_TESTS" ]; then
+                    echo "No changed Playwright tests found; skipping."
+                    exit 0
+                  fi
                   docker compose run --rm -e CI=true playwright \
-                  npx playwright test $CHANGED_TESTS --project="${{ matrix.project }}" --repeat-each=3
+                  npx playwright test "$CHANGED_TESTS" --project="${{ matrix.project }}" --repeat-each=3
 
             - name: Run All Playwright Tests
               run: |
