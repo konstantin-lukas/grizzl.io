@@ -104,6 +104,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -123,9 +125,7 @@ jobs:
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
               
-                  git fetch origin main
-              
-                  CHANGED_TESTS=$(git diff origin/main...HEAD --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$")
+                  CHANGED_TESTS=$(git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$")
                   echo "CHANGED_TESTS=$CHANGED_TESTS" >> "$GITHUB_ENV"
               
                   docker compose -f compose.test.yml up -d
