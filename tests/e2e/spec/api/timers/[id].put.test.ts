@@ -3,10 +3,6 @@ import { BASE_INTERVAL, BASE_TIMER, FULL_INTERVAL, FULL_TIMER } from "@e2e/fixtu
 import { test401WhenLoggedOut, testIdParameter } from "@e2e/utils/helpers";
 import { TIMER_BAD_REQUEST_TEST_CASES } from "@e2e/utils/helpers/timer";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 testIdParameter("put", "/api/timers", BASE_TIMER);
 
 for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {

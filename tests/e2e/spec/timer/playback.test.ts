@@ -1,10 +1,6 @@
 import { Beat } from "@@/shared/enum/timer";
 import { test } from "@e2e/fixtures";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
     const [interval] = await db.timerInterval.insert(timer.id, {
