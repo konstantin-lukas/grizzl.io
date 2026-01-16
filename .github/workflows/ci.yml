@@ -122,7 +122,11 @@ jobs:
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
+              
+                  git fetch origin main
+              
                   CHANGED_TESTS=$(git diff origin/main...HEAD --name-only | grep -E "tests/e2e/spec/.+/.+\.test\.ts$")
+              
                   docker compose -f compose.test.yml up -d
 
             - name: Run New Or Modified Playwright Tests
