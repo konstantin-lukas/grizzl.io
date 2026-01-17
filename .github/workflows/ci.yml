@@ -137,11 +137,11 @@ jobs:
                       grep -E 'tests/e2e/spec/.+\.test\.ts$' |
                       sed -E 's/[][(){}.+*?^$|\\]/\\&/g' || true
                     )
-                  if [ -n "$CHANGED_TESTS" ]; then
-                    echo $CHANGED_TESTS
-                    docker compose run --rm -e CI=true playwright \
-                    npx playwright test $CHANGED_TESTS \
-                    --repeat-each=3
+                    if [ -n "$CHANGED_TESTS" ]; then
+                      echo $CHANGED_TESTS
+                      docker compose run --rm -e CI=true playwright \
+                      npx playwright test $CHANGED_TESTS \
+                      --repeat-each=3
                     else
                       echo "No new or changed test found; skipping"
                     fi
