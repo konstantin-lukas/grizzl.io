@@ -24,10 +24,6 @@ async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?
     );
 }
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 test("allows retrieving a list of timers sorted by creation date", async ({ request, db }) => {
     const timers = await buildTimers(db);
     sortByCreatedAt(timers, "desc");

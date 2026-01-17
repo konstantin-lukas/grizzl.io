@@ -2,10 +2,6 @@ import { expect, test } from "@e2e/fixtures";
 import { BASE_TIMER, FULL_TIMER } from "@e2e/fixtures/constants/timer";
 import { test401WhenLoggedOut, testIdParameter } from "@e2e/utils/helpers";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 testIdParameter("patch", "/api/timers", { deleted: true });
 
 test("only allows a user to edit their own timers", async ({ request, db }) => {

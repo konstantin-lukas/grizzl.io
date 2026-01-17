@@ -3,10 +3,6 @@ import { BASE_INTERVAL, BASE_TIMER } from "@e2e/fixtures/constants/timer";
 import { test401WhenLoggedOut } from "@e2e/utils/helpers";
 import { TIMER_BAD_REQUEST_TEST_CASES } from "@e2e/utils/helpers/timer";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating a timer when ${name}`, async ({ request }) => {
         const response = await request.post("/api/timers", { data });

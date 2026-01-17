@@ -2,10 +2,6 @@ import { str } from "@@/tests/utils/helpers";
 import { expect, test } from "@e2e/fixtures";
 import { testRedirectWhenLoggedOut } from "@e2e/utils/helpers";
 
-test.beforeEach(async ({ db }) => {
-    await db.timer.reset();
-});
-
 const title = str(100);
 const intervals = [
     { title: str(10), duration: 42, repeatCount: 3, type: 0 },

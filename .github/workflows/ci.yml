@@ -99,11 +99,13 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
+                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari, flakiness_check]
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -126,9 +128,29 @@ jobs:
 
             - name: Run Playwright Tests
               run: |
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
-                  docker compose run --rm -e CI=true playwright npx playwright test --project="${{ matrix.project }}"
+                  if [ "${{ matrix.project }}" = "flakiness_check" ]; then
+                    export DOCKER_USER_ID="$(id -u)"
+                    export DOCKER_GROUP_ID="$(id -g)"
+                    CHANGED_TESTS=$(
+                      git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
+                      --name-only |
+                      grep -E 'tests/e2e/spec/.+\.test\.ts$' |
+                      sed -E 's/[][(){}.+*?^$|\\]/\\&/g' || true
+                    )
+                    if [ -n "$CHANGED_TESTS" ]; then
+                      echo $CHANGED_TESTS
+                      docker compose run --rm -e CI=true playwright \
+                      npx playwright test $CHANGED_TESTS \
+                      --repeat-each=3
+                    else
+                      echo "No new or changed test found; skipping"
+                    fi
+                  else
+                    export DOCKER_USER_ID="$(id -u)"
+                    export DOCKER_GROUP_ID="$(id -g)"
+                    docker compose run --rm -e CI=true playwright \
+                      npx playwright test --project="${{ matrix.project }}"
+                  fi
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
