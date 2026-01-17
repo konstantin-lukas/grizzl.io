@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.2.1...v1.3.0) (2026-01-17)
+
+
+### Features
+
+* **auth:** increase session time to 90 days ([f1c3f10](https://github.com/konstantin-lukas/grizzl.io/commit/f1c3f10db2e56db7ce5acd0a1657edb81c6ac248))
+* **auth:** increase session time to 90 days ([0cf6051](https://github.com/konstantin-lukas/grizzl.io/commit/0cf6051b1311059537c286ecc994461fb4f23622))
+* **menu:** make menu dialog instead of header and close when pressing escape ([9982f51](https://github.com/konstantin-lukas/grizzl.io/commit/9982f515706c3277348a0a112a2c2b60def8b647))
+
 ## [1.2.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.2.0...v1.2.1) (2026-01-10)
 
 
