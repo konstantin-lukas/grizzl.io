@@ -6,6 +6,14 @@ import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
 import { Pool } from "pg";
 
+const pool = new Pool({
+    host: "localhost",
+    database: "grizzl",
+    user: "admin",
+    password: "admin",
+    ssl: false,
+});
+
 /**
  * This fixture serves as a global beforeEach/afterEach because Playwright currently doesn't have one.
  * There's no point importing this in a test. Any code you put before the waitForUse call is executed before each test
@@ -15,14 +23,6 @@ export default function globalBeforeAfterEach() {
     // eslint-disable-next-line no-empty-pattern
     return async ({}, waitForUse: () => void) => {
         // SECTION START: RESET DATABASE
-        const pool = new Pool({
-            host: "localhost",
-            database: "grizzl",
-            user: "admin",
-            password: "admin",
-            ssl: false,
-        });
-
         const db = drizzle(pool, {
             casing: "snake_case",
             schema,
@@ -40,8 +40,6 @@ export default function globalBeforeAfterEach() {
             const tableToTruncate = `"${config.schema}"."${config.name}"`;
             await db.execute(sql.raw(`truncate ${tableToTruncate} cascade;`));
         }
-
-        await pool.end();
         // SECTION END: RESET DATABASE
 
         waitForUse();
