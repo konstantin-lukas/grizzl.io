@@ -10,3 +10,9 @@ updates:
           patterns:
             - "@playwright/test"
             - "playwright-core"
+        vitest:
+          patterns:
+            - "@vitest/coverage-v8"
+            - "@vue/test-utils"
+            - "vitest"
+            - "@nuxt/test-utils"

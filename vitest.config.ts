@@ -34,7 +34,7 @@ export default defineConfig({
                     name: "components",
                     include: ["tests/nuxt/components/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "../tests/nuxt/setup.ts",
+                    setupFiles: "./tests/nuxt/setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",
@@ -47,7 +47,7 @@ export default defineConfig({
                     name: "composables",
                     include: ["tests/nuxt/composables/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "../tests/nuxt/setup.ts",
+                    setupFiles: "./tests/nuxt/setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",
