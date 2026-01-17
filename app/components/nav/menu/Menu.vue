@@ -14,7 +14,7 @@ useEventListener(window, "keydown", e => {
         aria-modal="true"
         :aria-label="$t('menu.aria.title')"
         data-test-id="menu"
-        class="fixed top-0 left-0 z-40 flex h-[100dvh] w-[100dvw] items-center justify-center bg-back/30 transition-all duration-300"
+        class="fixed top-0 left-0 z-40 flex h-dvh w-dvw items-center justify-center bg-back/30 transition-all duration-300"
         :class="{ 'invisible opacity-0': !isOpen, 'backdrop-blur-lg': isOpen }"
         :aria-hidden="!isOpen || undefined"
     >
@@ -47,7 +47,7 @@ useEventListener(window, "keydown", e => {
             </nav>
         </div>
         <div
-            class="absolute bottom-[calc(1.5rem_+_env(safe-area-inset-bottom))] left-6 sm:bottom-[calc(1.25rem_+_env(safe-area-inset-bottom))]"
+            class="absolute bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-6 sm:bottom-[calc(1.25rem+env(safe-area-inset-bottom))]"
         >
             <span class="select-none" data-test-id="app-version">
                 {{ $config.public.version }}

@@ -8,7 +8,7 @@ const isOnline = useOnlineStatus();
     <Button
         color="neutral"
         variant="ghost"
-        class="fixed top-[calc(1rem_+_env(safe-area-inset-top))] left-4 z-50 size-10 cursor-pointer hover-none:size-12"
+        class="fixed top-4 left-4 z-50 size-10 cursor-pointer hover-none:size-12"
         :aria-label="$t('menu.aria.toggleMenu')"
         data-test-id="menu-button"
         @click="toggle"
