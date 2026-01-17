@@ -121,16 +121,16 @@ jobs:
 
             - name: Start Isolated Container Stack
               run: |
-                  export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
-                  docker compose -f compose.test.yml up -d
+                export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
+                export DOCKER_USER_ID="$(id -u)"
+                export DOCKER_GROUP_ID="$(id -g)"
+                docker compose -f compose.test.yml up -d
 
             - name: Run Playwright Tests
               run: |
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
                   if [ "${{ matrix.project }}" = "flakiness_check" ]; then
-                    export DOCKER_USER_ID="$(id -u)"
-                    export DOCKER_GROUP_ID="$(id -g)"
                     CHANGED_TESTS=$(
                       git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
                       --name-only |
@@ -146,9 +146,7 @@ jobs:
                       echo "No new or changed test found; skipping"
                     fi
                   else
-                    export DOCKER_USER_ID="$(id -u)"
-                    export DOCKER_GROUP_ID="$(id -g)"
-                    docker compose run --rm -e CI=true playwright \
+                    docker compose -f compose.test.yml run --rm -e CI=true playwright \
                       npx playwright test --project="${{ matrix.project }}"
                   fi
 

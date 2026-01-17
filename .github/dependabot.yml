@@ -5,3 +5,8 @@ updates:
       open-pull-requests-limit: 7
       schedule:
           interval: "daily"
+      groups:
+        playwright:
+          patterns:
+            - "@playwright/test"
+            - "playwright-core"
