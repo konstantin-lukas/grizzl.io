@@ -1,18 +1,10 @@
+import { pool } from "@e2e/fixtures/db";
 import * as schema from "@schema";
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
-import { Pool } from "pg";
-
-const pool = new Pool({
-    host: "localhost",
-    database: "grizzl",
-    user: "admin",
-    password: "admin",
-    ssl: false,
-});
 
 /**
  * This fixture serves as a global beforeEach/afterEach because Playwright currently doesn't have one.
