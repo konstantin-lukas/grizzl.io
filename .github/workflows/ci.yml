@@ -131,12 +131,17 @@ jobs:
                   if [ "${{ matrix.project }}" = "flakiness_check" ]; then
                     export DOCKER_USER_ID="$(id -u)"
                     export DOCKER_GROUP_ID="$(id -g)"
-                    CHANGED_TESTS=$(git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only | grep -E "tests/e2e/spec/.+\.test\.ts$" || true)
-                    if [ -n "$CHANGED_TESTS" ]; then
-                      echo $CHANGED_TESTS
-                      docker compose run --rm -e CI=true playwright \
-                      npx playwright test $CHANGED_TESTS \
-                      --repeat-each=3
+                    CHANGED_TESTS=$(
+                      git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
+                      --name-only |
+                      grep -E 'tests/e2e/spec/.+\.test\.ts$' |
+                      sed -E 's/([][(){}.+*?^$|\\])/\\\1/g; s/^/"/; s/$/"/' || true
+                    )
+                  if [ -n "$CHANGED_TESTS" ]; then
+                    echo $CHANGED_TESTS
+                    docker compose run --rm -e CI=true playwright \
+                    npx playwright test $CHANGED_TESTS \
+                    --repeat-each=3
                     else
                       echo "No new or changed test found; skipping"
                     fi
