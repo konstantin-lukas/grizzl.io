@@ -38,7 +38,7 @@
         "@iconify-json/heroicons": "1.2.3",
         "@iconify-json/material-symbols": "1.2.50",
         "@iconify-json/mdi": "1.2.3",
-        "@iconify-json/ri": "1.2.5",
+        "@iconify-json/ri": "1.2.7",
         "@iconify-json/simple-icons": "1.2.66",
         "@nuxt/test-utils": "3.21.0",
         "@playwright/test": "1.57.0",
