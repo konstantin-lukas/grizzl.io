@@ -139,15 +139,15 @@ jobs:
                     )
                     if [ -n "$CHANGED_TESTS" ]; then
                       echo $CHANGED_TESTS
-                      docker compose -f compose.test.yml run --rm -e CI=true playwright \
+                      docker compose run --rm -e CI=true playwright \
                       npx playwright test $CHANGED_TESTS \
                       --repeat-each=3
                     else
                       echo "No new or changed test found; skipping"
                     fi
                   else
-                    docker compose run --rm -e CI=true playwright \
-                      npx playwright -f compose.test.yml test --project="${{ matrix.project }}"
+                    docker compose -f compose.test.yml run --rm -e CI=true playwright \
+                      npx playwright test --project="${{ matrix.project }}"
                   fi
 
             - uses: actions/upload-artifact@v4
