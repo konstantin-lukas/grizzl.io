@@ -121,10 +121,13 @@ jobs:
 
             - name: Start Isolated Container Stack
               run: |
-                  export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
-                  docker compose -f compose.test.yml up -d
+                  CHANGED_TESTS=$(git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --name-only)
+                  if [ "${{ matrix.project }}" != "flakiness_check" && -n "$CHANGED_TESTS" ]; then
+                    export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
+                    export DOCKER_USER_ID="$(id -u)"
+                    export DOCKER_GROUP_ID="$(id -g)"
+                    docker compose -f compose.test.yml up -d
+                  fi
 
             - name: Run Playwright Tests
               run: |
