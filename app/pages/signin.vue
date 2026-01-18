@@ -7,10 +7,15 @@ definePageMeta({
     description: "meta.signInDescription",
 });
 
+const { query } = useRoute();
+const callbackURL =
+    typeof query.callbackURL === "string" && query.callbackURL.length > 1 ? query.callbackURL : undefined;
+
 async function signIn(provider: string) {
     const providerLowerCase = provider.toLowerCase();
     await authClient.signIn.social({
         provider: providerLowerCase,
+        callbackURL,
     });
 }
 
