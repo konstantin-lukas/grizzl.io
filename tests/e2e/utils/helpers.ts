@@ -21,12 +21,3 @@ export function test401WhenLoggedOut(method: "get" | "post" | "patch" | "delete"
         });
     });
 }
-
-export function testRedirectWhenLoggedOut(path: string) {
-    withoutAuth(() => {
-        test("redirects the user to the sign in page when they are not logged in", async ({ page }) => {
-            await page.goto(path);
-            await expect(page).toHaveURL("/signin");
-        });
-    });
-}
