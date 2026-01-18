@@ -26,6 +26,8 @@ export default defineEventHandler(async event => {
     }
 
     if (PROTECTED_PATHS.some(path => event.path.startsWith(path))) {
-        return sendRedirect(event, "/signin");
+        const { data, error } = tryCatchSync(() => encodeURIComponent(event.path));
+        if (error) return sendRedirect(event, "/signin");
+        return sendRedirect(event, `/signin?callbackURL=${data}`);
     }
 });
