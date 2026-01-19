@@ -22,7 +22,7 @@
         "@nuxtjs/color-mode": "4.0.0",
         "@nuxtjs/i18n": "10.2.1",
         "@vite-pwa/nuxt": "1.1.0",
-        "better-auth": "1.4.5",
+        "better-auth": "1.4.15",
         "date-fns": "4.1.0",
         "drizzle-orm": "0.45.1",
         "nanoid": "5.1.6",
