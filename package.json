@@ -42,7 +42,7 @@
         "@nuxt/test-utils": "https://pkg.pr.new/@nuxt/test-utils@1547",
         "@playwright/test": "1.57.0",
         "@tailwindcss/vite": "4.1.18",
-        "@trivago/prettier-plugin-sort-imports": "5.2.2",
+        "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/pg": "8.16.0",
         "@vitest/coverage-v8": "4.0.17",
         "@vue/test-utils": "2.4.6",
