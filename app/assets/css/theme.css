@@ -1,0 +1,43 @@
+@theme {
+    --color-theme-white: #ffffff;
+    --color-theme-black: #18181f;
+    --color-theme-light: var(--color-emerald-500);
+    --color-theme-dark: var(--color-emerald-700);
+    --ease-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+    --ui-bg: var(--color-theme-white);
+    --ui-primary: var(--color-theme-dark);
+    --ui-error: var(--color-rose-600);
+    --ui-bg-inverted: var(--color-theme-black);
+    --ui-bg-elevated: rgba(24, 24, 31, 0.15);
+    --color-border-accented: var(--ui-border-accented);
+    --color-back: var(--color-theme-white);
+    --ui-text-inverted: var(--color-back);
+    --color-front: var(--color-theme-black);
+    --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
+    --default-transition-duration: 250ms;
+    --spacing-footer-height: calc(4rem + env(safe-area-inset-bottom));
+    --spacing-main-padding: calc(var(--spacing) * 26);
+    --spacing-main-height: 100dvh;
+    --spacing-main-height-no-padding: calc(100dvh - var(--spacing-main-padding) * 2);
+    --breakpoint-xs: 25rem;
+    --breakpoint-2xs: 20rem;
+    --ui-text: var(--color-front);
+}
+
+:root:where(.dark, .dark *) {
+    --ui-error: var(--color-rose-500);
+    --color-front: var(--color-theme-white);
+    --color-back: var(--color-theme-black);
+    --ui-primary: var(--color-theme-light);
+    --ui-bg-elevated: rgba(255, 255, 255, 0.15);
+    --ui-bg: var(--color-theme-black);
+    --ui-bg-inverted: var(--color-theme-white);
+    --ui-border: #4e4e65;
+    --ui-border-accented: #4e4e65;
+}
+
+@media (min-width: 25rem) {
+    :root {
+        --spacing-footer-height: calc(3rem + env(safe-area-inset-bottom));
+    }
+}

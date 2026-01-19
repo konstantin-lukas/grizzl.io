@@ -1,0 +1,33 @@
+@layer base {
+    :root,
+    body {
+        background: var(--color-back);
+        color: var(--color-front);
+        font-family: Jost, sans-serif;
+    }
+
+    :root[lang="ja-JP"],
+    :root[lang="ja-JP"] body {
+        font-family: Jost, "Noto Sans JP", sans-serif;
+    }
+
+    legend {
+        font-weight: 500;
+    }
+
+    button,
+    a {
+        cursor: pointer;
+    }
+
+    ::selection {
+        background: var(--color-front);
+        color: var(--color-back);
+    }
+
+    :focus-visible,
+    button:focus-visible {
+        outline: 4px solid var(--color-front);
+        outline-offset: 4px;
+    }
+}
