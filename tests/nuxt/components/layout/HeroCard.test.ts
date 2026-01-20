@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 
 test("should render a card with a link to the respective section", async () => {
     const props = { label: "timer", icon: "mdi:timer-outline" };
-    const wrapper = await mountSuspended(HeroCard, { scoped: true, props });
+    const wrapper = await mountSuspended(HeroCard, { scoped: true, props } as never);
     const card = wrapper.find("a");
     const label = wrapper.findByTestId("hero-card-label");
     const comingSoon = wrapper.findByTestId("hero-card-coming-soon");
@@ -16,7 +16,7 @@ test("should render a card with a link to the respective section", async () => {
 
 test("should render a div without a link and a coming soon label when disabled", async () => {
     const props = { label: "timer", icon: "mdi:timer-outline", disabled: true };
-    const wrapper = await mountSuspended(HeroCard, { scoped: true, props });
+    const wrapper = await mountSuspended(HeroCard, { scoped: true, props } as never);
     const card = wrapper.find("div");
     const label = wrapper.findByTestId("hero-card-label");
     const comingSoon = wrapper.findByTestId("hero-card-coming-soon");

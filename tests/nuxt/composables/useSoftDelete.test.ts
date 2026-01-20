@@ -89,7 +89,7 @@ test("should make a call to the provided resource and add a toast with an undo o
             ],
         }),
     );
-    add.mock.calls[0][0].actions[0].onClick();
+    add.mock.calls[0]![0].actions[0].onClick();
     expect(fetchSpy).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toHaveBeenCalledWith("/api/bananas/123", { method: "PATCH", body: { deleted: false } });
     await vi.waitFor(() => {
@@ -100,6 +100,7 @@ test("should make a call to the provided resource and add a toast with an undo o
 
 test("should add an error toast and still call optional refresh", async () => {
     const refresh = vi.fn().mockImplementation(() => Promise.resolve(undefined));
+    // @ts-expect-error Excessive stack depth comparing types ... introduced by upgrade from Nuxt 4.2.1 Nuxt 4.2.2
     fetchSpy.mockImplementationOnce(() => Promise.reject());
     const execute = useSoftDelete("/api/bananas/124", { refresh });
     await execute();
@@ -126,7 +127,7 @@ test("should add an error toast when undo failed", async () => {
     expect(add).toHaveBeenCalledOnce();
 
     fetchSpy.mockImplementationOnce(() => Promise.reject());
-    add.mock.calls[0][0].actions[0].onClick();
+    add.mock.calls[0]![0].actions[0].onClick();
 
     await vi.waitFor(() => {
         expect(start).toHaveBeenCalledOnce();
