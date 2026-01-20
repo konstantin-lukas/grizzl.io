@@ -1,4 +1,4 @@
-import * as schema from "../../lib/db/schema";
+import * as schema from "@@/lib/db/schema";
 import UserFixture from "@@/tests/e2e/fixtures/db/user.fixture";
 import type { FullConfig } from "@playwright/test";
 import { expect, firefox, selectors } from "@playwright/test";
