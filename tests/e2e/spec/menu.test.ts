@@ -1,5 +1,5 @@
-import { expect, test } from "@e2e/fixtures";
-import { forEachLocale } from "@e2e/utils/locale";
+import { expect, test } from "@@/tests/e2e/fixtures";
+import { forEachLocale } from "@@/tests/e2e/utils/locale";
 
 const texts = {
     "de-DE": {

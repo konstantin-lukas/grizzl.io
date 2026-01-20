@@ -1,4 +1,4 @@
-import BaseFixture from "@e2e/fixtures/db/base.fixture";
+import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
 import { eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 

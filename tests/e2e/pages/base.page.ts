@@ -1,6 +1,6 @@
 import config from "@@/playwright.config";
+import { expect } from "@@/tests/e2e/fixtures";
 import { AxeBuilder } from "@axe-core/playwright";
-import { expect } from "@e2e/fixtures";
 import type { Locator, Page } from "@playwright/test";
 
 type _GotoOptions = NonNullable<Parameters<Page["goto"]>[1]>;

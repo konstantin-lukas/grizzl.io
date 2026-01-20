@@ -1,7 +1,7 @@
+import { expect, test } from "@@/tests/e2e/fixtures";
+import type { DBFixtures } from "@@/tests/e2e/fixtures/db";
+import { test401WhenLoggedOut } from "@@/tests/e2e/utils/helpers";
 import { sortByCreatedAt } from "@@/tests/utils/sort";
-import { expect, test } from "@e2e/fixtures";
-import type { DBFixtures } from "@e2e/fixtures/db";
-import { test401WhenLoggedOut } from "@e2e/utils/helpers";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
@@ -47,7 +47,7 @@ test("does not return soft-deleted timers", async ({ request, db }) => {
 
 test("does not return timers from other users", async ({ request, db }) => {
     const user = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
-    await buildTimers(db, { userId: user.id });
+    await buildTimers(db, { userId: user!.id });
     const response = await request.get("/api/timers");
     expect(response.status()).toBe(200);
     expect(await response.json()).toStrictEqual([]);

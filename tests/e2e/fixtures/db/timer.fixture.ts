@@ -1,5 +1,5 @@
+import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
 import { dateArr, str } from "@@/tests/utils/helpers";
-import BaseFixture from "@e2e/fixtures/db/base.fixture";
 import { eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
@@ -10,7 +10,7 @@ export default class TimerFixture extends BaseFixture<"timer"> {
 
     async insert(options: { deleted?: boolean; userId?: string; count?: number } = {}) {
         const count = options.count ?? 5;
-        const userId = (await this.testUser).id;
+        const userId = (await this.testUser)!.id;
         const dates = dateArr(count);
         const data = Array.from({ length: count }).map((_, index) => ({
             title: str(100, { base: index.toString() }),

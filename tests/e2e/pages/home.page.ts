@@ -1,4 +1,4 @@
-import BasePage from "@e2e/pages/base.page";
+import BasePage from "@@/tests/e2e/pages/base.page";
 import type { Page } from "@playwright/test";
 
 const LOCATORS = {

@@ -1,5 +1,5 @@
-import { pool } from "@e2e/fixtures/db";
-import * as schema from "@schema";
+import * as schema from "@@/lib/db/schema";
+import { pool } from "@@/tests/e2e/fixtures/db";
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";

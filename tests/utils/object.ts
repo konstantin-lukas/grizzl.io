@@ -8,7 +8,7 @@ export function omit<T extends Record<string, unknown>>(obj: T, path: Path<T>): 
     const parts = path.split(".");
 
     if (parts.length === 1) {
-        const { [parts[0]]: _, ...rest } = obj;
+        const { [parts[0]!]: _, ...rest } = obj;
         return rest;
     }
 
@@ -16,6 +16,6 @@ export function omit<T extends Record<string, unknown>>(obj: T, path: Path<T>): 
 
     return {
         ...obj,
-        [key]: omit(obj[key] as Record<string, unknown>, rest.join(".")),
+        [key!]: omit(obj[key!] as Record<string, unknown>, rest.join(".")),
     };
 }

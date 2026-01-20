@@ -1,4 +1,4 @@
-import { test } from "@e2e/fixtures";
+import { test } from "@@/tests/e2e/fixtures";
 
 export function withoutAuth(tests: () => void) {
     test.describe("", { tag: `@noAuth` }, () => {

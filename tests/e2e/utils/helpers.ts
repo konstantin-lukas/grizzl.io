@@ -1,5 +1,5 @@
-import { expect, test } from "@e2e/fixtures";
-import { withoutAuth } from "@e2e/utils/auth";
+import { expect, test } from "@@/tests/e2e/fixtures";
+import { withoutAuth } from "@@/tests/e2e/utils/auth";
 
 export function testIdParameter(method: "put" | "patch", apiPath: string, data?: object) {
     test("returns a 404 status code when the provided id is unknown", async ({ request }) => {

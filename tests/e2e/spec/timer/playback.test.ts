@@ -1,9 +1,9 @@
 import { Beat } from "@@/shared/enum/timer";
-import { test } from "@e2e/fixtures";
+import { test } from "@@/tests/e2e/fixtures";
 
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    const [interval] = await db.timerInterval.insert(timer.id, {
+    const [interval] = await db.timerInterval.insert(timer!.id, {
         count: 1,
         repeatCount: 1,
         duration: 1000,
@@ -13,8 +13,8 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.goto();
     await page.click("listItemPlayButtons");
 
-    await page.expect("title").toHaveText(timer.title);
-    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("title").toHaveText(timer!.title);
+    await page.expect("intervalTitle").toHaveText(interval!.title!);
     await page.expect("remainingIntervalTime").toHaveText("00:01");
     await page.expect("remainingTime").toHaveText("00:01");
     await page.expect("activeRound").toHaveText("1/1");
@@ -23,7 +23,7 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
 
     await page.click("playButton");
 
-    await page.expect("title").toHaveText(timer.title);
+    await page.expect("title").toHaveText(timer!.title);
     await page.expect("intervalTitle").toHaveText("");
     await page.expect("remainingIntervalTime").toHaveText("––:––");
     await page.expect("remainingTime").toHaveText("00:00");
@@ -32,8 +32,8 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
 
     await page.click("resetButton");
 
-    await page.expect("title").toHaveText(timer.title);
-    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("title").toHaveText(timer!.title);
+    await page.expect("intervalTitle").toHaveText(interval!.title!);
     await page.expect("remainingIntervalTime").toHaveText("00:01");
     await page.expect("remainingTime").toHaveText("00:01");
     await page.expect("activeRound").toHaveText("1/1");
@@ -41,8 +41,8 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.click("goBack");
     await page.click("listItemPlayButtons");
 
-    await page.expect("title").toHaveText(timer.title);
-    await page.expect("intervalTitle").toHaveText(interval.title!);
+    await page.expect("title").toHaveText(timer!.title);
+    await page.expect("intervalTitle").toHaveText(interval!.title!);
     await page.expect("remainingIntervalTime").toHaveText("00:01");
     await page.expect("remainingTime").toHaveText("00:01");
     await page.expect("activeRound").toHaveText("1/1");
@@ -71,11 +71,11 @@ test("shows indicators for beats on timer progress and information on timer and 
         Beat.NORMAL,
     ];
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer.id, {
+    await db.timerInterval.insert(timer!.id, {
         count: 1,
         beatPattern,
     });
-    await db.timerInterval.insert(timer.id, {
+    await db.timerInterval.insert(timer!.id, {
         count: 1,
         index: 1,
         duration: 3000,
@@ -95,7 +95,7 @@ test("shows indicators for beats on timer progress and information on timer and 
 
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer.id, {
+    await db.timerInterval.insert(timer!.id, {
         count: 1,
         duration: 45000,
     });

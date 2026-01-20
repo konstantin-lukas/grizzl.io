@@ -13,6 +13,9 @@ export default defineNuxtConfig({
     css: ["~/assets/css/main.css"],
     typescript: {
         typeCheck: true,
+        tsConfig: {
+            include: ["../tests/e2e/**/*", "../tests/unit/**/*"],
+        },
     },
     app: {
         head: {
