@@ -1,5 +1,5 @@
+import { expect, test } from "@@/tests/e2e/fixtures";
 import { str } from "@@/tests/utils/helpers";
-import { expect, test } from "@e2e/fixtures";
 
 const title = str(100);
 const intervals = [
@@ -28,7 +28,7 @@ test("allows creating a new timer when no timers exist", async ({ timerPage: pag
     await page.expect("root").toMatchAriaSnapshot();
 
     const [timer] = await db.timer.select();
-    expect(timer.title).toBe(title);
+    expect(timer!.title).toBe(title);
 });
 
 test("displays an alert if there were form validation errors", async ({ timerPage: page }) => {
@@ -45,39 +45,39 @@ test("displays an alert if there were form validation errors", async ({ timerPag
 test("allows editing an existing timer", async ({ timerPage: page, db }) => {
     const newTitle = str(10);
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer.id);
+    await db.timerInterval.insert(timer!.id);
     await page.goto();
 
     await page.expect().toHaveScreenshot();
-    await page.expect("listItemTitles").toHaveText(timer.title);
+    await page.expect("listItemTitles").toHaveText(timer!.title);
 
     await page.click("listItemEditButtons");
     await page.fill("titleInput", newTitle);
     await page.click("submitButton");
 
     await page.expect("listItemTitles").toHaveText(newTitle);
-    const [updatedTimer] = await db.timer.select(timer.id);
-    expect(updatedTimer.title).toBe(newTitle);
+    const [updatedTimer] = await db.timer.select(timer!.id);
+    expect(updatedTimer!.title).toBe(newTitle);
 });
 
 test("allows deleting and restoring an existing timer", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer.id);
+    await db.timerInterval.insert(timer!.id);
     await page.goto();
 
-    expect(timer.deleted).toBe(false);
-    await page.expect("listItemTitles").toHaveText(timer.title);
+    expect(timer!.deleted).toBe(false);
+    await page.expect("listItemTitles").toHaveText(timer!.title);
     await page.click("listItemDeleteButtons");
     await page.expect("listItemTitles").toBeDisattached();
 
-    const [updatedTimer] = await db.timer.select(timer.id);
-    expect(updatedTimer.deleted).toBe(true);
+    const [updatedTimer] = await db.timer.select(timer!.id);
+    expect(updatedTimer!.deleted).toBe(true);
 
     await page.click("undeleteButton");
-    await page.expect("listItemTitles").toHaveText(timer.title);
+    await page.expect("listItemTitles").toHaveText(timer!.title);
 
-    const [restoredTimer] = await db.timer.select(timer.id);
-    expect(restoredTimer.deleted).toBe(false);
+    const [restoredTimer] = await db.timer.select(timer!.id);
+    expect(restoredTimer!.deleted).toBe(false);
 });
 
 test("allows creating timers with multiple intervals", async ({ timerPage: page, db }) => {
@@ -92,15 +92,15 @@ test("allows creating timers with multiple intervals", async ({ timerPage: page,
 
     expect(createdIntervals).toHaveLength(2);
 
-    expect(createdIntervals[0].title).toBe(intervals[0].title);
-    expect(createdIntervals[0].duration).toBe(intervals[0].duration * 1000);
-    expect(createdIntervals[0].repeatCount).toBe(intervals[0].repeatCount);
-    expect(createdIntervals[0].beatPattern).toBe(null);
+    expect(createdIntervals[0]!.title).toBe(intervals[0]!.title);
+    expect(createdIntervals[0]!.duration).toBe(intervals[0]!.duration * 1000);
+    expect(createdIntervals[0]!.repeatCount).toBe(intervals[0]!.repeatCount);
+    expect(createdIntervals[0]!.beatPattern).toBe(null);
 
-    expect(createdIntervals[1].title).toBe(intervals[1].title);
-    expect(createdIntervals[1].duration).toBe(intervals[1].duration * 1000);
-    expect(createdIntervals[1].repeatCount).toBe(intervals[1].repeatCount);
-    expect(createdIntervals[1].beatPattern).toEqual(["high", "low", "low", "low"]);
+    expect(createdIntervals[1]!.title).toBe(intervals[1]!.title);
+    expect(createdIntervals[1]!.duration).toBe(intervals[1]!.duration * 1000);
+    expect(createdIntervals[1]!.repeatCount).toBe(intervals[1]!.repeatCount);
+    expect(createdIntervals[1]!.beatPattern).toEqual(["high", "low", "low", "low"]);
 
     await page.expect("listItemLengths").toHaveText("4 rounds (3 minutes 15 seconds)");
 });
@@ -117,18 +117,18 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     );
 
     await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
-    await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[0].title);
-    await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[0].repeatCount.toString());
-    await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[0].duration} sec`);
+    await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[0]!.title);
+    await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[0]!.repeatCount.toString());
+    await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[0]!.duration} sec`);
     await page.expect("typeSelect", { nth: 0 }).toHaveText("Standard");
 
     await page.focus("intervalTitleInputs", { nth: 0 });
     await page.click("moveDownButtons", { nth: 0 });
 
     await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
-    await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[1].title);
-    await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[1].repeatCount.toString());
-    await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[1].duration} sec`);
+    await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[1]!.title);
+    await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[1]!.repeatCount.toString());
+    await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[1]!.duration} sec`);
     await page.expect("typeSelect", { nth: 0 }).toHaveText("Rhythm");
 
     await page.focus("intervalTitleInputs", { nth: 0 });
@@ -136,8 +136,8 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
 
     await page.expect("legends").toHaveCount(1);
     await page.expect("legends").toHaveText("Interval No. 1");
-    await page.expect("intervalTitleInputs").toHaveValue(intervals[0].title);
-    await page.expect("repetitionsInputs").toHaveValue(intervals[0].repeatCount.toString());
-    await page.expect("durationInputs").toHaveValue(`${intervals[0].duration} sec`);
+    await page.expect("intervalTitleInputs").toHaveValue(intervals[0]!.title);
+    await page.expect("repetitionsInputs").toHaveValue(intervals[0]!.repeatCount.toString());
+    await page.expect("durationInputs").toHaveValue(`${intervals[0]!.duration} sec`);
     await page.expect("typeSelect").toHaveText("Standard");
 });

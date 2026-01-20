@@ -1,7 +1,7 @@
-import UserFixture from "@e2e/fixtures/db/user.fixture";
+import * as schema from "@@/lib/db/schema";
+import UserFixture from "@@/tests/e2e/fixtures/db/user.fixture";
 import type { FullConfig } from "@playwright/test";
 import { expect, firefox, selectors } from "@playwright/test";
-import * as schema from "@schema";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
@@ -23,7 +23,7 @@ export default async function GlobalSetup(config: FullConfig) {
     await user.reset();
     await user.insert();
 
-    const { baseURL, storageState, testIdAttribute } = config.projects[0].use;
+    const { baseURL, storageState, testIdAttribute } = config.projects[0]!.use;
     selectors.setTestIdAttribute(testIdAttribute!);
     const browser = await firefox.launch();
     const page = await browser.newPage();

@@ -20,7 +20,7 @@ test("should default to the English zod locale", async () => {
     const { data, success, error } = await safeParseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema);
     expect(success).toBe(false);
     expect(data).toBeUndefined();
-    expect(error?.issues[0].message).toBe("Invalid input: expected string, received object");
+    expect(error?.issues[0]!.message).toBe("Invalid input: expected string, received object");
 });
 
 test("should read the locale from the cookies", async () => {
@@ -34,7 +34,7 @@ test("should read the locale from the cookies", async () => {
     const { data, success, error } = await safeParseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema);
     expect(success).toBe(false);
     expect(data).toBeUndefined();
-    expect(error?.issues[0].message).toBe("Ungültige Eingabe: erwartet string, erhalten object");
+    expect(error?.issues[0]!.message).toBe("Ungültige Eingabe: erwartet string, erhalten object");
 });
 
 test("should normally parse the body when there are no issues", async () => {

@@ -119,6 +119,9 @@ jobs:
                       **/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
+            - name: Prepare Nuxt
+              run: npm run postinstall
+
             - name: Start Isolated Container Stack
               run: |
                 export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}

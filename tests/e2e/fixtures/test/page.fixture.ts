@@ -1,4 +1,4 @@
-import type BasePage from "@e2e/pages/base.page";
+import type BasePage from "@@/tests/e2e/pages/base.page";
 import type { Page } from "@playwright/test";
 
 type Constructor<T> = new (page: Page) => T;

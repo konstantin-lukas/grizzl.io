@@ -56,7 +56,7 @@ beforeEach(() => {
 
 test("loops the animation function", async () => {
     const { interval, playing } = useTimer();
-    interval.value = { duration: 1000, id: "123" };
+    interval.value = { duration: 1000, id: "123" } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
@@ -81,7 +81,7 @@ test("stops the animation when no interval is selected", async () => {
 
 test("stops the animation when timer is not playing", async () => {
     const { interval, playing } = useTimer();
-    interval.value = { duration: 1000, id: "123" };
+    interval.value = { duration: 1000, id: "123" } as never;
     playing.value = false;
 
     const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
@@ -96,7 +96,7 @@ test("stops the animation when the last interval of current timer completed and 
     const { interval, playing, intervalStartTime } = useTimer();
 
     intervalStartTime.value = 1000;
-    interval.value = { duration: 1000, id: "123", repeatCount: 1 };
+    interval.value = { duration: 1000, id: "123", repeatCount: 1 } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(emit, 3, "oranges");
@@ -116,7 +116,7 @@ test("should not play audio at the end of the timer if muted", async () => {
     const { interval, playing, intervalStartTime, mute } = useTimer();
 
     intervalStartTime.value = 1000;
-    interval.value = { duration: 1000, id: "123", repeatCount: 1 };
+    interval.value = { duration: 1000, id: "123", repeatCount: 1 } as never;
     playing.value = true;
     mute.value = true;
 
@@ -134,7 +134,7 @@ test("should move on to the next interval if the current interval has completed"
     const { interval, playing, intervalStartTime, progress, repetition } = useTimer();
 
     intervalStartTime.value = 1000;
-    interval.value = { duration: 1000, id: "123", repeatCount: 2 };
+    interval.value = { duration: 1000, id: "123", repeatCount: 2 } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(emit, 3, "oranges");
@@ -149,7 +149,7 @@ test("should move on to the next interval if the current interval has completed"
 
 test("should play audio when a beat pattern is specified and the next beat is reached (accented)", async () => {
     const { interval, playing } = useTimer();
-    interval.value = { duration: 1000, id: "123", beatPattern: ["high", "low", "pause"] };
+    interval.value = { duration: 1000, id: "123", beatPattern: ["high", "low", "pause"] } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
@@ -170,7 +170,7 @@ test("should play audio when a beat pattern is specified and the next beat is re
 
 test("should play audio when a beat pattern is specified and the next beat is reached (normal)", async () => {
     const { interval, playing } = useTimer();
-    interval.value = { duration: 1000, id: "123", beatPattern: ["low", "low", "pause"] };
+    interval.value = { duration: 1000, id: "123", beatPattern: ["low", "low", "pause"] } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
@@ -186,7 +186,7 @@ test("should play audio when a beat pattern is specified and the next beat is re
 
 test("should not play audio when a beat pattern is specified but the timer is muted", async () => {
     const { interval, playing, mute } = useTimer();
-    interval.value = { duration: 1000, id: "123", beatPattern: ["high", "low", "pause"] };
+    interval.value = { duration: 1000, id: "123", beatPattern: ["high", "low", "pause"] } as never;
     playing.value = true;
     mute.value = true;
 
@@ -203,7 +203,7 @@ test("should not play audio when a beat pattern is specified but the timer is mu
 
 test("should play audio when the interval title changes", async () => {
     const { interval, playing } = useTimer();
-    interval.value = { duration: 1000, id: "123", title: "bananas" };
+    interval.value = { duration: 1000, id: "123", title: "bananas" } as never;
     playing.value = true;
 
     const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
@@ -221,7 +221,7 @@ test("should play audio when the interval title changes", async () => {
 
 test("should not play audio when the interval title changes but the timer is muted", async () => {
     const { interval, playing, mute } = useTimer();
-    interval.value = { duration: 1000, id: "123", title: "bananas" };
+    interval.value = { duration: 1000, id: "123", title: "bananas" } as never;
     playing.value = true;
     mute.value = true;
 
@@ -239,7 +239,7 @@ test("should not play audio when the interval title changes but the timer is mut
 
 test("should stop playback if the round changes and is past the last one", async () => {
     const { interval, playing, round } = useTimer();
-    interval.value = { duration: 1000, id: "123" };
+    interval.value = { duration: 1000, id: "123" } as never;
     playing.value = true;
 
     useAnimateTimer(() => undefined, 1, "oranges");

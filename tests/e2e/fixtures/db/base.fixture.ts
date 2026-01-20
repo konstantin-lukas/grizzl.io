@@ -1,4 +1,4 @@
-import * as schema from "@schema";
+import * as schema from "@@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { getTableConfig } from "drizzle-orm/pg-core";

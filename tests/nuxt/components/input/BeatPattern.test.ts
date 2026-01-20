@@ -4,7 +4,7 @@ import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
 
 const stubs = { UTooltip };
-const props = { beats: ["high", "low", "pause"], barLength: 300 };
+const props = { beats: ["high", "low", "pause"], barLength: 300 } as never;
 
 const { formFieldColorMock, useFormFieldMock } = await vi.hoisted(async () => {
     const { ref } = await import("vue");
@@ -32,12 +32,12 @@ test("should display the provided beats by default", async () => {
     });
     const beatInputs = wrapper.findAll("[data-test-id^='beat-pattern-input-beat']");
     expect(beatInputs).toHaveLength(3);
-    expect(beatInputs[0].classes()).toContain("i-mdi:exclamation-thick");
-    expect(beatInputs[0].classes()).toContain("bg-primary");
-    expect(beatInputs[1].classes()).toContain("i-mdi:music-note-quarter");
-    expect(beatInputs[1].classes()).not.toContain("bg-primary");
-    expect(beatInputs[2].classes()).toContain("i-mdi:music-rest-quarter");
-    expect(beatInputs[2].classes()).not.toContain("bg-primary");
+    expect(beatInputs[0]!.classes()).toContain("i-mdi:exclamation-thick");
+    expect(beatInputs[0]!.classes()).toContain("bg-primary");
+    expect(beatInputs[1]!.classes()).toContain("i-mdi:music-note-quarter");
+    expect(beatInputs[1]!.classes()).not.toContain("bg-primary");
+    expect(beatInputs[2]!.classes()).toContain("i-mdi:music-rest-quarter");
+    expect(beatInputs[2]!.classes()).not.toContain("bg-primary");
 });
 
 test("should allow adding and deleting items with the control buttons", async () => {
