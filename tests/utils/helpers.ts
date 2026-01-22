@@ -5,9 +5,9 @@ interface TimeSpan {
     seconds?: number;
 }
 
-type DateOptions = { when?: 'past' | 'future'; refDate?: string | Date | number } & TimeSpan;
+type DateOptions = { when?: "past" | "future"; refDate?: string | Date | number } & TimeSpan;
 
-const DEFAULT_REF_DATE = '2025-06-01T12:00:00Z';
+const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
@@ -64,46 +64,46 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
  * Only applies when you use the default base. Use when you want to generate multiple different strings. Loops at 25.
  */
 export function str(
-    options: { base?: string; spaces?: 'yes' | 'no' | 'noTrailingSpace'; rotate?: number; length?: number } = {},
+    options: { base?: string; spaces?: "yes" | "no" | "noTrailingSpace"; rotate?: number; length?: number } = {},
 ): string {
     const sentences = [
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-        'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
-        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.',
-        'Curabitur pretium tincidunt lacus, nulla gravida orci a odio.',
-        'Nullam varius, turpis et commodo pharetra, est eros bibendum elit.',
-        'Aliquam erat volutpat, nam dui mi tincidunt quis.',
-        'Phasellus ultrices nulla quis nibh, quisque a lectus.',
-        'Donec consectetuer ligula vulputate sem tristique cursus.',
-        'Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue.',
-        'Eu vulputate magna eros eu erat, aliquam erat volutpat.',
-        'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus.',
-        'Morbi in sem quis dui placerat ornare.',
-        'Pellentesque odio nisi, euismod in, pharetra a, ultricies in.',
-        'Integer vitae libero ac risus egestas placerat.',
-        'Vestibulum commodo felis quis tortor.',
-        'Ut aliquam sollicitudin leo, cras iaculis ultricies nulla.',
-        'Donec quis dui at dolor tempor interdum.',
-        'Vivamus molestie gravida turpis, fusce lobortis lorem at ipsum.',
-        'Suspendisse potenti, sed egestas eros at sapien consequat.',
-        'Etiam vel tortor sodales tellus ultricies commodo.',
-        'Mauris fermentum dictum magna, sed laoreet aliquam leo.',
-        'Quisque sit amet est et sapien ullamcorper pharetra.',
-        'Aenean fermentum, elit eget tincidunt condimentum.',
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+        "Curabitur pretium tincidunt lacus, nulla gravida orci a odio.",
+        "Nullam varius, turpis et commodo pharetra, est eros bibendum elit.",
+        "Aliquam erat volutpat, nam dui mi tincidunt quis.",
+        "Phasellus ultrices nulla quis nibh, quisque a lectus.",
+        "Donec consectetuer ligula vulputate sem tristique cursus.",
+        "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue.",
+        "Eu vulputate magna eros eu erat, aliquam erat volutpat.",
+        "Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus.",
+        "Morbi in sem quis dui placerat ornare.",
+        "Pellentesque odio nisi, euismod in, pharetra a, ultricies in.",
+        "Integer vitae libero ac risus egestas placerat.",
+        "Vestibulum commodo felis quis tortor.",
+        "Ut aliquam sollicitudin leo, cras iaculis ultricies nulla.",
+        "Donec quis dui at dolor tempor interdum.",
+        "Vivamus molestie gravida turpis, fusce lobortis lorem at ipsum.",
+        "Suspendisse potenti, sed egestas eros at sapien consequat.",
+        "Etiam vel tortor sodales tellus ultricies commodo.",
+        "Mauris fermentum dictum magna, sed laoreet aliquam leo.",
+        "Quisque sit amet est et sapien ullamcorper pharetra.",
+        "Aenean fermentum, elit eget tincidunt condimentum.",
     ];
 
     const { rotate = 0 } = options;
 
     const shift = rotate % sentences.length;
-    const lorem = sentences.slice(shift).concat(sentences.slice(0, shift)).join(' ');
+    const lorem = sentences.slice(shift).concat(sentences.slice(0, shift)).join(" ");
 
-    const { spaces = 'noTrailingSpace', base = lorem, length = 56 } = options;
+    const { spaces = "noTrailingSpace", base = lorem, length = 56 } = options;
 
     const text = (() => {
-        if (spaces === 'no') return base.replaceAll(/\s/g, '');
-        if (spaces === 'noTrailingSpace') return base.slice(0, length).trimEnd();
+        if (spaces === "no") return base.replaceAll(/\s/g, "");
+        if (spaces === "noTrailingSpace") return base.slice(0, length).trimEnd();
         return base;
     })();
 
@@ -123,7 +123,7 @@ export function arr<T extends string | number | object>(
     options: { length?: number } = {},
 ) {
     const { length = 3 } = options;
-    if (typeof source === 'function') {
+    if (typeof source === "function") {
         const array: T[] = [];
         for (let i = 0; i < length; i++) {
             array.push(source(i));
@@ -146,11 +146,11 @@ export function arr<T extends string | number | object>(
  * @returns A date relative to the ref date. Default return value is 2024-05-01T12:00:00Z.
  */
 export function date(options: DateOptions = {}) {
-    const { when = 'past', refDate = DEFAULT_REF_DATE, days, hours, minutes, seconds } = options;
+    const { when = "past", refDate = DEFAULT_REF_DATE, days, hours, minutes, seconds } = options;
 
     const refTime = new Date(refDate).getTime();
     const timeSpan = getTimeSpan({ days, hours, minutes, seconds });
-    const time = when === 'past' ? refTime - timeSpan : refTime + timeSpan;
+    const time = when === "past" ? refTime - timeSpan : refTime + timeSpan;
 
     return new Date(time);
 }
