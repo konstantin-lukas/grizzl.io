@@ -1,7 +1,8 @@
 - button "Go back"
-- region "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000":
-  - heading "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" [level=1]
-  - progressbar "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000": 01:30 00:45 1/2
+- region "Loremipsumdolorsitamet,consecteturadipiscingelit.Seddoeiusmodtemporincididuntutlaboreetdoloremagnaal":
+  - heading "Loremipsumdolorsitamet,consecteturadipiscingelit.Seddoeiusmodtemporincididuntutlaboreetdoloremagnaal" [level=1]
+  - text: ""
+  - progressbar "Loremipsumdolorsitamet,consecteturadipiscingelit.Seddoeiusmodtemporincididuntutlaboreetdoloremagnaal"
   - button "Reset"
   - button "Start"
   - button "Mute"

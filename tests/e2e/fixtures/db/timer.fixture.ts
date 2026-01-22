@@ -13,7 +13,7 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         const userId = (await this.testUser)!.id;
         const dates = dateArr(count);
         const data = Array.from({ length: count }).map((_, index) => ({
-            title: str(100, { base: index.toString() }),
+            title: str({ length: 100, rotate: index, spaces: "no" }),
             createdAt: dates[index],
             deleted: !!options.deleted,
             userId: options.userId ?? userId,

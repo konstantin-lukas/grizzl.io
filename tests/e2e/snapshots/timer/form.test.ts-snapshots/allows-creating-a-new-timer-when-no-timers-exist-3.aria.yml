@@ -3,7 +3,7 @@
   - main:
     - list:
       - listitem:
-        - heading "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" [level=1]
+        - heading "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut laboreL" [level=1]
         - text: 1 round (3 seconds)
         - button "Start"
         - button "Edit"
