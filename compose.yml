@@ -5,7 +5,7 @@ services:
         volumes:
             - .:/home/grizzl
         working_dir: /home/grizzl
-        command: npm install
+        command: npm install --no-save
 
     postgres:
         container_name: grizzl-postgres-dev

@@ -1,10 +1,10 @@
 import { expect, test } from "@@/tests/e2e/fixtures";
 import { str } from "@@/tests/utils/helpers";
 
-const title = str(100);
+const title = str({ length: 100 });
 const intervals = [
-    { title: str(10), duration: 42, repeatCount: 3, type: 0 },
-    { title: str(15), duration: 69, repeatCount: 1, type: 1 },
+    { title: str({ length: 10 }), duration: 42, repeatCount: 3, type: 0 },
+    { title: str({ length: 15 }), duration: 69, repeatCount: 1, type: 1 },
 ];
 
 test("should register a service worker if supported", async ({ timerPage: page }) => {
@@ -43,7 +43,7 @@ test("displays an alert if there were form validation errors", async ({ timerPag
 });
 
 test("allows editing an existing timer", async ({ timerPage: page, db }) => {
-    const newTitle = str(10);
+    const newTitle = str({ length: 10 });
     const [timer] = await db.timer.insert({ count: 1 });
     await db.timerInterval.insert(timer!.id);
     await page.goto();
