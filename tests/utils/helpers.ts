@@ -173,3 +173,37 @@ export function dateArr(length: number, options: DateOptions = {}) {
 
     return arr(getDate, { length });
 }
+
+/**
+ * Generates a pseudo random number in a given range. Does not have a running seed and will always return the same value
+ * given the same input.
+ * @param min The smallest possible number to generate
+ * @param max The largest possible number to generate
+ * @param options Options for generating the number
+ * @param options.seed Influences the returned number in the range. Useful if you want multiple numbers in the same range.
+ */
+export function int(min: number, max: number, options: { seed?: number } = {}): number {
+    const { seed = 0 } = options;
+
+    if (min > max) {
+        throw new RangeError("min must be <= max");
+    }
+
+    if (!Number.isInteger(min) || !Number.isInteger(max) || !Number.isInteger(seed)) {
+        throw new TypeError("min, max, and seed must be integers");
+    }
+
+    // Combine inputs into a single 32-bit value
+    let x = Math.imul(min, 374761393) ^ Math.imul(max, 668265263) ^ Math.imul(seed, 1442695041);
+
+    // Mix (avalanche)
+    x ^= x >>> 13;
+    x = Math.imul(x, 1274126177);
+    x ^= x >>> 16;
+
+    // Normalize
+    const normalized = (x >>> 0) / 2 ** 32;
+
+    // Scale to range
+    return Math.floor(normalized * (max - min + 1)) + min;
+}
