@@ -16,7 +16,7 @@
         "vitest": "vitest run --coverage"
     },
     "dependencies": {
-        "@nuxt/eslint": "1.12.1",
+        "@nuxt/eslint": "1.13.0",
         "@nuxt/image": "2.0.0",
         "@nuxt/ui": "4.4.0",
         "@nuxtjs/color-mode": "4.0.0",
