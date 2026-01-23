@@ -44,7 +44,7 @@
         "@tailwindcss/vite": "4.1.18",
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/pg": "8.16.0",
-        "@vitest/coverage-v8": "4.0.17",
+        "@vitest/coverage-v8": "4.0.18",
         "@vue/test-utils": "2.4.6",
         "drizzle-kit": "0.31.8",
         "eslint": "9.39.2",
