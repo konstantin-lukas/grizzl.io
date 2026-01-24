@@ -19,7 +19,7 @@ test.each([
     { min: 100, max: 1000, seed: 8, expected: 755 },
     { min: 100, max: 1000, seed: 9, expected: 174 },
 ])("returns $expected given the range $min - $max and seed $seed", ({ min, max, seed, expected }) => {
-    expect(int(min, max, { seed })).toBe(expected);
+    expect(int({ min, max, seed })).toBe(expected);
 });
 
 test.each([
@@ -31,5 +31,5 @@ test.each([
     { title: "seed is not a number", min: 0, max: 1, seed: NaN },
     { title: "max is smaller than mini", min: 1, max: 0, seed: 0 },
 ])("throws an error if $title is not an integer", ({ min, max, seed }) => {
-    expect(() => int(min, max, { seed })).toThrow();
+    expect(() => int({ min, max, seed })).toThrow();
 });

@@ -30,5 +30,5 @@ const testCases = [
 ] as const;
 
 test.each(testCases)("should return $title", ({ expected, length, options }) => {
-    expect(dateArr(length, { ...options })).toEqual(expected.map(d => new Date(d)));
+    expect(dateArr({ ...options, length })).toEqual(expected.map(d => new Date(d)));
 });
