@@ -7,7 +7,7 @@ import { Pool } from "pg";
 
 export default async function GlobalSetup(config: FullConfig) {
     const pool = new Pool({
-        host: "localhost",
+        host: "postgres",
         database: "grizzl",
         user: "admin",
         password: "admin",

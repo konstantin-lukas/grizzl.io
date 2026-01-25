@@ -16,7 +16,7 @@ function createDBFixtures(db: ReturnType<typeof drizzle>) {
 export type DBFixtures = ReturnType<typeof createDBFixtures>;
 
 export const pool = new Pool({
-    host: "localhost",
+    host: "postgres",
     database: "grizzl",
     user: "admin",
     password: "admin",
