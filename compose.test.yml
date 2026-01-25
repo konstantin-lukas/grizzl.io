@@ -22,8 +22,6 @@ services:
         volumes:
             - grizzl_database:/var/lib/postgresql/data
             - ./docker/postgres/init:/docker-entrypoint-initdb.d
-        ports:
-            - "5432:5432"
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U admin"]
             interval: 1s
@@ -111,8 +109,6 @@ services:
         restart: unless-stopped
         extra_hosts:
             - "grizzl.localhost:127.0.0.1"
-        ports:
-            - "80:80"
         volumes:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
         depends_on:
