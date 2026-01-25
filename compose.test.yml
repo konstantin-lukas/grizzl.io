@@ -10,7 +10,6 @@ x-public: &public
 
 services:
     postgres:
-        container_name: grizzl-postgres
         image: postgres:18.0-alpine3.22
         restart: unless-stopped
         environment:
@@ -33,7 +32,6 @@ services:
 
     migrations:
         image: node:24-alpine
-        container_name: grizzl-migrations
         depends_on:
             postgres:
                 condition: service_healthy
@@ -49,7 +47,6 @@ services:
         restart: "no"
 
     webserver:
-        container_name: grizzl-web-server
         build:
             context: .
             dockerfile: Dockerfile
@@ -82,7 +79,6 @@ services:
                 condition: service_healthy
 
     keycloak:
-        container_name: grizzl-keycloak
         build:
             context: ./docker/keycloak
             dockerfile: Dockerfile
@@ -99,7 +95,6 @@ services:
             retries: 12
 
     playwright:
-        container_name: grizzl-playwright-dev
         image: mcr.microsoft.com/playwright:v1.57.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
@@ -111,7 +106,6 @@ services:
             - CI=true
 
     caddy:
-        container_name: grizzl-caddy-dev
         image: caddy:2.10-alpine
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         restart: unless-stopped
