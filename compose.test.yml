@@ -10,7 +10,6 @@ x-public: &public
 
 services:
     postgres:
-        container_name: grizzl-postgres
         image: postgres:18.0-alpine3.22
         restart: unless-stopped
         environment:
@@ -23,8 +22,6 @@ services:
         volumes:
             - grizzl_database:/var/lib/postgresql/data
             - ./docker/postgres/init:/docker-entrypoint-initdb.d
-        ports:
-            - "5432:5432"
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U admin"]
             interval: 1s
@@ -33,7 +30,6 @@ services:
 
     migrations:
         image: node:24-alpine
-        container_name: grizzl-migrations
         depends_on:
             postgres:
                 condition: service_healthy
@@ -49,7 +45,6 @@ services:
         restart: "no"
 
     webserver:
-        container_name: grizzl-web-server
         build:
             context: .
             dockerfile: Dockerfile
@@ -82,7 +77,6 @@ services:
                 condition: service_healthy
 
     keycloak:
-        container_name: grizzl-keycloak
         build:
             context: ./docker/keycloak
             dockerfile: Dockerfile
@@ -99,29 +93,22 @@ services:
             retries: 12
 
     playwright:
-        container_name: grizzl-playwright-dev
         image: mcr.microsoft.com/playwright:v1.57.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
-        extra_hosts:
-            - "grizzl.localhost:127.0.0.1"
         volumes:
             - .:/home/grizzl
-            - /tmp/.X11-unix:/tmp/.X11-unix
         working_dir: /home/grizzl
-        network_mode: "host"
-        ipc: host
+        network_mode: "service:caddy"
         environment:
-            - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
             - CI=true
 
     caddy:
-        container_name: grizzl-caddy-dev
         image: caddy:2.10-alpine
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         restart: unless-stopped
-        ports:
-            - "80:80"
+        extra_hosts:
+            - "grizzl.localhost:127.0.0.1"
         volumes:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
         depends_on:
