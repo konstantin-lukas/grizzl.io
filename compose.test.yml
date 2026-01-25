@@ -102,16 +102,11 @@ services:
         container_name: grizzl-playwright-dev
         image: mcr.microsoft.com/playwright:v1.57.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
-        extra_hosts:
-            - "grizzl.localhost:127.0.0.1"
         volumes:
             - .:/home/grizzl
-            - /tmp/.X11-unix:/tmp/.X11-unix
         working_dir: /home/grizzl
-        network_mode: "host"
-        ipc: host
+        network_mode: "service:caddy"
         environment:
-            - DISPLAY=${DISPLAY}
             - TZ=Europe/Berlin
             - CI=true
 
@@ -120,6 +115,8 @@ services:
         image: caddy:2.10-alpine
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         restart: unless-stopped
+        extra_hosts:
+            - "grizzl.localhost:127.0.0.1"
         ports:
             - "80:80"
         volumes:
