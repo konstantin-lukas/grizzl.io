@@ -1,13 +1,17 @@
 import { intArr } from "@@/tests/utils/helpers";
 import { expect, test } from "vitest";
 
-test.each([
-    { min: 0, max: 1, length: 0, expected: [] },
-    { min: 0, max: 1, length: 5, expected: [1, 0, 0, 0, 0] },
-    { min: 0, max: 1, length: 5, seed: 1, expected: [0, 0, 0, 0, 1] },
-    { min: 500, max: 1000, length: 5, expected: [683, 554, 810, 767, 953] },
-    { min: 500, max: 1000, length: 5, seed: 1, expected: [554, 810, 767, 953, 965] },
-])("returns $expected given the range $min - $max and length $length", options => {
-    const { expected } = options;
-    expect(intArr(options)).toStrictEqual(expected);
+test("generates near-evenly distributed numbers", () => {
+    const length = 10000;
+    const max = 5;
+    const expectedHits = length / max;
+
+    const array = intArr({ length, min: 1, max });
+    const hitCounts = Array.from({ length: max }).map((_, index) => array.filter(item => item === index + 1).length);
+
+    for (const hitCount of hitCounts) {
+        const hitDeviation = Math.abs(expectedHits - hitCount);
+        const fivePercent = expectedHits * 0.05;
+        expect(hitDeviation).toBeLessThan(fivePercent);
+    }
 });

@@ -22,13 +22,37 @@ const testCases = [
         expected: ["2025-06-01T12:00:00Z", "2025-06-02T12:00:00Z"],
     },
     {
-        title: "allows passing other date parameters",
+        title: "dates parameters given other parameters",
         length: 3,
         options: { when: "future", days: 2, hours: 2, minutes: 2, seconds: 2, refDate: "2020-01-01T00:00:00Z" },
         expected: ["2020-01-01T00:00:00Z", "2020-01-03T02:02:02Z", "2020-01-05T04:04:04Z"],
     },
+    {
+        title: "dates without randomized distances",
+        length: 3,
+        options: { when: "future", days: 50, refDate: "2020-01-01T00:00:00Z" },
+        expected: ["2020-01-01T00:00:00Z", "2020-02-20T00:00:00Z", "2020-04-10T00:00:00Z"],
+    },
+    {
+        title: "dates with randomized distances",
+        length: 3,
+        options: { when: "future", days: 50, refDate: "2020-01-01T00:00:00Z", exact: false },
+        expected: ["2020-01-01T00:00:00Z", "2020-01-18T00:00:00Z", "2020-03-07T00:00:00Z"],
+    },
+    {
+        title: "unique dates when unique parameter is passed but not exact",
+        length: 3,
+        options: { when: "future", refDate: "2020-01-01T00:00:00Z", exact: false, unique: true },
+        expected: ["2020-01-01T00:00:00Z", "2020-01-02T00:00:00Z", "2020-01-03T00:00:00Z"],
+    },
+    {
+        title: "potentially duplicate dates when unique and exact parameters are false",
+        length: 3,
+        options: { when: "future", refDate: "2020-01-01T00:00:00Z", exact: false, unique: false },
+        expected: ["2020-01-01T00:00:00Z", "2020-01-02T00:00:00Z", "2020-01-02T00:00:00Z"],
+    },
 ] as const;
 
 test.each(testCases)("should return $title", ({ expected, length, options }) => {
-    expect(dateArr({ ...options, length })).toEqual(expected.map(d => new Date(d)));
+    expect(dateArr({ length, ...options })).toEqual(expected.map(d => new Date(d)));
 });

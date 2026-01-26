@@ -33,3 +33,24 @@ test.each([
 ])("throws an error if $title is not an integer", ({ min, max, seed }) => {
     expect(() => int({ min, max, seed })).toThrow();
 });
+
+test("generates near-evenly distributed numbers", () => {
+    const hitCounts = [0, 0, 0, 0, 0];
+    const iterations = 10000;
+    const expectedHits = iterations / hitCounts.length;
+
+    for (let seed = 0; seed < iterations; seed++) {
+        const n = int({ min: 0, max: 4, seed });
+        hitCounts[n]!++;
+    }
+
+    const recordedHits = hitCounts.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+
+    expect(recordedHits).toBe(iterations);
+
+    for (const hitCount of hitCounts) {
+        const hitDeviation = Math.abs(expectedHits - hitCount);
+        const fivePercent = expectedHits * 0.05;
+        expect(hitDeviation).toBeLessThan(fivePercent);
+    }
+});

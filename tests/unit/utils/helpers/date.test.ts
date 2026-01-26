@@ -2,6 +2,7 @@ import { date } from "@@/tests/utils/helpers";
 import { expect, test } from "vitest";
 
 const testCases = [
+    { title: "the ref date by default", days: undefined, expected: "2025-06-01T12:00:00Z" },
     { title: "one year in the past", days: 365, expected: "2024-06-01T12:00:00Z" },
     { title: "one day in the past", days: 1, expected: "2025-05-31T12:00:00Z" },
     { title: "one hour in the past", hours: 1, expected: "2025-06-01T11:00:00Z" },

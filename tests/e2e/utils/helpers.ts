@@ -1,6 +1,16 @@
 import { expect, test } from "@@/tests/e2e/fixtures";
 import { withoutAuth } from "@@/tests/e2e/utils/auth";
 
+const TYPES = [
+    ["string", "42"],
+    ["int", 42],
+    ["float", 42.5],
+    ["boolean", true],
+    ["null", null],
+    ["object", {}],
+    ["array", []],
+] as const;
+
 export function testIdParameter(method: "put" | "patch", apiPath: string, data?: object) {
     test("returns a 404 status code when the provided id is unknown", async ({ request }) => {
         const response = await request[method](`${apiPath}/2222222222222222`, { data });
@@ -20,4 +30,25 @@ export function test401WhenLoggedOut(method: "get" | "post" | "patch" | "delete"
             expect(response.status()).toBe(401);
         });
     });
+}
+
+export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
+    data: T,
+    property: keyof T,
+    options: {
+        valid?: (typeof TYPES)[number][0][];
+        caseName?: (property: string, type: string) => string;
+        dataTransform?: (data: T, property: string, value: (typeof TYPES)[number][1]) => unknown;
+    },
+) {
+    const testCases = [];
+    for (const [type, value] of TYPES) {
+        if (!(options.valid ?? []).includes(type)) {
+            testCases.push([
+                options.caseName?.(property as string, type) ?? `property ${property as string} is a ${type}`,
+                options.dataTransform?.(data, property as string, value) ?? { ...data, [property]: value },
+            ]);
+        }
+    }
+    return testCases;
 }

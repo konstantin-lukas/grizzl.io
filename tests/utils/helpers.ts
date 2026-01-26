@@ -1,8 +1,15 @@
 import { capitalize } from "~~/tests/utils/string";
 
-type PRNGOptions = { seed?: number };
+interface PRNGOptions {
+    seed?: number;
+}
+
+interface ArrayOptions {
+    length?: number;
+    unique?: boolean;
+}
+
 type DateOptions = { when?: "past" | "future"; refDate?: string | Date | number } & TimeSpanOptions & PRNGOptions;
-type ArrayOptions = { length?: number; unique?: boolean };
 type IntOptions = { min?: number; max?: number } & PRNGOptions;
 type DateArrayOptions = DateOptions & ArrayOptions;
 type IntArrayOptions = IntOptions & ArrayOptions;
@@ -13,64 +20,36 @@ type TimeSpanOptions = {
     seconds?: number;
     exact?: boolean;
 } & PRNGOptions;
-type StrOptions = { words?: string[]; spaces?: boolean; length?: number } & PRNGOptions;
+type StrOptions = { words?: readonly string[]; spaces?: boolean; length?: number } & PRNGOptions;
+type StrArrayOptions = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> & ArrayOptions;
 
 const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
 const DEFAULT_SENTENCE_LENGTH = 10;
 const DEFAULT_SENTENCE_VARIATION = 5;
+const MAX_ATTEMPTS = 100;
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
-const TYPES = [
-    ["string", "42"],
-    ["int", 42],
-    ["float", 42.5],
-    ["boolean", true],
-    ["null", null],
-    ["object", {}],
-    ["array", []],
-] as const;
-
-export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
-    data: T,
-    property: keyof T,
-    options: {
-        valid?: (typeof TYPES)[number][0][];
-        caseName?: (property: string, type: string) => string;
-        dataTransform?: (data: T, property: string, value: (typeof TYPES)[number][1]) => unknown;
-    },
-) {
-    const testCases = [];
-    for (const [type, value] of TYPES) {
-        if (!(options.valid ?? []).includes(type)) {
-            testCases.push([
-                options.caseName?.(property as string, type) ?? `property ${property as string} is a ${type}`,
-                options.dataTransform?.(data, property as string, value) ?? { ...data, [property]: value },
-            ]);
-        }
-    }
-    return testCases;
-}
-
 /**
  * Generates a pseudo random number in a given range. Does not have a running seed and will always return the same value
  * given the same input.
- * @param options Options for generating the number
- * @param options.min The smallest possible number to generate. Defaults to 1.
- * @param options.max The largest possible number to generate. Defaults to 5.
- * @param options.seed Influences the returned number in the range. Useful if you want multiple numbers in the same range. Defaults to 0.
+ * @param options Options for generating the number.
+ * @param [options.min=0] The smallest possible number to generate (inclusive).
+ * @param [options.max=9] The largest possible number to generate (inclusive).
+ * @default 9
+ * @param [options.seed=0] Randomizes the returned number. Useful if you want multiple numbers in the same range.
  */
 export function int(options: IntOptions = {}) {
-    const { min = 1, max = 5, seed = 0 } = options;
+    const { min = 0, max = 9, seed = 0 } = options;
 
     if (min > max) {
-        throw new RangeError("min must be <= max");
+        throw new RangeError("Option parameter min must be <= max.");
     }
 
     if (!Number.isInteger(min) || !Number.isInteger(max) || !Number.isInteger(seed)) {
-        throw new TypeError("min, max, and seed must be integers");
+        throw new TypeError("Option parameters min, max, and seed must be integers.");
     }
 
     // Combine inputs into a single 32-bit value
@@ -86,6 +65,38 @@ export function int(options: IntOptions = {}) {
 
     // Scale to range
     return Math.floor(normalized * (max - min + 1)) + min;
+}
+
+/**
+ * @param source A value to duplicate as array elements, an array to randomly select elements from, or a function for
+ * generating array elements. If a function is passed, the first argument is a number representing the index of the item
+ * when options.unique is false or the current iteration of trying to find a unique value otherwise. This number can
+ * be used as a seed.
+ * @param options Options to modify how the array is generated.
+ * @param [options.length=3] The number of items in the array.
+ * @param [options.unique=false] If set to true, ensures that all elements in the array are unique.
+ */
+export function arr<T extends string | number>(source: T | T[] | ((index: number) => T), options: ArrayOptions = {}) {
+    const { length = 3, unique = false } = options;
+    const sourceIsCallback = typeof source === "function";
+
+    const unpackValue = (index: number) => {
+        const value = sourceIsCallback ? source(index) : source;
+        return Array.isArray(value) ? value[int({ min: 0, max: value.length - 1, seed: index })]! : value;
+    };
+
+    if (!unique) {
+        return Array.from({ length }).map((_, i) => unpackValue(i)) as T[];
+    }
+
+    const values = new Set();
+
+    for (let i = 0; values.size < length; i++) {
+        if (i > MAX_ATTEMPTS * length) throw new Error("Too many iteration reached trying to generate unique values.");
+        values.add(unpackValue(i));
+    }
+
+    return [...values] as T[];
 }
 
 function getTimeSpan(options: TimeSpanOptions) {
@@ -105,13 +116,13 @@ function getTimeSpan(options: TimeSpanOptions) {
 }
 
 /**
- * Generates a deterministic text. Defaults to a lorem ipsum text that has no trailing whitespace. You usually want to
- * avoid trailing white space for limit testing text lengths that may implicitly be trimmed by your production code.
+ * Generates deterministic text. Sentences always begin with a capital letter and always end in a period unless
+ * options.spaces is set to false or string length is 1.
  * @param options Options to modify how text is generated.
- * @param options.length The amount of characters the string should have. Defaults to 56.
- * @param options.base The base text to repeat or slice to match the desired length. Default to a lorem ipsum text.
- * @param options.spaces Specify if you want to keep spaces, remove them, or only remove trailing spaces.
- * Only applies when you use the default base. Use when you want to generate multiple different strings. Loops at 25.
+ * @param [options.length=50] The amount of characters the string should have.
+ * @param [options.seed=0] Randomizes the output string.
+ * @param [options.spaces=true] Specify if you want to keep spaces or remove them.
+ * @param options.words An array of strings to use a word list to generate sentences.
  */
 export function str(options: StrOptions = {}) {
     // prettier-ignore
@@ -136,6 +147,10 @@ export function str(options: StrOptions = {}) {
         ]
     } = options;
 
+    if (words.some(word => word.length === 0 || word.match(/\s/g))) {
+        throw new Error("Wordlist may not contain empty strings or words containing whitespace.");
+    }
+
     if (length === 0) return "";
 
     const getNextPeriod = (i: number) =>
@@ -155,6 +170,7 @@ export function str(options: StrOptions = {}) {
             text += word;
             continue;
         }
+
         const capitalizeWord = i - 1 === lastPeriod;
         text += capitalizeWord ? capitalize(word) : word;
         if (i === nextPeriod) {
@@ -166,62 +182,53 @@ export function str(options: StrOptions = {}) {
         text += " ";
     }
 
-    if (!spaces) return text.slice(0, length);
-    if (length === 1) return text[0];
+    const slicedText = text.slice(0, length);
 
-    if (text[text.length - 2] === " ") {
+    if (length === 1 || !spaces || slicedText.endsWith(".")) return slicedText;
+
+    const hasPeriodOrSpaceNearTheEnd = /[.\s]+[^.\s]{0,2}$/;
+    const matches = slicedText.match(hasPeriodOrSpaceNearTheEnd);
+
+    if (matches) {
+        const [match] = matches;
         const vowels = ["a", "i", "e", "o", "u"];
-        const vowel = int({ min: 0, max: vowels.length - 1, seed });
-        return `${text.slice(0, length - 2)}${vowel}.`;
+        const endingVowels = arr(vowels, { unique: true, length: match.length - 1 });
+        const wordEnding = endingVowels.join("");
+        return `${slicedText.slice(0, slicedText.length - match.length)}${wordEnding}.`;
     }
 
-    return `${text.slice(0, length - 1)}.`;
-}
-
-/**
- *
- * @param source A value to duplicate as array elements or a function to generate array elements
- * @param options Options to modify how the array is generated.
- * @param options.length The number of items in the array. Defaults to 3.
- */
-export function arr<T extends string | number | object>(
-    source: T | ((index: number) => T),
-    options: ArrayOptions = {},
-) {
-    const { length = 3 } = options;
-    const array = Array.from({ length });
-    if (typeof source === "function") return array.map((_, i) => source(i)) as T[];
-    return array.fill(source) as T[];
+    return `${slicedText.slice(0, length - 1)}.`;
 }
 
 /**
  * Creates a fully deterministic date.
  * @param options Options to modify how the date is generated.
- * @param options.when In the past or future relative to the reference date
- * @param options.days Amount of days between reference date and returned date
- * @param options.hours Amount of hours between reference date and returned date
- * @param options.minutes Amount of minutes between reference date and returned date
- * @param options.seconds Amount of seconds between reference date and returned date
- * @param options.refDate The date to base date generation on. Defaults to a deterministic value. If you want true
- * future dates pass Date.now()
- * @returns A date relative to the ref date. Default return value is 2024-05-01T12:00:00Z.
+ * @param [options.when="past"] In the past or future relative to the reference date.
+ * @param [options.days=0] Amount of days between reference date and returned date.
+ * @param [options.hours=0] Amount of hours between reference date and returned date.
+ * @param [options.minutes=0] Amount of minutes between reference date and returned date.
+ * @param [options.seconds=0] Amount of seconds between reference date and returned date.
+ * @param [options.refDate="2025-06-01T12:00:00Z"] The date to base date generation on. Defaults to a deterministic
+ * value. If you want true future dates pass Date.now(), but be careful as that will create a non-deterministic date.
+ * @returns A date relative to the ref date. The default is to return the ref date.
  */
 export function date(options: DateOptions = {}) {
-    const { when = "past", refDate = DEFAULT_REF_DATE, days, hours, minutes, seconds, seed } = options;
+    const { when = "past", refDate = DEFAULT_REF_DATE } = options;
 
     const refTime = new Date(refDate).getTime();
-    const timeSpan = getTimeSpan({ days, hours, minutes, seconds, seed });
+    const timeSpan = getTimeSpan(options);
+
     const time = when === "past" ? refTime - timeSpan : refTime + timeSpan;
 
     return new Date(time);
 }
 
 /**
- * @param options The same options you'd pass to the {@link date} helper function. The years, days, hours, minutes, and seconds
- * define the distance between array items. Also allows setting the array length.
+ * Refer to the {@link date} and {@link arr} function documentation to understand the options. The time spans you pass
+ * define the distance between each generated date.
  */
 export function dateArr(options: DateArrayOptions = {}) {
-    const { days = 1, hours = 0, minutes = 0, seconds = 0, length, ...rest } = options;
+    const { days = 1, hours = 0, minutes = 0, seconds = 0, ...rest } = options;
     const getDate = (index: number) =>
         date({
             ...rest,
@@ -231,13 +238,22 @@ export function dateArr(options: DateArrayOptions = {}) {
             seconds: seconds * index,
         });
 
-    return arr(getDate, { length });
+    return arr(i => getDate(i).getTime(), options).map(time => new Date(time));
 }
 
 /**
- * @param options The same options you'd pass to the {@link int} helper function. Also allows setting the array length.
+ * Refer to the {@link int} and {@link arr} function documentation to understand the options.
  */
 export function intArr(options: IntArrayOptions = {}) {
     const { seed = 0 } = options;
     return arr(i => int({ ...options, seed: seed + i }), options);
+}
+
+/**
+ * Refer to the {@link str} and {@link arr} function documentation to understand the options. For clarity, array length
+ * is passed as options.arrLength and string length as options.strLength.
+ */
+export function strArr(options: StrArrayOptions) {
+    const { seed = 0, strLength, arrLength, ...rest } = options;
+    return arr(i => str({ ...rest, length: strLength, seed: seed + i }), { ...rest, length: arrLength });
 }
