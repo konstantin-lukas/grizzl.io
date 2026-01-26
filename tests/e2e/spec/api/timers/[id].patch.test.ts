@@ -19,7 +19,9 @@ test("only allows patching the deleted property", async ({ request, db }) => {
     const response = await request.patch(`/api/timers/${timer!.id}`, { data: { ...FULL_TIMER, deleted: true } });
     expect(response.status()).toBe(204);
     const [patchedTimer] = await db.timer.select(timer!.id);
-    expect(patchedTimer).toStrictEqual({ ...timer, deleted: true });
+    const { deletedAt: _, ...expected } = timer!;
+    expect(patchedTimer).toStrictEqual(expect.objectContaining(expected));
+    expect(patchedTimer!.deletedAt).not.toBeNull();
 });
 
 test("only modifies the requested timer", async ({ request, db }) => {
@@ -31,7 +33,11 @@ test("only modifies the requested timer", async ({ request, db }) => {
     await request.patch(`/api/timers/${timer!.id}`, { data: { deleted: true } });
     const [timerAfterPatch] = await db.timer.select(timer!.id);
     const [otherTimerAfterPatch] = await db.timer.select(otherTimer!.id);
-    expect(timerAfterPatch).toStrictEqual({ ...timer, deleted: true });
+
+    const { deletedAt: _, ...expected } = timer!;
+    expect(timerAfterPatch).toStrictEqual(expect.objectContaining(expected));
+    expect(timerAfterPatch!.deletedAt).not.toBeNull();
+
     expect(otherTimerAfterPatch).toStrictEqual(otherTimer);
 });
 

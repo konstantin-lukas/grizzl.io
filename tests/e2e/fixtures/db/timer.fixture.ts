@@ -15,7 +15,7 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         const data = Array.from({ length: count }).map((_, index) => ({
             title: str({ length: 100, seed: index, spaces: false }),
             createdAt: dates[index],
-            deleted: options.deleted ? date() : null,
+            deletedAt: options.deleted ? date() : null,
             userId: options.userId ?? userId,
         }));
         return this.db.insert(this.schema).values(data).returning();
