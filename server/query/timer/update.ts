@@ -12,7 +12,11 @@ export default async function update(
     return await db.transaction(async tx => {
         const { rowCount } = await tx
             .update(timer)
-            .set(isDelete ? { deleted: values.deleted } : { title: values.title, ttsVoice: values.ttsVoice })
+            .set(
+                isDelete
+                    ? { deletedAt: values.deleted ? new Date() : null }
+                    : { title: values.title, ttsVoice: values.ttsVoice },
+            )
             .where(and(eq(timer.id, id), eq(timer.userId, userId)));
 
         if (!rowCount || isDelete) return rowCount;

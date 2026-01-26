@@ -1,5 +1,5 @@
 import { ID_LENGTH } from "../shared/constants/data";
-import { boolean, char, timestamp } from "drizzle-orm/pg-core";
+import { char, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 
 export function generateId() {
@@ -15,6 +15,6 @@ export const createdAt = {
     createdAt: timestamp().defaultNow().notNull(),
 };
 
-export const deleted = {
-    deleted: boolean().default(false).notNull(),
+export const deletedAt = {
+    deletedAt: timestamp(),
 };

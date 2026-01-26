@@ -65,19 +65,19 @@ test("allows deleting and restoring an existing timer", async ({ timerPage: page
     await db.timerInterval.insert(timer!.id);
     await page.goto();
 
-    expect(timer!.deleted).toBe(false);
+    expect(timer!.deletedAt).toBeNull();
     await page.expect("listItemTitles").toHaveText(timer!.title);
     await page.click("listItemDeleteButtons");
     await page.expect("listItemTitles").toBeDisattached();
 
     const [updatedTimer] = await db.timer.select(timer!.id);
-    expect(updatedTimer!.deleted).toBe(true);
+    expect(updatedTimer!.deletedAt).not.toBeNull();
 
     await page.click("undeleteButton");
     await page.expect("listItemTitles").toHaveText(timer!.title);
 
     const [restoredTimer] = await db.timer.select(timer!.id);
-    expect(restoredTimer!.deleted).toBe(false);
+    expect(restoredTimer!.deletedAt).toBeNull();
 });
 
 test("allows creating timers with multiple intervals", async ({ timerPage: page, db }) => {

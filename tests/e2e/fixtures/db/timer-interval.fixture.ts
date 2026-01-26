@@ -22,7 +22,7 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
         const getBeatPattern = (index: number) => (index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null);
         const data = Array.from({ length: count }).map((_, i) => ({
             timerId,
-            title: str({ length: 100, spaces: "no", rotate: i }),
+            title: str({ length: 100, spaces: false, seed: i }),
             index: index ?? i,
             repeatCount,
             duration,
