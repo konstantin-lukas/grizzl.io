@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.3.1...v1.4.0) (2026-01-29)
+
+
+### Features
+
+* redirect user to their target page after signing in ([899fc98](https://github.com/konstantin-lukas/grizzl.io/commit/899fc981565d23e1416eb4a44b80ce56ec81babc))
+
 ## [1.3.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.3.0...v1.3.1) (2026-01-17)
 
 
