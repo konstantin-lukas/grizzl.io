@@ -13,3 +13,11 @@ http://keycloak.grizzl.localhost {
         format console
     }
 }
+
+http://playwright.grizzl.localhost {
+    reverse_proxy localhost:8080
+    log {
+        output stdout
+        format console
+    }
+}

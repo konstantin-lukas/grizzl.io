@@ -37,7 +37,7 @@ Requirements: git, docker
    ```
    The above is just for convenience when starting the containers. You can also set these values manually.
 2. Clone the repository and start a new shell inside of it.
-3. Make sure localhost:80 is free and run `bin/start`.
+3. Make sure localhost:80 and localhost:5432 are free and run `bin/start`.
 4. The project should now be running on `http://grizzl.localhost`.
 5. To shut down the project, simply run `bin/stop`.
 
@@ -79,10 +79,9 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 
 ## E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
-`bin/e2e`. For UI mode to work, you might have to add this to your `~/.bashrc` first: `xhost +local:docker`. The
-Playwright container uses `network_mode: "host"` and is only tested on Linux and WSL. It will most likely not work on
-MacOS or Windows. If you update or add snapshots, always start the project with `bin/start test` before running tests.
-This makes sure screenshots are generated from the same build used in the CI pipeline.
+`bin/e2e`. The UI will then be available in your browser under playwright.grizzl.localhost. If you update or add 
+screenshots, always start the project with `bin/start test` before running tests with `bin/snapshots`. This makes sure 
+screenshots are generated from the same build used in the CI pipeline.
 
 ## Database
 You can connect to the database via `localhost:5432`. The database name is `grizzl`. You can connect as the postgres 
