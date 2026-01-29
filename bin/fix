@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker compose exec webserver npm run prettier:fix
+docker compose exec webserver npm run eslint:fix
