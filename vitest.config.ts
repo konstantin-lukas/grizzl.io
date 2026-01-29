@@ -22,9 +22,6 @@ export default defineConfig({
             await defineVitestProject({
                 test: {
                     name: "unit",
-                    typecheck: {
-                        tsconfig: "tests/tsconfig.json",
-                    },
                     include: ["tests/unit/**/*.test.ts"],
                     environment: "node",
                 },

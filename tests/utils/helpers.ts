@@ -147,7 +147,7 @@ export function str(options: StrOptions = {}) {
         ]
     } = options;
 
-    if (words.some(word => word.length === 0 || word.match(/\s/g))) {
+    if (words.some(word => word.length === 0 || /\s/.test(word))) {
         throw new Error("Wordlist may not contain empty strings or words containing whitespace.");
     }
 
