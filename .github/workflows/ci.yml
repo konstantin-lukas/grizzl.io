@@ -97,6 +97,7 @@ jobs:
         runs-on: ubuntu-24.04
 
         strategy:
+            fail-fast: true
             matrix:
                 project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari, flakiness_check]
 
