@@ -1,54 +1,42 @@
 import { str } from "@@/tests/utils/helpers";
 import { expect, test } from "vitest";
 
-const testCases = [
-    { title: "", length: 0, expected: "" },
-    { title: "", length: 1, expected: "L" },
-    { title: "", length: undefined, expected: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+const words = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"];
+test.each([
+    { title: "return an empty string when length is zero", length: 0, expected: "" },
+    { title: "return the first letter of the first word capitalized when length is one", length: 1, expected: "V" },
     {
-        title: "and rotate is one",
-        length: 6,
-        rotate: 1,
-        expected: "Sed do",
-    },
-    {
-        title: "and rotate is 25",
+        title: "return a string of length 50 by default",
         length: undefined,
-        rotate: 25,
-        expected: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        expected: "Vitae lobortis pellentesque tortor volutpat aliqu.",
     },
-    { title: "and no base is provided", length: 6, expected: "LoremL" },
-    { title: "and spaces are allowed", length: 18, spaces: "yes", expected: "Lorem ipsum dolor " },
+    { title: "handle sentences that would otherwise end in a space", length: 6, expected: "Vitae." },
+    { title: "handle a sentences that would otherwise end in a space and a letter", length: 7, expected: "Vitaei." },
     {
-        title: "and trailing whitespace is disallowed",
-        length: 18,
-        spaces: "noTrailingSpace",
-        expected: "Lorem ipsum dolorL",
-    },
-    { title: "and whitespace is disallowed", length: 18, spaces: "no", expected: "Loremipsumdolorsit" },
-    {
-        title: "and whitespace is disallowed given a base containing special whitespace characters",
-        length: 5,
-        base: "a\nb\tc",
-        spaces: "no",
-        expected: "abcab",
+        title: "handle a sentences that would otherwise end in a space and two letters",
+        length: 8,
+        expected: "Vitaeio.",
     },
     {
-        title: "and trailing whitespace is disallowed given a base containing special whitespace characters",
-        length: 2,
-        base: "a\n",
-        spaces: "noTrailingSpace",
-        expected: "aa",
+        title: "replace the last character with a period before returning the result",
+        length: 9,
+        expected: "Vitae lo.",
     },
     {
-        title: "and sentences were rotated",
-        length: 2,
-        base: "a\n",
-        spaces: "noTrailingSpace",
-        expected: "aa",
+        title: "accept a custom word list",
+        expected: "The brown over jumps the quick the lazy dog. Dogi.",
+        words,
     },
-] as const;
-
-test.each(testCases)("should return $expected when length is $length $title", ({ expected, title: _, ...options }) => {
+    {
+        title: "return a string only containing lowercase letters when spaces are disabled",
+        expected: "vitaelobortispellentesquetortorvolutpataliquamlect",
+        spaces: false,
+    },
+    {
+        title: "return a different string when a custom seed is provided",
+        seed: 1,
+        expected: "Lobortis pellentesque tortor volutpat aliquam lec.",
+    },
+])("should $title", ({ expected, ...options }) => {
     expect(str(options)).toEqual(expected);
 });

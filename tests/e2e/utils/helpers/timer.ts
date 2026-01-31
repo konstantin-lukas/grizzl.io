@@ -1,6 +1,7 @@
 import { BASE_INTERVAL, BASE_TIMER } from "@@/tests/e2e/fixtures/constants/timer";
-import { arr, createInvalidTypeTestCases, str } from "@@/tests/utils/helpers";
+import { arr, str } from "@@/tests/utils/helpers";
 import { omit } from "@@/tests/utils/object";
+import { createInvalidTypeTestCases } from "~~/tests/e2e/utils/helpers";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
     return { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, [property]: value }] };
@@ -33,7 +34,7 @@ const topLevelCases = [
     ["the ttsVoice is missing", omit(BASE_TIMER, "ttsVoice")],
     ["the intervals is missing", omit(BASE_TIMER, "intervals")],
     ["there are no intervals", withTimer("intervals", [])],
-    ["there are too many intervals", withTimer("intervals", arr(BASE_INTERVAL, { length: 101 }))],
+    ["there are too many intervals", withTimer("intervals", Array.from({ length: 101 }).fill(BASE_INTERVAL))],
 ];
 
 const intervalLevelCases = [

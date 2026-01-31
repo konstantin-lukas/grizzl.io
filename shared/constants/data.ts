@@ -8,4 +8,5 @@ export const BEAT_PATTERN_MIN = 2;
 export const BEAT_PATTERN_MAX = 30;
 export const COUNT_MIN = 1;
 export const COUNT_MAX = 100;
+export const TIMER_DURATION_MIN = 1000;
 export const TIMER_DURATION_MAX = 3600000; // 60 * 60 * 1000

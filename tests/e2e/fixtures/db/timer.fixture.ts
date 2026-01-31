@@ -1,22 +1,24 @@
 import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
-import { dateArr, str } from "@@/tests/utils/helpers";
-import { eq } from "drizzle-orm";
+import { date, str } from "@@/tests/utils/helpers";
+import { type InferInsertModel, eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
+import type { timer } from "~~/lib/db/schema";
+import { defaultIfUndefined } from "~~/tests/utils/logic";
+
+type InsertOptions = Partial<Omit<InferInsertModel<typeof timer>, "deletedAt">> & { count?: number; deleted?: boolean };
 
 export default class TimerFixture extends BaseFixture<"timer"> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, "timer");
     }
 
-    async insert(options: { deleted?: boolean; userId?: string; count?: number } = {}) {
-        const count = options.count ?? 5;
-        const userId = (await this.testUser)!.id;
-        const dates = dateArr(count);
+    async insert(options: InsertOptions = {}) {
+        const { count = 5, title, createdAt, deleted, userId = (await this.testUser)!.id } = options;
         const data = Array.from({ length: count }).map((_, index) => ({
-            title: str({ length: 100, rotate: index, spaces: "no" }),
-            createdAt: dates[index],
-            deleted: !!options.deleted,
-            userId: options.userId ?? userId,
+            title: defaultIfUndefined(title, () => str({ length: 100, seed: index, spaces: false })),
+            createdAt: defaultIfUndefined(createdAt, () => date({ days: index })),
+            deletedAt: deleted ? date({ seed: index }) : null,
+            userId: userId ?? userId,
         }));
         return this.db.insert(this.schema).values(data).returning();
     }
