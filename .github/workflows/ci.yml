@@ -142,7 +142,7 @@ jobs:
                     )
                     if [ -n "$CHANGED_TESTS" ]; then
                       echo $CHANGED_TESTS
-                      docker compose run --rm -e CI=true playwright \
+                      docker compose -f compose.test.yml run --rm -e CI=true playwright \
                       npx playwright test $CHANGED_TESTS \
                       --repeat-each=3
                     else
