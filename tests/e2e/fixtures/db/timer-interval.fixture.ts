@@ -1,32 +1,28 @@
+import type { timerInterval } from "@@/lib/db/schema";
 import { Beat } from "@@/shared/enum/timer";
 import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
 import { str } from "@@/tests/utils/helpers";
+import type { InferInsertModel } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
+import { defaultIfUndefined } from "~~/tests/utils/logic";
+
+type InsertOptions = Partial<Omit<InferInsertModel<typeof timerInterval>, "timerId">> & { count?: number };
 
 export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, "timerInterval");
     }
 
-    async insert(
-        timerId: string,
-        options: {
-            count?: number;
-            repeatCount?: number;
-            duration?: number;
-            beatPattern?: Beat[] | null;
-            index?: number;
-        } = {},
-    ) {
-        const { count = 2, repeatCount = 2, duration = 3000, beatPattern, index } = options;
+    async insert(timerId: string, options: InsertOptions = {}) {
+        const { count = 2, repeatCount = 2, duration = 3000, beatPattern, index, title } = options;
         const getBeatPattern = (index: number) => (index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null);
         const data = Array.from({ length: count }).map((_, i) => ({
             timerId,
-            title: str({ length: 100, spaces: false, seed: i }),
+            title: defaultIfUndefined(title, () => str({ length: 100, spaces: false, seed: i })),
             index: index ?? i,
             repeatCount,
             duration,
-            beatPattern: beatPattern === undefined ? getBeatPattern(i) : beatPattern,
+            beatPattern: defaultIfUndefined(beatPattern, () => getBeatPattern(i)),
         }));
         return this.db.insert(this.schema).values(data).returning();
     }

@@ -14,7 +14,7 @@ export default defineConfig<ConfigOptions>({
     expect: {
         timeout: 20000,
         toHaveScreenshot: {
-            maxDiffPixelRatio: 0,
+            maxDiffPixelRatio: process.env.CI ? 0 : 0.3,
             threshold: 0,
             animations: "disabled",
         },
@@ -36,6 +36,11 @@ export default defineConfig<ConfigOptions>({
         },
     },
     projects: [
+        {
+            name: "seed",
+            testDir: "./tests/e2e/seed",
+            testMatch: "**/*.seed.ts",
+        },
         {
             name: "api",
             testMatch: apiTestDir,

@@ -257,3 +257,12 @@ export function strArr(options: StrArrayOptions) {
     const { seed = 0, strLength, arrLength, ...rest } = options;
     return arr(i => str({ ...rest, length: strLength, seed: seed + i }), { ...rest, length: arrLength });
 }
+
+/**
+ * @returns The provided value or undefined depending on the seed
+ */
+export function maybe<T>(value: () => T, seed: number) {
+    const scrapValue = int({ min: 0, max: 1, seed });
+    if (scrapValue) return null;
+    return value();
+}
