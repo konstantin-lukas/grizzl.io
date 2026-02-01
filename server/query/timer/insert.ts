@@ -1,6 +1,6 @@
 import type { PostTimer } from "#shared/schema/timer";
-import { db } from "~~/lib/db";
-import { timer, timerInterval } from "~~/lib/db/schema";
+import { db } from "~~/server/database";
+import { timer, timerInterval } from "~~/server/database/schema";
 
 export default async function insert(userId: string, { title, ttsVoice, intervals }: PostTimer) {
     return await db.transaction(async tx => {

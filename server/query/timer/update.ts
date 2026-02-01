@@ -1,7 +1,7 @@
 import type { PutTimer } from "#shared/schema/timer";
 import { and, eq, notInArray } from "drizzle-orm";
-import { db } from "~~/lib/db";
-import { timer, timerInterval } from "~~/lib/db/schema";
+import { db } from "~~/server/database";
+import { timer, timerInterval } from "~~/server/database/schema";
 
 export default async function update(
     id: string,

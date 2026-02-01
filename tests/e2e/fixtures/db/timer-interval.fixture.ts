@@ -1,9 +1,9 @@
-import type { timerInterval } from "@@/lib/db/schema";
 import { Beat } from "@@/shared/enum/timer";
 import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
 import { str } from "@@/tests/utils/helpers";
 import type { InferInsertModel } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
+import type { timerInterval } from "~~/server/database/schema";
 import { defaultIfUndefined } from "~~/tests/utils/logic";
 
 type InsertOptions = Partial<Omit<InferInsertModel<typeof timerInterval>, "timerId">> & { count?: number };
