@@ -1,7 +1,9 @@
 import NotFoundError from "~~/server/errors/not-found-error";
-import type TimerRepository from "~~/server/repositories/timer.repository";
+import TimerRepository from "~~/server/repositories/timer.repository";
 
 export default class TimerService {
+    static readonly deps = [TimerRepository];
+
     constructor(private readonly timerRepository: TimerRepository) {}
 
     public async setDeletedStatus(id: string, userId: string, isDeleted: boolean): Promise<void> {

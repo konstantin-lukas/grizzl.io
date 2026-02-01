@@ -2,9 +2,11 @@ import { DatabaseDeletedSchema } from "#shared/validators/deleted";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/controllers/base.controller";
 import NotFoundError from "~~/server/errors/not-found-error";
-import type TimerService from "~~/server/services/timer.service";
+import TimerService from "~~/server/services/timer.service";
 
 export default class TimerController extends BaseController {
+    static readonly deps = [TimerService];
+
     constructor(private readonly timerService: TimerService) {
         super();
     }
