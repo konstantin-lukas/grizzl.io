@@ -6,20 +6,15 @@ import { timer, timerInterval } from "~~/server/database/schema";
 export default async function update(
     id: string,
     userId: string,
-    values: { deleted: boolean } | { title: string; ttsVoice: string | null; intervals: PutTimer["intervals"] },
+    values: { title: string; ttsVoice: string | null; intervals: PutTimer["intervals"] },
 ) {
-    const isDelete = "deleted" in values;
     return await db.transaction(async tx => {
         const { rowCount } = await tx
             .update(timer)
-            .set(
-                isDelete
-                    ? { deletedAt: values.deleted ? new Date() : null }
-                    : { title: values.title, ttsVoice: values.ttsVoice },
-            )
+            .set({ title: values.title, ttsVoice: values.ttsVoice })
             .where(and(eq(timer.id, id), eq(timer.userId, userId)));
 
-        if (!rowCount || isDelete) return rowCount;
+        if (!rowCount) return rowCount;
 
         const intervalIds = values.intervals.map(i => i.id).filter((id): id is string => !!id);
 
