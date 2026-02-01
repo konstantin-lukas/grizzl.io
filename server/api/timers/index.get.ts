@@ -1,7 +1,9 @@
-import select from "~~/server/query/timer/select";
+import { db } from "~~/server/database";
+import TimerRepository from "~~/server/repositories/timer.repository";
 
 export default defineEventHandler(async event => {
-    const data = await tryThrow(select(event.context.user.id));
+    const timerRepository = new TimerRepository(db);
+    const data = await tryThrow(timerRepository.findByUserId(event.context.user.id));
     setStatus(event, "OK");
     return data;
 });
