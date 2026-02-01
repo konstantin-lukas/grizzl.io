@@ -10,15 +10,50 @@ updates:
       groups:
         playwright:
           patterns:
-            - "@playwright/test"
+            - "@playwright/*"
             - "playwright-core"
+            - "@axe-core/playwright"
         vitest:
           patterns:
             - "@vitest/coverage-v8"
             - "@vue/test-utils"
-            - "vitest"
             - "@nuxt/test-utils"
+            - "vitest"
+            - "happy-dom"
+        database:
+          patterns:
+            - "pg"
+            - "@types/pg"
+            - "nanoid"
+            - "drizzle-orm"
+            - "drizzle-kit"
+        tailwind:
+          patterns:
+            - "tailwindcss"
+            - "@tailwindcss/*"
+        prettier:
+          patterns:
+            - "prettier"
+            - "prettier-plugin-tailwindcss"
+            - "@trivago/prettier-plugin-sort-imports"
+        eslint:
+          patterns:
+            - "eslint"
+            - "eslint-plugin-vuejs-accessibility"
+        vue:
+          patterns:
+            - "vue"
+            - "vue-router"
+            - "vue-tsc"
+        nuxt-modules:
+          patterns:
+            - "@nuxt/*"
+            - "@nuxtjs/*"
+            - "@vite-pwa/nuxt"
+          exclude-patterns:
+            - "@nuxt/test-utils"
+        icons:
+          patterns:
+            - "@iconify-json/*"
       cooldown:
         default-days: 30
-        include:
-          - "*"
