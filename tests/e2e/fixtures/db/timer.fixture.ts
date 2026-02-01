@@ -2,7 +2,7 @@ import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
 import { date, str } from "@@/tests/utils/helpers";
 import { type InferInsertModel, eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
-import type { timer } from "~~/lib/db/schema";
+import type { timer } from "~~/server/database/schema";
 import { defaultIfUndefined } from "~~/tests/utils/logic";
 
 type InsertOptions = Partial<Omit<InferInsertModel<typeof timer>, "deletedAt">> & { count?: number; deleted?: boolean };

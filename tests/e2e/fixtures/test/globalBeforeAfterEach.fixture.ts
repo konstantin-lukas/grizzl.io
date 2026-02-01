@@ -1,10 +1,10 @@
-import * as schema from "@@/lib/db/schema";
 import { pool } from "@@/tests/e2e/fixtures/db";
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
+import * as schema from "~~/server/database/schema";
 
 /**
  * This fixture serves as a global beforeEach/afterEach because Playwright currently doesn't have one.

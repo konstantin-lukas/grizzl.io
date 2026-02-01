@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/schema/timer";
+import type { Timer } from "#shared/validators/timer";
 
 const open = ref(false);
 const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });

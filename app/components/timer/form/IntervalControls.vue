@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LIST_MAX, LIST_MIN } from "#shared/constants/data";
-import type { PutTimer } from "#shared/schema/timer";
+import type { PutTimer } from "#shared/validators/timer";
 import { nanoid } from "nanoid";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");

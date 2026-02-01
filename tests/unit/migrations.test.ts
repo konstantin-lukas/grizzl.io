@@ -4,7 +4,7 @@ import path from "path";
 import { expect, test } from "vitest";
 
 function readMigrationFiles() {
-    const migrationsDirectory = path.resolve(__dirname, "../../lib/db/migrations");
+    const migrationsDirectory = path.resolve(__dirname, "../../server/database/migrations");
     return fs
         .readdirSync(migrationsDirectory)
         .filter(dir => dir.endsWith(".sql"))

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { authClient } from "@@/lib/auth-client";
+import { authClient } from "~/constants/auth-client";
 import { APP_NAV } from "~/constants/nav";
 
 const session = authClient.useSession();
@@ -8,11 +8,11 @@ const { close } = useMenu();
 
 <template>
     <div
-        class="relative flex min-h-main-height w-full flex-col items-center gap-4 from-primary/50 to-[100dvh] xl:justify-center xl:bg-gradient-to-bl xl:to-75% xl:px-24 dark:from-primary/25"
+        class="relative flex min-h-main-height w-full flex-col items-center gap-4 from-primary/50 to-[100dvh] xl:justify-center xl:bg-linear-to-bl xl:to-75% xl:px-24 dark:from-primary/25"
     >
-        <div class="flex w-full max-w-[1280px] flex-col items-center xl:flex-row xl:gap-24">
+        <div class="flex w-full max-w-7xl flex-col items-center xl:flex-row xl:gap-24">
             <div
-                class="flex w-full flex-col items-start gap-6 from-primary/25 not-xl:mb-8 not-xl:bg-gradient-to-t not-xl:pt-20 not-xl:pb-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:gap-8 xl:py-10 dark:from-primary/15"
+                class="flex w-full flex-col items-start gap-6 from-primary/25 not-xl:mb-8 not-xl:bg-linear-to-t not-xl:pt-20 not-xl:pb-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:gap-8 xl:py-10 dark:from-primary/15"
             >
                 <div class="px-6 xs:px-12 md:px-24 xl:px-0">
                     <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />

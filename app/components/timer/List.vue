@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/schema/timer";
+import type { Timer } from "#shared/validators/timer";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ timers: Timer[] | undefined }>();

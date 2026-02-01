@@ -1,5 +1,5 @@
 import { PROTECTED_PATHS } from "#shared/constants/auth";
-import { authClient } from "~~/lib/auth-client";
+import { authClient } from "~/constants/auth-client";
 
 export default defineNuxtRouteMiddleware(async to => {
     const nuxtApp = useNuxtApp();

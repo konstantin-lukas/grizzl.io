@@ -1,8 +1,8 @@
-import { generateId } from "./mixins";
-import { db } from "@@/lib/db";
+import { generateId } from "./database/schema/mixins";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
+import { db } from "~~/server/database";
 
 const plugins =
     process.env.NUXT_PUBLIC_APP_ENV !== "production"

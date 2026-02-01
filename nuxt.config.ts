@@ -1,5 +1,5 @@
+import { checkTranslationFileConsistency, getTranslationFiles } from "./config/i18n";
 import pwa from "./config/pwa";
-import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
