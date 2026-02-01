@@ -5,8 +5,10 @@ import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
+import NotFoundError from "~~/server/errors/not-found-error";
 import { throwError } from "~~/server/utils/http";
 
+type AnyError = string | Error | ZodError;
 export default class BaseController {
     protected async tryThrow<T, E extends Error>(promise: Promise<T>): Promise<T> {
         const { data, error } = await tryCatch<T, E>(promise);
@@ -15,7 +17,7 @@ export default class BaseController {
     }
 
     protected throwError(
-        error: string | Error | ZodError,
+        error: AnyError,
         status: keyof typeof HttpStatusCode = "BAD_REQUEST",
         maskError: boolean = false,
     ): never {
@@ -51,9 +53,20 @@ export default class BaseController {
         return data;
     }
 
-    protected async parseIdParameter(event: H3Event) {
+    protected parseIdParameter(event: H3Event) {
         const { data, success, error } = DatabaseIdSchema.safeParse(getRouterParam(event, "id"));
         if (!success) throwError(error, "BAD_REQUEST");
         return data;
+    }
+
+    protected inferResponse<T>(event: H3Event, result: Result<T, AnyError>) {
+        const { error } = result;
+
+        if (error instanceof NotFoundError) this.throwError("The provided ID was not found.", "NOT_FOUND");
+        if (error) this.throwError(error, "UNPROCESSABLE_CONTENT", true);
+
+        if (event.method === "POST") this.setStatus(event, "CREATED");
+        if (event.method === "GET") this.setStatus(event, "OK");
+        if (event.method === "PUT" || event.method === "PATCH") this.setStatus(event, "NO_CONTENT");
     }
 }
