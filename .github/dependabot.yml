@@ -18,3 +18,7 @@ updates:
             - "@vue/test-utils"
             - "vitest"
             - "@nuxt/test-utils"
+      cooldown:
+        default-days: 30
+        include:
+          - "*"
