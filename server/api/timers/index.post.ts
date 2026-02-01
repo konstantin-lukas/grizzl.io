@@ -1,4 +1,4 @@
-import { PostTimerSchema } from "#shared/schema/timer";
+import { PostTimerSchema } from "#shared/validators/timer";
 import insert from "~~/server/query/timer/insert";
 import { parseRequestBody } from "~~/server/utils/schema";
 

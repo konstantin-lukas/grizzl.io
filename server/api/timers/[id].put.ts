@@ -1,4 +1,4 @@
-import { PutTimerSchema } from "#shared/schema/timer";
+import { PutTimerSchema } from "#shared/validators/timer";
 import update from "~~/server/query/timer/update";
 
 export default defineEventHandler(async event => {

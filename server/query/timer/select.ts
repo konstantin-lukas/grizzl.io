@@ -1,4 +1,4 @@
-import type { Timer } from "#shared/schema/timer";
+import type { Timer } from "#shared/validators/timer";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { timer, timerInterval } from "~~/server/database/schema";

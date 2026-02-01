@@ -1,4 +1,4 @@
-import { DatabaseDeletedSchema } from "#shared/schema/deleted";
+import { DatabaseDeletedSchema } from "#shared/validators/deleted";
 import update from "~~/server/query/timer/update";
 
 export default defineEventHandler(async event => {

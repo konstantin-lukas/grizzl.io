@@ -12,7 +12,7 @@ import {
     TITLE_MIN,
 } from "#shared/constants/data";
 import { Beat } from "#shared/enum/timer";
-import { DatabaseIdSchema } from "#shared/schema/id";
+import { DatabaseIdSchema } from "#shared/validators/id";
 import { z } from "zod";
 
 const PostIntervalSchema = z.object({

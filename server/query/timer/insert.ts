@@ -1,4 +1,4 @@
-import type { PostTimer } from "#shared/schema/timer";
+import type { PostTimer } from "#shared/validators/timer";
 import { db } from "~~/server/database";
 import { timer, timerInterval } from "~~/server/database/schema";
 

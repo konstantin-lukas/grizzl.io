@@ -1,4 +1,4 @@
-import type { PutTimer } from "#shared/schema/timer";
+import type { PutTimer } from "#shared/validators/timer";
 import { and, eq, notInArray } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { timer, timerInterval } from "~~/server/database/schema";
