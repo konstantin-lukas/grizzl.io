@@ -6,17 +6,10 @@ import type { EventHandlerRequest, H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
 import NotFoundError from "~~/server/errors/not-found-error";
-import { throwError } from "~~/server/utils/http";
 
 type AnyError = string | Error | ZodError;
 export default class BaseController {
-    protected async tryThrow<T, E extends Error>(promise: Promise<T>): Promise<T> {
-        const { data, error } = await tryCatch<T, E>(promise);
-        if (error) throwError(error, "UNPROCESSABLE_CONTENT", true);
-        return data!;
-    }
-
-    protected throwError(
+    static throwError(
         error: AnyError,
         status: keyof typeof HttpStatusCode = "BAD_REQUEST",
         maskError: boolean = false,
@@ -48,14 +41,14 @@ export default class BaseController {
     }
 
     protected async parseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
-        const { success, data, error } = await safeParseRequestBody(event, schema);
-        if (!success) throwError(error);
+        const { success, data, error } = await this.safeParseRequestBody(event, schema);
+        if (!success) BaseController.throwError(error);
         return data;
     }
 
     protected parseIdParameter(event: H3Event) {
         const { data, success, error } = DatabaseIdSchema.safeParse(getRouterParam(event, "id"));
-        if (!success) throwError(error, "BAD_REQUEST");
+        if (!success) BaseController.throwError(error, "BAD_REQUEST");
         return data;
     }
 
@@ -65,8 +58,8 @@ export default class BaseController {
     ): asserts result is { data: T; error: null } {
         const { error } = result;
 
-        if (error instanceof NotFoundError) this.throwError("The provided ID was not found.", "NOT_FOUND");
-        if (error) this.throwError(error, "UNPROCESSABLE_CONTENT", true);
+        if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found.", "NOT_FOUND");
+        if (error) BaseController.throwError(error, "UNPROCESSABLE_CONTENT", true);
 
         if (event.method === "POST") this.setStatus(event, "CREATED");
         if (event.method === "GET") this.setStatus(event, "OK");

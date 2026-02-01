@@ -3,7 +3,6 @@ import { PostTimerSchema, PutTimerSchema } from "#shared/validators/timer";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/controllers/base.controller";
 import TimerService from "~~/server/services/timer.service";
-import { parseRequestBody } from "~~/server/utils/schema";
 
 export default class TimerController extends BaseController {
     static readonly deps = [TimerService];
@@ -22,8 +21,8 @@ export default class TimerController extends BaseController {
     }
 
     public async update(event: H3Event) {
-        const id = await parseIdParameter(event);
-        const body = await parseRequestBody(event, PutTimerSchema);
+        const id = this.parseIdParameter(event);
+        const body = await this.parseRequestBody(event, PutTimerSchema);
 
         const result = await tryCatch(this.timerService.update(id, event.context.user.id, body));
 
@@ -38,7 +37,7 @@ export default class TimerController extends BaseController {
     }
 
     public async create(event: H3Event) {
-        const timer = await parseRequestBody(event, PostTimerSchema);
+        const timer = await this.parseRequestBody(event, PostTimerSchema);
         const result = await tryCatch(this.timerService.create(event.context.user.id, timer));
 
         this.inferResponse(event, result);

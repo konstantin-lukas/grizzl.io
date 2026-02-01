@@ -9,7 +9,7 @@ export default class TimerService {
 
     public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
         const operation = isDeleted ? "delete" : "undelete";
-        const rowCount = await tryThrow(this.timerRepository[operation]({ id, userId }));
+        const rowCount = await this.timerRepository[operation]({ id, userId });
         if (rowCount === 0) throw new NotFoundError();
     }
 
