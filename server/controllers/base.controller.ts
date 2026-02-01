@@ -59,7 +59,10 @@ export default class BaseController {
         return data;
     }
 
-    protected inferResponse<T>(event: H3Event, result: Result<T, AnyError>) {
+    protected inferResponse<T>(
+        event: H3Event,
+        result: Result<T, AnyError>,
+    ): asserts result is { data: T; error: null } {
         const { error } = result;
 
         if (error instanceof NotFoundError) this.throwError("The provided ID was not found.", "NOT_FOUND");
