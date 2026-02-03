@@ -2,6 +2,14 @@
 import withNuxt from "./.nuxt/eslint.config.mjs";
 import vuejsA11y from "eslint-plugin-vuejs-accessibility";
 
+
+
+
+
+
+
+
+
 const a11yRules = vuejsA11y.configs.recommended.rules;
 
 export default withNuxt([
@@ -56,6 +64,12 @@ export default withNuxt([
         files: ["app/**/*"],
         rules: {
             "no-console": "error",
+        },
+    },
+    {
+        files: ["tests/**/*"],
+        rules: {
+            "@typescript-eslint/no-extraneous-class": "off",
         },
     },
 ]);

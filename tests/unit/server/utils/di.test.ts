@@ -4,7 +4,6 @@ import { createContainer } from "~~/server/utils/di";
 const { db, BaseRepository } = vi.hoisted(() => {
     return {
         db: vi.fn(),
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         BaseRepository: vi.fn(class {}),
     };
 });
@@ -24,14 +23,12 @@ vi.mock("~~/server/repositories/base.repository", () => {
 const SomeRepository = vi.fn(class extends BaseRepository {});
 
 const SomeService = vi.fn(
-    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     class {
         static readonly deps = [SomeRepository] as unknown[];
     },
 );
 
 const SomeController = vi.fn(
-    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     class {
         static readonly deps = [SomeService] as unknown[];
     },
@@ -58,9 +55,7 @@ test("resolves dependency chains", () => {
 });
 
 test("detects circular dependencies", () => {
-    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     class CircularRepository {}
-    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     class CircularService {}
 
     (CircularRepository as unknown as { deps: unknown }).deps = [CircularService];
@@ -83,32 +78,24 @@ test("automatically passes the database connection as the first constructor argu
 });
 
 test("resolves multiple dependencies and restores instances from cache when they appear multiple times in the dependency chain", () => {
-    const RepositoryA = vi.fn(
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-        class {},
-    );
-    const RepositoryB = vi.fn(
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-        class {},
-    );
+    const RepositoryA = vi.fn(class {});
+    const RepositoryB = vi.fn(class {});
     const ServiceA = vi.fn(
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         class {
             static readonly deps = [RepositoryA, RepositoryB] as unknown[];
         },
     );
     const ServiceB = vi.fn(
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         class {
             static readonly deps = [RepositoryB, RepositoryA] as unknown[];
         },
     );
     const MultipleController = vi.fn(
-        // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         class {
             static readonly deps = [ServiceA, ServiceB] as unknown[];
         },
     );
+
     const container = createContainer();
     const result = container.resolve(MultipleController as never);
 
