@@ -6,10 +6,13 @@ export default defineConfig({
         coverage: {
             include: [
                 "app/utils/**/*",
-                "server/utils/**/*",
-                "shared/utils/**/*",
                 "app/components/**/*",
                 "app/composables/**/*",
+                "shared/utils/**/*",
+                "server/utils/**/*",
+                "server/repositories/**/*",
+                "server/services/**/*",
+                "server/controllers/**/*",
             ],
             exclude: ["app/components/timer/**/*"],
             reporter: ["text", "lcov", "json"],
