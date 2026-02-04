@@ -133,7 +133,7 @@ jobs:
               run: |
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
-                  if [ "${{ matrix.project }}" = "flakiness_check" && [ "${{ matrix.project }}" != "api" ]; then
+                  if [ "${{ matrix.project }}" = "flakiness_check" ]; then
                     CHANGED_TESTS=$(
                       git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
                       --name-only |
