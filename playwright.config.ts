@@ -4,7 +4,7 @@ import { defineConfig, devices } from "playwright/test";
 const projects = [
     {
         name: "api",
-        testDir: "./tests/seed",
+        testDir: "./tests/api",
     },
     {
         name: "chromium",

@@ -12,35 +12,35 @@ export default class TimerController extends BaseController {
     }
 
     public async setDeletedStatus(event: H3Event) {
-        const id = this.parseIdParameter(event);
-        const body = await this.parseRequestBody(event, DatabaseDeletedSchema);
+        const id = BaseController.parseIdParameter(event);
+        const body = await BaseController.parseRequestBody(event, DatabaseDeletedSchema);
 
         const result = await tryCatch(this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted));
 
-        this.inferResponse(event, result);
+        BaseController.inferResponse(event, result);
     }
 
     public async update(event: H3Event) {
-        const id = this.parseIdParameter(event);
-        const body = await this.parseRequestBody(event, PutTimerSchema);
+        const id = BaseController.parseIdParameter(event);
+        const body = await BaseController.parseRequestBody(event, PutTimerSchema);
 
         const result = await tryCatch(this.timerService.update(id, event.context.user.id, body));
 
-        this.inferResponse(event, result);
+        BaseController.inferResponse(event, result);
     }
 
     public async getList(event: H3Event) {
         const result = await tryCatch(this.timerService.getList(event.context.user.id));
 
-        this.inferResponse(event, result);
+        BaseController.inferResponse(event, result);
         return result.data;
     }
 
     public async create(event: H3Event) {
-        const timer = await this.parseRequestBody(event, PostTimerSchema);
+        const timer = await BaseController.parseRequestBody(event, PostTimerSchema);
         const result = await tryCatch(this.timerService.create(event.context.user.id, timer));
 
-        this.inferResponse(event, result);
+        BaseController.inferResponse(event, result);
         setHeader(event, "Location", `/api/timers/${result.data}`);
     }
 }
