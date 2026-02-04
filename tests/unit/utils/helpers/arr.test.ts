@@ -69,7 +69,7 @@ test.each([
     },
 ])("should throw an error when options.unique is true and $title", ({ source }) => {
     expect(() => arr(source, { length: 2, unique: true })).toThrow(
-        new Error("Too many iteration reached trying to generate unique values."),
+        new Error("Too many iterations reached trying to generate unique values."),
     );
 });
 
