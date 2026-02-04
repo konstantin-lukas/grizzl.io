@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
         tsConfig: {
-            include: ["../tests/e2e/**/*", "../tests/unit/**/*"],
+            include: ["../tests/**/*"],
         },
     },
     app: {

@@ -1,12 +1,10 @@
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 import { defineConfig, devices } from "playwright/test";
 
-const apiTestDir = "api/**/*.test.ts";
-
 const projects = [
     {
         name: "api",
-        testMatch: apiTestDir,
+        testDir: "./tests/seed",
     },
     {
         name: "chromium",
@@ -14,17 +12,14 @@ const projects = [
             ...devices["Desktop Chrome"],
             permissions: ["clipboard-read", "clipboard-write"],
         },
-        testIgnore: apiTestDir,
     },
     {
         name: "firefox",
         use: { ...devices["Desktop Firefox"] },
-        testIgnore: apiTestDir,
     },
     {
         name: "safari",
         use: { ...devices["Desktop Safari"] },
-        testIgnore: apiTestDir,
     },
     {
         name: "mobile_chrome",
@@ -32,19 +27,17 @@ const projects = [
             ...devices["Pixel 5"],
             permissions: ["clipboard-read", "clipboard-write"],
         },
-        testIgnore: apiTestDir,
     },
     {
         name: "mobile_safari",
         use: { ...devices["iPhone 12"] },
-        testIgnore: apiTestDir,
     },
 ];
 
 if (!process.env.CI) {
     projects.push({
         name: "seed",
-        testDir: "./tests/e2e/seed",
+        testDir: "./seed",
         testMatch: "**/*.seed.ts",
     } as never);
 }
