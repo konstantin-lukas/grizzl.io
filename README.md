@@ -54,8 +54,16 @@ This project is very thoroughly tested. There are roughly five types of tests in
 1. Unit tests for utilities (located at tests/unit)
 2. Unit tests for composables (located at tests/nuxt/composables)
 3. Unit tests for components (located at tests/nuxt/components)
-4. Functional tests for the API (located at tests/e2e/spec/api)
+4. Functional tests for the API (located at tests/api)
 5. End-to-end test to simulate user interactions (located at tests/e2e)
+
+### Coverage
+Coverage in this project is defined as relative to "all lines of code that need to be covered" as opposed to simply 
+"all lines of code". Instead, it means that all lines are covered that need to be covered. That means it is okay and 
+even encouraged to use `/* c8 ignore start */` and `/* c8 ignore stop */` to explicitly mark lines of code that do not 
+need tests. Examples for this are repositories and services that just wrap other function calls and have no logic on 
+their own. They will often be implicitly tested by the functional API tests and writing unit tests for them if they
+don't have any logic is just a waste of time.
 
 ## Shell Scripts
 The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any

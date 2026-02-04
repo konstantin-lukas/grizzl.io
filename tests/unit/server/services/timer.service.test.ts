@@ -57,17 +57,3 @@ describe("update", () => {
         await expect(timerService.update(id, userId, timer)).resolves.not.toThrow();
     });
 });
-
-describe("getList", () => {
-    test("is a wrapper for timerRepository.findByUserId", async () => {
-        await timerService.getList(userId);
-        expect(timerRepositoryMock.findByUserId).toHaveBeenCalledExactlyOnceWith(userId);
-    });
-});
-
-describe("create", () => {
-    test("is a wrapper for timerRepository.create", async () => {
-        await timerService.create(userId, timer);
-        expect(timerRepositoryMock.create).toHaveBeenCalledExactlyOnceWith(userId, timer);
-    });
-});

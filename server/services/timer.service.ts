@@ -18,6 +18,7 @@ export default class TimerService {
         if (rowCount === 0) throw new NotFoundError();
     }
 
+    /* c8 ignore start */
     public async getList(userId: string) {
         return this.timerRepository.findByUserId(userId);
     }
@@ -25,4 +26,5 @@ export default class TimerService {
     public async create(userId: string, timer: PostTimer) {
         return this.timerRepository.create(userId, timer);
     }
+    /* c8 ignore stop */
 }
