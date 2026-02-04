@@ -9,6 +9,16 @@ interface ArrayOptions {
     unique?: boolean;
 }
 
+interface PrimitiveArrayOptions {
+    length?: number;
+    unique?: boolean;
+}
+
+interface ObjectArrayOptions<T> {
+    length?: number;
+    unique?: (object: T, index: number) => Primitive;
+}
+
 type DateOptions = { when?: "past" | "future"; refDate?: string | Date | number } & TimeSpanOptions & PRNGOptions;
 type IntOptions = { min?: number; max?: number } & PRNGOptions;
 type DateArrayOptions = DateOptions & ArrayOptions;
@@ -22,6 +32,7 @@ type TimeSpanOptions = {
 } & PRNGOptions;
 type StrOptions = { words?: readonly string[]; spaces?: boolean; length?: number } & PRNGOptions;
 type StrArrayOptions = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> & ArrayOptions;
+type Primitive = string | number | boolean | undefined | null | symbol | bigint;
 
 const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
 const DEFAULT_SENTENCE_LENGTH = 10;
@@ -74,9 +85,19 @@ export function int(options: IntOptions = {}) {
  * be used as a seed.
  * @param options Options to modify how the array is generated.
  * @param [options.length=3] The number of items in the array.
- * @param [options.unique=false] If set to true, ensures that all elements in the array are unique.
+ * @param [options.unique=false] If set to true, ensures that all elements in the array are unique. If you are
+ * constructing an array of non-primitives, then unique instead has to be a callback if you want unique values. That
+ * callback takes an array element and an index as parameters and returns a unique key for each element.
  */
-export function arr<T extends string | number>(source: T | T[] | ((index: number) => T), options: ArrayOptions = {}) {
+export function arr<T extends Primitive>(
+    source: T | T[] | ((index: number) => T),
+    options?: PrimitiveArrayOptions,
+): T[];
+export function arr<T extends object>(source: T | T[] | ((index: number) => T), options?: ObjectArrayOptions<T>): T[];
+export function arr<T extends Primitive | object>(
+    source: T | T[] | ((index: number) => T),
+    options: PrimitiveArrayOptions | ObjectArrayOptions<T> = {},
+) {
     const { length = 3, unique = false } = options;
     const sourceIsCallback = typeof source === "function";
 
@@ -89,14 +110,24 @@ export function arr<T extends string | number>(source: T | T[] | ((index: number
         return Array.from({ length }).map((_, i) => unpackValue(i)) as T[];
     }
 
-    const values = new Set();
+    const seen = new Set<string | number | Primitive>();
+    const result: T[] = [];
 
-    for (let i = 0; values.size < length; i++) {
-        if (i > MAX_ATTEMPTS * length) throw new Error("Too many iteration reached trying to generate unique values.");
-        values.add(unpackValue(i));
+    for (let i = 0; result.length < length; i++) {
+        if (i > MAX_ATTEMPTS * length) {
+            throw new Error("Too many iterations reached trying to generate unique values.");
+        }
+
+        const value = unpackValue(i);
+        const key = typeof unique === "function" ? unique!(value, i) : value;
+
+        if (!seen.has(key)) {
+            seen.add(key);
+            result.push(value);
+        }
     }
 
-    return [...values] as T[];
+    return result;
 }
 
 function getTimeSpan(options: TimeSpanOptions) {
@@ -228,7 +259,9 @@ export function date(options: DateOptions = {}) {
  * define the distance between each generated date.
  */
 export function dateArr(options: DateArrayOptions = {}) {
-    const { days = 1, hours = 0, minutes = 0, seconds = 0, ...rest } = options;
+    const { days = 1, hours = 0, minutes = 0, seconds = 0, unique: isUnique, ...rest } = options;
+    const unique = isUnique ? (date: Date) => date.getTime() : undefined;
+
     const getDate = (index: number) =>
         date({
             ...rest,
@@ -238,7 +271,7 @@ export function dateArr(options: DateArrayOptions = {}) {
             seconds: seconds * index,
         });
 
-    return arr(i => getDate(i).getTime(), options).map(time => new Date(time));
+    return arr(i => getDate(i), { ...rest, unique });
 }
 
 /**

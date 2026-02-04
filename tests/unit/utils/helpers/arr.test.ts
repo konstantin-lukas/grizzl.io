@@ -72,3 +72,21 @@ test.each([
         new Error("Too many iteration reached trying to generate unique values."),
     );
 });
+
+test("should allow creating an array of objects", () => {
+    expect(arr(i => ({ i }))).toStrictEqual([{ i: 0 }, { i: 1 }, { i: 2 }]);
+});
+
+test("should allow creating an array of unique objects", () => {
+    expect(arr(i => ({ i: Math.floor(i / 2) }), { unique: ({ i }) => i })).toStrictEqual([
+        { i: 0 },
+        { i: 1 },
+        { i: 2 },
+    ]);
+});
+
+test("should throw an error when options.unique doesn't return enough unique values", () => {
+    expect(() => arr(() => ({ i: 0 }), { length: 2, unique: () => 0 })).toThrow(
+        new Error("Too many iterations reached trying to generate unique values."),
+    );
+});
