@@ -183,7 +183,7 @@ export default class BaseController {
     static inferResponse<T>(event: H3Event, result: Result<T, AnyError>): asserts result is { data: T; error: null } {
         const { error } = result;
 
-        if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found.", "NOT_FOUND");
+        if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found", "NOT_FOUND");
         if (error) BaseController.throwError(error, "UNPROCESSABLE_CONTENT", true);
 
         if (event.method === "POST") this.setStatus(event, "CREATED");

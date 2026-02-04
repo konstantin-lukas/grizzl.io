@@ -4,6 +4,28 @@ import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+import NotFoundError from "~~/server/errors/not-found-error";
+
+const { setResponseStatusSpy } = vi.hoisted(() => {
+    return {
+        setResponseStatusSpy: vi.fn(),
+    };
+});
+
+mockNuxtImport("setResponseStatus", () => {
+    return setResponseStatusSpy;
+});
+
+const { createErrorSpy } = vi.hoisted(() => {
+    return {
+        createErrorSpy: vi.fn().mockImplementation(value => value),
+    };
+});
+const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(() => undefined);
+const consoleLogMock = vi.spyOn(console, "log").mockImplementation(() => undefined);
+mockNuxtImport("createError", () => {
+    return createErrorSpy;
+});
 
 beforeEach(() => {
     vi.resetModules();
@@ -11,16 +33,6 @@ beforeEach(() => {
 });
 
 describe("setStatus", () => {
-    const { setResponseStatusSpy } = vi.hoisted(() => {
-        return {
-            setResponseStatusSpy: vi.fn(),
-        };
-    });
-
-    mockNuxtImport("setResponseStatus", () => {
-        return setResponseStatusSpy;
-    });
-
     test.each(HTTP_CODES)(
         "should call setResponseStatus with the correct status message for %s",
         (code, key, message) => {
@@ -38,17 +50,6 @@ describe("setStatus", () => {
 });
 
 describe("throwError", () => {
-    const { createErrorSpy } = vi.hoisted(() => {
-        return {
-            createErrorSpy: vi.fn().mockImplementation(value => value),
-        };
-    });
-    const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(() => undefined);
-    const consoleLogMock = vi.spyOn(console, "log").mockImplementation(() => undefined);
-    mockNuxtImport("createError", () => {
-        return createErrorSpy;
-    });
-
     const errorMessage = "Oh no!";
 
     test.each([
@@ -131,20 +132,6 @@ describe("parseIdParameter", () => {
 });
 
 describe("parseRequestBody", () => {
-    const { throwError } = vi.hoisted(() => {
-        return {
-            throwError: vi.fn().mockImplementation(value => {
-                throw value;
-            }),
-        };
-    });
-
-    vi.mock("~~/server/controller/base.controller", () => {
-        return {
-            throwError,
-        };
-    });
-
     const schema = z.string();
     test("should throw an error if the body doesn't match the schema", async () => {
         const { default: Base } = await import("@@/server/controllers/base.controller");
@@ -219,4 +206,43 @@ describe("safeParseRequestBody", () => {
         expect(data).toBe(body);
         expect(error).toBeUndefined();
     });
+});
+
+describe("inferResponse", () => {
+    test.each([
+        { event: { method: "GET" }, msg: "OK", code: 200 },
+        { event: { method: "POST" }, msg: "Created", code: 201 },
+        { event: { method: "PATCH" }, msg: "No Content", code: 204 },
+        { event: { method: "PUT" }, msg: "No Content", code: 204 },
+    ] as const)("should set the response status to $code - $msg when method is $method", ({ event, code, msg }) => {
+        BaseController.inferResponse(event as never, { error: null } as never);
+        expect(setResponseStatusSpy).toHaveBeenCalledExactlyOnceWith(event, code, msg);
+    });
+
+    test.each([
+        {
+            result: { error: new Error() },
+            errorType: "Error",
+            expected: "Unprocessable Content",
+            code: 422,
+            msg: "Unprocessable Content",
+        },
+        {
+            result: { error: new NotFoundError() },
+            errorType: "NotFoundError",
+            expected: "The provided ID was not found",
+            code: 404,
+            msg: "Not Found",
+        },
+    ] as const)(
+        "should set the response status to $code when an error of type $errorType was passed",
+        ({ result, expected, code, msg }) => {
+            expect(() => BaseController.inferResponse({ method: "GET" } as never, result as never)).toThrow(expected);
+            expect(createErrorSpy).toHaveBeenCalledExactlyOnceWith({
+                statusCode: code,
+                statusMessage: msg,
+                message: expected,
+            });
+        },
+    );
 });
