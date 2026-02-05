@@ -137,7 +137,7 @@ jobs:
                     CHANGED_TESTS=$(
                       git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
                       --name-only |
-                      grep -E 'tests/e2e/spec/.+\.test\.ts$' |
+                      grep -E 'tests/e2e/.+\.test\.ts$' |
                       sed -E 's/[][(){}.+*?^$|\\]/\\&/g' || true
                     )
                     if [ -n "$CHANGED_TESTS" ]; then
