@@ -1,5 +1,5 @@
-import { test } from "@@/tests/e2e/fixtures";
-import { withoutAuth } from "@@/tests/e2e/utils/auth";
+import { test } from "@@/playwright/fixtures";
+import { withoutAuth } from "@@/playwright/utils/auth";
 
 withoutAuth(() => {
     const protectedPaths = ["/timer"];

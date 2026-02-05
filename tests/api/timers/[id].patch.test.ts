@@ -1,6 +1,6 @@
-import { expect, test } from "@@/tests/e2e/fixtures";
-import { BASE_TIMER, FULL_TIMER } from "@@/tests/e2e/fixtures/constants/timer";
-import { test401WhenLoggedOut, testIdParameter } from "@@/tests/e2e/utils/helpers";
+import { expect, test } from "@@/playwright/fixtures";
+import { BASE_TIMER, FULL_TIMER } from "@@/playwright/fixtures/constants/timer";
+import { test401WhenLoggedOut, testIdParameter } from "@@/playwright/utils/helpers";
 
 testIdParameter("patch", "/api/timers", { deleted: true });
 

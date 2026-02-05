@@ -1,5 +1,5 @@
 import { Beat } from "@@/shared/enum/timer";
-import { test } from "@@/tests/e2e/fixtures";
+import { test } from "@@/playwright/fixtures";
 
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });

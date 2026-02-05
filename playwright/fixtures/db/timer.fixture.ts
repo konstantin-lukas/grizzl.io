@@ -1,4 +1,4 @@
-import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
+import BaseFixture from "@@/playwright/fixtures/db/base.fixture";
 import { date, str } from "@@/tests/utils/helpers";
 import { type InferInsertModel, eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";

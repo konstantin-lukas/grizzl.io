@@ -1,5 +1,5 @@
 import { LOCALES } from "@@/shared/constants/i18n";
-import { test } from "@@/tests/e2e/fixtures";
+import { test } from "@@/playwright/fixtures";
 
 export function withLocale(locale: string, callback: Parameters<typeof test.describe>[2]) {
     test.describe("", { tag: `@${locale}` }, () => {

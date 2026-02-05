@@ -1,5 +1,5 @@
 import { Beat } from "@@/shared/enum/timer";
-import BaseFixture from "@@/tests/e2e/fixtures/db/base.fixture";
+import BaseFixture from "@@/playwright/fixtures/db/base.fixture";
 import { str } from "@@/tests/utils/helpers";
 import type { InferInsertModel } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";

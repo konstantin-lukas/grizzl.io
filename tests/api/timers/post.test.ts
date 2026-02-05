@@ -1,7 +1,7 @@
-import { expect, test } from "@@/tests/e2e/fixtures";
-import { BASE_INTERVAL, BASE_TIMER } from "@@/tests/e2e/fixtures/constants/timer";
-import { test401WhenLoggedOut } from "@@/tests/e2e/utils/helpers";
-import { TIMER_BAD_REQUEST_TEST_CASES } from "@@/tests/e2e/utils/helpers/timer";
+import { expect, test } from "@@/playwright/fixtures";
+import { BASE_INTERVAL, BASE_TIMER } from "@@/playwright/fixtures/constants/timer";
+import { test401WhenLoggedOut } from "@@/playwright/utils/helpers";
+import { TIMER_BAD_REQUEST_TEST_CASES } from "@@/playwright/utils/helpers/timer";
 
 for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating a timer when ${name}`, async ({ request }) => {

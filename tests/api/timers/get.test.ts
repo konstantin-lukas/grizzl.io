@@ -1,6 +1,6 @@
-import { expect, test } from "@@/tests/e2e/fixtures";
-import type { DBFixtures } from "@@/tests/e2e/fixtures/db";
-import { test401WhenLoggedOut } from "@@/tests/e2e/utils/helpers";
+import { expect, test } from "@@/playwright/fixtures";
+import type { DBFixtures } from "@@/playwright/fixtures/db";
+import { test401WhenLoggedOut } from "@@/playwright/utils/helpers";
 import { sortByCreatedAt } from "@@/tests/utils/sort";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {

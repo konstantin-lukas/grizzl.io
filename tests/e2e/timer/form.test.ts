@@ -1,4 +1,4 @@
-import { expect, test } from "@@/tests/e2e/fixtures";
+import { expect, test } from "@@/playwright/fixtures";
 import { str } from "@@/tests/utils/helpers";
 
 const title = str({ length: 100 });

@@ -1,4 +1,4 @@
-import { pool } from "@@/tests/e2e/fixtures/db";
+import { pool } from "@@/playwright/fixtures/db";
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
