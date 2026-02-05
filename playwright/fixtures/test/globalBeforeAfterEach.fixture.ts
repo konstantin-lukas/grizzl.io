@@ -3,7 +3,7 @@ import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
-import { Pool } from "pg";
+import { createPool } from "~~/playwright/fixtures/db";
 import * as schema from "~~/server/database/schema";
 
 /**
@@ -15,13 +15,7 @@ export default function globalBeforeAfterEach() {
     // eslint-disable-next-line no-empty-pattern
     return async ({}, waitForUse: () => Promise<void>) => {
         // SECTION START: RESET DATABASE
-        const pool = new Pool({
-            host: "postgres",
-            database: "grizzl",
-            user: "admin",
-            password: "admin",
-            ssl: false,
-        });
+        const pool = createPool();
 
         const db = drizzle(pool, {
             casing: "snake_case",
