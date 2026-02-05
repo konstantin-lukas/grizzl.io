@@ -1,6 +1,6 @@
-import { Beat } from "../shared/enum/timer";
-import { test } from "../tests/e2e/fixtures";
 import { arr, int, maybe, str } from "../tests/utils/helpers";
+import { test } from "@@/playwright/fixtures";
+import { Beat } from "@@/shared/enum/timer";
 
 test("insert timer test data", async ({ db }) => {
     for (let i = 0; i < 5; i++) {

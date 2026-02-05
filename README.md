@@ -69,21 +69,27 @@ don't have any logic is just a waste of time.
 The project comes with some shell scripts as shortcuts for common commands in this project. If you want details on any
 command, just check the respective file in `bin`. Here's an explanation of what each command does:
 - `backup`: (Production Only) Extracts and unzips backups from the database backup container.
-- `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
-   Start the project before envoking this command. You can pass any Playwright flags to this command as well.
-- `unit`: Runs the unit tests with vitest.
 - `components`: Runs component tests with vitest.
 - `composables`: Runs composable tests with vitest.
+- `coverage`: Runs all unit tests and shows coverage data.
+- `e2e`: Starts a Playwright docker container in UI mode. To start headless mode pass `headless` as the first parameter.
+   Start the project before envoking this command. You can pass any Playwright flags to this command as well.
+- `fix`: Runs Prettier and ESLint in write mode to fix auto-correctable code style issues. 
 - `generate`: Generates a new migration from the schemas in `lib/db/schemas` and puts it in `lib/db/migrations`
 - `logs`: View the logs of any container. Provide the service name of the container as the first argument. The second
-   argument is optional and specifies the amount of lines from the logs you want to see.
+   argument is optional and specifies the amount of lines from the logs you want to see. This command is for production.
 - `migrate`: Applies migrations from `lib/db/migrations` to the database.
+- `postinstall`: Runs the Nuxt Postinstall step which generates types for auto-imports.
 - `proxy`: (Production Only) Creates the `proxy_net` network used to connect the production container to a reverse proxy.
 - `purge`: Deletes ALL docker containers, images, volumes, and networks (expect built-in ones).
 - `restart`: Calls `stop` and then `start` with the given parameters.
+- `restore`: Restores the database with a given backup. This is only for production.
+- `seed`: Populates the database with test data for development. This has nothing to do with test fixtures.
+- `snapshots`: Updates Playwright snapshots (aria snapshots and screenshots).
 - `start`: Starts the project in the specified mode for local operation. Can be `dev`, `test`, or `prod`. Defaults to `dev`.
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
+- `unit`: Runs the unit tests with vitest.
 
 ## E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
