@@ -15,23 +15,24 @@ function createDBFixtures(db: ReturnType<typeof drizzle>) {
 
 export type DBFixtures = ReturnType<typeof createDBFixtures>;
 
-export const pool = new Pool({
-    host: "postgres",
-    database: "grizzl",
-    user: "admin",
-    password: "admin",
-    ssl: false,
-    max: 100,
-});
-
 // eslint-disable-next-line no-empty-pattern
 async function fixture({}, waitForUse: (value: DBFixtures) => Promise<void>) {
+    const pool = new Pool({
+        host: "postgres",
+        database: "grizzl",
+        user: "admin",
+        password: "admin",
+        ssl: false,
+    });
+
     const db = drizzle(pool, {
         casing: "snake_case",
         schema,
     });
 
     await waitForUse(createDBFixtures(db));
+
+    await pool.end();
 }
 
 export default fixture;
