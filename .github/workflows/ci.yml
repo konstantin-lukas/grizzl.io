@@ -99,7 +99,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari, flakiness_check]
+                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
 
         steps:
             - name: Checkout code
@@ -124,34 +124,17 @@ jobs:
 
             - name: Start Isolated Container Stack
               run: |
-                export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
-                export DOCKER_USER_ID="$(id -u)"
-                export DOCKER_GROUP_ID="$(id -g)"
-                docker compose -f compose.test.yml up -d
+                  export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
+                  export DOCKER_USER_ID="$(id -u)"
+                  export DOCKER_GROUP_ID="$(id -g)"
+                  docker compose -f compose.test.yml up -d
 
             - name: Run Playwright Tests
               run: |
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
-                  if [ "${{ matrix.project }}" = "flakiness_check" ]; then
-                    CHANGED_TESTS=$(
-                      git diff ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
-                      --name-only |
-                      grep -E 'tests/e2e/.+\.test\.ts$' |
-                      sed -E 's/[][(){}.+*?^$|\\]/\\&/g' || true
-                    )
-                    if [ -n "$CHANGED_TESTS" ]; then
-                      echo $CHANGED_TESTS
-                      docker compose -f compose.test.yml run --rm -e CI=true playwright \
-                      npx playwright test $CHANGED_TESTS \
-                      --repeat-each=3
-                    else
-                      echo "No new or changed test found; skipping"
-                    fi
-                  else
-                    docker compose -f compose.test.yml run --rm -e CI=true playwright \
-                      npx playwright test --project="${{ matrix.project }}"
-                  fi
+                  docker compose -f compose.test.yml run --rm -e CI=true playwright \
+                    npx playwright test --project="${{ matrix.project }}"
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}

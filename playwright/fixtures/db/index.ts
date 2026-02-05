@@ -22,6 +22,7 @@ export function createPool() {
         user: "admin",
         password: "admin",
         ssl: false,
+        max: 1,
     });
 }
 
