@@ -4,11 +4,6 @@ interface PRNGOptions {
     seed?: number;
 }
 
-interface ArrayOptions {
-    length?: number;
-    unique?: boolean;
-}
-
 interface PrimitiveArrayOptions {
     length?: number;
     unique?: boolean;
@@ -19,19 +14,19 @@ interface ObjectArrayOptions<T> {
     unique?: (object: T, index: number) => Primitive;
 }
 
-type DateOptions = { when?: "past" | "future"; refDate?: string | Date | number } & TimeSpanOptions & PRNGOptions;
+type DateOptions = { when?: "beforeRef" | "afterRef"; refDate?: string | Date | number } & TimeSpanOptions &
+    PRNGOptions;
 type IntOptions = { min?: number; max?: number } & PRNGOptions;
-type DateArrayOptions = DateOptions & ArrayOptions;
-type IntArrayOptions = IntOptions & ArrayOptions;
+type DateArrayOptions = DateOptions & PrimitiveArrayOptions;
+type IntArrayOptions = IntOptions & PrimitiveArrayOptions;
 type TimeSpanOptions = {
     days?: number;
     hours?: number;
     minutes?: number;
     seconds?: number;
-    exact?: boolean;
 } & PRNGOptions;
 type StrOptions = { words?: readonly string[]; spaces?: boolean; length?: number } & PRNGOptions;
-type StrArrayOptions = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> & ArrayOptions;
+type StrArrayOptions = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> & PrimitiveArrayOptions;
 type Primitive = string | number | boolean | undefined | null | symbol | bigint;
 
 const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
@@ -131,17 +126,17 @@ export function arr<T extends Primitive | object>(
 }
 
 function getTimeSpan(options: TimeSpanOptions) {
-    const { exact = true, seed } = options;
+    const { seed = 0 } = options;
 
-    const dayRange = options.days ?? 0;
-    const hourRange = options.hours ?? 0;
-    const minuteRange = options.minutes ?? 0;
-    const secondRange = options.seconds ?? 0;
+    const dayRange = options.days ?? 365;
+    const hourRange = options.hours ?? 24;
+    const minuteRange = options.minutes ?? 60;
+    const secondRange = options.seconds ?? 60;
 
-    const days = (exact ? dayRange : int({ min: 0, max: dayRange, seed })) * DAY;
-    const hours = (exact ? hourRange : int({ min: 0, max: hourRange, seed })) * HOUR;
-    const minutes = (exact ? minuteRange : int({ min: 0, max: minuteRange, seed })) * MINUTE;
-    const seconds = (exact ? secondRange : int({ min: 0, max: secondRange, seed })) * SECOND;
+    const days = int({ min: 0, max: dayRange, seed }) * DAY;
+    const hours = int({ min: 0, max: hourRange, seed }) * HOUR;
+    const minutes = int({ min: 0, max: minuteRange, seed }) * MINUTE;
+    const seconds = int({ min: 0, max: secondRange, seed }) * SECOND;
 
     return days + hours + minutes + seconds;
 }
@@ -234,44 +229,33 @@ export function str(options: StrOptions = {}) {
 /**
  * Creates a fully deterministic date.
  * @param options Options to modify how the date is generated.
- * @param [options.when="past"] In the past or future relative to the reference date.
- * @param [options.days=0] Amount of days between reference date and returned date.
- * @param [options.hours=0] Amount of hours between reference date and returned date.
- * @param [options.minutes=0] Amount of minutes between reference date and returned date.
- * @param [options.seconds=0] Amount of seconds between reference date and returned date.
+ * @param [options.when="beforeRef"] In the past or future relative to the reference date.
+ * @param [options.days=0] The maximum amount of days between reference date and returned date.
+ * @param [options.hours=0] The maximum amount of hours between reference date and returned date.
+ * @param [options.minutes=0] The maximum amount of minutes between reference date and returned date.
+ * @param [options.seconds=0] The maximum amount of seconds between reference date and returned date.
  * @param [options.refDate="2025-06-01T12:00:00Z"] The date to base date generation on. Defaults to a deterministic
  * value. If you want true future dates pass Date.now(), but be careful as that will create a non-deterministic date.
  * @returns A date relative to the ref date. The default is to return the ref date.
  */
 export function date(options: DateOptions = {}) {
-    const { when = "past", refDate = DEFAULT_REF_DATE } = options;
+    const { when = "beforeRef", refDate = DEFAULT_REF_DATE } = options;
 
     const refTime = new Date(refDate).getTime();
     const timeSpan = getTimeSpan(options);
 
-    const time = when === "past" ? refTime - timeSpan : refTime + timeSpan;
+    const time = when === "beforeRef" ? refTime - timeSpan : refTime + timeSpan;
 
     return new Date(time);
 }
 
 /**
- * Refer to the {@link date} and {@link arr} function documentation to understand the options. The time spans you pass
- * define the distance between each generated date.
+ * Refer to the {@link date} and {@link arr} function documentation to understand the options.
  */
 export function dateArr(options: DateArrayOptions = {}) {
-    const { days = 1, hours = 0, minutes = 0, seconds = 0, unique: isUnique, ...rest } = options;
+    const { unique: isUnique, seed = 0, ...rest } = options;
     const unique = isUnique ? (date: Date) => date.getTime() : undefined;
-
-    const getDate = (index: number) =>
-        date({
-            ...rest,
-            days: days * index,
-            hours: hours * index,
-            minutes: minutes * index,
-            seconds: seconds * index,
-        });
-
-    return arr(i => getDate(i), { ...rest, unique });
+    return arr(i => date({ ...rest, seed: seed + i }), { ...rest, unique });
 }
 
 /**
