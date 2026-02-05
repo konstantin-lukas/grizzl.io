@@ -1,7 +1,7 @@
 import { BASE_INTERVAL, BASE_TIMER } from "@@/playwright/fixtures/constants/timer";
+import { createInvalidTypeTestCases } from "@@/playwright/utils/helpers";
 import { arr, str } from "@@/tests/utils/helpers";
 import { omit } from "@@/tests/utils/object";
-import { createInvalidTypeTestCases } from "@@/playwright/utils/helpers";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
     return { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, [property]: value }] };

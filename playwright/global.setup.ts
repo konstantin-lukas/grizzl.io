@@ -1,9 +1,9 @@
 import UserFixture from "@@/playwright/fixtures/db/user.fixture";
+import * as schema from "@@/server/database/schema";
 import type { FullConfig } from "@playwright/test";
 import { expect, firefox, selectors } from "@playwright/test";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as schema from "@@/server/database/schema";
 
 export default async function GlobalSetup(config: FullConfig) {
     const pool = new Pool({
