@@ -13,7 +13,7 @@ import * as schema from "~~/server/database/schema";
  */
 export default function globalBeforeAfterEach() {
     // eslint-disable-next-line no-empty-pattern
-    return async ({}, waitForUse: () => void) => {
+    return async ({}, waitForUse: () => Promise<void>) => {
         // SECTION START: RESET DATABASE
         const pool = new Pool({
             host: "postgres",
