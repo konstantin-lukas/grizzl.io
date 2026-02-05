@@ -21,6 +21,7 @@ export const pool = new Pool({
     user: "admin",
     password: "admin",
     ssl: false,
+    max: 100,
 });
 
 // eslint-disable-next-line no-empty-pattern
