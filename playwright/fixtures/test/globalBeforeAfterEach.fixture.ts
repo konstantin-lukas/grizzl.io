@@ -42,7 +42,7 @@ export default function globalBeforeAfterEach() {
         }
         // SECTION END: RESET DATABASE
 
-        waitForUse();
+        await waitForUse();
 
         await pool.end();
     };
