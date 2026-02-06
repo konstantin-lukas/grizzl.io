@@ -1,5 +1,5 @@
+import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
-import type { DBFixtures } from "~~/test-utils/playwright";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 
