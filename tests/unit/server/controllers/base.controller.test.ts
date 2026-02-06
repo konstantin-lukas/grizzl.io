@@ -208,27 +208,32 @@ describe("safeParseRequestBody", () => {
     });
 });
 
-describe("inferResponse", () => {
+describe("resolveOrThrowHttpError", () => {
     test.each([
         { event: { method: "GET" }, msg: "OK", code: 200 },
         { event: { method: "POST" }, msg: "Created", code: 201 },
         { event: { method: "PATCH" }, msg: "No Content", code: 204 },
         { event: { method: "PUT" }, msg: "No Content", code: 204 },
-    ] as const)("should set the response status to $code - $msg when method is $method", ({ event, code, msg }) => {
-        BaseController.inferResponse(event as never, { error: null } as never);
-        expect(setResponseStatusSpy).toHaveBeenCalledExactlyOnceWith(event, code, msg);
-    });
+    ] as const)(
+        "should set the response status to $code - $msg when method is $method",
+        async ({ event, code, msg }) => {
+            const data = 42;
+            const returnedValue = await BaseController.resolveOrThrowHttpError(event as never, Promise.resolve(data));
+            expect(setResponseStatusSpy).toHaveBeenCalledExactlyOnceWith(event, code, msg);
+            expect(returnedValue).toBe(data);
+        },
+    );
 
     test.each([
         {
-            result: { error: new Error() },
+            error: new Error(),
             errorType: "Error",
             expected: "Unprocessable Content",
             code: 422,
             msg: "Unprocessable Content",
         },
         {
-            result: { error: new NotFoundError() },
+            error: new NotFoundError(),
             errorType: "NotFoundError",
             expected: "The provided ID was not found",
             code: 404,
@@ -236,8 +241,10 @@ describe("inferResponse", () => {
         },
     ] as const)(
         "should set the response status to $code when an error of type $errorType was passed",
-        ({ result, expected, code, msg }) => {
-            expect(() => BaseController.inferResponse({ method: "GET" } as never, result as never)).toThrow(expected);
+        async ({ error, expected, code, msg }) => {
+            await expect(() =>
+                BaseController.resolveOrThrowHttpError({ method: "GET" } as never, Promise.reject(error)),
+            ).rejects.toThrow(expected);
             expect(createErrorSpy).toHaveBeenCalledExactlyOnceWith({
                 statusCode: code,
                 statusMessage: msg,

@@ -180,7 +180,8 @@ export default class BaseController {
         return data;
     }
 
-    static inferResponse<T>(event: H3Event, result: Result<T, AnyError>): asserts result is { data: T; error: null } {
+    static async resolveOrThrowHttpError<T>(event: H3Event, promise: Promise<T>): Promise<T> {
+        const result = await tryCatch(promise);
         const { error } = result;
 
         if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found", "NOT_FOUND");
@@ -189,5 +190,7 @@ export default class BaseController {
         if (event.method === "POST") this.setStatus(event, "CREATED");
         if (event.method === "GET") this.setStatus(event, "OK");
         if (event.method === "PUT" || event.method === "PATCH") this.setStatus(event, "NO_CONTENT");
+
+        return result.data;
     }
 }

@@ -15,34 +15,27 @@ export default class TimerController extends BaseController {
     public async setDeletedStatus(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, DatabaseDeletedSchema);
-
-        const result = await tryCatch(this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted));
-
-        TimerController.inferResponse(event, result);
+        const servicePromise = this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted);
+        await TimerController.resolveOrThrowHttpError(event, servicePromise);
     }
 
     public async update(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, PutTimerSchema);
-
-        const result = await tryCatch(this.timerService.update(id, event.context.user.id, body));
-
-        TimerController.inferResponse(event, result);
+        const servicePromise = this.timerService.update(id, event.context.user.id, body);
+        await TimerController.resolveOrThrowHttpError(event, servicePromise);
     }
 
     public async getList(event: H3Event) {
-        const result = await tryCatch(this.timerService.getList(event.context.user.id));
-
-        TimerController.inferResponse(event, result);
-        return result.data;
+        const servicePromise = this.timerService.getList(event.context.user.id);
+        return await TimerController.resolveOrThrowHttpError(event, servicePromise);
     }
 
     public async create(event: H3Event) {
         const timer = await TimerController.parseRequestBody(event, PostTimerSchema);
-        const result = await tryCatch(this.timerService.create(event.context.user.id, timer));
-
-        TimerController.inferResponse(event, result);
-        setHeader(event, "Location", `/api/timers/${result.data}`);
+        const servicePromise = this.timerService.create(event.context.user.id, timer);
+        const id = await TimerController.resolveOrThrowHttpError(event, servicePromise);
+        setHeader(event, "Location", `/api/timers/${id}`);
     }
 }
 /* c8 ignore stop */
