@@ -84,8 +84,8 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Unit And Nuxt Tests
-              run: docker compose run webserver npm run vitest
+            - name: Run all vitest projects
+              run: docker compose -f compose.vitest.yml run node npm run vitest
 
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5

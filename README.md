@@ -93,7 +93,7 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
 - `unit`: Runs the unit tests with vitest.
-- `vitest`: Runs all vitest tests (infra, components, composables, unit)
+- `vitest`: Runs all vitest tests (infra, components, composables, unit) in the same environment as in the pipeline
 
 ## E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
