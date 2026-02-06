@@ -78,6 +78,7 @@ command, just check the respective file in `bin`. Here's an explanation of what 
    Start the project before envoking this command. You can pass any Playwright flags to this command as well.
 - `fix`: Runs Prettier and ESLint in write mode to fix auto-correctable code style issues. 
 - `generate`: Generates a new migration from the schemas in `lib/db/schemas` and puts it in `lib/db/migrations`
+- `infra`: Runs the infrastructure-level tests with vitest.
 - `logs`: View the logs of any container. Provide the service name of the container as the first argument. The second
    argument is optional and specifies the amount of lines from the logs you want to see. This command is for production.
 - `migrate`: Applies migrations from `lib/db/migrations` to the database.
@@ -92,6 +93,7 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.
 - `unit`: Runs the unit tests with vitest.
+- `vitest`: Runs all vitest tests (infra, components, composables, unit)
 
 ## E2E Tests (Playwright)
 E2E tests are written with Playwright and TypeScript. To start the Playwright UI, use can use the provided shell script
