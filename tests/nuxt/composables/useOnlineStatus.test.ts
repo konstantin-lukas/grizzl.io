@@ -1,7 +1,7 @@
 import useOnlineStatus from "@@/app/composables/useOnlineStatus";
-import { withSetup } from "@@/tests/utils/nuxt";
 import { clearNuxtState } from "nuxt/app";
 import { beforeEach, expect, test, vi } from "vitest";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 beforeEach(() => {
     clearNuxtState();

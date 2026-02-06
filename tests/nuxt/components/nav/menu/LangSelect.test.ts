@@ -1,7 +1,7 @@
 import LangSelect from "@@/app/components/nav/menu/LangSelect.vue";
-import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const stubs = { UTooltip };
 

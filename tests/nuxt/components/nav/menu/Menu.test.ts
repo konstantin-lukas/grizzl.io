@@ -1,8 +1,8 @@
 import Menu from "@@/app/components/nav/menu/Menu.vue";
 import useMenu from "@@/app/composables/useMenu";
-import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const stubs = { UTooltip };
 

@@ -1,5 +1,5 @@
-import { expect, test } from "@@/playwright/fixtures";
-import { withoutAuth } from "@@/playwright/utils/auth";
+import { expect, test } from "~~/test-utils/playwright";
+import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
 test("contains a link to all available sections and a sign out button", async ({ homePage: page }, testInfo) => {
     await page.goto();

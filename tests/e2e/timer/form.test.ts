@@ -1,5 +1,5 @@
-import { expect, test } from "@@/playwright/fixtures";
-import { str } from "@@/tests/utils/helpers";
+import { str } from "@@/test-utils/helpers/data";
+import { expect, test } from "~~/test-utils/playwright";
 
 const title = str({ length: 100 });
 const intervals = [

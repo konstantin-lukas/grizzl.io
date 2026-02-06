@@ -4,7 +4,7 @@ import { defineConfig, devices } from "playwright/test";
 const projects = [
     {
         name: "api",
-        testDir: "./tests/api",
+        testDir: "./tests/integration/api",
     },
     {
         name: "chromium",
@@ -42,7 +42,7 @@ const projects = [
 if (!process.env.CI) {
     projects.push({
         name: "seed",
-        testDir: "./seed",
+        testDir: "./test-utils/seed",
         testMatch: "**/*.seed.ts",
     } as never);
 }
@@ -56,7 +56,7 @@ export default defineConfig<ConfigOptions>({
     retries: 0,
     workers: 1,
     reporter: process.env.CI ? [["github"], ["html"]] : "line",
-    globalSetup: "./playwright/global.setup.ts",
+    globalSetup: "./test-utils/playwright/global.setup.ts",
     expect: {
         timeout: 20000,
         toHaveScreenshot: {
@@ -66,14 +66,14 @@ export default defineConfig<ConfigOptions>({
         },
     },
     timeout: 30000,
-    snapshotDir: "./playwright/snapshots",
+    snapshotDir: "./test-utils/playwright/snapshots",
     use: {
         trace: "retain-on-failure",
         testIdAttribute: "data-test-id",
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
         timezoneId: "Europe/Berlin",
-        storageState: "./playwright/storage.json",
+        storageState: "./test-utils/playwright/storage.json",
         nuxt: {
             host: "http://grizzl.localhost",
         },

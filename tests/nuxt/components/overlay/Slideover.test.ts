@@ -1,7 +1,7 @@
 import Slideover from "@@/app/components/overlay/Slideover.vue";
-import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test } from "vitest";
+import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const slots = { default: "Hello, world!" };
 const stubs = { UTooltip };

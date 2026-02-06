@@ -1,7 +1,7 @@
 import useEventListener from "@@/app/composables/useEventListener";
-import { withSetup } from "@@/tests/utils/nuxt";
 import { expect, test, vi } from "vitest";
 import { ref } from "vue";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 test("adds the event listener on mount and removes it on unmount", async () => {
     const target = new EventTarget();

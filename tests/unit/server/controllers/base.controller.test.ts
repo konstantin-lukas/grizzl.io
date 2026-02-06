@@ -1,10 +1,10 @@
 import BaseController from "@@/server/controllers/base.controller";
-import { HTTP_CODES } from "@@/tests/constants/http";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 import NotFoundError from "~~/server/errors/not-found-error";
+import { HTTP_CODES } from "~~/test-utils/constants/http";
 
 const { setResponseStatusSpy } = vi.hoisted(() => {
     return {

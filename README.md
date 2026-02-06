@@ -50,12 +50,14 @@ the loop back IP address. In practice this means, you don't have to create an en
 just one step less to get the project running.
 
 ## Tests
-This project is very thoroughly tested. There are roughly five types of tests in this project:
-1. Unit tests for utilities (located at tests/unit)
+This project is very thoroughly tested. There are roughly seven types of tests in this project:
+1. Unit tests for utilities and classes (located at tests/unit)
 2. Unit tests for composables (located at tests/nuxt/composables)
 3. Unit tests for components (located at tests/nuxt/components)
-4. Functional tests for the API (located at tests/api)
-5. End-to-end test to simulate user interactions (located at tests/e2e)
+4. Functional tests for the API (located at tests/integration/api)
+5. Functional tests for repository classes (located at tests/integration/repositories)
+6. End-to-end test to simulate user interactions (located at tests/e2e)
+7. Infrastructure-level tests (located at tests/infra)
 
 ### Coverage
 Coverage in this project is defined as relative to "all lines of code that need to be covered" as opposed to simply 

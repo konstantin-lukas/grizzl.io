@@ -1,7 +1,7 @@
 import Logo from "@@/app/components/svg/GrizzlLogo.vue";
-import { removeWhitespace } from "@@/tests/utils/string";
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test } from "vitest";
+import { removeWhitespace } from "~~/test-utils/helpers/string";
 
 test("should contain the Grizzl logo as an svg", async () => {
     const wrapper = await mountSuspended(Logo);

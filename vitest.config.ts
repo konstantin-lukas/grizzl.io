@@ -32,9 +32,16 @@ export default defineConfig({
             await defineVitestProject({
                 test: {
                     name: "repositories",
-                    include: ["tests/repositories/**/*.test.ts"],
+                    include: ["tests/integration/repositories/**/*.test.ts"],
                     environment: "node",
-                    setupFiles: "./test-utils/vitest/globalBeforeEach.setup.ts",
+                    setupFiles: "./test-utils/vitest/setup/database.setup.ts",
+                },
+            }),
+            await defineVitestProject({
+                test: {
+                    name: "infra",
+                    include: ["tests/infra/**/*.test.ts"],
+                    environment: "node",
                 },
             }),
             await defineVitestProject({
@@ -42,7 +49,7 @@ export default defineConfig({
                     name: "components",
                     include: ["tests/nuxt/components/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "./tests/nuxt/setup.ts",
+                    setupFiles: "./test-utils/vitest/setup/nuxt.setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",
@@ -55,7 +62,7 @@ export default defineConfig({
                     name: "composables",
                     include: ["tests/nuxt/composables/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "./tests/nuxt/setup.ts",
+                    setupFiles: "./test-utils/vitest/setup/nuxt.setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",
