@@ -1,6 +1,7 @@
 import { test as baseTest } from "vitest";
-import { dbFixture } from "~~/test-utils/database/fixture";
+import { dbFixture, userFixture } from "~~/test-utils/database/fixture";
 
 export const test = baseTest.extend({
     db: dbFixture,
+    user: userFixture,
 });
