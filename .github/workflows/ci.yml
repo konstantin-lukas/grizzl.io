@@ -85,7 +85,7 @@ jobs:
               run: npm run postinstall
 
             - name: Unit And Nuxt Tests
-              run: npm run vitest
+              run: docker compose run webserver npm run vitest
 
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5
