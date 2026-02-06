@@ -5,14 +5,17 @@ import type { drizzle } from "drizzle-orm/node-postgres";
 import type { timer } from "~~/server/database/schema";
 import { defaultIfUndefined } from "~~/tests/utils/logic";
 
-type InsertOptions = Partial<Omit<InferInsertModel<typeof timer>, "deletedAt">> & { count?: number; deleted?: boolean };
+type InsertOptions<N extends number> = Partial<Omit<InferInsertModel<typeof timer>, "deletedAt">> & {
+    count?: N;
+    deleted?: boolean;
+};
 
 export default class TimerFixture extends BaseFixture<"timer"> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, "timer");
     }
 
-    async insert(options: InsertOptions = {}) {
+    async insert<N extends number = 5>(options: InsertOptions<N> = {}) {
         const { count = 5, title, createdAt, deleted, userId = (await this.testUser)!.id } = options;
         const data = Array.from({ length: count }).map((_, index) => ({
             title: defaultIfUndefined(title, () => str({ length: 100, seed: index, spaces: false })),
@@ -20,7 +23,8 @@ export default class TimerFixture extends BaseFixture<"timer"> {
             deletedAt: deleted ? date({ seed: index + count }) : null,
             userId,
         }));
-        return this.db.insert(this.schema).values(data).returning();
+        const returnValue = await this.db.insert(this.schema).values(data).returning();
+        return returnValue as NTuple<ArrayElement<typeof returnValue>, N>;
     }
 
     async select(id?: string) {

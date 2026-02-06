@@ -13,7 +13,7 @@ export default class UserFixture extends BaseFixture<"user"> {
             email: "cmontgomeryburns@springfieldnuclear.com",
             emailVerified: true,
         };
-        return (await this.db.insert(this.schema).values(data).returning())[0];
+        return (await this.db.insert(this.schema).values(data).returning())[0]!;
     }
 
     async select(email: "user@test.com" | "cmontgomeryburns@springfieldnuclear.com") {

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker compose exec webserver npx vitest run --project repositories "$@"

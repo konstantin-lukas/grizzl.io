@@ -1,9 +1,8 @@
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
-import { createPool } from "~~/playwright/fixtures/db";
+import { createDBConnection } from "~~/playwright/fixtures/db";
 import * as schema from "~~/server/database/schema";
 
 /**
@@ -15,12 +14,7 @@ export default function globalBeforeAfterEach() {
     // eslint-disable-next-line no-empty-pattern
     return async ({}, waitForUse: () => Promise<void>) => {
         // SECTION START: RESET DATABASE
-        const pool = createPool();
-
-        const db = drizzle(pool, {
-            casing: "snake_case",
-            schema,
-        });
+        const { pool, db } = createDBConnection();
 
         const isTableToEmpty = <T extends TableConfig>(key: string, table: unknown): table is PgTableWithColumns<T> => {
             const excludedTables = ["user", "account", "session"];
