@@ -1,10 +1,10 @@
-import BaseFixture from "@@/playwright/fixtures/db/base.fixture";
+import BaseFixture from "@@/fixtures/base.fixture";
+import type { timerInterval } from "@@/server/database/schema";
 import { Beat } from "@@/shared/enum/timer";
 import { str } from "@@/tests/utils/helpers";
+import { coalesceUndefined } from "@@/tests/utils/logic";
 import type { InferInsertModel } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
-import type { timerInterval } from "~~/server/database/schema";
-import { defaultIfUndefined } from "~~/tests/utils/logic";
 
 type InsertOptions = Partial<Omit<InferInsertModel<typeof timerInterval>, "timerId">> & { count?: number };
 
@@ -18,11 +18,11 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
         const getBeatPattern = (index: number) => (index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null);
         const data = Array.from({ length: count }).map((_, i) => ({
             timerId,
-            title: defaultIfUndefined(title, () => str({ length: 100, spaces: false, seed: i })),
+            title: coalesceUndefined(title, () => str({ length: 100, spaces: false, seed: i })),
             index: index ?? i,
             repeatCount,
             duration,
-            beatPattern: defaultIfUndefined(beatPattern, () => getBeatPattern(i)),
+            beatPattern: coalesceUndefined(beatPattern, () => getBeatPattern(i)),
         }));
         return this.db.insert(this.schema).values(data).returning();
     }

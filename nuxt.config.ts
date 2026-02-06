@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
         tsConfig: {
-            include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*"],
+            include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../fixtures/**/*"],
         },
     },
     app: {

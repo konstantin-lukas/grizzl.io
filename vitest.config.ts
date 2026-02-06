@@ -34,6 +34,7 @@ export default defineConfig({
                     name: "repositories",
                     include: ["tests/repositories/**/*.test.ts"],
                     environment: "node",
+                    setupFiles: "./test-utils/vitest/globalBeforeEach.setup.ts",
                 },
             }),
             await defineVitestProject({

@@ -1,4 +1,3 @@
-import db, { type DBFixtures } from "@@/playwright/fixtures/db";
 import toBeDisattached from "@@/playwright/fixtures/expect/toBeDisattached";
 import toHaveCountGreaterThan from "@@/playwright/fixtures/expect/toHaveCountGreaterThan";
 import globalBeforeAfterEach from "@@/playwright/fixtures/test/globalBeforeAfterEach.fixture";
@@ -6,6 +5,7 @@ import constructPageObject from "@@/playwright/fixtures/test/page.fixture";
 import HomePage from "@@/playwright/pages/home.page";
 import TimerPage from "@@/playwright/pages/timer.page";
 import { expect as baseExpect, test as baseTest } from "@nuxt/test-utils/playwright";
+import db, { type DBFixtures } from "~~/fixtures";
 
 export const test = baseTest.extend<
     {

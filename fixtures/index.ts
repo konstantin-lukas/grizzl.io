@@ -1,9 +1,9 @@
-import TimerIntervalFixture from "@@/playwright/fixtures/db/timer-interval.fixture";
-import TimerFixture from "@@/playwright/fixtures/db/timer.fixture";
-import UserFixture from "@@/playwright/fixtures/db/user.fixture";
+import TimerIntervalFixture from "@@/fixtures/timer-interval.fixture";
+import TimerFixture from "@@/fixtures/timer.fixture";
+import UserFixture from "@@/fixtures/user.fixture";
+import * as schema from "@@/server/database/schema";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as schema from "~~/server/database/schema";
 
 function createDBFixtures(db: ReturnType<typeof drizzle>) {
     return {

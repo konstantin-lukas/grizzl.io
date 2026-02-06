@@ -1,8 +1,8 @@
 import { test } from "vitest";
-import { createDBConnection } from "~~/playwright/fixtures/db";
-import TimerIntervalFixture from "~~/playwright/fixtures/db/timer-interval.fixture";
-import TimerFixture from "~~/playwright/fixtures/db/timer.fixture";
-import UserFixture from "~~/playwright/fixtures/db/user.fixture";
+import { createDBConnection } from "~~/fixtures";
+import TimerIntervalFixture from "~~/fixtures/timer-interval.fixture";
+import TimerFixture from "~~/fixtures/timer.fixture";
+import UserFixture from "~~/fixtures/user.fixture";
 import BaseRepository from "~~/server/repositories/base.repository";
 
 test("soft-deletes database entries if the table has a deletedAt column", async () => {

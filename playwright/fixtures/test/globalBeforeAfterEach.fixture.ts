@@ -1,9 +1,5 @@
-import type { TableConfig } from "drizzle-orm";
-import { sql } from "drizzle-orm";
-import type { PgTableWithColumns } from "drizzle-orm/pg-core";
-import { getTableConfig } from "drizzle-orm/pg-core";
-import { createDBConnection } from "~~/playwright/fixtures/db";
-import * as schema from "~~/server/database/schema";
+import { createDBConnection } from "~~/fixtures";
+import { truncate } from "~~/test-utils/database/truncate";
 
 /**
  * This fixture serves as a global beforeEach/afterEach because Playwright currently doesn't have one.
@@ -13,22 +9,8 @@ import * as schema from "~~/server/database/schema";
 export default function globalBeforeAfterEach() {
     // eslint-disable-next-line no-empty-pattern
     return async ({}, waitForUse: () => Promise<void>) => {
-        // SECTION START: RESET DATABASE
         const { pool, db } = createDBConnection();
-
-        const isTableToEmpty = <T extends TableConfig>(key: string, table: unknown): table is PgTableWithColumns<T> => {
-            const excludedTables = ["user", "account", "session"];
-            return !key.includes("Enum") && !excludedTables.includes(key);
-        };
-
-        for (const [key, table] of Object.entries(schema)) {
-            if (!isTableToEmpty(key, table)) continue;
-            const config = getTableConfig(table);
-            config.schema = config.schema === undefined ? "public" : config.schema;
-            const tableToTruncate = `"${config.schema}"."${config.name}"`;
-            await db.execute(sql.raw(`truncate ${tableToTruncate} cascade;`));
-        }
-        // SECTION END: RESET DATABASE
+        await truncate(db);
 
         await waitForUse();
 

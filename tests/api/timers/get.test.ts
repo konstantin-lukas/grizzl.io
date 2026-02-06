@@ -1,7 +1,7 @@
 import { expect, test } from "@@/playwright/fixtures";
-import type { DBFixtures } from "@@/playwright/fixtures/db";
 import { test401WhenLoggedOut } from "@@/playwright/utils/helpers";
 import { sortByCreatedAt } from "@@/tests/utils/sort";
+import type { DBFixtures } from "~~/fixtures";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
