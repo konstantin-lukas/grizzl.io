@@ -85,7 +85,10 @@ jobs:
               run: npm run postinstall
 
             - name: Run all vitest projects
-              run: docker compose -f compose.vitest.yml --env-file .env run node npm run vitest
+              run: |
+                export DOCKER_USER_ID="$(id -u)"
+                export DOCKER_GROUP_ID="$(id -g)"
+                docker compose -f compose.vitest.yml --env-file .env run node npm run vitest
 
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5
