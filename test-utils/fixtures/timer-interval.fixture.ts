@@ -6,14 +6,14 @@ import { coalesceUndefined } from "@@/test-utils/helpers/logic";
 import type { InferInsertModel } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
-type InsertOptions = Partial<Omit<InferInsertModel<typeof timerInterval>, "timerId">> & { count?: number };
+type InsertOptions<N> = Partial<Omit<InferInsertModel<typeof timerInterval>, "timerId">> & { count?: N };
 
 export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, "timerInterval");
     }
 
-    async insert(timerId: string, options: InsertOptions = {}) {
+    async insert<N extends number = 2>(timerId: string, options: InsertOptions<N> = {}) {
         const { count = 2, repeatCount = 2, duration = 3000, beatPattern, index, title } = options;
         const getBeatPattern = (index: number) => (index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null);
         const data = Array.from({ length: count }).map((_, i) => ({
