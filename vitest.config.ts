@@ -34,6 +34,7 @@ export default defineConfig({
                     name: "repositories",
                     include: ["tests/integration/repositories/**/*.test.ts"],
                     environment: "node",
+                    maxWorkers: 1,
                     setupFiles: "./test-utils/vitest/setup/database.setup.ts",
                 },
             }),

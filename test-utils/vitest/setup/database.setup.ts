@@ -4,5 +4,5 @@ import { beforeEach } from "vitest";
 
 beforeEach(async () => {
     const { db } = createDBConnection();
-    await truncate(db, ["account", "session"]);
+    await truncate(db, ["session"]);
 });

@@ -1,7 +1,6 @@
 import type { PostTimer, PutTimer, Timer } from "#shared/validators/timer";
 import { and, desc, eq, isNull, notInArray, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
-import { db } from "~~/server/database";
 import { timerInterval } from "~~/server/database/schema";
 import BaseRepository from "~~/server/repositories/base.repository";
 
@@ -13,7 +12,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
     }
 
     async create(userId: string, { title, ttsVoice, intervals }: PostTimer) {
-        return await db.transaction(async tx => {
+        return await this.db.transaction(async tx => {
             const [{ timerId }] = (await tx
                 .insert(this.schema)
                 .values({ userId, title, ttsVoice })
@@ -28,7 +27,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
     }
 
     public async findByUserId(userId: string) {
-        return db
+        return this.db
             .select({
                 id: this.schema.id,
                 title: this.schema.title,
@@ -62,7 +61,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
         userId: string,
         values: { title: string; ttsVoice: string | null; intervals: PutTimer["intervals"] },
     ) {
-        return await db.transaction(async tx => {
+        return await this.db.transaction(async tx => {
             const { rowCount } = await tx
                 .update(this.schema)
                 .set({ title: values.title, ttsVoice: values.ttsVoice })

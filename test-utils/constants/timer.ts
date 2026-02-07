@@ -1,8 +1,10 @@
+import { Beat } from "@@/shared/enum/timer";
+
 export const BASE_INTERVAL = {
     title: "Crunches",
     repeatCount: 1,
     duration: 10000,
-    beatPattern: ["high", "low"],
+    beatPattern: [Beat.ACCENTED, Beat.NORMAL],
 };
 
 export const BASE_TIMER = {
