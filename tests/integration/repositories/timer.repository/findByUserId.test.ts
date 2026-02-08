@@ -1,16 +1,14 @@
 import { expect, test } from "@@/test-utils/vitest";
 import TimerRepository from "~~/server/repositories/timer.repository";
-
-const anyId = expect.stringMatching(/^[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{16}$/);
-test.beforeEach(async ({ db }) => {
-    const user = await db.user.insert({ name: "Smithers", email: "smithers@burns.com" });
-    const timers = await db.timer.insert({ userId: user.id });
-    for (const timer of timers) {
-        await db.timerInterval.insert(timer.id);
-    }
-});
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the timers belonging to the requested user", async ({ db, user }) => {
+    const otherUser = await db.user.insert({ name: "Smithers", email: "smithers@burns.com" });
+    const otherTtimers = await db.timer.insert({ userId: otherUser.id });
+    for (const timer of otherTtimers) {
+        await db.timerInterval.insert(timer.id);
+    }
+
     const timerRepository = new TimerRepository(db.client);
     await db.timer.insert({ userId: user.id, count: 2 });
     const timers = await timerRepository.findByUserId(user.id);
