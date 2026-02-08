@@ -31,7 +31,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
     readonly page;
     readonly locators;
     readonly url;
-    console: string[] = [];
+    private console: string[] = [];
+    private pageErrors: Error[] = [];
 
     protected constructor(page: Page, locators: T, url: string) {
         this.page = page;
@@ -41,6 +42,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
         this.url = url;
         this.page.on("console", msg => {
             this.console.push(msg.text());
+        });
+        this.page.on("pageerror", error => {
+            this.pageErrors.push(error);
         });
     }
 
@@ -84,7 +88,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
     }
 
-    async analyzeHydration() {
+    protected toHydrate() {
         const keywords = ["Hydration", "hydration", "Mismatch", "mismatch"];
         for (const keyword of keywords) {
             for (const log of this.console) {
@@ -93,7 +97,32 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
     }
 
-    expect(): ReturnType<typeof expect<Page>>;
+    protected toHaveNoErrors() {
+        expect(this.pageErrors).toHaveLength(0);
+    }
+
+    protected async toBeValid(options?: {
+        ariaSnapshotName?: string;
+        ariaSnapshotTarget?: keyof T | keyof typeof BASE_LOCATORS;
+        skipThemeToggle?: boolean;
+    }) {
+        const { ariaSnapshotName, ariaSnapshotTarget, skipThemeToggle = false } = { ...options };
+        await this.expect(ariaSnapshotTarget ?? "root").toMatchAriaSnapshot({ name: ariaSnapshotName });
+        await this.expect().toBeAccessible();
+        await this.expect().toHaveScreenshot();
+        this.expect().toHydrate();
+        this.expect().toHaveNoErrors();
+        if (skipThemeToggle) return;
+        await this.toggleTheme();
+        await this.expect().toHaveScreenshot();
+        await this.toggleTheme();
+    }
+
+    expect(): ReturnType<typeof expect<Page>> & {
+        toHydrate: typeof BasePage.prototype.toHydrate;
+        toHaveNoErrors: typeof BasePage.prototype.toHaveNoErrors;
+        toBeValid: typeof BasePage.prototype.toBeValid;
+    };
     expect(
         what: keyof T | keyof typeof BASE_LOCATORS,
         options?: { filter?: Parameters<Locator["filter"]>[0]; nth?: number },
@@ -102,7 +131,14 @@ export default abstract class BasePage<T extends Record<string, string>> {
         what?: keyof T | keyof typeof BASE_LOCATORS,
         options?: { filter?: Parameters<Locator["filter"]>[0]; nth?: number },
     ) {
-        if (!what) return expect(this.page);
+        if (!what) {
+            return {
+                ...expect(this.page),
+                toHydrate: () => this.toHydrate(),
+                toHaveNoErrors: () => this.toHaveNoErrors(),
+                toBeValid: () => this.toBeValid(),
+            };
+        }
         if (!options?.filter) {
             if (typeof options?.nth === "number") {
                 return expect(this.locators[what].nth(options.nth));
@@ -156,21 +192,5 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await this.page.keyboard.press("Escape");
             await this.page.click("body", { position: { x: 0, y: 0 } });
         }
-    }
-
-    async expectIntegrity(options?: {
-        ariaSnapshotName?: string;
-        ariaSnapshotTarget?: keyof T | keyof typeof BASE_LOCATORS;
-        skipThemeToggle?: boolean;
-    }) {
-        const { ariaSnapshotName, ariaSnapshotTarget, skipThemeToggle = false } = { ...options };
-        await this.expect(ariaSnapshotTarget ?? "root").toMatchAriaSnapshot({ name: ariaSnapshotName });
-        await this.expect().toBeAccessible();
-        await this.analyzeHydration();
-        await this.expect().toHaveScreenshot();
-        if (skipThemeToggle) return;
-        await this.toggleTheme();
-        await this.expect().toHaveScreenshot();
-        await this.toggleTheme();
     }
 }

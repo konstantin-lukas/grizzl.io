@@ -5,7 +5,7 @@ test("contains a link to all available sections and a sign out button", async ({
     await page.goto();
     const project = testInfo.project.name;
     const ariaSnapshotName = `contains-a-link-to-all-available-sections-and-a-sign-out-button-${project.includes("mobile") ? "mobile" : "desktop"}-1.aria.yml`;
-    await page.expectIntegrity({ ariaSnapshotName });
+    await page.expect().toBeValid({ ariaSnapshotName });
     await page.expect("signOutButton").toBeVisible();
     await page.expect("signInButton").toBeDisattached();
     await page.expect("timerHero", { filter: { visible: true } }).toHaveCount(1);

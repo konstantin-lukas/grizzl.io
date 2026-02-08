@@ -15,11 +15,11 @@ test("should register a service worker if supported", async ({ timerPage: page }
 
 test("allows creating a new timer when no timers exist", async ({ timerPage: page, db }) => {
     await page.goto();
-    await page.expectIntegrity();
+    await page.expect().toBeValid();
 
     await page.click("emptyButton");
 
-    await page.expectIntegrity({ skipThemeToggle: true, ariaSnapshotTarget: "drawer" });
+    await page.expect().toBeValid({ skipThemeToggle: true, ariaSnapshotTarget: "drawer" });
 
     await page.createTimer({ title });
 
