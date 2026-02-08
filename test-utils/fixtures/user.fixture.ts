@@ -7,10 +7,11 @@ export default class UserFixture extends BaseFixture<"user"> {
         super(db, "user");
     }
 
-    async insert() {
+    async insert(options: { name?: string; email?: string } = {}) {
+        const { name = "Mr. Burns", email = "cmontgomeryburns@springfieldnuclear.com" } = options;
         const data = {
-            name: "Mr. Burns",
-            email: "cmontgomeryburns@springfieldnuclear.com",
+            name,
+            email,
             emailVerified: true,
         };
         return (await this.db.insert(this.schema).values(data).returning())[0]!;
