@@ -1,6 +1,4 @@
-import { AxeBuilder } from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
-import config from "~~/playwright.config";
 import { expect } from "~~/test-utils/playwright";
 
 type _GotoOptions = NonNullable<Parameters<Page["goto"]>[1]>;
@@ -86,25 +84,6 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
     }
 
-    async analyzeA11y() {
-        const timeout = config.expect?.timeout ?? 5000;
-        const axe = new AxeBuilder({ page: this.page })
-            .exclude("#nuxt-devtools-container")
-            .exclude("[aria-hidden]")
-            .exclude("[data-hidden]");
-        const start = Date.now();
-        while (true) {
-            const results = await axe.analyze();
-            if (results.violations.length === 0 || Date.now() - start > timeout) {
-                expect(results.violations).toEqual([]);
-                break;
-            }
-            await new Promise(resolve => {
-                setTimeout(resolve, 50);
-            });
-        }
-    }
-
     async analyzeHydration() {
         const keywords = ["Hydration", "hydration", "Mismatch", "mismatch"];
         for (const keyword of keywords) {
@@ -186,7 +165,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }) {
         const { ariaSnapshotName, ariaSnapshotTarget, skipThemeToggle = false } = { ...options };
         await this.expect(ariaSnapshotTarget ?? "root").toMatchAriaSnapshot({ name: ariaSnapshotName });
-        await this.analyzeA11y();
+        await this.expect().toBeAccessible();
         await this.analyzeHydration();
         await this.expect().toHaveScreenshot();
         if (skipThemeToggle) return;

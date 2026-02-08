@@ -1,5 +1,6 @@
 import { type DBFixtures, dbFixture } from "@@/test-utils/database/fixture";
 import { expect as baseExpect, test as baseTest } from "@nuxt/test-utils/playwright";
+import toBeAccessible from "~~/test-utils/playwright/expect/toBeAccessible";
 import toBeDisattached from "~~/test-utils/playwright/expect/toBeDisattached";
 import toHaveCountGreaterThan from "~~/test-utils/playwright/expect/toHaveCountGreaterThan";
 import HomePage from "~~/test-utils/playwright/pages/home.page";
@@ -24,4 +25,5 @@ export const test = baseTest.extend<
 export const expect = baseExpect.extend({
     toHaveCountGreaterThan,
     toBeDisattached,
+    toBeAccessible,
 });

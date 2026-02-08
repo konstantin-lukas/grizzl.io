@@ -18,7 +18,7 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.expect("remainingIntervalTime").toHaveText("00:01");
     await page.expect("remainingTime").toHaveText("00:01");
     await page.expect("activeRound").toHaveText("1/1");
-    await page.analyzeA11y();
+    await page.expect().toBeAccessible();
     await page.expect().toHaveScreenshot();
 
     await page.click("playButton");
