@@ -39,7 +39,7 @@
         "@iconify-json/mdi": "1.2.3",
         "@iconify-json/ri": "1.2.8",
         "@iconify-json/simple-icons": "1.2.68",
-        "@nuxt/test-utils": "https://pkg.pr.new/@nuxt/test-utils@1547",
+        "@nuxt/test-utils": "4.0.0",
         "@playwright/test": "1.57.0",
         "@tailwindcss/vite": "4.1.18",
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
