@@ -1,7 +1,7 @@
 import useVoices from "@@/app/composables/useVoices";
-import { withSetup } from "@@/tests/utils/nuxt";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 const { useI18nMock } = await vi.hoisted(async () => {
     const { ref } = await import("vue");

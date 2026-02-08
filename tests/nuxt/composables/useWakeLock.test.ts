@@ -1,6 +1,6 @@
 import useWakeLock from "@@/app/composables/useWakeLock";
-import { withSetup } from "@@/tests/utils/nuxt";
 import { beforeEach, expect, test, vi } from "vitest";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 let sentinel: {
     release: ReturnType<typeof vi.fn>;

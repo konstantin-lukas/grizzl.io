@@ -1,7 +1,6 @@
-import select from "~~/server/query/timer/select";
+import TimerController from "~~/server/controllers/timer.controller";
 
 export default defineEventHandler(async event => {
-    const data = await tryThrow(select(event.context.user.id));
-    setStatus(event, "OK");
-    return data;
+    const timerController = createContainer().resolve(TimerController);
+    return timerController.getList(event);
 });

@@ -1,8 +1,8 @@
 import Button from "@@/app/components/button/Button.vue";
-import { UTooltip } from "@@/tests/nuxt/components/stubs";
-import { deferred } from "@@/tests/utils/async";
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import { deferred } from "~~/test-utils/helpers/async";
+import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const text = "Hello, world!";
 const stubs = { UTooltip };

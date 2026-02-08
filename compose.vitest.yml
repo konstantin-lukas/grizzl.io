@@ -1,0 +1,51 @@
+services:
+    postgres:
+        container_name: grizzl-postgres-dev
+        image: postgres:18.0-alpine3.22
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+            DB_NAME: ${DB_NAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_USERNAME: ${DB_USERNAME}
+        volumes:
+            - grizzl_database_dev:/var/lib/postgresql/data
+            - ./docker/postgres/init:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+            interval: 1s
+            timeout: 15s
+            retries: 10
+
+    migrations:
+        image: node:24-alpine
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            DB_HOST: postgres
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            DB_NAME: grizzl
+        command: npx drizzle-kit migrate
+        restart: "no"
+
+    node:
+        container_name: grizzl-node-dev
+        image: node:24.8-alpine3.22
+        restart: unless-stopped
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        depends_on:
+            migrations:
+                condition: service_completed_successfully
+
+volumes:
+    grizzl_database_dev:

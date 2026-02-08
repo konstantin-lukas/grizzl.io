@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/schema/timer";
+import type { Timer } from "#shared/validators/timer";
 import { formatDuration } from "date-fns";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();

@@ -11,7 +11,7 @@ node_modules
 .idea
 .env.*
 !.env.example
-tests/e2e/storage.json
+test-utils/playwright/storage.json
 test-results
 backups
 coverage

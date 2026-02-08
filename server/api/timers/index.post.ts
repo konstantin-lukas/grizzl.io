@@ -1,10 +1,6 @@
-import { PostTimerSchema } from "#shared/schema/timer";
-import insert from "~~/server/query/timer/insert";
-import { parseRequestBody } from "~~/server/utils/schema";
+import TimerController from "~~/server/controllers/timer.controller";
 
 export default defineEventHandler(async event => {
-    const timer = await parseRequestBody(event, PostTimerSchema);
-    const data = await tryThrow(insert(event.context.user.id, timer));
-    setStatus(event, "CREATED");
-    setHeader(event, "Location", `/api/timers/${data}`);
+    const timerController = createContainer().resolve(TimerController);
+    await timerController.create(event);
 });

@@ -109,6 +109,8 @@ services:
         restart: unless-stopped
         extra_hosts:
             - "grizzl.localhost:127.0.0.1"
+        ports:
+            - "${CADDY_PORT}:80"
         volumes:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
         depends_on:

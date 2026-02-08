@@ -58,4 +58,10 @@ export default withNuxt([
             "no-console": "error",
         },
     },
+    {
+        files: ["tests/**/*"],
+        rules: {
+            "@typescript-eslint/no-extraneous-class": "off",
+        },
+    },
 ]);

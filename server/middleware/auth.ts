@@ -1,7 +1,8 @@
 import { sendRedirect } from "#imports";
 import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/constants/auth";
-import { DatabaseIdSchema } from "#shared/schema/id";
-import { auth } from "~~/lib/auth";
+import { DatabaseIdSchema } from "#shared/validators/id";
+import { auth } from "~~/server/auth";
+import BaseController from "~~/server/controllers/base.controller";
 
 declare module "h3" {
     interface H3EventContext {
@@ -22,7 +23,7 @@ export default defineEventHandler(async event => {
     }
 
     if (event.path.startsWith("/api") && !PUBLIC_API_PATHS.some(path => event.path.startsWith(path))) {
-        throwError("You need to sign in to perform this action.", "UNAUTHORIZED");
+        BaseController.throwError("You need to sign in to perform this action.", "UNAUTHORIZED");
     }
 
     if (PROTECTED_PATHS.some(path => event.path.startsWith(path))) {

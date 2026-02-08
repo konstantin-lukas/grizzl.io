@@ -1,7 +1,7 @@
 import useTimer from "@@/app/composables/useTimer";
-import { withSetup } from "@@/tests/utils/nuxt";
 import { clearNuxtState } from "nuxt/app";
 import { beforeEach, expect, it, vi } from "vitest";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 beforeEach(() => {
     clearNuxtState();

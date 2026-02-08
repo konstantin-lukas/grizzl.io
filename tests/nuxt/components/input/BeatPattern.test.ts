@@ -1,7 +1,7 @@
 import BeatPattern from "@@/app/components/input/BeatPattern.vue";
-import { UTooltip } from "@@/tests/nuxt/components/stubs";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const stubs = { UTooltip };
 const props = { beats: ["high", "low", "pause"], barLength: 300 } as never;

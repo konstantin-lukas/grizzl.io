@@ -13,4 +13,9 @@ declare module "vue" {
     }
 }
 
+declare global {
+    type NTuple<T, N extends number, Acc extends T[] = []> = Acc["length"] extends N ? Acc : NTuple<T, N, [...Acc, T]>;
+    type ArrayElement<T> = T extends (infer U)[] ? U : never;
+}
+
 export {};

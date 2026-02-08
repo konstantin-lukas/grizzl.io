@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
+if [ -z "$(docker ps | grep 'grizzl-.*-dev')" ]; then
+  COMPOSE_FILE="compose.test.yml"
+else
+  COMPOSE_FILE="compose.yml"
+fi
+
+echo "Starting Playwright with $COMPOSE_FILE ..."
+
 if [ "$1" = "headless" ]; then
   shift
-  docker compose run --rm playwright npx playwright test "$@"
+  docker compose -f "$COMPOSE_FILE" run --rm playwright npx playwright test "$@"
 else
-  docker compose run --rm playwright npx playwright test --ui-host=0.0.0.0 --ui-port=8080 "$@"
+  docker compose -f "$COMPOSE_FILE" run --rm playwright npx playwright test --ui-host=0.0.0.0 --ui-port=8080 "$@"
 fi

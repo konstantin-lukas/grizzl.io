@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ButtonProps } from "#ui/components/Button.vue";
-import { authClient } from "@@/lib/auth-client";
+import { authClient } from "~/constants/auth-client";
 
 definePageMeta({
     title: "ui.signIn",

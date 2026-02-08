@@ -9,7 +9,7 @@ SERVICE="$1"
 NUM_LINES="$2"
 
 if [ -n "$NUM_LINES" ]; then
-  docker compose logs "$SERVICE" --timestamps -n "$NUM_LINES"
+  docker compose -f compose.production.yml logs "$SERVICE" --timestamps -n "$NUM_LINES"
 else
-  docker compose logs "$SERVICE" --timestamps
+  docker compose -f compose.production.yml logs "$SERVICE" --timestamps
 fi

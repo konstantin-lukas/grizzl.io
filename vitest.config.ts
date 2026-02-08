@@ -6,10 +6,13 @@ export default defineConfig({
         coverage: {
             include: [
                 "app/utils/**/*",
-                "server/utils/**/*",
-                "shared/utils/**/*",
                 "app/components/**/*",
                 "app/composables/**/*",
+                "shared/utils/**/*",
+                "server/utils/**/*",
+                "server/repositories/**/*",
+                "server/services/**/*",
+                "server/controllers/**/*",
             ],
             exclude: ["app/components/timer/**/*"],
             reporter: ["text", "lcov", "json"],
@@ -28,10 +31,26 @@ export default defineConfig({
             }),
             await defineVitestProject({
                 test: {
+                    name: "repositories",
+                    include: ["tests/integration/repositories/**/*.test.ts"],
+                    environment: "node",
+                    maxWorkers: 1,
+                    setupFiles: "./test-utils/vitest/setup/database.setup.ts",
+                },
+            }),
+            await defineVitestProject({
+                test: {
+                    name: "infra",
+                    include: ["tests/infra/**/*.test.ts"],
+                    environment: "node",
+                },
+            }),
+            await defineVitestProject({
+                test: {
                     name: "components",
                     include: ["tests/nuxt/components/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "./tests/nuxt/setup.ts",
+                    setupFiles: "./test-utils/vitest/setup/nuxt.setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",
@@ -44,7 +63,7 @@ export default defineConfig({
                     name: "composables",
                     include: ["tests/nuxt/composables/**/*.test.ts"],
                     environment: "nuxt",
-                    setupFiles: "./tests/nuxt/setup.ts",
+                    setupFiles: "./test-utils/vitest/setup/nuxt.setup.ts",
                     environmentOptions: {
                         nuxt: {
                             domEnvironment: "happy-dom",

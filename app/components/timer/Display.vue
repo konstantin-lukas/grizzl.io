@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/schema/timer";
+import type { Timer } from "#shared/validators/timer";
 
 const { timer } = defineProps<{ timer: Timer }>();
 const { interval } = useTimer();

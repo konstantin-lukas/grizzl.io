@@ -1,5 +1,5 @@
+import { checkTranslationFileConsistency, getTranslationFiles } from "./config/i18n";
 import pwa from "./config/pwa";
-import { checkTranslationFileConsistency, getTranslationFiles } from "./lib/i18n";
 import { LOCALES } from "./shared/constants/i18n";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
         tsConfig: {
-            include: ["../tests/e2e/**/*", "../tests/unit/**/*"],
+            include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },
     },
     app: {
