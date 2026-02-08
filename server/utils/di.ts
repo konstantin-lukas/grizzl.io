@@ -1,7 +1,7 @@
 import { db } from "~~/server/database";
 import BaseRepository from "~~/server/repositories/base.repository";
 
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T> = new (...args: any[]) => T;
 
 interface InjectableClass<T> extends Constructor<T> {

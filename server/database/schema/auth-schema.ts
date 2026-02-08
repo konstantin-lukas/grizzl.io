@@ -1,5 +1,5 @@
-import { id } from "./mixins";
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { id } from "~~/server/database/schema/mixins";
 
 export const user = pgTable("user", {
     ...id,

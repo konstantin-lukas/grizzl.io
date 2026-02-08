@@ -2,14 +2,6 @@
 import withNuxt from "./.nuxt/eslint.config.mjs";
 import vuejsA11y from "eslint-plugin-vuejs-accessibility";
 
-
-
-
-
-
-
-
-
 const a11yRules = vuejsA11y.configs.recommended.rules;
 
 export default withNuxt([
