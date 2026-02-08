@@ -136,7 +136,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
                 ...expect(this.page),
                 toHydrate: () => this.toHydrate(),
                 toHaveNoErrors: () => this.toHaveNoErrors(),
-                toBeValid: () => this.toBeValid(),
+                toBeValid: (...params: Parameters<typeof this.toBeValid>) => this.toBeValid(...params),
             };
         }
         if (!options?.filter) {
