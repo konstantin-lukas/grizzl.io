@@ -29,7 +29,7 @@ type TimeSpanOptions = {
 } & PRNGOptions;
 type StrOptions = { words?: readonly string[]; spaces?: boolean; length?: number } & PRNGOptions;
 type StrArrayOptions<N extends number> = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> &
-    PrimitiveArrayOptions<N>;
+    Omit<PrimitiveArrayOptions<N>, "length">;
 type Primitive = string | number | boolean | undefined | null | symbol | bigint;
 
 const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
