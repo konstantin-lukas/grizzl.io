@@ -25,10 +25,10 @@ export default async function toBeAccessible(page: Page) {
             pass: true,
             message: () => "Page does not contain any automatically detectable accessibility issues.",
         };
-    } catch {
+    } catch (error) {
         return {
             pass: false,
-            message: () => "Page contains automatically detectable accessibility issues.",
+            message: () => `Page contains automatically detectable accessibility issues: ${error}`,
         };
     }
 }

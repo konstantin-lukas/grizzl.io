@@ -4,8 +4,9 @@ import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 test("contains a link to all available sections and a sign out button", async ({ homePage: page }, testInfo) => {
     await page.goto();
     const project = testInfo.project.name;
-    const ariaSnapshotName = `contains-a-link-to-all-available-sections-and-a-sign-out-button-${project.includes("mobile") ? "mobile" : "desktop"}-1.aria.yml`;
-    await page.expect().toBeValid({ ariaSnapshotName });
+    const baseName = "home-page-right-after-navigation";
+    const ariaSnapshotName = `${baseName}-on-${project.includes("mobile") ? "mobile" : "desktop"}`;
+    await page.expect().toBeValid({ screenshotName: baseName, ariaName: ariaSnapshotName });
     await page.expect("signOutButton").toBeVisible();
     await page.expect("signInButton").toBeDisattached();
     await page.expect("timerHero", { filter: { visible: true } }).toHaveCount(1);

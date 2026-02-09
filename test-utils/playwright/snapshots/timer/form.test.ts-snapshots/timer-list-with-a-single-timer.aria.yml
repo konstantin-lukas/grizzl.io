@@ -15,3 +15,5 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
