@@ -180,7 +180,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         toHaveNoErrors: typeof BasePage.prototype.toHaveNoErrors;
         toBeAccessible: typeof BasePage.prototype.toBeAccessible;
         toBeValid: (options: Parameters<typeof BasePage.prototype.toBeValid>[0]) => Promise<void>;
-        toHaveScreenshot: (options: Parameters<typeof BasePage.prototype.toMatchAriaSnapshot>[1]) => Promise<void>;
+        toHaveScreenshot: (options: Parameters<typeof BasePage.prototype.toHaveScreenshot>[1]) => Promise<void>;
     };
     expect(
         what: LocatorKey<T>,

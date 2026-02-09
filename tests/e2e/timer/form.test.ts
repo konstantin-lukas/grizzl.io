@@ -19,7 +19,8 @@ test("allows creating a new timer when no timers exist", async ({ timerPage: pag
 
     await page.click("emptyButton");
 
-    await page.expect("drawer").toBeValid({ name: "timer-creation-form", skipThemeToggle: true });
+    await page.expect().toHaveScreenshot({ name: "timer-creation-form", blur: false });
+    await page.expect("drawer").toMatchAriaSnapshot({ name: "timer-creation-form" });
 
     await page.createTimer({ title });
 
