@@ -1,4 +1,6 @@
+import { AxeBuilder } from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
+import config from "~~/playwright.config";
 import { expect } from "~~/test-utils/playwright";
 
 type _GotoOptions = NonNullable<Parameters<Page["goto"]>[1]>;
@@ -127,6 +129,26 @@ export default abstract class BasePage<T extends Record<string, string>> {
         return expect(target).toHaveScreenshot({ fullPage });
     }
 
+    private async toBeAccessible() {
+        const timeout = config.expect?.timeout ?? 5000;
+        const axe = new AxeBuilder({ page: this.page })
+            .exclude("#nuxt-devtools-container")
+            .exclude("[aria-hidden='true']")
+            .exclude("[data-hidden='true']");
+        const start = Date.now();
+        while (true) {
+            const results = await axe.analyze();
+            console.log(results);
+            if (results.violations.length === 0 || Date.now() - start > timeout) {
+                expect(results.violations).toEqual([]);
+                break;
+            }
+            await new Promise(resolve => {
+                setTimeout(resolve, 50);
+            });
+        }
+    }
+
     private async toBeValid(
         options:
             | { name: string; skipThemeToggle?: boolean }
@@ -143,10 +165,10 @@ export default abstract class BasePage<T extends Record<string, string>> {
         await this.toMatchAriaSnapshot(target && target !== this.page ? (target as Locator) : this.locators.root, {
             name: ariaName!,
         });
-        await this.expect().toBeAccessible();
+        await this.toBeAccessible();
         await this.toHaveScreenshot(target ?? this.page, { name: screenshotName! });
-        this.expect().toHydrate();
-        this.expect().toHaveNoErrors();
+        this.toHydrate();
+        this.toHaveNoErrors();
         if (skipThemeToggle) return;
         await this.toggleTheme();
         await this.toHaveScreenshot(target ?? this.page, { name: `${screenshotName}-darkmode` });
@@ -156,6 +178,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
     expect(): Omit<ReturnType<typeof expect<Page>>, "toHaveScreenshot"> & {
         toHydrate: typeof BasePage.prototype.toHydrate;
         toHaveNoErrors: typeof BasePage.prototype.toHaveNoErrors;
+        toBeAccessible: typeof BasePage.prototype.toBeAccessible;
         toBeValid: (options: Parameters<typeof BasePage.prototype.toBeValid>[0]) => Promise<void>;
         toHaveScreenshot: (options: Parameters<typeof BasePage.prototype.toMatchAriaSnapshot>[1]) => Promise<void>;
     };
@@ -187,6 +210,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
                     ...expect(target),
                     toHydrate: () => this.toHydrate(),
                     toHaveNoErrors: () => this.toHaveNoErrors(),
+                    toBeAccessible: () => this.toBeAccessible(),
                 };
             }
             if (!options?.filter) {
