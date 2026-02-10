@@ -4,21 +4,23 @@ interface PRNGOptions {
     seed?: number;
 }
 
-interface PrimitiveArrayOptions {
-    length?: number;
+interface ArrayOptions<N extends number> {
+    length?: N;
+}
+
+interface PrimitiveArrayOptions<N extends number> extends ArrayOptions<N> {
     unique?: boolean;
 }
 
-interface ObjectArrayOptions<T> {
-    length?: number;
+interface ObjectArrayOptions<T, N extends number> extends ArrayOptions<N> {
     unique?: (object: T, index: number) => Primitive;
 }
 
 type DateOptions = { when?: "beforeRef" | "afterRef"; refDate?: string | Date | number } & TimeSpanOptions &
     PRNGOptions;
 type IntOptions = { min?: number; max?: number } & PRNGOptions;
-type DateArrayOptions = DateOptions & PrimitiveArrayOptions;
-type IntArrayOptions = IntOptions & PrimitiveArrayOptions;
+type DateArrayOptions<N extends number> = DateOptions & PrimitiveArrayOptions<N>;
+type IntArrayOptions<N extends number> = IntOptions & PrimitiveArrayOptions<N>;
 type TimeSpanOptions = {
     days?: number;
     hours?: number;
@@ -26,7 +28,8 @@ type TimeSpanOptions = {
     seconds?: number;
 } & PRNGOptions;
 type StrOptions = { words?: readonly string[]; spaces?: boolean; length?: number } & PRNGOptions;
-type StrArrayOptions = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> & PrimitiveArrayOptions;
+type StrArrayOptions<N extends number> = { strLength?: number; arrLength?: number } & Omit<StrOptions, "length"> &
+    Omit<PrimitiveArrayOptions<N>, "length">;
 type Primitive = string | number | boolean | undefined | null | symbol | bigint;
 
 const DEFAULT_REF_DATE = "2025-06-01T12:00:00Z";
@@ -84,15 +87,18 @@ export function int(options: IntOptions = {}) {
  * constructing an array of non-primitives, then unique instead has to be a callback if you want unique values. That
  * callback takes an array element and an index as parameters and returns a unique key for each element.
  */
-export function arr<T extends Primitive>(
+export function arr<T extends Primitive, N extends number = 3>(
     source: T | T[] | ((index: number) => T),
-    options?: PrimitiveArrayOptions,
+    options?: PrimitiveArrayOptions<N>,
 ): T[];
-export function arr<T extends object>(source: T | T[] | ((index: number) => T), options?: ObjectArrayOptions<T>): T[];
-export function arr<T extends Primitive | object>(
+export function arr<T extends object, N extends number = 3>(
     source: T | T[] | ((index: number) => T),
-    options: PrimitiveArrayOptions | ObjectArrayOptions<T> = {},
-) {
+    options?: ObjectArrayOptions<T, N>,
+): T[];
+export function arr<T extends Primitive | object, N extends number = 3>(
+    source: T | T[] | ((index: number) => T),
+    options: PrimitiveArrayOptions<N> | ObjectArrayOptions<T, N> = {},
+): NTuple<T, N> {
     const { length = 3, unique = false } = options;
     const sourceIsCallback = typeof source === "function";
 
@@ -102,7 +108,7 @@ export function arr<T extends Primitive | object>(
     };
 
     if (!unique) {
-        return Array.from({ length }).map((_, i) => unpackValue(i)) as T[];
+        return Array.from({ length }).map((_, i) => unpackValue(i)) as NTuple<T, N>;
     }
 
     const seen = new Set<string | number | Primitive>();
@@ -122,7 +128,7 @@ export function arr<T extends Primitive | object>(
         }
     }
 
-    return result;
+    return result as NTuple<T, N>;
 }
 
 function getTimeSpan(options: TimeSpanOptions) {
@@ -252,7 +258,7 @@ export function date(options: DateOptions = {}) {
 /**
  * Refer to the {@link date} and {@link arr} function documentation to understand the options.
  */
-export function dateArr(options: DateArrayOptions = {}) {
+export function dateArr<N extends number>(options: DateArrayOptions<N> = {}) {
     const { unique: isUnique, seed = 0, ...rest } = options;
     const unique = isUnique ? (date: Date) => date.getTime() : undefined;
     return arr(i => date({ ...rest, seed: seed + i }), { ...rest, unique });
@@ -261,7 +267,7 @@ export function dateArr(options: DateArrayOptions = {}) {
 /**
  * Refer to the {@link int} and {@link arr} function documentation to understand the options.
  */
-export function intArr(options: IntArrayOptions = {}) {
+export function intArr<N extends number>(options: IntArrayOptions<N> = {}) {
     const { seed = 0 } = options;
     return arr(i => int({ ...options, seed: seed + i }), options);
 }
@@ -270,7 +276,7 @@ export function intArr(options: IntArrayOptions = {}) {
  * Refer to the {@link str} and {@link arr} function documentation to understand the options. For clarity, array length
  * is passed as options.arrLength and string length as options.strLength.
  */
-export function strArr(options: StrArrayOptions) {
+export function strArr<N extends number>(options: StrArrayOptions<N>) {
     const { seed = 0, strLength, arrLength, ...rest } = options;
     return arr(i => str({ ...rest, length: strLength, seed: seed + i }), { ...rest, length: arrLength });
 }

@@ -6,11 +6,13 @@
     - /placeholder: Displayed while interval is running
   - text: Interval type*
   - combobox "Interval type*"
+  - text: ""
   - group:
     - spinbutton "Repetitions*"
     - button "Increment"
     - button "Decrement" [disabled]
     - textbox: "1"
+  - text: ""
   - group:
     - spinbutton "Duration*"
     - button "Increment"

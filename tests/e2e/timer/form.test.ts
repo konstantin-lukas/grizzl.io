@@ -15,17 +15,18 @@ test("should register a service worker if supported", async ({ timerPage: page }
 
 test("allows creating a new timer when no timers exist", async ({ timerPage: page, db }) => {
     await page.goto();
-    await page.expectIntegrity();
+    await page.expect().toBeValid({ name: "empty-timer-list" });
 
     await page.click("emptyButton");
 
-    await page.expectIntegrity({ skipThemeToggle: true, ariaSnapshotTarget: "drawer" });
+    await page.expect().toHaveScreenshot({ name: "timer-creation-form", blur: false });
+    await page.expect("drawer").toMatchAriaSnapshot({ name: "timer-creation-form" });
 
     await page.createTimer({ title });
 
     await page.expect("listItemTitles").toHaveText(title);
     await page.expect("listItemLengths").toHaveText("1 round (3 seconds)");
-    await page.expect("root").toMatchAriaSnapshot();
+    await page.expect("root").toMatchAriaSnapshot({ name: "timer-list-with-a-single-timer" });
 
     const [timer] = await db.timer.select();
     expect(timer!.title).toBe(title);
@@ -48,7 +49,7 @@ test("allows editing an existing timer", async ({ timerPage: page, db }) => {
     await db.timerInterval.insert(timer!.id);
     await page.goto();
 
-    await page.expect().toHaveScreenshot();
+    await page.expect().toHaveScreenshot({ name: "timer-list-with-multiple-timers" });
     await page.expect("listItemTitles").toHaveText(timer!.title);
 
     await page.click("listItemEditButtons");

@@ -18,8 +18,8 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.expect("remainingIntervalTime").toHaveText("00:01");
     await page.expect("remainingTime").toHaveText("00:01");
     await page.expect("activeRound").toHaveText("1/1");
-    await page.analyzeA11y();
-    await page.expect().toHaveScreenshot();
+    await page.expect().toBeAccessible();
+    await page.expect("slideover").toHaveScreenshot({ name: "timer-playback-before-starting" });
 
     await page.click("playButton");
 
@@ -28,7 +28,7 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.expect("remainingIntervalTime").toHaveText("––:––");
     await page.expect("remainingTime").toHaveText("00:00");
     await page.expect("activeRound").toHaveText("–/–");
-    await page.expect().toHaveScreenshot();
+    await page.expect("slideover").toHaveScreenshot({ name: "timer-playback-after-finishing" });
 
     await page.click("resetButton");
 
@@ -90,7 +90,9 @@ test("shows indicators for beats on timer progress and information on timer and 
     await page.expect("remainingTime").toHaveText("00:18");
     await page.expect("activeRound").toHaveText("1/6");
     await page.expect("beatIndicator").toHaveCount(8);
-    await page.expect().toHaveScreenshot();
+    await page
+        .expect("slideover")
+        .toHaveScreenshot({ name: "timer-playback-with-multiple-intervals-and-beat-indicators" });
 });
 
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
@@ -108,7 +110,7 @@ test("allows pausing, resuming, and resetting timer playback", async ({ timerPag
 
         await page.expect("remainingTime").toHaveText("01:30");
         await page.expect("remainingIntervalTime").toHaveText("00:45");
-        await page.expect("slideover").toMatchAriaSnapshot();
+        await page.expect("slideover").toMatchAriaSnapshot({ name: "timer-playback-before-starting" });
 
         await page.click("playButton");
         await page.page.clock.runFor("00:20");
