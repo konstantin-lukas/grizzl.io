@@ -1,4 +1,4 @@
-name: Update Snapshots (Playwright)
+name: Update Snapshots
 
 on:
   workflow_dispatch:
