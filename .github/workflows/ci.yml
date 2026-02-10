@@ -105,12 +105,12 @@ jobs:
                 project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
 
         steps:
-            - name: Checkout code
+            - name: Checkout repo
               uses: actions/checkout@v4
               with:
                 fetch-depth: 0
 
-            - name: Setup Node.js
+            - name: Setup Node
               uses: actions/setup-node@v4
               with:
                   node-version: "24"

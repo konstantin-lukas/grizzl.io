@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Prepare Nuxt
+        run: npm run postinstall
+
       - name: Update Snapshots
         run: |
           export DOCKER_USER_ID="$(id -u)"
