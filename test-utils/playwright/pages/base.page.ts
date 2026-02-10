@@ -138,9 +138,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
         const start = Date.now();
         while (true) {
             const results = await axe.analyze();
-            console.log(results);
             if (results.violations.length === 0 || Date.now() - start > timeout) {
-                expect(results.violations).toEqual([]);
+                const message = results.violations.map(v => JSON.stringify(v)).join("\n\n");
+                expect(results.violations, { message }).toEqual([]);
                 break;
             }
             await new Promise(resolve => {
