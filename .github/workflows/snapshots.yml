@@ -10,7 +10,14 @@ jobs:
   update-screenshots:
     runs-on: ubuntu-24.04
 
+
     steps:
+      - name: Abort if on main
+        if: ${{ github.ref_name == 'main' }}
+        run: |
+          echo "This workflow cannot run on the main branch."
+          exit 1
+
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
