@@ -14,6 +14,11 @@ const { close } = useMenu();
             <div
                 class="flex w-full flex-col items-start gap-6 from-primary/25 not-xl:mb-8 not-xl:bg-linear-to-t not-xl:pt-20 not-xl:pb-8 xl:mb-0 xl:min-h-0 xl:w-1/2 xl:gap-8 xl:py-10 dark:from-primary/15"
             >
+                <div class="px-6 xs:px-12 md:px-24 xl:px-0">
+                    <SvgGrizzlLogo class="hidden max-w-96 fill-front xl:block" />
+                    <TypoH1 class="mb-2 xl:mt-4 xl:mb-4">{{ $t("meta.tagline") }}</TypoH1>
+                    <p class="text-neutral-600 dark:text-neutral-400">Different Text</p>
+                </div>
                 <div class="flex gap-4 px-6 xs:px-12 md:px-24 xl:px-0">
                     <Button
                         v-if="session.data"
