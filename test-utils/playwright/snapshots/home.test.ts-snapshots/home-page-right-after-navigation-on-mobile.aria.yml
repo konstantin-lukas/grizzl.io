@@ -2,7 +2,7 @@
   - button "Toggle the menu"
   - main:
     - heading "Your Bear of All Trades" [level=1]
-    - paragraph: Grizzl is your all-in-one companion for everyday productivity. Effortlessly manage your finances, share polls with friends, and stay on track with customizable workout timers.
+    - paragraph: Different Text
     - button "Sign Out"
     - link "Timer":
       - /url: /timer
@@ -12,3 +12,5 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
