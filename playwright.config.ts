@@ -58,7 +58,7 @@ export default defineConfig<ConfigOptions>({
     reporter: process.env.CI ? [["github"], ["html"]] : "line",
     globalSetup: "./test-utils/playwright/global.setup.ts",
     expect: {
-        timeout: 20000,
+        timeout: 5000,
         toHaveScreenshot: {
             maxDiffPixelRatio: process.env.SKIP_SCREENSHOTS === "true" ? 1 : 0,
             threshold: 0,
