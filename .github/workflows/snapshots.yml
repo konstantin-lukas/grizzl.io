@@ -1,4 +1,4 @@
-name: Update Playwright Screenshots
+name: Update Snapshots (Playwright)
 
 on:
   workflow_dispatch:
@@ -21,6 +21,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24"
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Update Snapshots
         run: |
