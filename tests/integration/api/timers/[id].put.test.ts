@@ -24,7 +24,7 @@ test("allows creating a new interval by not providing an id", async ({ request, 
 
 test("allows editing intervals by their id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    const [timerInterval] = await db.timerInterval.insert(timer!.id);
+    const [timerInterval] = await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     await request.put(`/api/timers/${timer!.id}`, {
         data: { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, id: timerInterval!.id }] },
     });
@@ -35,9 +35,9 @@ test("allows editing intervals by their id", async ({ request, db }) => {
 test("does not allow editing other user's intervals", async ({ request, db }) => {
     const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
     const [myTimer] = await db.timer.insert({ count: 1 });
-    const [otherUsersTimer] = await db.timer.insert({ count: 1, userId: otherUser!.id });
-    const [myInterval] = await db.timerInterval.insert(myTimer!.id);
-    const [otherUsersInterval] = await db.timerInterval.insert(otherUsersTimer!.id);
+    const [otherUsersTimer] = await db.timer.insert({ count: 1, overrides: { userId: otherUser!.id } });
+    const [myInterval] = await db.timerInterval.insert({ overrides: { timerId: myTimer!.id } });
+    const [otherUsersInterval] = await db.timerInterval.insert({ overrides: { timerId: otherUsersTimer!.id } });
     await request.put(`/api/timers/${myTimer!.id}`, {
         data: { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, id: otherUsersInterval!.id }] },
     });
@@ -48,7 +48,7 @@ test("does not allow editing other user's intervals", async ({ request, db }) =>
 
 test("returns a 204 even when the data hasn't changed", async ({ request, db }) => {
     const [t] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(t!.id);
+    await db.timerInterval.insert({ overrides: { timerId: t!.id } });
     const getResponseBefore = await request.get("/api/timers");
     const [timerBefore] = await getResponseBefore.json();
     const putResponse = await request.put(`/api/timers/${timerBefore.id}`, { data: timerBefore });
@@ -60,7 +60,7 @@ test("returns a 204 even when the data hasn't changed", async ({ request, db }) 
 
 test("only allows putting certain properties", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    const [timerInterval] = await db.timerInterval.insert(timer!.id);
+    const [timerInterval] = await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     expect(await db.timerInterval.select()).toHaveLength(2);
     const response = await request.put(`/api/timers/${timer!.id}`, {
         data: {
@@ -86,7 +86,7 @@ test("only allows putting certain properties", async ({ request, db }) => {
 
 test("does not allow deleting all intervals by providing an empty array", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer!.id);
+    await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     const preIntervals = await db.timerInterval.select();
     expect(preIntervals).toHaveLength(2);
     const response = await request.put(`/api/timers/${timer!.id}`, {
@@ -102,7 +102,7 @@ test("does not allow deleting all intervals by providing an empty array", async 
 
 test("does not allow deleting all intervals by providing an unknown id", async ({ request, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    const preIntervals = await db.timerInterval.insert(timer!.id);
+    const preIntervals = await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     expect(preIntervals).toHaveLength(2);
     const response = await request.put(`/api/timers/${timer!.id}`, {
         data: {

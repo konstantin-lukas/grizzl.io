@@ -5,10 +5,10 @@ import { anyId } from "~~/test-utils/vitest/patterns";
 
 let id = "";
 test.beforeEach(async ({ db, user }) => {
-    const timers = await db.timer.insert({ userId: user.id });
+    const timers = await db.timer.insert({ count: 5, overrides: { userId: user.id } });
     [{ id }] = timers;
     for (const timer of timers) {
-        await db.timerInterval.insert(timer.id);
+        await db.timerInterval.insert({ overrides: { timerId: timer.id } });
     }
 });
 
@@ -65,8 +65,8 @@ test("returns 0 when the given user id doesn't exist", async ({ db }) => {
 
 test("updates existing intervals instead of replacing them if an existing id was provided", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
-    const [timer] = await db.timer.insert({ count: 1, userId: user.id });
-    const intervals = await db.timerInterval.insert(timer.id, { count: 2 });
+    const [timer] = await db.timer.insert({ count: 1, overrides: { userId: user.id } });
+    const intervals = await db.timerInterval.insert({ count: 2, overrides: { timerId: timer.id } });
     const secondInterval = intervals.find(({ index }) => index === 1)!;
 
     const rows = await timerRepository.update(timer.id, user.id, {
