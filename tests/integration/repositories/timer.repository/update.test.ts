@@ -5,7 +5,7 @@ import { anyId } from "~~/test-utils/vitest/patterns";
 
 let id = "";
 test.beforeEach(async ({ db, user }) => {
-    const timers = await db.timer.insert({ overrides: { userId: user.id } });
+    const timers = await db.timer.insert({ count: 5, overrides: { userId: user.id } });
     [{ id }] = timers;
     for (const timer of timers) {
         await db.timerInterval.insert({ overrides: { timerId: timer.id } });

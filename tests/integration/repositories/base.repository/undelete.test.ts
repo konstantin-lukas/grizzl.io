@@ -4,7 +4,7 @@ import BaseRepository from "~~/server/repositories/base.repository";
 test("removes the deleted status from database entries if they have a deletedAt column", async ({ db, user }) => {
     const softDeletableRepository = new BaseRepository(db.client, "timer");
 
-    const [timer] = await db.timer.insert({ overrides: { userId: user.id, deletedAt: new Date() } });
+    const [timer] = await db.timer.insert({ count: 5, overrides: { userId: user.id, deletedAt: new Date() } });
     await db.timerInterval.insert({ overrides: { timerId: timer.id } });
 
     await softDeletableRepository.undelete({ id: timer.id, userId: user.id });

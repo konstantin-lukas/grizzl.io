@@ -4,8 +4,8 @@ import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the timers belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert({ overrides: { name: "Smithers", email: "smithers@burns.com" } });
-    const otherTtimers = await db.timer.insert({ overrides: { userId: otherUser.id } });
-    for (const timer of otherTtimers) {
+    const otherUserstimers = await db.timer.insert({ overrides: { userId: otherUser.id } });
+    for (const timer of otherUserstimers) {
         await db.timerInterval.insert({ overrides: { timerId: timer.id } });
     }
 

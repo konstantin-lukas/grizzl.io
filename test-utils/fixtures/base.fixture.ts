@@ -37,12 +37,14 @@ export default abstract class BaseFixture<T extends SchemaKey> {
     async insert<N extends number = 10>(options: InsertOptions<T, N> = {}) {
         const { count = 10, overrides = {} } = options;
 
+        const getOverrides = (index: number) => (typeof overrides === "function" ? overrides(index) : overrides);
+
         const needsUserId = "userId" in this.schema;
-        const userId = needsUserId ? (await this.testUser)!.id : undefined;
+        const suppliesUserId = "userId" in getOverrides(0);
+        const userId = !suppliesUserId && needsUserId ? (await this.testUser)!.id : undefined;
 
         const mapper = (_: unknown, index: number) => {
             const defaults = this.dataProvider(index);
-
             return {
                 userId,
                 ...defaults,
