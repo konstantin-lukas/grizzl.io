@@ -1,9 +1,9 @@
-interface Success<T> {
+export interface Success<T> {
     data: T;
     error: null;
 }
 
-interface Failure<E> {
+export interface Failure<E> {
     data: null;
     error: E;
 }

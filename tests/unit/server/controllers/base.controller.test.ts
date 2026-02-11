@@ -208,19 +208,17 @@ describe("safeParseRequestBody", () => {
     });
 });
 
-describe("resolveOrThrowHttpError", () => {
+describe("mapDomainResultToHttp", () => {
     test.each([
         { event: { method: "GET" }, msg: "OK", code: 200 },
         { event: { method: "POST" }, msg: "Created", code: 201 },
         { event: { method: "PATCH" }, msg: "No Content", code: 204 },
         { event: { method: "PUT" }, msg: "No Content", code: 204 },
     ] as const)(
-        "should set the response status to $code - $msg when method is $method",
+        "should set the response status to $code - $msg when method is $method and error is null",
         async ({ event, code, msg }) => {
-            const data = 42;
-            const returnedValue = await BaseController.resolveOrThrowHttpError(event as never, Promise.resolve(data));
+            BaseController.mapDomainResultToHttp(event as never, null);
             expect(setResponseStatusSpy).toHaveBeenCalledExactlyOnceWith(event, code, msg);
-            expect(returnedValue).toBe(data);
         },
     );
 
@@ -228,9 +226,9 @@ describe("resolveOrThrowHttpError", () => {
         {
             error: new Error(),
             errorType: "Error",
-            expected: "Unprocessable Content",
-            code: 422,
-            msg: "Unprocessable Content",
+            expected: "Internal Server Error",
+            code: 500,
+            msg: "Internal Server Error",
         },
         {
             error: new NotFoundError(),
@@ -240,11 +238,9 @@ describe("resolveOrThrowHttpError", () => {
             msg: "Not Found",
         },
     ] as const)(
-        "should set the response status to $code when an error of type $errorType was passed",
+        "should throw a $code error when an error of type $errorType was passed",
         async ({ error, expected, code, msg }) => {
-            await expect(() =>
-                BaseController.resolveOrThrowHttpError({ method: "GET" } as never, Promise.reject(error)),
-            ).rejects.toThrow(expected);
+            expect(() => BaseController.mapDomainResultToHttp({ method: "GET" } as never, error)).toThrow(expected);
             expect(createErrorSpy).toHaveBeenCalledExactlyOnceWith({
                 statusCode: code,
                 statusMessage: msg,

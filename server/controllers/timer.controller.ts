@@ -15,27 +15,28 @@ export default class TimerController extends BaseController {
     public async setDeletedStatus(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, DatabaseDeletedSchema);
-        const servicePromise = this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted);
-        await TimerController.resolveOrThrowHttpError(event, servicePromise);
+        const { error } = await this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted);
+        TimerController.mapDomainResultToHttp(event, error);
     }
 
     public async update(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, PutTimerSchema);
-        const servicePromise = this.timerService.update(id, event.context.user.id, body);
-        await TimerController.resolveOrThrowHttpError(event, servicePromise);
+        const { error } = await this.timerService.update(id, event.context.user.id, body);
+        TimerController.mapDomainResultToHttp(event, error);
     }
 
     public async getList(event: H3Event) {
-        const servicePromise = this.timerService.getList(event.context.user.id);
-        return await TimerController.resolveOrThrowHttpError(event, servicePromise);
+        const { data, error } = await this.timerService.getList(event.context.user.id);
+        TimerController.mapDomainResultToHttp(event, error);
+        return data;
     }
 
     public async create(event: H3Event) {
         const timer = await TimerController.parseRequestBody(event, PostTimerSchema);
-        const servicePromise = this.timerService.create(event.context.user.id, timer);
-        const id = await TimerController.resolveOrThrowHttpError(event, servicePromise);
-        setHeader(event, "Location", `/api/timers/${id}`);
+        const { data, error } = await this.timerService.create(event.context.user.id, timer);
+        TimerController.mapDomainResultToHttp(event, error);
+        setHeader(event, "Location", `/api/timers/${data}`);
     }
 }
 /* c8 ignore stop */

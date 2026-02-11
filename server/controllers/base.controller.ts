@@ -4,6 +4,7 @@ import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
+import type DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 
 type AnyError = string | Error | ZodError;
@@ -180,17 +181,12 @@ export default class BaseController {
         return data;
     }
 
-    static async resolveOrThrowHttpError<T>(event: H3Event, promise: Promise<T>): Promise<T> {
-        const result = await tryCatch(promise);
-        const { error } = result;
-
+    static mapDomainResultToHttp(event: H3Event, error: DomainError | null): asserts error is null {
         if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found", "NOT_FOUND");
-        if (error) BaseController.throwError(error, "UNPROCESSABLE_CONTENT", true);
+        if (error) BaseController.throwError(error, "INTERNAL_SERVER_ERROR", true);
 
         if (event.method === "POST") this.setStatus(event, "CREATED");
         if (event.method === "GET") this.setStatus(event, "OK");
         if (event.method === "PUT" || event.method === "PATCH") this.setStatus(event, "NO_CONTENT");
-
-        return result.data;
     }
 }
