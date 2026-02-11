@@ -28,7 +28,7 @@ export async function dbFixture({}, waitForUse: (value: DBFixtures) => Promise<v
 
 async function createUser(db: ReturnType<typeof drizzle>) {
     const userFixture = new UserFixture(db);
-    return await userFixture.insert();
+    return (await userFixture.insert())[0];
 }
 
 type User = Awaited<ReturnType<typeof createUser>>;

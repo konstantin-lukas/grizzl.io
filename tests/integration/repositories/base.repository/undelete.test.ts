@@ -4,8 +4,8 @@ import BaseRepository from "~~/server/repositories/base.repository";
 test("removes the deleted status from database entries if they have a deletedAt column", async ({ db, user }) => {
     const softDeletableRepository = new BaseRepository(db.client, "timer");
 
-    const [timer] = await db.timer.insert({ userId: user.id, deleted: true });
-    await db.timerInterval.insert(timer.id);
+    const [timer] = await db.timer.insert({ overrides: { userId: user.id, deletedAt: new Date() } });
+    await db.timerInterval.insert({ overrides: { timerId: timer.id } });
 
     await softDeletableRepository.undelete({ id: timer.id, userId: user.id });
 
@@ -23,7 +23,7 @@ test("removes the deleted status from database entries if they have a deletedAt 
 test("does nothing on an undeletable entity", async ({ db, user }) => {
     const deletableRepository = new BaseRepository(db.client, "account" as "timer");
 
-    const account = await db.account.insert({ userId: user.id });
+    const [account] = await db.account.insert({ overrides: { userId: user.id } });
     await deletableRepository.delete({ id: account.id, userId: user.id });
     await deletableRepository.undelete({ id: account.id, userId: user.id });
 

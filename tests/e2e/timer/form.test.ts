@@ -46,7 +46,7 @@ test("displays an alert if there were form validation errors", async ({ timerPag
 test("allows editing an existing timer", async ({ timerPage: page, db }) => {
     const newTitle = str({ length: 10 });
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer!.id);
+    await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     await page.goto();
 
     await page.expect().toHaveScreenshot({ name: "timer-list-with-multiple-timers" });
@@ -63,7 +63,7 @@ test("allows editing an existing timer", async ({ timerPage: page, db }) => {
 
 test("allows deleting and restoring an existing timer", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert(timer!.id);
+    await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
     await page.goto();
 
     expect(timer!.deletedAt).toBeNull();
