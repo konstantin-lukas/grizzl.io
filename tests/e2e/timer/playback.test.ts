@@ -3,7 +3,7 @@ import { test } from "~~/test-utils/playwright";
 
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert(1);
-    const [interval] = await db.timerInterval.insert(2, {
+    const [interval] = await db.timerInterval.insert(1, {
         timerId: timer!.id,
         repeatCount: 1,
         duration: 1000,
