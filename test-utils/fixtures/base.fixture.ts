@@ -33,7 +33,7 @@ export default abstract class BaseFixture<T extends SchemaKey> {
         await this.db.execute(sql.raw(`truncate ${tableToTruncate} cascade;`));
     }
 
-    async insert<N extends number = 10>(count: N, overrides: InsertOverrides<T> = {}) {
+    async insert<N extends number>(count: N, overrides: InsertOverrides<T> = {}) {
         const getOverrides = typeof overrides === "function" ? overrides : () => overrides;
 
         const needsUserId = "userId" in this.schema;

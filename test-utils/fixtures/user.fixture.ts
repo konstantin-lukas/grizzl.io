@@ -8,6 +8,7 @@ export default class UserFixture extends BaseFixture<"user"> {
         email: "cmontgomeryburns@springfieldnuclear.com",
         emailVerified: true,
     });
+
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, "user");
     }
