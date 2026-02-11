@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.0...v1.4.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* update mount bind in production compose yml for migrations container ([a0400be](https://github.com/konstantin-lukas/grizzl.io/commit/a0400bee52b66c15f4736d9b4df1cecb765734f4))
+
 ## [1.4.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.3.1...v1.4.0) (2026-02-11)
 
 
