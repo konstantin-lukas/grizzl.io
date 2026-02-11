@@ -56,4 +56,4 @@ updates:
           patterns:
             - "@iconify-json/*"
       cooldown:
-        default-days: 30
+        default-days: 7
