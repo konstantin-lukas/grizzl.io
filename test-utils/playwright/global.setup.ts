@@ -21,7 +21,7 @@ export default async function GlobalSetup(config: FullConfig) {
 
     const user = new UserFixture(db);
     await user.reset();
-    await user.insert();
+    await user.insert(1);
 
     const { baseURL, storageState, testIdAttribute } = config.projects[0]!.use;
     selectors.setTestIdAttribute(testIdAttribute!);

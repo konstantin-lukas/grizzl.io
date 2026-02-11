@@ -2,15 +2,12 @@ import { Beat } from "@@/shared/enum/timer";
 import { test } from "~~/test-utils/playwright";
 
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
-    const [timer] = await db.timer.insert({ count: 1 });
-    const [interval] = await db.timerInterval.insert({
-        count: 1,
-        overrides: {
-            timerId: timer!.id,
-            repeatCount: 1,
-            duration: 1000,
-            beatPattern: null,
-        },
+    const [timer] = await db.timer.insert(1);
+    const [interval] = await db.timerInterval.insert(2, {
+        timerId: timer!.id,
+        repeatCount: 1,
+        duration: 1000,
+        beatPattern: null,
     });
 
     await page.goto();
@@ -73,22 +70,16 @@ test("shows indicators for beats on timer progress and information on timer and 
         Beat.PAUSE,
         Beat.NORMAL,
     ];
-    const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert({
-        count: 1,
-        overrides: {
-            timerId: timer!.id,
-            beatPattern,
-        },
+    const [timer] = await db.timer.insert(1);
+    await db.timerInterval.insert(1, {
+        timerId: timer!.id,
+        beatPattern,
     });
-    await db.timerInterval.insert({
-        count: 1,
-        overrides: {
-            timerId: timer!.id,
-            index: 1,
-            duration: 3000,
-            repeatCount: 4,
-        },
+    await db.timerInterval.insert(1, {
+        timerId: timer!.id,
+        index: 1,
+        duration: 3000,
+        repeatCount: 4,
     });
 
     await page.goto();
@@ -105,13 +96,10 @@ test("shows indicators for beats on timer progress and information on timer and 
 });
 
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
-    const [timer] = await db.timer.insert({ count: 1 });
-    await db.timerInterval.insert({
-        count: 1,
-        overrides: {
-            timerId: timer!.id,
-            duration: 45000,
-        },
+    const [timer] = await db.timer.insert(1);
+    await db.timerInterval.insert(1, {
+        timerId: timer!.id,
+        duration: 45000,
     });
 
     await test.step("Let timer run for some time, then pause and check remaining times", async () => {

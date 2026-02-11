@@ -5,28 +5,24 @@ import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
-        (
-            await db.timer.insert({
-                overrides: options.userId
-                    ? { deletedAt: options.deleted ? new Date() : null, userId: options.userId }
-                    : { deletedAt: options.deleted ? new Date() : null },
-            })
-        ).map(async timer => ({
-            id: timer.id,
-            title: timer.title,
-            createdAt: timer.createdAt.toISOString(),
-            ttsVoice: timer.ttsVoice,
-            intervals: await (async () => {
-                const intervals = await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
-                return intervals.map(({ title, duration, beatPattern, id, repeatCount }) => ({
-                    title,
-                    duration,
-                    beatPattern,
-                    id,
-                    repeatCount,
-                }));
-            })(),
-        })),
+        (await db.timer.insert(1, { deletedAt: options.deleted ? new Date() : null, userId: options.userId })).map(
+            async timer => ({
+                id: timer.id,
+                title: timer.title,
+                createdAt: timer.createdAt.toISOString(),
+                ttsVoice: timer.ttsVoice,
+                intervals: await (async () => {
+                    const intervals = await db.timerInterval.insert(2, { timerId: timer!.id });
+                    return intervals.map(({ title, duration, beatPattern, id, repeatCount }) => ({
+                        title,
+                        duration,
+                        beatPattern,
+                        id,
+                        repeatCount,
+                    }));
+                })(),
+            }),
+        ),
     );
 }
 
