@@ -4,10 +4,10 @@ import type { ZodType } from "better-auth";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
-import type DomainError from "~~/server/errors/domain-error";
+import { generateId } from "~~/server/database/schema/mixins";
+import DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 
-type AnyError = string | Error | ZodError;
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default class BaseController {
     static HttpStatusCode = {
@@ -87,7 +87,7 @@ export default class BaseController {
         PARTIAL_CONTENT: "Partial Content",
         MULTI_STATUS: "Multi-Status",
         ALREADY_REPORTED: "Already Reported",
-        IM_USED: "IM Used",
+        IM_USED: "I'm Used",
         MULTIPLE_CHOICES: "Multiple Choices",
         MOVED_PERMANENTLY: "Moved Permanently",
         FOUND: "Found",
@@ -139,21 +139,31 @@ export default class BaseController {
     };
 
     static throwError(
-        error: AnyError,
+        error: DomainError | ZodError | Error,
         status: keyof typeof BaseController.HttpStatusCode = "BAD_REQUEST",
         maskError: boolean = false,
     ): never {
-        console.error(error);
+        const id = generateId();
         const message = (() => {
             if (maskError) return BaseController.HttpStatusMessage[status];
             if (error instanceof ZodError) return z.prettifyError(error);
-            if (error instanceof Error) return error.message;
-            return error;
+            return error.message;
+        })().replaceAll(" | ", "");
+
+        const logMessage = (() => {
+            if (error instanceof DomainError) {
+                const { name, logMessage } = error;
+                return `${name}: ${logMessage}`;
+            }
+            return error.message;
         })();
+
+        console.error(`${id} - ${logMessage}`);
+
         throw createError({
             statusCode: BaseController.HttpStatusCode[status],
             statusMessage: BaseController.HttpStatusMessage[status],
-            message,
+            message: `${message} | ${id}`,
         });
     }
 
@@ -182,7 +192,7 @@ export default class BaseController {
     }
 
     static mapDomainResultToHttp(event: H3Event, error: DomainError | null): asserts error is null {
-        if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found", "NOT_FOUND");
+        if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
         if (error) BaseController.throwError(error, "INTERNAL_SERVER_ERROR", true);
 
         if (event.method === "POST") this.setStatus(event, "CREATED");

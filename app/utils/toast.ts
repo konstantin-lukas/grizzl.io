@@ -2,17 +2,18 @@ import { h } from "vue";
 import type { ApiError } from "~/types/error";
 
 export function createToastError(error: ApiError) {
-    if (!error.data) {
-        return {
-            title: error.name,
-            description: error.message,
-            color: "error",
-        } as const;
-    }
+    const isNuxtError = !!error.data;
+    const message = (isNuxtError ? error.data?.message : error.message) ?? "";
+    const rawTitle = isNuxtError ? error?.data?.statusMessage : error.name;
+    const [description, id] = message.split(" | ");
+    const title = id ? `${rawTitle} (ID: ${id})` : rawTitle;
+
+    if (!isNuxtError) return { title, description, color: "error" } as const;
+
     return {
-        title: error?.data?.statusMessage,
+        title,
         description: h("div", {
-            innerHTML: error?.data?.message,
+            innerHTML: description,
             style: "white-space: preserve nowrap; text-overflow: ellipsis; overflow: hidden;",
         }),
         color: "error",

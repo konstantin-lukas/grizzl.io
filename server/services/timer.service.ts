@@ -10,13 +10,19 @@ export default class TimerService {
     public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
         const operation = isDeleted ? "delete" : "undelete";
         const rowCount = await this.timerRepository[operation]({ id, userId });
-        if (rowCount === 0) return err(new NotFoundError());
+        if (rowCount === 0) {
+            const logMessage = `Unable to ${operation} timer with id ${id} and ${userId}.`;
+            return err(new NotFoundError("logMessage", logMessage));
+        }
         return ok();
     }
 
     public async update(id: string, userId: string, timer: PutTimer) {
         const rowCount = await this.timerRepository.update(id, userId, timer);
-        if (rowCount === 0) return err(new NotFoundError());
+        if (rowCount === 0) {
+            const logMessage = `Unable to update timer with id ${id} and ${userId}.`;
+            return err(new NotFoundError("logMessage", logMessage));
+        }
         return ok();
     }
 

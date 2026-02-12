@@ -3,6 +3,7 @@ import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+import DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 import { HTTP_CODES } from "~~/test-utils/constants/http";
 
@@ -14,6 +15,13 @@ const { setResponseStatusSpy } = vi.hoisted(() => {
 
 mockNuxtImport("setResponseStatus", () => {
     return setResponseStatusSpy;
+});
+
+const id = "AAAAaaaaBBBBbbbb";
+vi.mock("~~/server/database/schema/mixins", () => {
+    return {
+        generateId: () => id,
+    };
 });
 
 const { createErrorSpy } = vi.hoisted(() => {
@@ -51,54 +59,59 @@ describe("setStatus", () => {
 
 describe("throwError", () => {
     const errorMessage = "Oh no!";
+    const zodError = z.string().safeParse(0).error!;
+    const error400 = (messageExpected: string) => ({
+        statusCode: 400,
+        statusMessage: "Bad Request",
+        message: `${messageExpected} | ${id}`,
+    });
 
     test.each([
         {
-            name: "should log a string to the console and return it as the message",
-            error: errorMessage,
-            expected: errorMessage,
-        },
-        {
             name: "should log an error to the console and return its message",
             error: new Error(errorMessage),
-            expected: errorMessage,
+            logExpected: `${id} - ${errorMessage}`,
+            createdError: error400(errorMessage),
         },
         {
             name: "should log a zod error to the console and return it prettified",
-            error: z.string().safeParse(0).error!,
-            expected: "✖ Invalid input: expected string, received number",
+            error: zodError,
+            logExpected: `${id} - ${zodError.message}`,
+            createdError: error400("✖ Invalid input: expected string, received number"),
         },
-    ])("$name", ({ error, expected }) => {
+        {
+            name: "should log a domain to the console and return its message",
+            error: new DomainError("A", "B"),
+            logExpected: `${id} - DomainError: B`,
+            createdError: error400("A"),
+        },
+    ])("$name", ({ error, logExpected, createdError }) => {
         expect(() => BaseController.throwError(error)).toThrow();
         expect(consoleErrorMock).toHaveBeenCalledOnce();
-        expect(consoleErrorMock).toHaveBeenCalledWith(error);
+        expect(consoleErrorMock).toHaveBeenCalledWith(logExpected);
         expect(consoleLogMock).not.toHaveBeenCalled();
         expect(createErrorSpy).toHaveBeenCalledOnce();
-        expect(createErrorSpy).toHaveBeenCalledWith({
-            statusCode: 400,
-            statusMessage: "Bad Request",
-            message: expected,
-        });
+        expect(createErrorSpy).toHaveBeenCalledWith(createdError);
     });
 
     test.each(HTTP_CODES)(
         "should throw an error with the correct status code and message for %s",
         (code, key, message) => {
-            expect(() => BaseController.throwError(errorMessage, key)).toThrow();
+            expect(() => BaseController.throwError(new Error(errorMessage), key)).toThrow();
             expect(createErrorSpy).toHaveBeenCalledWith({
                 statusCode: code,
                 statusMessage: message,
-                message: errorMessage,
+                message: `${errorMessage} | ${id}`,
             });
         },
     );
 
     test("should allow overriding the returned error message with the http status message", () => {
-        expect(() => BaseController.throwError(errorMessage, "I_AM_A_TEAPOT", true)).toThrow();
+        expect(() => BaseController.throwError(new Error(errorMessage), "I_AM_A_TEAPOT", true)).toThrow();
         expect(createErrorSpy).toHaveBeenCalledWith({
             statusCode: 418,
             statusMessage: "I'm a Teapot",
-            message: "I'm a Teapot",
+            message: `I'm a Teapot | ${id}`,
         });
     });
 });
@@ -224,28 +237,37 @@ describe("mapDomainResultToHttp", () => {
 
     test.each([
         {
-            error: new Error(),
+            error: new DomainError("A", "B"),
             errorType: "Error",
-            expected: "Internal Server Error",
+            message: `Internal Server Error | ${id}`,
+            serverMessage: `${id} - DomainError: B`,
             code: 500,
             msg: "Internal Server Error",
         },
         {
-            error: new NotFoundError(),
+            error: new NotFoundError("A", "B"),
             errorType: "NotFoundError",
-            expected: "The provided ID was not found",
+            message: `A | ${id}`,
+            serverMessage: `${id} - NotFoundError: B`,
             code: 404,
             msg: "Not Found",
         },
     ] as const)(
-        "should throw a $code error when an error of type $errorType was passed",
-        async ({ error, expected, code, msg }) => {
-            expect(() => BaseController.mapDomainResultToHttp({ method: "GET" } as never, error)).toThrow(expected);
+        "should throw a $code error when an error of type $errorType was passed and log something else on the server",
+        async ({ error, message, serverMessage, code, msg }) => {
+            expect(() => BaseController.mapDomainResultToHttp({ method: "GET" } as never, error)).toThrow(
+                expect.objectContaining({
+                    statusCode: code,
+                    statusMessage: msg,
+                    message,
+                }),
+            );
             expect(createErrorSpy).toHaveBeenCalledExactlyOnceWith({
                 statusCode: code,
                 statusMessage: msg,
-                message: expected,
+                message,
             });
+            expect(consoleErrorMock).toHaveBeenCalledExactlyOnceWith(serverMessage);
         },
     );
 });
