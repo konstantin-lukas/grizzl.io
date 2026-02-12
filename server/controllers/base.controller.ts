@@ -144,11 +144,12 @@ export default class BaseController {
         maskError: boolean = false,
     ): never {
         const id = generateId();
+
         const message = (() => {
             if (maskError) return BaseController.HttpStatusMessage[status];
             if (error instanceof ZodError) return z.prettifyError(error);
             return error.message;
-        })().replaceAll(" | ", "");
+        })().replaceAll(" | ", "; ");
 
         const logMessage = (() => {
             if (error instanceof DomainError) {

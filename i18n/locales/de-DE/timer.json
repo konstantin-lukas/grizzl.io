@@ -41,7 +41,9 @@
             "updatedTitle": "Timer aktualisiert",
             "updatedDescription": "Der Timer mit dem Titel „{title}“ wurde aktualisiert.",
             "deletedTitle": "Timer gelöscht",
-            "deletedDescription": "Der Timer mit dem Titel „{title}“ wurde gelöscht."
+            "deletedDescription": "Der Timer mit dem Titel „{title}“ wurde gelöscht.",
+            "unableToFetchTitle": "Timer konnten nicht abgerufen werden",
+            "unableToFetchDescription": "Deine Timer konnten derzeit nicht vom Server abgerufen werden."
         },
         "meta": {
             "title": "Timer",
