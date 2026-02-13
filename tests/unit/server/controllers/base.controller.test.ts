@@ -40,26 +40,10 @@ beforeEach(() => {
     vi.clearAllMocks();
 });
 
-describe("setStatus", () => {
-    test.each(HTTP_CODES)(
-        "should call setResponseStatus with the correct status message for %s",
-        (code, key, message) => {
-            BaseController.setStatus({} as unknown as H3Event<EventHandlerRequest>, key);
-            expect(setResponseStatusSpy).toHaveBeenCalledOnce();
-            expect(setResponseStatusSpy).toHaveBeenCalledWith({}, code, message);
-        },
-    );
-
-    test("defaults to setting status to 200", () => {
-        BaseController.setStatus({} as unknown as H3Event<EventHandlerRequest>);
-        expect(setResponseStatusSpy).toHaveBeenCalledOnce();
-        expect(setResponseStatusSpy).toHaveBeenCalledWith({}, 200, "OK");
-    });
-});
+const zodError = z.string().safeParse(0).error!;
 
 describe("throwError", () => {
     const errorMessage = "Oh no!";
-    const zodError = z.string().safeParse(0).error!;
     const error400 = (messageExpected: string) => ({
         statusCode: 400,
         statusMessage: "Bad Request",
@@ -162,62 +146,36 @@ describe("parseRequestBody", () => {
         const { default: Base } = await import("@@/server/controllers/base.controller");
         await expect(Base.parseRequestBody({} as unknown as H3Event, schema)).resolves.toBe(body);
     });
-});
 
-describe("safeParseRequestBody", () => {
-    const schema = z.string();
-
-    test("should default to the English zod locale", async () => {
+    test.each([
+        {
+            title: "defaults to the English zod locale",
+            cookies: {},
+            message: "Invalid input: expected string, received object",
+        },
+        {
+            title: "reads the locale from the cookies",
+            cookies: { i18n_redirected: "de" },
+            message: "Ungültige Eingabe: erwartet string, erhalten object",
+        },
+    ])("$title", async ({ cookies, message }) => {
         vi.doMock("h3", () => {
             return {
-                parseCookies: () => ({}),
+                parseCookies: () => cookies,
                 readBody: () => ({ data: 1 }),
             };
         });
         const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(false);
-        expect(data).toBeUndefined();
-        expect(error?.issues[0]!.message).toBe("Invalid input: expected string, received object");
-    });
-
-    test("should read the locale from the cookies", async () => {
-        vi.doMock("h3", () => {
-            return {
-                parseCookies: () => ({ i18n_redirected: "de" }),
-                readBody: () => ({ data: 1 }),
-            };
+        expect(Base.parseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema)).rejects.toMatchObject({
+            issues: [
+                {
+                    code: "invalid_type",
+                    expected: "string",
+                    message,
+                    path: [],
+                },
+            ],
         });
-        const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(false);
-        expect(data).toBeUndefined();
-        expect(error?.issues[0]!.message).toBe("Ungültige Eingabe: erwartet string, erhalten object");
-    });
-
-    test("should normally parse the body when there are no issues", async () => {
-        const body = "bananas";
-
-        vi.doMock("h3", () => {
-            return {
-                parseCookies: () => ({}),
-                readBody: () => body,
-            };
-        });
-        const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(true);
-        expect(data).toBe(body);
-        expect(error).toBeUndefined();
     });
 });
 
@@ -251,6 +209,25 @@ describe("mapDomainResultToHttp", () => {
             serverMessage: `${id} - NotFoundError: B`,
             code: 404,
             msg: "Not Found",
+        },
+        {
+            error: zodError,
+            errorType: "ZodError",
+            message: `✖ Invalid input: expected string, received number | ${id}`,
+            serverMessage: `${id} - ${JSON.stringify(
+                [
+                    {
+                        expected: "string",
+                        code: "invalid_type",
+                        path: [],
+                        message: "Invalid input: expected string, received number",
+                    },
+                ],
+                null,
+                2,
+            )}`,
+            code: 400,
+            msg: "Bad Request",
         },
     ] as const)(
         "should throw a $code error when an error of type $errorType was passed and log something else on the server",

@@ -1,3 +1,5 @@
+import type { H3Event } from "h3";
+import BaseController from "~~/server/controllers/base.controller";
 import { db } from "~~/server/database";
 import BaseRepository from "~~/server/repositories/base.repository";
 
@@ -15,7 +17,12 @@ interface MaybeInjectableClass<T> extends Constructor<T> {
 class Container {
     private registry = new Map<Constructor<unknown>, unknown>();
 
-    resolve<T>(injectable: InjectableClass<T>): T {
+    /**
+     * Automatically injects dependencies into dependency-injectable classes and returns the result wrapped a proxy.
+     * All method calls on the created class instance will be automatically error-handled and do not require any try/catch
+     * if you pass the event as the second argument.
+     */
+    resolve<T extends object>(injectable: InjectableClass<T>, event?: H3Event) {
         const r = <T>(injectable: MaybeInjectableClass<T>, resolvingStack = new Set<Constructor<unknown>>()): T => {
             if (resolvingStack.has(injectable)) {
                 const chain = [...resolvingStack, injectable].map(c => c.name).join(" -> ");
@@ -37,7 +44,34 @@ class Container {
 
             return instance;
         };
-        return r(injectable);
+        const injected = r(injectable);
+
+        if (!event) return injected;
+
+        return new Proxy<T>(injected, {
+            get(target, prop, receiver) {
+                const value = Reflect.get(target, prop, receiver);
+
+                if (typeof value !== "function") return value;
+
+                const isAsync = value.constructor.name === "AsyncFunction";
+
+                if (isAsync) {
+                    return async (...args: unknown[]) => {
+                        const { data, error } = await tryCatch(value.apply(target, args));
+                        console.log(error);
+                        BaseController.mapDomainResultToHttp(event, error);
+                        return data;
+                    };
+                }
+
+                return (...args: unknown[]) => {
+                    const { data, error } = tryCatchSync(() => value.apply(target, args));
+                    BaseController.mapDomainResultToHttp(event, error);
+                    return data;
+                };
+            },
+        });
     }
 }
 

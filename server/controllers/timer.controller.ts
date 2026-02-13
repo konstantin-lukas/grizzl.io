@@ -15,27 +15,22 @@ export default class TimerController extends BaseController {
     public async setDeletedStatus(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, DatabaseDeletedSchema);
-        const { error } = await this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted);
-        TimerController.mapDomainResultToHttp(event, error);
+        await this.timerService.setDeletedStatus(id, event.context.user.id, body.deleted);
     }
 
     public async update(event: H3Event) {
         const id = TimerController.parseIdParameter(event);
         const body = await TimerController.parseRequestBody(event, PutTimerSchema);
-        const { error } = await this.timerService.update(id, event.context.user.id, body);
-        TimerController.mapDomainResultToHttp(event, error);
+        await this.timerService.update(id, event.context.user.id, body);
     }
 
     public async getList(event: H3Event) {
-        const { data, error } = await this.timerService.getList(event.context.user.id);
-        TimerController.mapDomainResultToHttp(event, error);
-        return data;
+        return await this.timerService.getList(event.context.user.id);
     }
 
     public async create(event: H3Event) {
         const timer = await TimerController.parseRequestBody(event, PostTimerSchema);
-        const { data, error } = await this.timerService.create(event.context.user.id, timer);
-        TimerController.mapDomainResultToHttp(event, error);
+        const data = await this.timerService.create(event.context.user.id, timer);
         setHeader(event, "Location", `/api/timers/${data}`);
     }
 }

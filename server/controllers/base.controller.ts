@@ -1,7 +1,7 @@
 import { LOCALES } from "#shared/constants/i18n";
 import { DatabaseIdSchema } from "#shared/validators/id";
 import type { ZodType } from "better-auth";
-import type { EventHandlerRequest, H3Event } from "h3";
+import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
 import { generateId } from "~~/server/database/schema/mixins";
@@ -168,36 +168,40 @@ export default class BaseController {
         });
     }
 
-    static setStatus(event: H3Event<EventHandlerRequest>, status: keyof typeof BaseController.HttpStatusCode = "OK") {
-        setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
-    }
-
-    static async safeParseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
+    static async parseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
         const cookies = parseCookies(event);
         const body = await readBody(event);
         const language = LOCALES.find(locale => locale.code === cookies?.i18n_redirected);
         if (language) z.config(language.zodLocale);
-        return z.safeParse<T>(schema, body);
-    }
-
-    static async parseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
-        const { success, data, error } = await this.safeParseRequestBody(event, schema);
-        if (!success) BaseController.throwError(error);
-        return data;
+        return z.parse<T>(schema, body);
     }
 
     static parseIdParameter(event: H3Event) {
-        const { data, success, error } = DatabaseIdSchema.safeParse(getRouterParam(event, "id"));
-        if (!success) BaseController.throwError(error, "BAD_REQUEST");
-        return data;
+        return DatabaseIdSchema.parse(getRouterParam(event, "id"));
     }
 
-    static mapDomainResultToHttp(event: H3Event, error: DomainError | null): asserts error is null {
+    /**
+     * This method is the central error handler. It is automatically invoked whenever you call a function on a
+     * controller created by the dependency injection controller using a proxy.
+     * @param event - The event from the current request
+     * @param error -
+     */
+    static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
+        // DOMAIN ERRORS
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
+
+        // CLIENT ERRORS
+        if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");
+
+        // UNEXPECTED SERVER ERRORS
         if (error) BaseController.throwError(error, "INTERNAL_SERVER_ERROR", true);
 
-        if (event.method === "POST") this.setStatus(event, "CREATED");
-        if (event.method === "GET") this.setStatus(event, "OK");
-        if (event.method === "PUT" || event.method === "PATCH") this.setStatus(event, "NO_CONTENT");
+        const setStatus = (status: keyof typeof BaseController.HttpStatusCode = "OK") => {
+            setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
+        };
+
+        if (event.method === "POST") setStatus("CREATED");
+        if (event.method === "GET") setStatus("OK");
+        if (event.method === "PUT" || event.method === "PATCH") setStatus("NO_CONTENT");
     }
 }
