@@ -33,7 +33,7 @@ test("returns only the timers belonging to the requested user", async ({ db, use
 test("automatically includes the intervals belonging to a timer", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
     const [timer] = await db.timer.insert(1, { userId: user.id });
-    await db.timerInterval.insert(2, { timerId: timer!.id });
+    await db.timerInterval.insert(2, { timerId: timer.id });
     const [foundTimer] = await timerRepository.findByUserId(user.id);
     expect(foundTimer).toStrictEqual({
         createdAt: new Date("2025-01-23T02:17:18.000Z"),

@@ -26,11 +26,11 @@ export default class TimerService {
 
     /* c8 ignore start */
     public async getList(userId: string) {
-        return await this.timerRepository.findByUserId(userId);
+        return this.timerRepository.findByUserId(userId);
     }
 
     public async create(userId: string, timer: PostTimer) {
-        return await this.timerRepository.create(userId, timer);
+        return this.timerRepository.create(userId, timer);
     }
     /* c8 ignore stop */
 }

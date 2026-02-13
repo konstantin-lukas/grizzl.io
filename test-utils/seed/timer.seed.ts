@@ -12,7 +12,7 @@ test("insert timer test data", async ({ db }) => {
         for (let j = 0; j < intervalCount; j++) {
             const seed = 10 * i + j;
             await db.timerInterval.insert(1, {
-                timerId: timer!.id,
+                timerId: timer.id,
                 title: str({ length: int({ min: 1, max: 100, seed }), seed }),
                 repeatCount: int({ min: 1, max: 5, seed }),
                 duration: int({ min: 1000, max: 60 * 1000, seed }),

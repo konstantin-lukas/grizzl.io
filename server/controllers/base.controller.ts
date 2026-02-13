@@ -181,21 +181,22 @@ export default class BaseController {
     }
 
     /**
-     * This method is the central error handler. It is automatically invoked whenever you call a function on a
-     * controller created by the dependency injection controller using a proxy.
+     * This method is the central error handler. It is automatically invoked whenever you call a method on a
+     * controller created by the dependency injection container when using a proxy.
      * @param event - The event from the current request
      * @param error -
      */
     static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
-        // DOMAIN ERRORS
+        // SPECIFIC DOMAIN ERROR
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
 
-        // CLIENT ERRORS
+        // REQUEST ERROR
         if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");
 
-        // UNEXPECTED SERVER ERRORS
+        // UNEXPECTED SERVER ERROR
         if (error) BaseController.throwError(error, "INTERNAL_SERVER_ERROR", true);
 
+        // NO ERROR
         const setStatus = (status: keyof typeof BaseController.HttpStatusCode = "OK") => {
             setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
         };
