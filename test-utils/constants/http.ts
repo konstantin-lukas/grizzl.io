@@ -11,7 +11,7 @@ export const HTTP_CODES = [
     [206, "PARTIAL_CONTENT", "Partial Content"],
     [207, "MULTI_STATUS", "Multi-Status"],
     [208, "ALREADY_REPORTED", "Already Reported"],
-    [226, "IM_USED", "IM Used"],
+    [226, "IM_USED", "I'm Used"],
     [300, "MULTIPLE_CHOICES", "Multiple Choices"],
     [301, "MOVED_PERMANENTLY", "Moved Permanently"],
     [302, "FOUND", "Found"],

@@ -1,4 +1,4 @@
-import BaseFixture, { type InsertOptions } from "@@/test-utils/fixtures/base.fixture";
+import BaseFixture, { type InsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { date } from "~~/test-utils/helpers/data";
 
@@ -21,11 +21,8 @@ export default class AccountFixture extends BaseFixture<"account"> {
         super(db, "account");
     }
 
-    override async insert<N extends number = 1>(
-        options: InsertOptions<"account", N> & { overrides: { userId: string } },
-    ) {
-        const { count = 1, overrides = {} } = options;
-        return super.insert({ count: count as N, overrides });
+    override async insert<N extends number>(count: N, overrides: InsertOverrides<"account"> & { userId: string }) {
+        return super.insert(count, overrides);
     }
 
     async select() {

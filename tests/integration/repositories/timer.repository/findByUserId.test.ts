@@ -3,14 +3,14 @@ import TimerRepository from "~~/server/repositories/timer.repository";
 import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the timers belonging to the requested user", async ({ db, user }) => {
-    const [otherUser] = await db.user.insert({ overrides: { name: "Smithers", email: "smithers@burns.com" } });
-    const otherUserstimers = await db.timer.insert({ overrides: { userId: otherUser.id } });
+    const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });
+    const otherUserstimers = await db.timer.insert(5, { userId: otherUser.id });
     for (const timer of otherUserstimers) {
-        await db.timerInterval.insert({ overrides: { timerId: timer.id } });
+        await db.timerInterval.insert(2, { timerId: timer.id });
     }
 
     const timerRepository = new TimerRepository(db.client);
-    await db.timer.insert({ count: 2, overrides: { userId: user.id } });
+    await db.timer.insert(2, { userId: user.id });
     const timers = await timerRepository.findByUserId(user.id);
     expect(timers).toStrictEqual([
         {
@@ -32,8 +32,8 @@ test("returns only the timers belonging to the requested user", async ({ db, use
 
 test("automatically includes the intervals belonging to a timer", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
-    const [timer] = await db.timer.insert({ count: 1, overrides: { userId: user.id } });
-    await db.timerInterval.insert({ overrides: { timerId: timer!.id } });
+    const [timer] = await db.timer.insert(1, { userId: user.id });
+    await db.timerInterval.insert(2, { timerId: timer.id });
     const [foundTimer] = await timerRepository.findByUserId(user.id);
     expect(foundTimer).toStrictEqual({
         createdAt: new Date("2025-01-23T02:17:18.000Z"),

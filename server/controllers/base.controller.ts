@@ -1,12 +1,13 @@
 import { LOCALES } from "#shared/constants/i18n";
 import { DatabaseIdSchema } from "#shared/validators/id";
 import type { ZodType } from "better-auth";
-import type { EventHandlerRequest, H3Event } from "h3";
+import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
+import { generateId } from "~~/server/database/schema/mixins";
+import DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 
-type AnyError = string | Error | ZodError;
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default class BaseController {
     static HttpStatusCode = {
@@ -86,7 +87,7 @@ export default class BaseController {
         PARTIAL_CONTENT: "Partial Content",
         MULTI_STATUS: "Multi-Status",
         ALREADY_REPORTED: "Already Reported",
-        IM_USED: "IM Used",
+        IM_USED: "I'm Used",
         MULTIPLE_CHOICES: "Multiple Choices",
         MOVED_PERMANENTLY: "Moved Permanently",
         FOUND: "Found",
@@ -138,59 +139,70 @@ export default class BaseController {
     };
 
     static throwError(
-        error: AnyError,
+        error: DomainError | ZodError | Error,
         status: keyof typeof BaseController.HttpStatusCode = "BAD_REQUEST",
         maskError: boolean = false,
     ): never {
-        console.error(error);
+        const id = generateId();
+
         const message = (() => {
             if (maskError) return BaseController.HttpStatusMessage[status];
             if (error instanceof ZodError) return z.prettifyError(error);
-            if (error instanceof Error) return error.message;
-            return error;
+            return error.message;
+        })().replaceAll(" | ", "; ");
+
+        const logMessage = (() => {
+            if (error instanceof DomainError) {
+                const { name, logMessage } = error;
+                return `${name}: ${logMessage}`;
+            }
+            return error.message;
         })();
+
+        console.error(`${id} - ${logMessage}`);
+
         throw createError({
             statusCode: BaseController.HttpStatusCode[status],
             statusMessage: BaseController.HttpStatusMessage[status],
-            message,
+            message: `${message} | ${id}`,
         });
     }
 
-    static setStatus(event: H3Event<EventHandlerRequest>, status: keyof typeof BaseController.HttpStatusCode = "OK") {
-        setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
-    }
-
-    static async safeParseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
+    static async parseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
         const cookies = parseCookies(event);
         const body = await readBody(event);
         const language = LOCALES.find(locale => locale.code === cookies?.i18n_redirected);
         if (language) z.config(language.zodLocale);
-        return z.safeParse<T>(schema, body);
-    }
-
-    static async parseRequestBody<T extends ZodType>(event: H3Event, schema: T) {
-        const { success, data, error } = await this.safeParseRequestBody(event, schema);
-        if (!success) BaseController.throwError(error);
-        return data;
+        return z.parse<T>(schema, body);
     }
 
     static parseIdParameter(event: H3Event) {
-        const { data, success, error } = DatabaseIdSchema.safeParse(getRouterParam(event, "id"));
-        if (!success) BaseController.throwError(error, "BAD_REQUEST");
-        return data;
+        return DatabaseIdSchema.parse(getRouterParam(event, "id"));
     }
 
-    static async resolveOrThrowHttpError<T>(event: H3Event, promise: Promise<T>): Promise<T> {
-        const result = await tryCatch(promise);
-        const { error } = result;
+    /**
+     * This method is the central error handler. It is automatically invoked whenever you call a method on a
+     * controller created by the dependency injection container when using a proxy.
+     * @param event - The event from the current request
+     * @param error -
+     */
+    static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
+        // SPECIFIC DOMAIN ERROR
+        if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
 
-        if (error instanceof NotFoundError) BaseController.throwError("The provided ID was not found", "NOT_FOUND");
-        if (error) BaseController.throwError(error, "UNPROCESSABLE_CONTENT", true);
+        // REQUEST ERROR
+        if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");
 
-        if (event.method === "POST") this.setStatus(event, "CREATED");
-        if (event.method === "GET") this.setStatus(event, "OK");
-        if (event.method === "PUT" || event.method === "PATCH") this.setStatus(event, "NO_CONTENT");
+        // UNEXPECTED SERVER ERROR
+        if (error) BaseController.throwError(error, "INTERNAL_SERVER_ERROR", true);
 
-        return result.data;
+        // NO ERROR
+        const setStatus = (status: keyof typeof BaseController.HttpStatusCode = "OK") => {
+            setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
+        };
+
+        if (event.method === "POST") setStatus("CREATED");
+        if (event.method === "GET") setStatus("OK");
+        if (event.method === "PUT" || event.method === "PATCH") setStatus("NO_CONTENT");
     }
 }

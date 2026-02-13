@@ -35,8 +35,9 @@ describe("setDeletedStatus", () => {
         expect(timerRepositoryMock.delete).not.toHaveBeenCalled();
     });
 
-    test("throws an error when the repository returns 0 affected rows", async () => {
+    test("returns an error when the repository returns 0 affected rows", async () => {
         timerRepositoryMock.delete.mockReturnValueOnce(0);
+
         await expect(timerService.setDeletedStatus(id, userId, true)).rejects.toBeInstanceOf(NotFoundError);
     });
 });
@@ -47,7 +48,7 @@ describe("update", () => {
         expect(timerRepositoryMock.update).toHaveBeenCalledExactlyOnceWith(id, userId, timer);
     });
 
-    test("throws an error when the repository returns 0 affected rows", async () => {
+    test("returns an error when the repository returns 0 affected rows", async () => {
         timerRepositoryMock.update.mockReturnValueOnce(0);
         await expect(timerService.update(id, userId, timer)).rejects.toBeInstanceOf(NotFoundError);
     });

@@ -1,10 +1,19 @@
 import { beforeEach, expect, test, vi } from "vitest";
+import DomainError from "~~/server/errors/domain-error";
+import NotFoundError from "~~/server/errors/not-found-error";
 import { createContainer } from "~~/server/utils/di";
 
 const { db, BaseRepository } = vi.hoisted(() => {
     return {
         db: vi.fn(),
         BaseRepository: vi.fn(class {}),
+    };
+});
+
+const id = "AAAAaaaaBBBBbbbb";
+vi.mock("~~/server/database/schema/mixins", () => {
+    return {
+        generateId: () => id,
     };
 });
 
@@ -114,4 +123,90 @@ test("resolves multiple dependencies and restores instances from cache when they
 
     expect((ServiceB.mock.calls[0]! as unknown[])[0]).toBe(repoB);
     expect((ServiceB.mock.calls[0]! as unknown[])[1]).toBe(repoA);
+});
+
+test.each([
+    {
+        errorType: DomainError,
+        expectedError: {
+            message: "Internal Server Error | AAAAaaaaBBBBbbbb",
+            statusCode: 500,
+            statusMessage: "Internal Server Error",
+        },
+    },
+    {
+        errorType: NotFoundError,
+        expectedError: {
+            message: "A | AAAAaaaaBBBBbbbb",
+            statusCode: 404,
+            statusMessage: "Not Found",
+        },
+    },
+])(
+    "automatically catches $errorType errors on created instance's method calls and translates them to http errors",
+    async ({ errorType, expectedError }) => {
+        class ThrowingController {
+            static readonly deps = [];
+            async throwingMethod() {
+                throw new errorType("A", "B");
+            }
+        }
+
+        const container = createContainer();
+        const event = "event" as never;
+        const throwingInstance = container.resolve(ThrowingController, event);
+
+        await expect(throwingInstance.throwingMethod()).rejects.toMatchObject(expect.objectContaining(expectedError));
+    },
+);
+
+test("automatically catches errors on synchronous method calls", () => {
+    class ThrowingController {
+        static readonly deps = [];
+        throwingMethod() {
+            throw new Error("A");
+        }
+    }
+
+    const container = createContainer();
+    const event = "event" as never;
+    const throwingInstance = container.resolve(ThrowingController, event);
+
+    expect(throwingInstance.throwingMethod).toThrow(
+        expect.objectContaining({
+            message: "Internal Server Error | AAAAaaaaBBBBbbbb",
+            statusCode: 500,
+            statusMessage: "Internal Server Error",
+        }),
+    );
+});
+
+test("does not turn synchronous methods into asynchronous ones", () => {
+    const value = 123;
+    class SyncController {
+        static readonly deps = [];
+        syncMethod() {
+            return value;
+        }
+    }
+
+    const container = createContainer();
+    const event = "event" as never;
+    const throwingInstance = container.resolve(SyncController, event);
+
+    expect(throwingInstance.syncMethod()).toBe(value);
+});
+
+test("allows accessing non-function properties even when instance is proxied", () => {
+    const value = 123;
+    class SyncController {
+        static readonly deps = [];
+        value = value;
+    }
+
+    const container = createContainer();
+    const event = "event" as never;
+    const throwingInstance = container.resolve(SyncController, event);
+
+    expect(throwingInstance.value).toBe(value);
 });

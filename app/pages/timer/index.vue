@@ -2,7 +2,16 @@
 import type { Timer } from "#shared/validators/timer";
 
 const open = ref(false);
-const { data, refresh } = useFetch("/api/timers", { key: "/api/timers" });
+const toast = useToast();
+const { data, refresh } = useFetch("/api/timers", {
+    key: "/api/timers",
+    onResponseError: () =>
+        toast.add({
+            title: $t("timer.toast.unableToFetchTitle"),
+            description: $t("timer.toast.unableToFetchDescription"),
+            color: "error",
+        }),
+});
 const { reset, mute } = useTimer();
 
 const activeTimer = ref<Timer | null>(null);
@@ -36,7 +45,7 @@ watch(open, () => {
                     <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
                 </LayoutWrapper>
             </OverlaySlideover>
-            <div class="mb-16 flex w-full flex-grow flex-col">
+            <div class="mb-16 flex w-full grow flex-col">
                 <OverlayDrawer v-model:open="open">
                     <TimerFormUpsert @success="open = false" />
                     <template #title>{{ $t("timer.aria.drawer.create") }}</template>
@@ -44,7 +53,7 @@ watch(open, () => {
                 </OverlayDrawer>
                 <TimerList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                 <Transition name="fade">
-                    <div v-if="data && data.length === 0" class="center w-full flex-grow">
+                    <div v-if="data && data.length === 0" class="center w-full grow">
                         <DataEmpty @open="() => (open = true)" />
                     </div>
                 </Transition>

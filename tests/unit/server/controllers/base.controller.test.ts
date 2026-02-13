@@ -3,6 +3,7 @@ import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+import DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 import { HTTP_CODES } from "~~/test-utils/constants/http";
 
@@ -14,6 +15,13 @@ const { setResponseStatusSpy } = vi.hoisted(() => {
 
 mockNuxtImport("setResponseStatus", () => {
     return setResponseStatusSpy;
+});
+
+const id = "AAAAaaaaBBBBbbbb";
+vi.mock("~~/server/database/schema/mixins", () => {
+    return {
+        generateId: () => id,
+    };
 });
 
 const { createErrorSpy } = vi.hoisted(() => {
@@ -32,73 +40,62 @@ beforeEach(() => {
     vi.clearAllMocks();
 });
 
-describe("setStatus", () => {
-    test.each(HTTP_CODES)(
-        "should call setResponseStatus with the correct status message for %s",
-        (code, key, message) => {
-            BaseController.setStatus({} as unknown as H3Event<EventHandlerRequest>, key);
-            expect(setResponseStatusSpy).toHaveBeenCalledOnce();
-            expect(setResponseStatusSpy).toHaveBeenCalledWith({}, code, message);
-        },
-    );
-
-    test("defaults to setting status to 200", () => {
-        BaseController.setStatus({} as unknown as H3Event<EventHandlerRequest>);
-        expect(setResponseStatusSpy).toHaveBeenCalledOnce();
-        expect(setResponseStatusSpy).toHaveBeenCalledWith({}, 200, "OK");
-    });
-});
+const zodError = z.string().safeParse(0).error!;
 
 describe("throwError", () => {
     const errorMessage = "Oh no!";
+    const error400 = (messageExpected: string) => ({
+        statusCode: 400,
+        statusMessage: "Bad Request",
+        message: `${messageExpected} | ${id}`,
+    });
 
     test.each([
         {
-            name: "should log a string to the console and return it as the message",
-            error: errorMessage,
-            expected: errorMessage,
-        },
-        {
             name: "should log an error to the console and return its message",
             error: new Error(errorMessage),
-            expected: errorMessage,
+            logExpected: `${id} - ${errorMessage}`,
+            createdError: error400(errorMessage),
         },
         {
             name: "should log a zod error to the console and return it prettified",
-            error: z.string().safeParse(0).error!,
-            expected: "✖ Invalid input: expected string, received number",
+            error: zodError,
+            logExpected: `${id} - ${zodError.message}`,
+            createdError: error400("✖ Invalid input: expected string, received number"),
         },
-    ])("$name", ({ error, expected }) => {
+        {
+            name: "should log a domain to the console and return its message",
+            error: new DomainError("A", "B"),
+            logExpected: `${id} - DomainError: B`,
+            createdError: error400("A"),
+        },
+    ])("$name", ({ error, logExpected, createdError }) => {
         expect(() => BaseController.throwError(error)).toThrow();
         expect(consoleErrorMock).toHaveBeenCalledOnce();
-        expect(consoleErrorMock).toHaveBeenCalledWith(error);
+        expect(consoleErrorMock).toHaveBeenCalledWith(logExpected);
         expect(consoleLogMock).not.toHaveBeenCalled();
         expect(createErrorSpy).toHaveBeenCalledOnce();
-        expect(createErrorSpy).toHaveBeenCalledWith({
-            statusCode: 400,
-            statusMessage: "Bad Request",
-            message: expected,
-        });
+        expect(createErrorSpy).toHaveBeenCalledWith(createdError);
     });
 
     test.each(HTTP_CODES)(
         "should throw an error with the correct status code and message for %s",
         (code, key, message) => {
-            expect(() => BaseController.throwError(errorMessage, key)).toThrow();
+            expect(() => BaseController.throwError(new Error(errorMessage), key)).toThrow();
             expect(createErrorSpy).toHaveBeenCalledWith({
                 statusCode: code,
                 statusMessage: message,
-                message: errorMessage,
+                message: `${errorMessage} | ${id}`,
             });
         },
     );
 
     test("should allow overriding the returned error message with the http status message", () => {
-        expect(() => BaseController.throwError(errorMessage, "I_AM_A_TEAPOT", true)).toThrow();
+        expect(() => BaseController.throwError(new Error(errorMessage), "I_AM_A_TEAPOT", true)).toThrow();
         expect(createErrorSpy).toHaveBeenCalledWith({
             statusCode: 418,
             statusMessage: "I'm a Teapot",
-            message: "I'm a Teapot",
+            message: `I'm a Teapot | ${id}`,
         });
     });
 });
@@ -149,107 +146,105 @@ describe("parseRequestBody", () => {
         const { default: Base } = await import("@@/server/controllers/base.controller");
         await expect(Base.parseRequestBody({} as unknown as H3Event, schema)).resolves.toBe(body);
     });
-});
 
-describe("safeParseRequestBody", () => {
-    const schema = z.string();
-
-    test("should default to the English zod locale", async () => {
+    test.each([
+        {
+            title: "defaults to the English zod locale",
+            cookies: {},
+            message: "Invalid input: expected string, received object",
+        },
+        {
+            title: "reads the locale from the cookies",
+            cookies: { i18n_redirected: "de" },
+            message: "Ungültige Eingabe: erwartet string, erhalten object",
+        },
+    ])("$title", async ({ cookies, message }) => {
         vi.doMock("h3", () => {
             return {
-                parseCookies: () => ({}),
+                parseCookies: () => cookies,
                 readBody: () => ({ data: 1 }),
             };
         });
         const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(false);
-        expect(data).toBeUndefined();
-        expect(error?.issues[0]!.message).toBe("Invalid input: expected string, received object");
-    });
-
-    test("should read the locale from the cookies", async () => {
-        vi.doMock("h3", () => {
-            return {
-                parseCookies: () => ({ i18n_redirected: "de" }),
-                readBody: () => ({ data: 1 }),
-            };
+        expect(Base.parseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema)).rejects.toMatchObject({
+            issues: [
+                {
+                    code: "invalid_type",
+                    expected: "string",
+                    message,
+                    path: [],
+                },
+            ],
         });
-        const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(false);
-        expect(data).toBeUndefined();
-        expect(error?.issues[0]!.message).toBe("Ungültige Eingabe: erwartet string, erhalten object");
-    });
-
-    test("should normally parse the body when there are no issues", async () => {
-        const body = "bananas";
-
-        vi.doMock("h3", () => {
-            return {
-                parseCookies: () => ({}),
-                readBody: () => body,
-            };
-        });
-        const { default: Base } = await import("@@/server/controllers/base.controller");
-        const { data, success, error } = await Base.safeParseRequestBody(
-            {} as unknown as H3Event<EventHandlerRequest>,
-            schema,
-        );
-        expect(success).toBe(true);
-        expect(data).toBe(body);
-        expect(error).toBeUndefined();
     });
 });
 
-describe("resolveOrThrowHttpError", () => {
+describe("mapDomainResultToHttp", () => {
     test.each([
         { event: { method: "GET" }, msg: "OK", code: 200 },
         { event: { method: "POST" }, msg: "Created", code: 201 },
         { event: { method: "PATCH" }, msg: "No Content", code: 204 },
         { event: { method: "PUT" }, msg: "No Content", code: 204 },
     ] as const)(
-        "should set the response status to $code - $msg when method is $method",
+        "should set the response status to $code - $msg when method is $method and error is null",
         async ({ event, code, msg }) => {
-            const data = 42;
-            const returnedValue = await BaseController.resolveOrThrowHttpError(event as never, Promise.resolve(data));
+            BaseController.mapDomainResultToHttp(event as never, null);
             expect(setResponseStatusSpy).toHaveBeenCalledExactlyOnceWith(event, code, msg);
-            expect(returnedValue).toBe(data);
         },
     );
 
     test.each([
         {
-            error: new Error(),
+            error: new DomainError("A", "B"),
             errorType: "Error",
-            expected: "Unprocessable Content",
-            code: 422,
-            msg: "Unprocessable Content",
+            message: `Internal Server Error | ${id}`,
+            serverMessage: `${id} - DomainError: B`,
+            code: 500,
+            msg: "Internal Server Error",
         },
         {
-            error: new NotFoundError(),
+            error: new NotFoundError("A", "B"),
             errorType: "NotFoundError",
-            expected: "The provided ID was not found",
+            message: `A | ${id}`,
+            serverMessage: `${id} - NotFoundError: B`,
             code: 404,
             msg: "Not Found",
         },
+        {
+            error: zodError,
+            errorType: "ZodError",
+            message: `✖ Invalid input: expected string, received number | ${id}`,
+            serverMessage: `${id} - ${JSON.stringify(
+                [
+                    {
+                        expected: "string",
+                        code: "invalid_type",
+                        path: [],
+                        message: "Invalid input: expected string, received number",
+                    },
+                ],
+                null,
+                2,
+            )}`,
+            code: 400,
+            msg: "Bad Request",
+        },
     ] as const)(
-        "should set the response status to $code when an error of type $errorType was passed",
-        async ({ error, expected, code, msg }) => {
-            await expect(() =>
-                BaseController.resolveOrThrowHttpError({ method: "GET" } as never, Promise.reject(error)),
-            ).rejects.toThrow(expected);
+        "should throw a $code error when an error of type $errorType was passed and log something else on the server",
+        async ({ error, message, serverMessage, code, msg }) => {
+            expect(() => BaseController.mapDomainResultToHttp({ method: "GET" } as never, error)).toThrow(
+                expect.objectContaining({
+                    statusCode: code,
+                    statusMessage: msg,
+                    message,
+                }),
+            );
             expect(createErrorSpy).toHaveBeenCalledExactlyOnceWith({
                 statusCode: code,
                 statusMessage: msg,
-                message: expected,
+                message,
             });
+            expect(consoleErrorMock).toHaveBeenCalledExactlyOnceWith(serverMessage);
         },
     );
 });
