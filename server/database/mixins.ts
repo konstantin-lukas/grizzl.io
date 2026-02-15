@@ -1,11 +1,6 @@
-import { ID_LENGTH } from "../../shared/constants/data";
+import { ID_LENGTH } from "../../shared/features/core/validators/core.validator";
+import { generateId } from "../../shared/utils/id.util";
 import { char, timestamp } from "drizzle-orm/pg-core";
-import { customAlphabet } from "nanoid";
-
-export function generateId() {
-    const nanoid = customAlphabet("23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz", ID_LENGTH);
-    return nanoid();
-}
 
 export const id = {
     id: char({ length: ID_LENGTH }).primaryKey().$defaultFn(generateId),

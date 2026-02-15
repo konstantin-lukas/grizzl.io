@@ -1,4 +1,4 @@
-import type { Timer } from "#shared/validators/timer";
+import type { Timer } from "#shared/features/timer/validators/timer.validator";
 
 export default function useTimer() {
     const progress = useState("timer-progress", () => 0);

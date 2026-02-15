@@ -1,19 +1,20 @@
 import {
-    BEAT_PATTERN_MAX,
-    BEAT_PATTERN_MIN,
     COUNT_MAX,
     COUNT_MIN,
+    DatabaseIdSchema,
     LIST_MAX,
     LIST_MIN,
     LONG_TITLE_MAX,
-    TIMER_DURATION_MAX,
-    TIMER_DURATION_MIN,
     TITLE_MAX,
     TITLE_MIN,
-} from "#shared/constants/data";
-import { Beat } from "#shared/enum/timer";
-import { DatabaseIdSchema } from "#shared/validators/id";
+} from "#shared/features/core/validators/core.validator";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 import { z } from "zod";
+
+export const BEAT_PATTERN_MIN = 2;
+export const BEAT_PATTERN_MAX = 30;
+export const TIMER_DURATION_MIN = 1000;
+export const TIMER_DURATION_MAX = 3600000; // 60 * 60 * 1000
 
 const PostIntervalSchema = z.object({
     title: z.nullable(z.string().max(TITLE_MAX)).transform(value => (value === "" ? null : value)),

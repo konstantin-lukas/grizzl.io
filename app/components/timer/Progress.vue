@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Beat } from "#shared/enum/timer";
-import type { Timer } from "#shared/validators/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
+import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { intervalToDuration } from "date-fns";
 
 const emit = defineEmits(["finish"]);

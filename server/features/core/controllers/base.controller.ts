@@ -1,12 +1,11 @@
-import { LOCALES } from "#shared/constants/i18n";
-import { DatabaseIdSchema } from "#shared/validators/id";
+import { LOCALES } from "#shared/features/core/constants/i18n.constant";
+import { DatabaseIdSchema } from "#shared/features/core/validators/core.validator";
 import type { ZodType } from "better-auth";
 import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
-import { generateId } from "~~/server/database/mixins";
-import DomainError from "~~/server/errors/domain-error";
-import NotFoundError from "~~/server/errors/not-found-error";
+import DomainError from "~~/server/errors/domain.error";
+import NotFoundError from "~~/server/errors/not-found.error";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default class BaseController {

@@ -1,4 +1,4 @@
-import { Beat } from "@@/shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 import { test } from "~~/test-utils/playwright";
 
 test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {

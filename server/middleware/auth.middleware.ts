@@ -1,8 +1,8 @@
 import { sendRedirect } from "#imports";
-import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/constants/auth";
-import { DatabaseIdSchema } from "#shared/validators/id";
+import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/features/core/constants/auth.constant";
+import { DatabaseIdSchema } from "#shared/features/core/validators/core.validator";
 import { auth } from "~~/server/auth";
-import BaseController from "~~/server/features/core/base.controller";
+import BaseController from "~~/server/features/core/controllers/base.controller";
 
 declare module "h3" {
     interface H3EventContext {

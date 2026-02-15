@@ -1,4 +1,4 @@
-import { duplicateNthElement } from "@@/shared/utils/array";
+import { duplicateNthElement } from "#shared/utils/array.util";
 import { expect, test } from "vitest";
 
 test.each([

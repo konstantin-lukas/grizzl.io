@@ -1,4 +1,4 @@
-import { Beat } from "#shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 import beep from "~/assets/sound/intermittent_beep.wav";

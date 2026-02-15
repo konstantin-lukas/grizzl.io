@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/validators/timer";
+import type { Timer } from "#shared/features/timer/validators/timer.validator";
 
 const open = ref(false);
 const toast = useToast();

@@ -1,2 +1,2 @@
-export * from "../features/core/auth.schema";
-export * from "../features/timer/timer.schema";
+export * from "../features/core/schemas/auth.schema";
+export * from "../features/timer/schemas/timer.schema";

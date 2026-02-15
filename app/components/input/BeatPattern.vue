@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { BEAT_PATTERN_MAX } from "#shared/constants/data";
-import { Beat, BeatSymbol } from "#shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
+import { BeatSymbol } from "#shared/features/timer/maps/beat.map";
+import { BEAT_PATTERN_MAX } from "#shared/features/timer/validators/timer.validator";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 

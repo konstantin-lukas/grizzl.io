@@ -1,4 +1,4 @@
-import { LOCALES } from "#shared/constants/i18n";
+import { LOCALES } from "#shared/features/core/constants/i18n.constant";
 import { test } from "~~/test-utils/playwright";
 
 export function withLocale(locale: string, callback: Parameters<typeof test.describe>[2]) {

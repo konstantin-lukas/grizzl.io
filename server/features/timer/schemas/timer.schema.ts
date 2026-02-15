@@ -1,6 +1,6 @@
-import { ID_LENGTH, LONG_TITLE_MAX, TITLE_MAX } from "../../../shared/constants/data";
-import { createdAt, deletedAt, id } from "../../database/mixins";
-import { user } from "../core/auth.schema";
+import { ID_LENGTH, LONG_TITLE_MAX, TITLE_MAX } from "../../../../shared/features/core/validators/core.validator";
+import { createdAt, deletedAt, id } from "../../../database/mixins";
+import { user } from "../../core/schemas/auth.schema";
 import { char, integer, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";
 
 export const beatEnum = pgEnum("beat", ["pause", "low", "high"]);

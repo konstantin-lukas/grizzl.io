@@ -1,4 +1,4 @@
-import { Beat } from "@@/shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 import BaseFixture, { type InsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import { str } from "@@/test-utils/helpers/data";
 import type { drizzle } from "drizzle-orm/node-postgres";
