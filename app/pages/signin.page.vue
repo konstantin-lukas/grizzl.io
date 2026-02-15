@@ -2,11 +2,6 @@
 import type { ButtonProps } from "#ui/components/Button.vue";
 import { authClient } from "~/constants/auth-client";
 
-definePageMeta({
-    title: "ui.signIn",
-    description: "meta.signInDescription",
-});
-
 const { query } = useRoute();
 const callbackURL =
     typeof query.callbackURL === "string" && query.callbackURL.length > 1 ? query.callbackURL : undefined;

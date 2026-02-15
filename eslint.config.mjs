@@ -64,4 +64,10 @@ export default withNuxt([
             "@typescript-eslint/no-extraneous-class": "off",
         },
     },
+    {
+        files: ["app/**/pages/**/*"],
+        rules: {
+            "vue/multi-word-component-names": "off",
+        },
+    },
 ]);

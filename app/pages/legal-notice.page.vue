@@ -1,8 +1,5 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
-definePageMeta({
-    title: "legal.notice",
-});
 </script>
 
 <template>
