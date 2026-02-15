@@ -5,9 +5,9 @@ export default defineConfig({
     test: {
         coverage: {
             include: [
-                "app/utils/**/*",
-                "app/components/**/*",
-                "app/composables/**/*",
+                "app/**/utils/**/*",
+                "app/**/components/**/*",
+                "app/**/composables/**/*",
                 "shared/utils/**/*",
                 "server/utils/**/*",
                 "server/**/*.repository.ts",
