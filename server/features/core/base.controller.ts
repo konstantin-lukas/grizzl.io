@@ -4,7 +4,7 @@ import type { ZodType } from "better-auth";
 import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
-import { generateId } from "~~/server/database/schema/mixins";
+import { generateId } from "~~/server/database/mixins";
 import DomainError from "~~/server/errors/domain-error";
 import NotFoundError from "~~/server/errors/not-found-error";
 

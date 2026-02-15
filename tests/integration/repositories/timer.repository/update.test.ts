@@ -1,5 +1,5 @@
 import { expect, test } from "@@/test-utils/vitest";
-import TimerRepository from "~~/server/repositories/timer.repository";
+import TimerRepository from "~~/server/features/timer/timer.repository";
 import { BASE_TIMER } from "~~/test-utils/constants/timer";
 import { anyId } from "~~/test-utils/vitest/patterns";
 

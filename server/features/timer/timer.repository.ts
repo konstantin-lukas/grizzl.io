@@ -2,7 +2,7 @@ import type { PostTimer, PutTimer, Timer } from "#shared/validators/timer";
 import { and, desc, eq, isNull, notInArray, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { timerInterval } from "~~/server/database/schema";
-import BaseRepository from "~~/server/repositories/base.repository";
+import BaseRepository from "~~/server/features/core/base.repository";
 
 const schema = "timer";
 

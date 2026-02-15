@@ -1,6 +1,6 @@
 import type { PostTimer, PutTimer } from "#shared/validators/timer";
 import NotFoundError from "~~/server/errors/not-found-error";
-import TimerRepository from "~~/server/repositories/timer.repository";
+import TimerRepository from "~~/server/features/timer/timer.repository";
 
 export default class TimerService {
     static readonly deps = [TimerRepository];

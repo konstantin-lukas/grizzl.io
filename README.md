@@ -115,9 +115,10 @@ That's it! Your new language should now be available.
 # Architecture
 This project follows a feature-based architecture with some restrictions due to Nuxt enforcing certain standards.
 On the frontend all code that is specific to a section of the app is put inside the respective subdirectory of the
-features directory. Inside each feature directory, the code is grouped by layer, e.g. components, composables, etc.
-If necessary, code can be further grouped by concern. This is mostly necessary inside the components. So to make this
-even clearer these are the three levels of code organization:
+features directory. Anything else pretty much adheres to the standard nuxt conventions. Inside each feature directory, 
+the code is grouped by layer, e.g. components, composables, etc. If necessary, code can be further grouped by concern.
+This is mostly necessary inside the components. So to make this even clearer these are the three levels of code 
+organization:
 
 1. Feature
 2. Layer
@@ -133,94 +134,73 @@ that is not feature-specific will live somewhere next to the features directory,
 
 ```
 app/
-├── assets
-├── features/
-│   ├── core/
-│   │   ├── components/
-│   │   │   ├── text/
-│   │   │   │   ├── H1.vue
-│   │   │   │   ├── H2.vue
-│   │   │   │   ├── H3.vue
-│   │   │   │   └── H4.vue
-│   │   │   ├── containers/
-│   │   │   │   ├── Sliderover.vue
-│   │   │   │   ├── Drawer.vue
-│   │   │   │   └── Wrapper.vue
-│   │   │   ├── buttons/
-│   │   │   │   ├── Button.vue
-│   │   │   │   └── BlockLink.vue
-│   │   │   ├── informational/
-│   │   │   │   ├── Empty.vue
-│   │   │   │   └── Offline.vue
-│   │   │   ├── svg/
-│   │   │   │   └── GrizzlLogo.vue
-│   │   │   └── menu/
-│   │   │       ├── MenuButton.vue
-│   │   │       ├── LangSelect.vue
-│   │   │       ├── Menu.vue
-│   │   │       ├── SessionButton.vue
-│   │   │       ├── ThemeToggle.vue
-│   │   │       └── Footer.vue
-│   │   ├── composables/
-│   │   │   ├── useComputedOnLocaleChange.ts
-│   │   │   ├── useEventListener.ts
-│   │   │   ├── useMenu.ts
-│   │   │   └── ...
-│   │   ├── constants/
-│   │   │   ├── auth-client.ts
-│   │   │   ├── nav.ts
-│   │   │   └── ...
-│   │   ├── types/
-│   │   │   ├── error.d.ts
-│   │   │   └── ...
-│   │   └── utils/
-│   │       ├── template.ts
-│   │       ├── toast.ts
-│   │       └── ...
-│   └── timer/
-│       ├── components/
-│       │   ├── upsert/
-│       │   │   ├── BeatPatternInput.vue
-│       │   │   ├── Interval.vue
-│       │   │   ├── IntervalControls.vue
-│       │   │   ├── Upsert.vue
-│       │   │   └── VoiceSelect.vue
-│       │   ├── overview/
-│       │   │   ├── Delete.vue
-│       │   │   ├── List.vue
-│       │   │   └── ListItem.vue
-│       │   └── playback/
-│       │       ├── Controls.vue
-│       │       ├── Display.vue
-│       │       └── Progress.vue
-│       ├── composables/
-│       │   ├── useAnimateTimer.ts
-│       │   └── useTimer.ts
-│       ├── pages/
-│       │   ├── index.vue
-│       │   └── ...
-│       └── layouts/
-│           └── ...
-├── layouts
-├── middleware
-├── pages
-└── app.vue
+└── features/
+    ├── core/
+    │   ├── components/
+    │   │   ├── text/
+    │   │   │   ├── H1.vue
+    │   │   │   ├── H2.vue
+    │   │   │   ├── H3.vue
+    │   │   │   └── H4.vue
+    │   │   ├── containers/
+    │   │   │   ├── Sliderover.vue
+    │   │   │   ├── Drawer.vue
+    │   │   │   └── Wrapper.vue
+    │   │   ├── buttons/
+    │   │   │   ├── Button.vue
+    │   │   │   └── BlockLink.vue
+    │   │   └── ...
+    │   ├── composables/
+    │   │   ├── useComputedOnLocaleChange.ts
+    │   │   ├── useEventListener.ts
+    │   │   ├── useMenu.ts
+    │   │   └── ...
+    │   ├── constants/
+    │   │   ├── auth-client.ts
+    │   │   ├── nav.ts
+    │   │   └── ...
+    │   ├── types/
+    │   │   ├── error.d.ts
+    │   │   └── ...
+    │   └── utils/
+    │       ├── template.ts
+    │       ├── toast.ts
+    │       └── ...
+    └── timer/
+        ├── components/
+        │   ├── upsert/
+        │   │   ├── BeatPatternInput.vue
+        │   │   ├── Interval.vue
+        │   │   ├── IntervalControls.vue
+        │   │   ├── Upsert.vue
+        │   │   └── VoiceSelect.vue
+        │   ├── overview/
+        │   │   ├── Delete.vue
+        │   │   ├── List.vue
+        │   │   └── ListItem.vue
+        │   └── playback/
+        │       ├── Controls.vue
+        │       ├── Display.vue
+        │       └── Progress.vue
+        ├── composables/
+        │   ├── useAnimateTimer.ts
+        │   └── useTimer.ts
+        ├── pages/
+        │   ├── index.vue
+        │   └── ...
+        └── layouts/
+            └── ...
 server/
-├── api
-├── features/
-│   ├── core/
-│   │   ├── base.controller.ts
-│   │   └── base.repository.ts
-│   └── timer/
-│       ├── timer.repository.ts
-│       ├── timer.service.ts
-│       └── timer.controller.ts
-├── database
-├── errors
-├── middleware
-├── plugins
-├── di.ts
-└── auth.ts
+└── features/
+    ├── core/
+    │   ├── auth.schema.ts
+    │   ├── base.controller.ts
+    │   └── base.repository.ts
+    └── timer/
+        ├── timer.repository.ts
+        ├── timer.schema.ts
+        ├── timer.service.ts
+        └── timer.controller.ts
 ```
 
 

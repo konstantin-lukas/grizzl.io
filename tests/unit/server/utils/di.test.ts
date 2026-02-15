@@ -11,7 +11,7 @@ const { db, BaseRepository } = vi.hoisted(() => {
 });
 
 const id = "AAAAaaaaBBBBbbbb";
-vi.mock("~~/server/database/schema/mixins", () => {
+vi.mock("~~/server/database/mixins", () => {
     return {
         generateId: () => id,
     };
@@ -23,7 +23,7 @@ vi.mock("~~/server/database", () => {
     };
 });
 
-vi.mock("~~/server/repositories/base.repository", () => {
+vi.mock("~~/server/features/core/base.repository", () => {
     return {
         default: BaseRepository,
     };

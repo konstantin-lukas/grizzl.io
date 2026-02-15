@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import NotFoundError from "~~/server/errors/not-found-error";
-import TimerService from "~~/server/services/timer.service";
+import TimerService from "~~/server/features/timer/timer.service";
 
 const timerRepositoryMock = {
     delete: vi.fn(),

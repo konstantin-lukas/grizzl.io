@@ -1,8 +1,8 @@
 import { DatabaseDeletedSchema } from "#shared/validators/deleted";
 import { PostTimerSchema, PutTimerSchema } from "#shared/validators/timer";
 import type { H3Event } from "h3";
-import BaseController from "~~/server/controllers/base.controller";
-import TimerService from "~~/server/services/timer.service";
+import BaseController from "~~/server/features/core/base.controller";
+import TimerService from "~~/server/features/timer/timer.service";
 
 /* c8 ignore start */
 export default class TimerController extends BaseController {

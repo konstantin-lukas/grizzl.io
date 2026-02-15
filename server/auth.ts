@@ -1,4 +1,4 @@
-import { generateId } from "./database/schema/mixins";
+import { generateId } from "@@/server/database/mixins";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
