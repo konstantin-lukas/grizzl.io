@@ -112,6 +112,28 @@ That's it! Your new language should now be available.
 
 
 
+# Architecture
+This project follows a feature-based architecture with some restrictions due to Nuxt enforcing certain standards.
+On the frontend all code that is specific to a section of the app is put inside the respective subdirectory of the
+features directory. Anything else pretty much adheres to the standard nuxt conventions. Inside each feature directory, 
+the code is grouped by layer, e.g. components, composables, etc. If necessary, code can be further grouped by concern.
+This is mostly necessary inside the components. So to make this even clearer these are the three levels of code 
+organization:
+
+1. Feature
+2. Layer
+3. Concern (Optional)
+
+On the backend, the same feature based architecture applies but usually feature directories on the backend will just 
+contain controllers, services, and repositories. These are part of a layered-architecture where the controllers
+translate the results from the domain logic to http responses. Domain logic is handled by services and database access
+is done through repositories. A single repository doesn't necessarily match one table in the database. A repository can 
+sometimes abstract away certain tables like in the case of timers where timer intervals are always a part of a timer
+and thus don't need their own repository. This would be similar to a value object in DDD. Most other code on the backend
+that is not feature-specific will live somewhere next to the features directory, like for instance errors.
+
+
+
 # Deployment
 The following describes the deployment process for this specific repository. A deployment pipeline is triggered
 whenever a new tag matching the pattern `v[0-9]+.[0-9]+.[0-9]+` is pushed. However, you should not do this manually.

@@ -1,7 +1,7 @@
-import * as schema from "@@/server/database/schema";
 import { type InferInsertModel, eq, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { getTableConfig } from "drizzle-orm/pg-core";
+import * as schema from "~~/server/database/schema";
 
 type ExcludeEnum<T extends string> = T extends `${string}Enum${string}` ? never : T;
 type SchemaKey = ExcludeEnum<keyof typeof schema>;

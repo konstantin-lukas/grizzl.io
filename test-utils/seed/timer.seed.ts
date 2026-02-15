@@ -1,4 +1,4 @@
-import { Beat } from "#shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 import { arr, int, maybe, str } from "@@/test-utils/helpers/data";
 import { test } from "~~/test-utils/playwright";
 

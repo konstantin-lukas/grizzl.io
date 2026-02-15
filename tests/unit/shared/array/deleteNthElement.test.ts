@@ -1,4 +1,4 @@
-import { deleteNthElement } from "@@/shared/utils/array";
+import { deleteNthElement } from "#shared/utils/array.util";
 import { expect, test } from "vitest";
 
 test.each([

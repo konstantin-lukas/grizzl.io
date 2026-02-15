@@ -1,5 +1,11 @@
+import type { NuxtError } from "#app";
 import { h } from "vue";
-import type { ApiError } from "~/types/error";
+
+type ApiError = NuxtError<{
+    message: string;
+    statusCode: number;
+    statusMessage: string;
+}>;
 
 export function createToastError(error: ApiError) {
     const isNuxtError = !!error.data;

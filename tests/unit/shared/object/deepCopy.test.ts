@@ -1,4 +1,4 @@
-import { deepCopy } from "@@/shared/utils/object";
+import { deepCopy } from "#shared/utils/object.util";
 import { expect, test } from "vitest";
 
 test.each([

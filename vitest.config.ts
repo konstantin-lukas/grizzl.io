@@ -5,16 +5,16 @@ export default defineConfig({
     test: {
         coverage: {
             include: [
-                "app/utils/**/*",
-                "app/components/**/*",
-                "app/composables/**/*",
+                "app/**/utils/**/*",
+                "app/**/components/**/*",
+                "app/**/composables/**/*",
                 "shared/utils/**/*",
                 "server/utils/**/*",
-                "server/repositories/**/*",
-                "server/services/**/*",
-                "server/controllers/**/*",
+                "server/**/*.repository.ts",
+                "server/**/*.service.ts",
+                "server/**/*.controller.ts",
             ],
-            exclude: ["app/components/timer/**/*"],
+            exclude: ["app/features/**/timer/**/*"],
             reporter: ["text", "lcov", "json"],
         },
         // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604

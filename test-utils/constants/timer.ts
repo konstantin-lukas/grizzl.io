@@ -1,4 +1,4 @@
-import { Beat } from "@@/shared/enum/timer";
+import { Beat } from "#shared/features/timer/enums/beat.enum";
 
 export const BASE_INTERVAL = {
     title: "Crunches",
