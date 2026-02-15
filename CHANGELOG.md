@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.1...v1.4.2) (2026-02-15)
+
+
+### Bug Fixes
+
+* missing imports ([2f12297](https://github.com/konstantin-lukas/grizzl.io/commit/2f12297fadde2834ccaa9a3f69f56acc21420526))
+
 ## [1.4.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.0...v1.4.1) (2026-02-11)
 
 
