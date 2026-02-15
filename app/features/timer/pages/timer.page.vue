@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import OverviewList from "~/features/timer/components/overview/OverviewList.vue";
+import PlaybackContainer from "~/features/timer/components/playback/PlaybackContainer.vue";
 import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";
 
 const open = ref(false);
@@ -39,7 +40,7 @@ watch(open, () => {
             >
                 <template #title>{{ $t("timer.aria.slideover.title") }}</template>
                 <LayoutWrapper center-vertically>
-                    <TimerDisplay v-if="activeTimer" :timer="activeTimer" />
+                    <PlaybackContainer v-if="activeTimer" :timer="activeTimer" />
                 </LayoutWrapper>
             </OverlaySlideover>
             <div class="mb-16 flex w-full grow flex-col">

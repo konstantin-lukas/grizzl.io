@@ -2,6 +2,7 @@
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { formatDuration } from "date-fns";
 import OverviewDeleteButton from "~/features/timer/components/overview/OverviewDeleteButton.vue";
+import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
@@ -65,7 +66,7 @@ watch(open, () => {
                 <OverviewDeleteButton :timer="props.timer" />
             </div>
             <OverlayDrawer v-model:open="open">
-                <TimerFormUpsert :initial-state="props.timer" @success="open = false" />
+                <UpsertForm :initial-state="props.timer" @success="open = false" />
                 <template #title>{{ $t("timer.aria.drawer.edit") }}</template>
                 <template #description>{{ $t("timer.aria.drawer.description") }}</template>
             </OverlayDrawer>

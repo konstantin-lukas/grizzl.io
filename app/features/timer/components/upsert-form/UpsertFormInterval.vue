@@ -3,6 +3,7 @@ import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
 import { COUNT_MIN, TITLE_MAX } from "#shared/validators/core.validator";
 import UpsertFormBeatPatternInput from "~/features/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
+import UpsertFormIntervalActionButtons from "~/features/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
@@ -110,6 +111,6 @@ const durationSeconds = computed({
         <div class="relative w-full cursor-move overflow-hidden py-6" data-handle>
             <UIcon name="mdi:drag-horizontal" class="absolute top-1/2 left-1/2 size-12 -translate-1/2" />
         </div>
-        <TimerFormIntervalControls v-model:intervals="intervals" :index="index" />
+        <UpsertFormIntervalActionButtons v-model:intervals="intervals" :index="index" />
     </fieldset>
 </template>
