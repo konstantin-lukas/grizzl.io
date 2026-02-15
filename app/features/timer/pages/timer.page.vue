@@ -3,6 +3,7 @@ import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import OverviewList from "~/features/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/features/timer/components/playback/PlaybackContainer.vue";
 import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";
+import useTimer from "~/features/timer/composables/useTimer";
 
 const open = ref(false);
 const toast = useToast();

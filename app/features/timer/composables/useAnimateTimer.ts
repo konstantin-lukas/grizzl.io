@@ -2,6 +2,7 @@ import { Beat } from "#shared/features/timer/enums/beat.enum";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 import beep from "~/assets/sound/intermittent_beep.wav";
+import useTimer from "~/features/timer/composables/useTimer";
 
 export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, voiceUri: string | null) {
     const {

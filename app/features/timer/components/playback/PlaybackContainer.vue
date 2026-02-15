@@ -2,6 +2,7 @@
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import PlaybackControls from "~/features/timer/components/playback/PlaybackControls.vue";
 import PlaybackProgress from "~/features/timer/components/playback/PlaybackProgress.vue";
+import useTimer from "~/features/timer/composables/useTimer";
 
 const { timer } = defineProps<{ timer: Timer }>();
 const { interval } = useTimer();

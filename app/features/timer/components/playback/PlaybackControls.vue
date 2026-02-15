@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useTimer from "~/features/timer/composables/useTimer";
+
 const emit = defineEmits(["reset"]);
 const props = defineProps<{ rounds: number }>();
 

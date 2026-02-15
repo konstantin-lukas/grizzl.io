@@ -1,9 +1,9 @@
-import useAnimateTimer from "@@/app/composables/useAnimateTimer";
-import useTimer from "@@/app/composables/useTimer";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { clearNuxtState } from "nuxt/app";
 import { beforeEach, expect, test, vi } from "vitest";
 import { nextTick } from "vue";
+import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";
+import useTimer from "~/features/timer/composables/useTimer";
 
 const { usesVoicesMock, useSpeakUtteranceMock, requestAnimationFrameMock, audioPlayMock, audioConstructorMock, speak } =
     await vi.hoisted(async () => {

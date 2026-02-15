@@ -2,6 +2,8 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { intervalToDuration } from "date-fns";
+import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";
+import useTimer from "~/features/timer/composables/useTimer";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{

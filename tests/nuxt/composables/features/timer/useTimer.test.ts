@@ -1,6 +1,6 @@
-import useTimer from "@@/app/composables/useTimer";
 import { clearNuxtState } from "nuxt/app";
 import { beforeEach, expect, it, vi } from "vitest";
+import useTimer from "~/features/timer/composables/useTimer";
 import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 beforeEach(() => {
