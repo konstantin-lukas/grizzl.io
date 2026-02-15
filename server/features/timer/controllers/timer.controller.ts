@@ -1,7 +1,7 @@
-import { DatabaseDeletedSchema } from "#shared/features/core/validators/core.validator";
 import { PostTimerSchema, PutTimerSchema } from "#shared/features/timer/validators/timer.validator";
+import { DatabaseDeletedSchema } from "#shared/validators/core.validator";
 import type { H3Event } from "h3";
-import BaseController from "~~/server/features/core/controllers/base.controller";
+import BaseController from "~~/server/controllers/base.controller";
 import TimerService from "~~/server/features/timer/services/timer.service";
 
 /* c8 ignore start */

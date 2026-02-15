@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LOCALES } from "#shared/features/core/constants/i18n.constant";
+import { LOCALES } from "#shared/constants/i18n.constant";
 import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
 

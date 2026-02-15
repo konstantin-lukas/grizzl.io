@@ -1,5 +1,5 @@
-import { LOCALES } from "#shared/features/core/constants/i18n.constant";
-import { DatabaseIdSchema } from "#shared/features/core/validators/core.validator";
+import { LOCALES } from "#shared/constants/i18n.constant";
+import { DatabaseIdSchema } from "#shared/validators/core.validator";
 import type { ZodType } from "better-auth";
 import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";

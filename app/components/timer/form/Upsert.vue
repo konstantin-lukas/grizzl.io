@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/features/core/validators/core.validator";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/features/timer/validators/timer.validator";
 import { ellipsize } from "#shared/utils/string.util";
+import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/validators/core.validator";
 import type { FormErrorEvent } from "#ui/types";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";

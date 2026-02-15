@@ -2,9 +2,9 @@ import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+import BaseController from "~~/server/controllers/base.controller";
 import DomainError from "~~/server/errors/domain.error";
 import NotFoundError from "~~/server/errors/not-found.error";
-import BaseController from "~~/server/features/core/controllers/base.controller";
 import { HTTP_CODES } from "~~/test-utils/constants/http";
 
 const { setResponseStatusSpy } = vi.hoisted(() => {
@@ -110,7 +110,7 @@ describe("parseIdParameter", () => {
                 getRouterParam: () => id,
             };
         });
-        const { default: Base } = await import("~~/server/features/core/controllers/base.controller");
+        const { default: Base } = await import("~~/server/controllers/base.controller");
         expect(() => Base.parseIdParameter({} as unknown as H3Event)).toThrow();
     });
 
@@ -121,7 +121,7 @@ describe("parseIdParameter", () => {
                 getRouterParam: () => id,
             };
         });
-        const { default: Base } = await import("~~/server/features/core/controllers/base.controller");
+        const { default: Base } = await import("~~/server/controllers/base.controller");
         expect(Base.parseIdParameter({} as unknown as H3Event)).toBe(id);
     });
 });
@@ -129,7 +129,7 @@ describe("parseIdParameter", () => {
 describe("parseRequestBody", () => {
     const schema = z.string();
     test("should throw an error if the body doesn't match the schema", async () => {
-        const { default: Base } = await import("~~/server/features/core/controllers/base.controller");
+        const { default: Base } = await import("~~/server/controllers/base.controller");
         await expect(Base.parseRequestBody({} as unknown as H3Event, schema)).rejects.toThrow();
     });
 
@@ -141,7 +141,7 @@ describe("parseRequestBody", () => {
                 readBody: () => body,
             };
         });
-        const { default: Base } = await import("~~/server/features/core/controllers/base.controller");
+        const { default: Base } = await import("~~/server/controllers/base.controller");
         await expect(Base.parseRequestBody({} as unknown as H3Event, schema)).resolves.toBe(body);
     });
 
@@ -163,7 +163,7 @@ describe("parseRequestBody", () => {
                 readBody: () => ({ data: 1 }),
             };
         });
-        const { default: Base } = await import("~~/server/features/core/controllers/base.controller");
+        const { default: Base } = await import("~~/server/controllers/base.controller");
         expect(Base.parseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema)).rejects.toMatchObject({
             issues: [
                 {

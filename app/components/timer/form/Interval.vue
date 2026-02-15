@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { COUNT_MIN, TITLE_MAX } from "#shared/features/core/validators/core.validator";
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
+import { COUNT_MIN, TITLE_MAX } from "#shared/validators/core.validator";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();

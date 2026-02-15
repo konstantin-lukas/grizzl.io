@@ -1,7 +1,7 @@
 import type { H3Event } from "h3";
+import BaseController from "~~/server/controllers/base.controller";
 import { db } from "~~/server/database";
-import BaseController from "~~/server/features/core/controllers/base.controller";
-import BaseRepository from "~~/server/features/core/repositories/base.repository";
+import BaseRepository from "~~/server/repositories/base.repository";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T> = new (...args: any[]) => T;

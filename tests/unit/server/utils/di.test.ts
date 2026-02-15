@@ -22,7 +22,7 @@ vi.mock("~~/server/database", () => {
     };
 });
 
-vi.mock("~~/server/features/core/repositories/base.repository", () => {
+vi.mock("~~/server/repositories/base.repository", () => {
     return {
         default: BaseRepository,
     };

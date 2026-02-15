@@ -1,4 +1,4 @@
-import { ID_LENGTH } from "../../shared/features/core/validators/core.validator";
+import { ID_LENGTH } from "#shared/validators/core.validator";
 import { generateId } from "../../shared/utils/id.util";
 import { char, timestamp } from "drizzle-orm/pg-core";
 

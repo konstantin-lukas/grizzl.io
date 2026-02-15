@@ -1,4 +1,4 @@
-import { ID_LENGTH } from "../../shared/features/core/validators/core.validator";
+import { ID_LENGTH } from "#shared/validators/core.validator";
 import { customAlphabet } from "nanoid";
 
 export function generateId() {
