@@ -1,6 +1,6 @@
-import BeatPattern from "@@/app/components/input/BeatPattern.vue";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
+import BeatPattern from "~/features/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const stubs = { UTooltip };

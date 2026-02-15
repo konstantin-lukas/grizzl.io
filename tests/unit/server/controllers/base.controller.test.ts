@@ -164,7 +164,9 @@ describe("parseRequestBody", () => {
             };
         });
         const { default: Base } = await import("~~/server/controllers/base.controller");
-        expect(Base.parseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema)).rejects.toMatchObject({
+        await expect(
+            Base.parseRequestBody({} as unknown as H3Event<EventHandlerRequest>, schema),
+        ).rejects.toMatchObject({
             issues: [
                 {
                     code: "invalid_type",

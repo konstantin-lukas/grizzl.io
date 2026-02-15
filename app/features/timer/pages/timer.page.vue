@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import OverviewList from "~/features/timer/components/overview/OverviewList.vue";
+import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";
 
 const open = ref(false);
 const toast = useToast();
@@ -42,11 +44,11 @@ watch(open, () => {
             </OverlaySlideover>
             <div class="mb-16 flex w-full grow flex-col">
                 <OverlayDrawer v-model:open="open">
-                    <TimerFormUpsert @success="open = false" />
+                    <UpsertForm @success="open = false" />
                     <template #title>{{ $t("timer.aria.drawer.create") }}</template>
                     <template #description>{{ $t("timer.aria.drawer.description") }}</template>
                 </OverlayDrawer>
-                <TimerList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
+                <OverviewList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                 <Transition name="fade">
                     <div v-if="data && data.length === 0" class="center w-full grow">
                         <DataEmpty @open="() => (open = true)" />

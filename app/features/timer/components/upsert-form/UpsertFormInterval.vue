@@ -2,6 +2,7 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
 import { COUNT_MIN, TITLE_MAX } from "#shared/validators/core.validator";
+import UpsertFormBeatPatternInput from "~/features/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
@@ -95,7 +96,7 @@ const durationSeconds = computed({
                     required
                     class="w-full"
                 >
-                    <InputBeatPattern
+                    <UpsertFormBeatPatternInput
                         data-test-id="interval-beat-pattern-input"
                         :beats="intervals![index]!.beatPattern"
                         :bar-length="intervals![index]!.duration"

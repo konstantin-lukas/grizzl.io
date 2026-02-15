@@ -5,6 +5,8 @@ import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/validators/core.validat
 import type { FormErrorEvent } from "#ui/types";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
+import UpsertFormInterval from "~/features/timer/components/upsert-form/UpsertFormInterval.vue";
+import UpsertFormVoiceSelect from "~/features/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
 import { createToastSuccess } from "~/utils/toast";
 
 const { initialState = null } = defineProps<{ initialState?: Timer }>();
@@ -95,12 +97,12 @@ function onEnd() {
             }
         "
     >
-        <div ref="scroll-container" class="relative h-[calc(100dvh_-_7rem_+_2px)] overflow-auto">
+        <div ref="scroll-container" class="relative h-[calc(100dvh-7rem+2px)] overflow-auto">
             <span
-                class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-b from-back"
+                class="pointer-events-none fixed top-9 left-1/2 z-10 mt-[2px] h-8 w-[calc(100%-2rem)] -translate-x-1/2 bg-linear-to-b from-back"
             />
             <span
-                class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%_-_2rem)] -translate-x-1/2 bg-gradient-to-t from-back"
+                class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%-2rem)] -translate-x-1/2 bg-linear-to-t from-back"
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
@@ -129,7 +131,7 @@ function onEnd() {
                             data-test-id="timer-upsert-title-input"
                         />
                     </UFormField>
-                    <TimerFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
+                    <UpsertFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
                     <VueDraggable
                         v-model="state.intervals"
                         :animation="250"
@@ -141,7 +143,7 @@ function onEnd() {
                         @end="onEnd"
                     >
                         <TransitionGroup name="draggable-list">
-                            <TimerFormInterval
+                            <UpsertFormInterval
                                 v-for="(interval, index) in state.intervals"
                                 :key="interval.id"
                                 v-model:intervals="state.intervals"

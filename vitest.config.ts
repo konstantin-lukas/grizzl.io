@@ -14,7 +14,7 @@ export default defineConfig({
                 "server/**/*.service.ts",
                 "server/**/*.controller.ts",
             ],
-            exclude: ["app/components/timer/**/*"],
+            exclude: ["app/features/**/timer/**/*"],
             reporter: ["text", "lcov", "json"],
         },
         // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604

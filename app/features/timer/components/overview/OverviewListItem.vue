@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { formatDuration } from "date-fns";
+import OverviewDeleteButton from "~/features/timer/components/overview/OverviewDeleteButton.vue";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
@@ -29,10 +30,10 @@ watch(open, () => {
         <div
             class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 sm:flex-row sm:items-center"
         >
-            <div class="min-w-0 shrink-1">
+            <div class="min-w-0 shrink">
                 <TypoH2
                     as="h1"
-                    class="mb-1 line-clamp-2 overflow-hidden break-words"
+                    class="mb-1 line-clamp-2 overflow-hidden wrap-break-word"
                     data-test-id="timer-list-item-title"
                 >
                     {{ props.timer.title }}
@@ -61,7 +62,7 @@ watch(open, () => {
                     data-test-id="timer-list-item-edit-button"
                     @click="open = true"
                 />
-                <TimerFormDelete :timer="props.timer" />
+                <OverviewDeleteButton :timer="props.timer" />
             </div>
             <OverlayDrawer v-model:open="open">
                 <TimerFormUpsert :initial-state="props.timer" @success="open = false" />

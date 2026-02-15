@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import PlaybackControls from "~/features/timer/components/playback/PlaybackControls.vue";
+import PlaybackProgress from "~/features/timer/components/playback/PlaybackProgress.vue";
 
 const { timer } = defineProps<{ timer: Timer }>();
 const { interval } = useTimer();
@@ -52,7 +54,7 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 icon="heroicons:exclamation-triangle"
             />
         </div>
-        <TimerProgress
+        <PlaybackProgress
             :timer
             :rounds
             :voice-uri="timer.ttsVoice"
@@ -60,6 +62,6 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
             :index="activeIntervalIndex"
             @finish="activeIntervalIndex++"
         />
-        <TimerControls :rounds @reset="activeIntervalIndex = 0" />
+        <PlaybackControls :rounds @reset="activeIntervalIndex = 0" />
     </section>
 </template>
