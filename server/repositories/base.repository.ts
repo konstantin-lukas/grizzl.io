@@ -66,7 +66,7 @@ export default class BaseRepository<T extends Schema> {
         const refDate = new Date(new Date().getTime() - maxAge);
 
         if (!this.isSoftDeletable) {
-            console.error(`Attempting to purge table that is not soft-deletable: ${this.tableName}.`);
+            console.error(`Attempting to purge table that is not soft-deletable: "${this.tableName}".`);
             return;
         }
 
