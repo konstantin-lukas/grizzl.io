@@ -7,6 +7,11 @@ export class LoggerService {
         console.log(msg);
     }
 
+    public warn(msg: string) {
+        // eslint-disable-next-line
+        console.warn(msg);
+    }
+
     public error(msg: string) {
         // eslint-disable-next-line
         console.error(msg);

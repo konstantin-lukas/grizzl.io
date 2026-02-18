@@ -10,6 +10,12 @@ export async function purgeAll(options: { maxAge: number }) {
     const logger = container.resolve(LoggerService);
     for (const softDeletableRepository of SOFT_DELETABLE_REPOSITORIES) {
         const repositoryInstance = container.resolve(softDeletableRepository);
+
+        if (!repositoryInstance.isSoftDeletable) {
+            logger.warn(`Attempting to purge table that is not soft-deletable: "${repositoryInstance.tableName}".`);
+            return;
+        }
+
         const { data, error } = await tryCatch(repositoryInstance.purge({ maxAge }));
 
         if (error) {

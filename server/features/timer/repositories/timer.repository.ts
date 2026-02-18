@@ -3,13 +3,14 @@ import { and, desc, eq, isNull, notInArray, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { timerInterval } from "~~/server/database/schema";
 import BaseRepository from "~~/server/repositories/base.repository";
-import type { LoggerService } from "~~/server/services/logger.service";
 
 const schema = "timer";
 
 export default class TimerRepository extends BaseRepository<typeof schema> {
-    constructor(db: ReturnType<typeof drizzle>, logger: LoggerService) {
-        super(db, schema, logger);
+    static readonly deps = [];
+
+    constructor(db: ReturnType<typeof drizzle>) {
+        super(db, schema);
     }
 
     async create(userId: string, { title, ttsVoice, intervals }: PostTimer) {

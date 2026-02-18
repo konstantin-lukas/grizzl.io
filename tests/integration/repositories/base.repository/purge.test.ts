@@ -1,11 +1,6 @@
 import { beforeEach, expect, test, vi } from "@@/test-utils/vitest";
 import BaseRepository from "~~/server/repositories/base.repository";
 
-const errorLogMock = vi.fn();
-class LoggerService {
-    error = errorLogMock;
-}
-
 beforeEach(() => vi.resetAllMocks());
 
 const testCases = [
@@ -38,22 +33,9 @@ const testCases = [
 test.for(testCases)("$title", async ({ overrides, maxAge, expectedCount }, { db, user }) => {
     await db.timer.insert(3, i => ({ userId: user.id, ...overrides(i) }));
 
-    const softDeletableRepository = new BaseRepository(db.client, "timer", new LoggerService() as never);
+    const softDeletableRepository = new BaseRepository(db.client, "timer");
     await softDeletableRepository.purge({ maxAge });
 
     const timers = await db.timer.select();
     expect(timers).toHaveLength(expectedCount);
-});
-
-test("logs an error and returns when the entity is not soft-deletable", async ({ db, user }) => {
-    await db.account.insert(1, { userId: user.id });
-
-    const softDeletableRepository = new BaseRepository(db.client, "account" as "timer", new LoggerService() as never);
-    await softDeletableRepository.purge({ maxAge: 0 });
-
-    const accounts = await db.account.select();
-    expect(accounts).toHaveLength(1);
-    expect(errorLogMock).toHaveBeenCalledExactlyOnceWith(
-        'Attempting to purge table that is not soft-deletable: "account".',
-    );
 });
