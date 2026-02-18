@@ -64,7 +64,7 @@ class Container {
             const isRepository = injectable.prototype instanceof BaseRepository;
             const instance = isRepository ? new injectable(db, ...depsInstances) : new injectable(...depsInstances);
 
-            if (!isRepository) this.registry.set(injectable, instance);
+            this.registry.set(injectable, instance);
 
             return instance;
         };
