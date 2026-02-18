@@ -7,10 +7,6 @@ import BaseRepository from "~~/server/repositories/base.repository";
 type Constructor<T> = new (...args: any[]) => T;
 
 interface InjectableClass<T> extends Constructor<T> {
-    deps: Constructor<unknown>[];
-}
-
-interface MaybeInjectableClass<T> extends Constructor<T> {
     deps?: Constructor<unknown>[];
 }
 
@@ -49,7 +45,7 @@ class Container {
      * try/catch if you pass the event as the second argument.
      */
     resolve<T extends object>(injectable: InjectableClass<T>, event?: H3Event) {
-        const r = <T>(injectable: MaybeInjectableClass<T>, resolvingStack = new Set<Constructor<unknown>>()): T => {
+        const r = <T>(injectable: InjectableClass<T>, resolvingStack = new Set<Constructor<unknown>>()): T => {
             if (resolvingStack.has(injectable)) {
                 const chain = [...resolvingStack, injectable].map(c => c.name).join(" -> ");
                 throw new Error(`Circular dependency detected: ${chain}`);

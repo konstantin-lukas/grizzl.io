@@ -7,8 +7,6 @@ import BaseRepository from "~~/server/repositories/base.repository";
 const schema = "timer";
 
 export default class TimerRepository extends BaseRepository<typeof schema> {
-    static readonly deps = [];
-
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, schema);
     }
