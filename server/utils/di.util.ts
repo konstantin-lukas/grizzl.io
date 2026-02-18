@@ -77,6 +77,15 @@ class Container {
     }
 }
 
+let container: Container | undefined;
+
 export function createContainer() {
-    return new Container();
+    if (!container) {
+        container = new Container();
+    }
+    return container;
+}
+
+export function resetContainer() {
+    container = undefined;
 }

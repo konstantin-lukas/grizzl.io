@@ -2,7 +2,7 @@ import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { beforeEach, expect, test, vi } from "vitest";
 import DomainError from "~~/server/errors/domain.error";
 import NotFoundError from "~~/server/errors/not-found.error";
-import { createContainer } from "~~/server/utils/di.util";
+import { createContainer, resetContainer } from "~~/server/utils/di.util";
 
 const { db, BaseRepository } = vi.hoisted(() => {
     return {
@@ -44,6 +44,7 @@ const SomeController = vi.fn(
 
 beforeEach(() => {
     vi.resetAllMocks();
+    resetContainer();
 });
 
 test("creates a class without dependencies", () => {
@@ -142,7 +143,7 @@ test.each([
         },
     },
 ])(
-    "automatically catches $errorType errors on created instance's method calls and translates them to http errors",
+    "automatically catches $errorType.name errors on created instance's method calls and translates them to http errors",
     async ({ errorType, expectedError }) => {
         class ThrowingController {
             static readonly deps = [];

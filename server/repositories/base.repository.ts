@@ -1,6 +1,7 @@
 import { and, eq, isNotNull, lt } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "~~/server/database/schema";
+import { LoggerService } from "~~/server/services/logger.service";
 
 type Schema = "timer";
 
@@ -9,12 +10,14 @@ export default class BaseRepository<T extends Schema> {
     protected readonly schema;
     protected readonly isSoftDeletable;
     public readonly tableName;
+    public readonly logger: LoggerService;
 
-    static readonly deps = [];
+    static readonly deps = [LoggerService];
 
-    constructor(db: ReturnType<typeof drizzle>, tableName: T) {
+    constructor(db: ReturnType<typeof drizzle>, tableName: T, logger: LoggerService) {
         this.db = db;
         this.tableName = tableName;
+        this.logger = logger;
         this.schema = schema[tableName];
         this.isSoftDeletable = Object.keys(this.schema).includes("deletedAt");
     }
@@ -66,7 +69,7 @@ export default class BaseRepository<T extends Schema> {
         const refDate = new Date(new Date().getTime() - maxAge);
 
         if (!this.isSoftDeletable) {
-            console.error(`Attempting to purge table that is not soft-deletable: "${this.tableName}".`);
+            this.logger.error(`Attempting to purge table that is not soft-deletable: "${this.tableName}".`);
             return;
         }
 

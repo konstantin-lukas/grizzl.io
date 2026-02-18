@@ -6,6 +6,8 @@ import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
 import DomainError from "~~/server/errors/domain.error";
 import NotFoundError from "~~/server/errors/not-found.error";
+import { LoggerService } from "~~/server/services/logger.service";
+import { createContainer } from "~~/server/utils/di.util";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default class BaseController {
@@ -158,7 +160,9 @@ export default class BaseController {
             return error.message;
         })();
 
-        console.error(`${id} - ${logMessage}`);
+        const container = createContainer();
+        const logger = container.resolve(LoggerService);
+        logger.error(`${id} - ${logMessage}`);
 
         throw createError({
             statusCode: BaseController.HttpStatusCode[status],
