@@ -61,12 +61,10 @@ class Container {
             resolvingStack.add(injectable);
 
             const depsInstances = (injectable.deps || []).map(dep => r(dep, new Set([...resolvingStack])));
-            const instance =
-                injectable.prototype instanceof BaseRepository
-                    ? new injectable(db, ...depsInstances)
-                    : new injectable(...depsInstances);
+            const isRepository = injectable.prototype instanceof BaseRepository;
+            const instance = isRepository ? new injectable(db, ...depsInstances) : new injectable(...depsInstances);
 
-            this.registry.set(injectable, instance);
+            if (!isRepository) this.registry.set(injectable, instance);
 
             return instance;
         };
