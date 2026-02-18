@@ -26,6 +26,8 @@
         "moveDown": "Mover abajo",
         "undo": "Deshacer",
         "offline": "Offline",
-        "formErrors": "El envío falló debido a un error | El envío falló debido a {n} errores"
+        "formErrors": "El envío falló debido a un error | El envío falló debido a {n} errores",
+        "next": "Siguiente",
+        "previous": "Anterior"
     }
 }
