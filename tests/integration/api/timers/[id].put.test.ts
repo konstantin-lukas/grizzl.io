@@ -33,7 +33,7 @@ test("allows editing intervals by their id", async ({ request, db }) => {
 });
 
 test("does not allow editing other user's intervals", async ({ request, db }) => {
-    const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
+    const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
     const [myTimer] = await db.timer.insert(1);
     const [otherUsersTimer] = await db.timer.insert(1, { userId: otherUser!.id });
     const [myInterval] = await db.timerInterval.insert(1, { timerId: myTimer.id });

@@ -3,7 +3,7 @@ import type { drizzle } from "drizzle-orm/node-postgres";
 import { date } from "~~/test-utils/helpers/data";
 
 export default class AccountFixture extends BaseFixture<"account"> {
-    protected dataProvider = () => ({
+    protected defaults = () => ({
         accountId: "123",
         providerId: "ABC",
         accessToken: "___",
@@ -23,9 +23,5 @@ export default class AccountFixture extends BaseFixture<"account"> {
 
     override async insert<N extends number>(count: N, overrides: InsertOverrides<"account"> & { userId: string }) {
         return super.insert(count, overrides);
-    }
-
-    async select() {
-        return await this.db.select().from(this.schema);
     }
 }
