@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
 export default class UserFixture extends BaseFixture<"user"> {
-    protected dataProvider = () => ({
+    protected defaults = () => ({
         name: "Mr. Burns",
         email: "cmontgomeryburns@springfieldnuclear.com",
         emailVerified: true,
@@ -17,7 +17,7 @@ export default class UserFixture extends BaseFixture<"user"> {
         return super.insert(count, overrides);
     }
 
-    async select(email: "user@test.com" | "cmontgomeryburns@springfieldnuclear.com") {
+    async selectByEmail(email: "user@test.com" | "cmontgomeryburns@springfieldnuclear.com") {
         return (await this.db.select().from(this.schema).where(eq(this.schema.email, email)))[0];
     }
 }

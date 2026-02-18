@@ -22,7 +22,7 @@ test("allows creating a new timer with valid values", async ({ request, db }) =>
 test("ignores any provided id for determining ownership", async ({ request, db }) => {
     await request.post("/api/timers", { data: { ...BASE_TIMER, userId: "2222222222222222" } });
     const timers = await db.timer.select();
-    const user = await db.user.select("user@test.com");
+    const user = await db.user.selectByEmail("user@test.com");
     expect(timers[0]!.userId).toBe(user!.id);
 });
 

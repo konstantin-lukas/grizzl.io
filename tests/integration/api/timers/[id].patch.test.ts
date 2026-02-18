@@ -5,7 +5,7 @@ import { test401WhenLoggedOut, testIdParameter } from "~~/test-utils/playwright/
 testIdParameter("patch", "/api/timers", { deleted: true });
 
 test("only allows a user to edit their own timers", async ({ request, db }) => {
-    const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
+    const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
     const [timer] = await db.timer.insert(1, { userId: otherUser!.id });
     expect(timer.deletedAt).toBeNull();
     const response = await request.patch(`/api/timers/${timer.id}`, { data: { deleted: true } });
@@ -25,7 +25,7 @@ test("only allows patching the deleted property", async ({ request, db }) => {
 });
 
 test("only modifies the requested timer", async ({ request, db }) => {
-    const otherUser = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
+    const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
     const [otherTimer] = await db.timer.insert(1, { userId: otherUser!.id });
     const [timer] = await db.timer.insert(1);
     expect(timer.deletedAt).toBeNull();

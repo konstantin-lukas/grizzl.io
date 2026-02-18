@@ -67,7 +67,7 @@ services:
         network_mode: "service:caddy"
         environment:
             - TZ=Europe/Berlin
-            - SKIP_SCREENSHOTS=true
+            - DEV_MODE=true
 
     caddy:
         container_name: grizzl-caddy-dev

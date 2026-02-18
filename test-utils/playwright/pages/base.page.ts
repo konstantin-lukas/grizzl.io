@@ -253,6 +253,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }
 
     async swReady() {
+        if (process.env.DEV_MODE === "true") return;
         return this.page.evaluate(() => {
             return Promise.race([
                 navigator.serviceWorker.ready,

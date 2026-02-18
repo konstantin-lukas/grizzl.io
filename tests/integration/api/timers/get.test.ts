@@ -51,7 +51,7 @@ test("does not return soft-deleted timers", async ({ request, db }) => {
 });
 
 test("does not return timers from other users", async ({ request, db }) => {
-    const user = await db.user.select("cmontgomeryburns@springfieldnuclear.com");
+    const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
     await buildTimers(db, { userId: user!.id });
     const response = await request.get("/api/timers");
     expect(response.status()).toBe(200);

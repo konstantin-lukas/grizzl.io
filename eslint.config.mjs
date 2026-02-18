@@ -50,11 +50,6 @@ export default withNuxt([
             "yoda": "error",
             "vue/no-multiple-template-root": "off",
             "vue/html-self-closing": "off",
-        },
-    },
-    {
-        files: ["app/**/*"],
-        rules: {
             "no-console": "error",
         },
     },

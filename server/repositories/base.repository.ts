@@ -7,10 +7,8 @@ type Schema = "timer";
 export default class BaseRepository<T extends Schema> {
     protected readonly db;
     protected readonly schema;
-    protected readonly isSoftDeletable;
+    public readonly isSoftDeletable;
     public readonly tableName;
-
-    static readonly deps = [];
 
     constructor(db: ReturnType<typeof drizzle>, tableName: T) {
         this.db = db;
@@ -64,11 +62,6 @@ export default class BaseRepository<T extends Schema> {
     public async purge(options: { maxAge: number }) {
         const { maxAge } = options;
         const refDate = new Date(new Date().getTime() - maxAge);
-
-        if (!this.isSoftDeletable) {
-            console.error(`Attempting to purge table that is not soft-deletable: "${this.tableName}".`);
-            return;
-        }
 
         const { rowCount } = await this.db
             .delete(this.schema)

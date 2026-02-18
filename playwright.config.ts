@@ -60,7 +60,7 @@ export default defineConfig<ConfigOptions>({
     expect: {
         timeout: 5000,
         toHaveScreenshot: {
-            maxDiffPixelRatio: process.env.SKIP_SCREENSHOTS === "true" ? 1 : 0,
+            maxDiffPixelRatio: process.env.DEV_MODE === "true" ? 1 : 0,
             threshold: 0,
             animations: "disabled",
         },

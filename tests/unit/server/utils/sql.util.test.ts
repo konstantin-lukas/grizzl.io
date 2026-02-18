@@ -1,7 +1,9 @@
 import { beforeEach, expect, test, vi } from "vitest";
+import { resetContainer } from "~~/server/utils/di.util";
 import { purgeAll } from "~~/server/utils/sql.util";
 
 const timerPurgeMock = vi.fn();
+let isSoftDeletable = true;
 
 vi.mock("~~/server/features/timer/repositories/timer.repository", () => {
     return {
@@ -9,16 +11,24 @@ vi.mock("~~/server/features/timer/repositories/timer.repository", () => {
             class {
                 purge = timerPurgeMock;
                 tableName = "timer";
+                isSoftDeletable: boolean;
+
+                constructor() {
+                    this.isSoftDeletable = isSoftDeletable;
+                }
             },
         ),
     };
 });
 
 const consoleErrorSpy = vi.spyOn(console, "error");
+const consoleWarnSpy = vi.spyOn(console, "warn");
 const consoleLogSpy = vi.spyOn(console, "log");
 
 beforeEach(() => {
     vi.resetAllMocks();
+    resetContainer();
+    isSoftDeletable = true;
 });
 
 test("calls purge on all soft-deletable repositories", async () => {
@@ -45,4 +55,14 @@ test("logs an error when purge returned null or undefined", async () => {
         'An error occurred while trying to purge table "timer". Expected a number of deleted rows but got "null".',
     );
     expect(timerPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
+});
+
+test("logs an error and returns when an entity is not soft-deletable", async () => {
+    isSoftDeletable = false;
+    await purgeAll({ maxAge: 0 });
+
+    expect(timerPurgeMock).not.toHaveBeenCalled();
+    expect(consoleWarnSpy).toHaveBeenCalledExactlyOnceWith(
+        'Attempting to purge table that is not soft-deletable: "timer".',
+    );
 });
