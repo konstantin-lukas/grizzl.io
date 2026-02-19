@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useTimer from "~/features/timer/composables/useTimer";
 
-const emit = defineEmits(["reset"]);
+const emit = defineEmits(["reset", "next", "previous"]);
 const props = defineProps<{ rounds: number }>();
 
 const { reset, round, playing, mute } = useTimer();
@@ -31,6 +31,7 @@ const togglePlayback = () => {
             :aria-label="$t('ui.previous')"
             variant="subtle"
             data-test-id="timer-controls-previous-button"
+            @click="emit('previous')"
         />
         <Button
             size="xl"
@@ -38,12 +39,7 @@ const togglePlayback = () => {
             icon="heroicons:arrow-path-16-solid"
             :aria-label="$t('ui.reset')"
             data-test-id="timer-controls-reset-button"
-            @click="
-                () => {
-                    emit('reset');
-                    reset(true);
-                }
-            "
+            @click="emit('reset')"
         />
         <Button
             size="xl"
@@ -69,6 +65,7 @@ const togglePlayback = () => {
             :aria-label="$t('ui.next')"
             variant="subtle"
             data-test-id="timer-controls-next-button"
+            @click="emit('next')"
         />
     </div>
 </template>

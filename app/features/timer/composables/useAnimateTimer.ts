@@ -16,7 +16,6 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         currentBeat,
         lastIntervalTitleRead,
         interval,
-        reset,
     } = useTimer();
     const speak = useSpeakUtterance();
     const ttsVoices = useVoices();
@@ -75,7 +74,6 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
     );
 
     watch(interval, () => {
-        reset();
         animateTimer();
     });
 
