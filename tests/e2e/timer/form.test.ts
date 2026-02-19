@@ -1,5 +1,6 @@
 import { str } from "@@/test-utils/helpers/data";
 import { expect, test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 const title = str({ length: 100 });
 const intervals = [
@@ -13,7 +14,7 @@ test("should register a service worker if supported", async ({ timerPage: page }
     expect(ready).not.toBe(null);
 });
 
-test("allows creating a new timer when no timers exist", { tag: "@screenshot" }, async ({ timerPage: page, db }) => {
+test("allows creating a new timer when no timers exist", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
     await page.goto();
     await page.expect().toBeValid({ name: "empty-timer-list" });
 
@@ -43,7 +44,7 @@ test("displays an alert if there were form validation errors", async ({ timerPag
     await page.expect("formErrors").toHaveText(errorTitle + errorDescription);
 });
 
-test("allows editing an existing timer", { tag: "@screenshot" }, async ({ timerPage: page, db }) => {
+test("allows editing an existing timer", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
     const newTitle = str({ length: 10 });
     const [timer] = await db.timer.insert(1);
     await db.timerInterval.insert(2, { timerId: timer.id });

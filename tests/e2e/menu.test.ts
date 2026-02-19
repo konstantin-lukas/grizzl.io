@@ -1,4 +1,5 @@
 import { expect, test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 import { forEachLocale } from "~~/test-utils/playwright/utils/locale";
 
 const texts = {
@@ -99,7 +100,7 @@ test("has a button to toggle the theme", async ({ homePage: page }) => {
 
 test(
     "contains no unexpected changes in accessibility or visual appearance",
-    { tag: "@screenshot" },
+    { tag: SCREENSHOT },
     async ({ homePage: page }) => {
         await page.goto();
         await page.click("menuButton");

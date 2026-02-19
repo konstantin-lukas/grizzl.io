@@ -1,6 +1,7 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import { test } from "~~/test-utils/playwright";
 import type TimerPage from "~~/test-utils/playwright/pages/timer.page";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 async function expectTimerState(page: TimerPage, time: string, interval: string, round: string) {
     await page.expect("remainingTime").toHaveText(time);
@@ -8,7 +9,7 @@ async function expectTimerState(page: TimerPage, time: string, interval: string,
     await page.expect("activeRound").toHaveText(round);
 }
 
-test("allows playing a created timer and going back", { tag: "@screenshot" }, async ({ timerPage: page, db }) => {
+test("allows playing a created timer and going back", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert(1);
     const [interval] = await db.timerInterval.insert(1, {
         timerId: timer.id,
@@ -49,7 +50,7 @@ test("allows playing a created timer and going back", { tag: "@screenshot" }, as
 
 test(
     "shows indicators for beats on timer progress and information on timer and interval lengths",
-    { tag: "@screenshot" },
+    { tag: SCREENSHOT },
     async ({ timerPage: page, db }) => {
         const beatPattern = [
             Beat.ACCENTED,

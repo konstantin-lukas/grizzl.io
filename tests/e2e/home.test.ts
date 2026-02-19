@@ -1,9 +1,10 @@
 import { expect, test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
 test(
     "contains a link to all available sections and a sign out button",
-    { tag: "@screenshot" },
+    { tag: SCREENSHOT },
     async ({ homePage: page }, testInfo) => {
         await page.goto();
         const project = testInfo.project.name;
