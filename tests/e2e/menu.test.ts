@@ -1,4 +1,5 @@
 import { expect, test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 import { forEachLocale } from "~~/test-utils/playwright/utils/locale";
 
 const texts = {
@@ -97,14 +98,18 @@ test("has a button to toggle the theme", async ({ homePage: page }) => {
     });
 });
 
-test("contains no unexpected changes in accessibility or visual appearance", async ({ homePage: page }) => {
-    await page.goto();
-    await page.click("menuButton");
+test(
+    "contains no unexpected changes in accessibility or visual appearance",
+    { tag: SCREENSHOT },
+    async ({ homePage: page }) => {
+        await page.goto();
+        await page.click("menuButton");
 
-    const name = "menu-opened-on-home-page";
-    await page.expect("menu").toMatchAriaSnapshot({ name });
-    await page.expect().toBeAccessible();
-    await page.expect("menu").toHaveScreenshot({ name });
-    await page.toggleTheme({ openMenu: false, closeMenu: false });
-    await page.expect("menu").toHaveScreenshot({ name: `${name}-darkmode` });
-});
+        const name = "menu-opened-on-home-page";
+        await page.expect("menu").toMatchAriaSnapshot({ name });
+        await page.expect().toBeAccessible();
+        await page.expect("menu").toHaveScreenshot({ name });
+        await page.toggleTheme({ openMenu: false, closeMenu: false });
+        await page.expect("menu").toHaveScreenshot({ name: `${name}-darkmode` });
+    },
+);

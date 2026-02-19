@@ -18,7 +18,8 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
 
     override async insert<N extends number>(
         count: N,
-        overrides: InsertOverrides<"timerInterval"> & { timerId: string },
+        overrides: InsertOverrides<"timerInterval"> &
+            ({ timerId: string } | ((index: number) => InsertOverrides<"timerInterval">)),
     ) {
         return super.insert(count, overrides);
     }

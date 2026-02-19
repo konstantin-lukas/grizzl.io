@@ -16,7 +16,7 @@
     --default-transition-timing-function: cubic-bezier(0, 0.66, 0.33, 1);
     --default-transition-duration: 250ms;
     --spacing-footer-height: calc(4rem + env(safe-area-inset-bottom));
-    --spacing-main-padding: calc(var(--spacing) * 26);
+    --spacing-main-padding: calc(var(--spacing) * 20);
     --spacing-main-height: 100dvh;
     --spacing-main-height-no-padding: calc(100dvh - var(--spacing-main-padding) * 2);
     --breakpoint-xs: 25rem;
@@ -38,6 +38,7 @@
 
 @media (min-width: 25rem) {
     :root {
+        --spacing-main-padding: calc(var(--spacing) * 26);
         --spacing-footer-height: calc(3rem + env(safe-area-inset-bottom));
     }
 }

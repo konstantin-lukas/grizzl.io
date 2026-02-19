@@ -87,8 +87,8 @@ command, just check the respective file in `bin`. Here's an explanation of what 
 - `purge`: Deletes ALL docker containers, images, volumes, and networks (expect built-in ones).
 - `restart`: Calls `stop` and then `start` with the given parameters.
 - `restore`: Restores the database with a given backup. This is only for production.
+- `screenshots`: Updates Playwright snapshots in all files that are tagged with `@screenshot` (aria snapshots and screenshots).
 - `seed`: Populates the database with test data for development. This has nothing to do with test fixtures.
-- `snapshots`: Updates Playwright snapshots (aria snapshots and screenshots).
 - `start`: Starts the project in the specified mode for local operation. Can be `dev`, `test`, or `prod`. Defaults to `dev`.
 - `stop`: Stops all docker containers in the project.
 - `typecheck`: Runs a typecheck via the webserver container.

@@ -39,7 +39,7 @@ jobs:
         run: |
           export DOCKER_USER_ID="$(id -u)"
           export DOCKER_GROUP_ID="$(id -g)"
-          docker compose -f compose.test.yml run --rm -e CI=true playwright npx playwright test -u changed
+          docker compose -f compose.test.yml run --rm -e CI=true playwright npx playwright test --grep @screenshot -u changed
 
       - name: Commit Changes
         run: |

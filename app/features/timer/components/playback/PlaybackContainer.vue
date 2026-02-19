@@ -5,7 +5,17 @@ import PlaybackProgress from "~/features/timer/components/playback/PlaybackProgr
 import useTimer from "~/features/timer/composables/useTimer";
 
 const { timer } = defineProps<{ timer: Timer }>();
-const { interval } = useTimer();
+const {
+    round,
+    playing,
+    interval,
+    progress,
+    elapsedIntervalTime,
+    currentBeat,
+    repetition,
+    lastIntervalTitleRead,
+    reset,
+} = useTimer();
 const ttsVoices = useVoices();
 
 const activeIntervalIndex = ref(0);
@@ -15,6 +25,39 @@ const displayWarning = computed(
         typeof timer.ttsVoice === "string" &&
         ttsVoices.value.every(({ voiceURI }) => voiceURI !== timer.ttsVoice),
 );
+
+const next = () => {
+    if (!interval.value) return;
+    playing.value = false;
+    progress.value = 0;
+    elapsedIntervalTime.value = 0;
+    currentBeat.value = -1;
+    round.value++;
+    if (repetition.value < interval.value.repeatCount) {
+        repetition.value++;
+    } else {
+        repetition.value = 1;
+        activeIntervalIndex.value++;
+    }
+};
+
+const previous = () => {
+    if (!interval.value || !timer.intervals) return;
+    playing.value = false;
+    progress.value = 0;
+    elapsedIntervalTime.value = 0;
+    currentBeat.value = -1;
+    if (repetition.value > 1) {
+        repetition.value--;
+    } else if (activeIntervalIndex.value > 0) {
+        repetition.value = timer.intervals[--activeIntervalIndex.value]!.repeatCount;
+    } else {
+        lastIntervalTitleRead.value = undefined;
+    }
+    if (round.value > 1) {
+        round.value--;
+    }
+};
 
 watch(
     activeIntervalIndex,
@@ -61,8 +104,19 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
             :voice-uri="timer.ttsVoice"
             :duration
             :index="activeIntervalIndex"
-            @finish="activeIntervalIndex++"
+            @finish="
+                activeIntervalIndex++;
+                reset();
+            "
         />
-        <PlaybackControls :rounds @reset="activeIntervalIndex = 0" />
+        <PlaybackControls
+            :rounds
+            @reset="
+                activeIntervalIndex = 0;
+                reset(true);
+            "
+            @next="next()"
+            @previous="previous()"
+        />
     </section>
 </template>
