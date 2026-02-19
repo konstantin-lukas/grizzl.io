@@ -47,7 +47,7 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
 
 <template>
     <div
-        class="relative mx-auto my-16 aspect-square w-[90%] max-w-96 overflow-hidden rounded-full xs:w-full"
+        class="relative mx-auto my-12 aspect-square w-[90%] max-w-96 overflow-hidden rounded-full xs:w-full"
         role="progressbar"
         :aria-valuemin="0"
         :aria-valuemax="interval?.duration ?? 0"

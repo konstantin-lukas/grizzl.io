@@ -23,18 +23,18 @@ const togglePlayback = () => {
 </script>
 
 <template>
-    <div class="flex w-[90%] max-w-96 flex-wrap justify-center gap-6 xs:w-full">
+    <div class="grid max-w-96 grid-cols-6 gap-6 not-xs:w-[90%] sm:flex sm:grid-cols-5">
         <Button
             size="xl"
             icon="heroicons:arrow-small-left"
-            class="flex grow justify-center not-xs:order-4 not-xs:w-1/3"
+            class="col-span-3 justify-center not-sm:order-4"
             :aria-label="$t('ui.previous')"
             variant="subtle"
             data-test-id="timer-controls-previous-button"
         />
         <Button
             size="xl"
-            class="flex grow justify-center not-xs:order-1"
+            class="col-span-2 flex justify-center not-sm:order-1"
             icon="heroicons:arrow-path-16-solid"
             :aria-label="$t('ui.reset')"
             data-test-id="timer-controls-reset-button"
@@ -47,7 +47,7 @@ const togglePlayback = () => {
         />
         <Button
             size="xl"
-            class="flex grow justify-center not-xs:order-2"
+            class="col-span-2 flex justify-center not-sm:order-2"
             :icon="playing ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
             :aria-label="playing ? $t('ui.pause') : $t('ui.start')"
             :data-test-id="`timer-controls-${playing ? 'pause' : 'play'}-button`"
@@ -55,7 +55,7 @@ const togglePlayback = () => {
         />
         <Button
             size="xl"
-            class="flex grow justify-center not-xs:order-3"
+            class="col-span-2 flex justify-center not-sm:order-3"
             :icon="mute ? 'heroicons:speaker-x-mark' : 'heroicons:speaker-wave'"
             :aria-label="mute ? $t('ui.unmute') : $t('ui.mute')"
             :data-test-id="`timer-controls-${mute ? 'unmute' : 'mute'}-button`"
@@ -64,7 +64,7 @@ const togglePlayback = () => {
         />
         <Button
             size="xl"
-            class="flex grow justify-center not-xs:order-5 not-xs:w-1/3"
+            class="col-span-3 flex justify-center not-sm:order-5"
             icon="heroicons:arrow-small-right"
             :aria-label="$t('ui.next')"
             variant="subtle"
