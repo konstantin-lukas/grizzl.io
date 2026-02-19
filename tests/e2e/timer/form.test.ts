@@ -13,29 +13,24 @@ test("should register a service worker if supported", async ({ timerPage: page }
     expect(ready).not.toBe(null);
 });
 
-test(
-    "allows creating a new timer when no timers exist",
-    { tag: "@screenshot" },
-    async ({ timerPage: page, db }, testInfo) => {
-        testInfo.tags.push("@screenshot");
-        await page.goto();
-        await page.expect().toBeValid({ name: "empty-timer-list" });
+test("allows creating a new timer when no timers exist", { tag: "@screenshot" }, async ({ timerPage: page, db }) => {
+    await page.goto();
+    await page.expect().toBeValid({ name: "empty-timer-list" });
 
-        await page.click("emptyButton");
+    await page.click("emptyButton");
 
-        await page.expect().toHaveScreenshot({ name: "timer-creation-form", blur: false });
-        await page.expect("drawer").toMatchAriaSnapshot({ name: "timer-creation-form" });
+    await page.expect().toHaveScreenshot({ name: "timer-creation-form", blur: false });
+    await page.expect("drawer").toMatchAriaSnapshot({ name: "timer-creation-form" });
 
-        await page.createTimer({ title });
+    await page.createTimer({ title });
 
-        await page.expect("listItemTitles").toHaveText(title);
-        await page.expect("listItemLengths").toHaveText("1 round (3 seconds)");
-        await page.expect("root").toMatchAriaSnapshot({ name: "timer-list-with-a-single-timer" });
+    await page.expect("listItemTitles").toHaveText(title);
+    await page.expect("listItemLengths").toHaveText("1 round (3 seconds)");
+    await page.expect("root").toMatchAriaSnapshot({ name: "timer-list-with-a-single-timer" });
 
-        const [timer] = await db.timer.select();
-        expect(timer!.title).toBe(title);
-    },
-);
+    const [timer] = await db.timer.select();
+    expect(timer!.title).toBe(title);
+});
 
 test("displays an alert if there were form validation errors", async ({ timerPage: page }) => {
     await page.goto();
