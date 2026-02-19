@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.1...v1.5.0) (2026-02-19)
+
+
+### Features
+
+* add buttons to switch through timer intervals ([#229](https://github.com/konstantin-lukas/grizzl.io/issues/229)) ([ad363f1](https://github.com/konstantin-lukas/grizzl.io/commit/ad363f100d66beca0fa1a3af5b194f8c037c981e))
+* add mechanism to regularly hard-delete soft-deleted entities ([#224](https://github.com/konstantin-lukas/grizzl.io/issues/224)) ([ac10183](https://github.com/konstantin-lukas/grizzl.io/commit/ac1018305541d01d79a1ba67b624a493986455c5))
+
+
+### Bug Fixes
+
+* missing imports ([2f12297](https://github.com/konstantin-lukas/grizzl.io/commit/2f12297fadde2834ccaa9a3f69f56acc21420526))
+
 ## [1.4.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.0...v1.4.1) (2026-02-11)
 
 
