@@ -1,7 +1,7 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import { test } from "~~/test-utils/playwright";
 
-test("allows playing a created timer and going back", async ({ timerPage: page, db }) => {
+test("allows playing a created timer and going back", { tag: "@screenshot" }, async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert(1);
     const [interval] = await db.timerInterval.insert(1, {
         timerId: timer.id,
@@ -48,52 +48,53 @@ test("allows playing a created timer and going back", async ({ timerPage: page, 
     await page.expect("activeRound").toHaveText("1/1");
 });
 
-test("shows indicators for beats on timer progress and information on timer and interval lengths", async ({
-    timerPage: page,
-    db,
-}) => {
-    const beatPattern = [
-        Beat.ACCENTED,
-        Beat.PAUSE,
-        Beat.NORMAL,
-        Beat.PAUSE,
-        Beat.NORMAL,
-        Beat.PAUSE,
-        Beat.NORMAL,
-        Beat.ACCENTED,
-        Beat.PAUSE,
-        Beat.PAUSE,
-        Beat.PAUSE,
-        Beat.NORMAL,
-        Beat.NORMAL,
-        Beat.PAUSE,
-        Beat.PAUSE,
-        Beat.NORMAL,
-    ];
-    const [timer] = await db.timer.insert(1);
-    await db.timerInterval.insert(1, {
-        timerId: timer.id,
-        beatPattern,
-    });
-    await db.timerInterval.insert(1, {
-        timerId: timer.id,
-        index: 1,
-        duration: 3000,
-        repeatCount: 4,
-    });
+test(
+    "shows indicators for beats on timer progress and information on timer and interval lengths",
+    { tag: "@screenshot" },
+    async ({ timerPage: page, db }) => {
+        const beatPattern = [
+            Beat.ACCENTED,
+            Beat.PAUSE,
+            Beat.NORMAL,
+            Beat.PAUSE,
+            Beat.NORMAL,
+            Beat.PAUSE,
+            Beat.NORMAL,
+            Beat.ACCENTED,
+            Beat.PAUSE,
+            Beat.PAUSE,
+            Beat.PAUSE,
+            Beat.NORMAL,
+            Beat.NORMAL,
+            Beat.PAUSE,
+            Beat.PAUSE,
+            Beat.NORMAL,
+        ];
+        const [timer] = await db.timer.insert(1);
+        await db.timerInterval.insert(1, {
+            timerId: timer.id,
+            beatPattern,
+        });
+        await db.timerInterval.insert(1, {
+            timerId: timer.id,
+            index: 1,
+            duration: 3000,
+            repeatCount: 4,
+        });
 
-    await page.goto();
-    await page.toggleTheme();
-    await page.click("listItemPlayButtons");
+        await page.goto();
+        await page.toggleTheme();
+        await page.click("listItemPlayButtons");
 
-    await page.expect("remainingIntervalTime").toHaveText("00:03");
-    await page.expect("remainingTime").toHaveText("00:18");
-    await page.expect("activeRound").toHaveText("1/6");
-    await page.expect("beatIndicator").toHaveCount(8);
-    await page
-        .expect("slideover")
-        .toHaveScreenshot({ name: "timer-playback-with-multiple-intervals-and-beat-indicators" });
-});
+        await page.expect("remainingIntervalTime").toHaveText("00:03");
+        await page.expect("remainingTime").toHaveText("00:18");
+        await page.expect("activeRound").toHaveText("1/6");
+        await page.expect("beatIndicator").toHaveCount(8);
+        await page
+            .expect("slideover")
+            .toHaveScreenshot({ name: "timer-playback-with-multiple-intervals-and-beat-indicators" });
+    },
+);
 
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert(1);

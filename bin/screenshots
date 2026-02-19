@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker compose -f compose.test.yml run --rm -e CI=true playwright npx playwright test --grep @screenshot -u changed "$@"

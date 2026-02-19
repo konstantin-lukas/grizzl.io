@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [ "$1" ]; then
-  docker compose -f compose.test.yml run --rm -e CI=true playwright npx playwright test -u changed "$@"
-else
-  docker compose -f compose.test.yml run --rm -e CI=true playwright npx playwright test -u changed
-fi
