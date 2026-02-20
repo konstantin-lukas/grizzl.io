@@ -1,4 +1,4 @@
-import { ID_LENGTH, LONG_TITLE_MAX, TITLE_MAX } from "../../../../shared/validators/core.validator";
+import { ID_LENGTH, LONG_STRING, TITLE_MAX } from "../../../../shared/validators/core.validator";
 import { createdAt, deletedAt, id } from "../../../database/mixins";
 import { user } from "../../../schemas/auth.schema";
 import { sql } from "drizzle-orm";
@@ -12,7 +12,7 @@ export const timer = pgTable("timer", {
         .references(() => user.id, { onDelete: "cascade" })
         .notNull(),
     title: varchar({ length: TITLE_MAX }).notNull(),
-    ttsVoices: varchar({ length: LONG_TITLE_MAX })
+    ttsVoices: varchar({ length: LONG_STRING })
         .array()
         .notNull()
         .default(sql`ARRAY[]::varchar[]`),
