@@ -5,6 +5,7 @@ export const TITLE_MIN = 1;
 export const TITLE_MAX = 100;
 export const LONG_TITLE_MAX = 200;
 export const LONG_STRING = 500;
+export const SHA_1_CHAR_COUNT = 40;
 export const LIST_MIN = 1;
 export const LIST_MAX = 100;
 export const COUNT_MIN = 1;
