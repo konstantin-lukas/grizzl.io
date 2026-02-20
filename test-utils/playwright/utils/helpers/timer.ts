@@ -1,6 +1,6 @@
 import { arr, str, strArr } from "@@/test-utils/helpers/data";
 import { omit } from "@@/test-utils/helpers/object";
-import { BASE_INTERVAL, BASE_TIMER, hash40Chars } from "~~/test-utils/constants/timer";
+import { BASE_INTERVAL, BASE_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
 import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
@@ -28,9 +28,9 @@ function createInvalidTypeIntervalTestCases(
 const topLevelCases = [
     ["the title is empty", withTimer("title", "")],
     ["the title is too long", withTimer("title", str({ length: 101 }))],
-    ["the ttsVoices contain a value that is too long", withTimer("ttsVoices", [hash40Chars + str({ length: 461 })])],
+    ["the ttsVoices contain a value that is too long", withTimer("ttsVoices", [HASH_40_CHARS + str({ length: 461 })])],
     ["the ttsVoices contain a value that has an invalid hash", withTimer("ttsVoices", [str({ length: 41 })])],
-    ["the ttsVoices contain a value that contains no voice", withTimer("ttsVoices", [hash40Chars.slice(0, 40)])],
+    ["the ttsVoices contain a value that contains no voice", withTimer("ttsVoices", [HASH_40_CHARS.slice(0, 40)])],
     ["the ttsVoices array is too long", withTimer("ttsVoices", strArr({ arrLength: 101 }))],
     ["the title is missing", omit(BASE_TIMER, "title")],
     ["the ttsVoices are missing", omit(BASE_TIMER, "ttsVoices")],

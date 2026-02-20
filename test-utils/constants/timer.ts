@@ -7,10 +7,10 @@ export const BASE_INTERVAL = {
     beatPattern: [Beat.ACCENTED, Beat.NORMAL],
 };
 
-export const hash40Chars = "5bf3993d4ee84019b7e5a8772745be07509b655f";
+export const HASH_40_CHARS = "5bf3993d4ee84019b7e5a8772745be07509b655f";
 export const BASE_TIMER = {
     title: "Upper Body Workout",
-    ttsVoices: [`${hash40Chars}Virtual Voice Victor`],
+    ttsVoices: [`${HASH_40_CHARS}Virtual Voice Victor`],
     intervals: [BASE_INTERVAL],
 };
 
