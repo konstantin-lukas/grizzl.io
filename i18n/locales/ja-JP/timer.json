@@ -1,8 +1,6 @@
 {
     "timer": {
         "round": "{n}ラウンド",
-        "ttsUnavailableTitle": "テキスト読み上げ音声が利用できません",
-        "ttsUnavailableDescription": "選択したテキスト読み上げ音声はこのデバイスでは利用できません。選択した音声を変更しない限り、インターバル名は読み上げられません。",
         "form": {
             "title": "タイマー名",
             "ttsVoice": "インターバル名を読み上げる読み上げ音声",

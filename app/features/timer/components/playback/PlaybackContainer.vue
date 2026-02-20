@@ -16,15 +16,8 @@ const {
     lastIntervalTitleRead,
     reset,
 } = useTimer();
-const ttsVoices = useVoices();
 
 const activeIntervalIndex = ref(0);
-const displayWarning = computed(
-    () =>
-        ttsVoices.value.length > 0 &&
-        typeof timer.ttsVoice === "string" &&
-        ttsVoices.value.every(({ voiceURI }) => voiceURI !== timer.ttsVoice),
-);
 
 const next = () => {
     if (!interval.value) return;
@@ -76,7 +69,7 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
         <TypoH1 id="timer-name" class="line-clamp-2 w-full text-center" data-test-id="timer-title">
             {{ timer.title }}
         </TypoH1>
-        <div class="relative h-6 w-full" :aria-live="timer.ttsVoice && !displayWarning ? 'off' : 'polite'">
+        <div class="relative h-6 w-full" aria-live="polite">
             <Transition name="swipe" mode="out-in">
                 <span
                     id="interval-title"
@@ -88,20 +81,9 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 </span>
             </Transition>
         </div>
-        <div v-if="displayWarning" class="mt-8">
-            <UAlert
-                color="warning"
-                class="mx-auto"
-                variant="subtle"
-                :title="$t('timer.ttsUnavailableTitle')"
-                :description="$t('timer.ttsUnavailableDescription')"
-                icon="heroicons:exclamation-triangle"
-            />
-        </div>
         <PlaybackProgress
             :timer
             :rounds
-            :voice-uri="timer.ttsVoice"
             :duration
             :index="activeIntervalIndex"
             @finish="

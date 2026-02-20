@@ -23,7 +23,7 @@ const state = reactive<PutTimer>(
           }
         : {
               title: "",
-              ttsVoice: null,
+              ttsVoices: [],
               intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3000, id: nanoid(), beatPattern: null }],
           },
 );
@@ -131,7 +131,7 @@ function onEnd() {
                             data-test-id="timer-upsert-title-input"
                         />
                     </UFormField>
-                    <UpsertFormVoiceSelect v-model:tts-voice="state.ttsVoice" />
+                    <UpsertFormVoiceSelect v-model:tts-voices="state.ttsVoices" />
                     <VueDraggable
                         v-model="state.intervals"
                         :animation="250"

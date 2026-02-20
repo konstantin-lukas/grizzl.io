@@ -13,7 +13,7 @@ test("creates a timer with intervals and returns the id of the created timer", a
     expect(timer).toHaveProperty("id", id);
     expect(timer).toHaveProperty("title", BASE_TIMER.title);
     expect(timer).toHaveProperty("userId", user.id);
-    expect(timer).toHaveProperty("ttsVoice", BASE_TIMER.ttsVoice);
+    expect(timer).toHaveProperty("ttsVoices", BASE_TIMER.ttsVoices);
     expect(timer).toHaveProperty("deletedAt", null);
     expect(timer).toHaveProperty("createdAt", expect.any(Date));
 

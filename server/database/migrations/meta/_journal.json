@@ -15,6 +15,13 @@
             "when": 1769457803075,
             "tag": "0001_material_blink",
             "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "7",
+            "when": 1771622332252,
+            "tag": "0002_late_blade",
+            "breakpoints": true
         }
     ]
 }

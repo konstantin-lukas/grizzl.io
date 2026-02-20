@@ -14,11 +14,12 @@ function readMigrationFiles() {
 test("should match schemas", () => {
     const migrationsBefore = readMigrationFiles();
 
-    const { status } = spawnSync("npx", ["drizzle-kit", "generate"], {
+    const { status, stderr } = spawnSync("npx", ["drizzle-kit", "generate"], {
         encoding: "utf-8",
         timeout: 25000,
     });
 
+    expect(stderr).toBe("");
     expect(status).toBe(0);
 
     const migrationsAfter = readMigrationFiles();

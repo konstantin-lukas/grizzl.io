@@ -25,7 +25,7 @@ test("updates timers overriding previous intervals and returns the number of upd
     expect(rows).toBe(2);
     expect(timer).toStrictEqual({
         title: BASE_TIMER.title,
-        ttsVoice: BASE_TIMER.ttsVoice,
+        ttsVoices: BASE_TIMER.ttsVoices,
         id: anyId,
         userId: user.id,
         createdAt: expect.any(Date),

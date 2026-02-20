@@ -5,7 +5,8 @@ import {
     DatabaseIdSchema,
     LIST_MAX,
     LIST_MIN,
-    LONG_TITLE_MAX,
+    LONG_STRING,
+    SHA_1_CHAR_COUNT,
     TITLE_MAX,
     TITLE_MIN,
 } from "#shared/validators/core.validator";
@@ -25,7 +26,15 @@ const PostIntervalSchema = z.object({
 
 export const PostTimerSchema = z.object({
     title: z.string().min(TITLE_MIN).max(TITLE_MAX),
-    ttsVoice: z.nullable(z.string().min(TITLE_MIN).max(LONG_TITLE_MAX)),
+    ttsVoices: z
+        .array(
+            z
+                .string()
+                .regex(/^[0-9a-fA-F]{40}.+/)
+                .min(SHA_1_CHAR_COUNT)
+                .max(LONG_STRING),
+        )
+        .max(LIST_MAX),
     intervals: z.array(PostIntervalSchema).min(LIST_MIN).max(LIST_MAX),
 });
 
