@@ -1,5 +1,5 @@
 export default function useVoices() {
-    const ttsVoices = ref<SpeechSynthesisVoice[]>([]);
+    const ttsVoices = useState<SpeechSynthesisVoice[]>(() => []);
     const { locale } = useI18n();
 
     onMounted(() => {
