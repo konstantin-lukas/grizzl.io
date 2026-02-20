@@ -11,11 +11,11 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
         super(db, schema);
     }
 
-    async create(userId: string, { title, ttsVoice, intervals }: PostTimer) {
+    async create(userId: string, { title, ttsVoices, intervals }: PostTimer) {
         return await this.db.transaction(async tx => {
             const [{ timerId }] = (await tx
                 .insert(this.schema)
-                .values({ userId, title, ttsVoice })
+                .values({ userId, title, ttsVoices })
                 .returning({ timerId: this.schema.id })) as [{ timerId: string }];
 
             await tx
@@ -31,7 +31,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
             .select({
                 id: this.schema.id,
                 title: this.schema.title,
-                ttsVoice: this.schema.ttsVoice,
+                ttsVoices: this.schema.ttsVoices,
                 createdAt: this.schema.createdAt,
                 intervals: sql`
                 COALESCE(
@@ -59,12 +59,12 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
     public async update(
         id: string,
         userId: string,
-        values: { title: string; ttsVoice: string | null; intervals: PutTimer["intervals"] },
+        values: { title: string; ttsVoices: string[]; intervals: PutTimer["intervals"] },
     ) {
         return await this.db.transaction(async tx => {
             const { rowCount } = await tx
                 .update(this.schema)
-                .set({ title: values.title, ttsVoice: values.ttsVoice })
+                .set({ title: values.title, ttsVoices: values.ttsVoices })
                 .where(and(eq(this.schema.id, id), eq(this.schema.userId, userId)));
 
             if (!rowCount) return rowCount;

@@ -14,7 +14,7 @@ async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?
             id: timer.id,
             title: timer.title,
             createdAt: timer.createdAt.toISOString(),
-            ttsVoice: timer.ttsVoice,
+            ttsVoices: timer.ttsVoices,
             intervals: await (async () => {
                 const intervals = await db.timerInterval.insert(2, { timerId: timer.id });
                 return intervals.map(({ title, duration, beatPattern, id, repeatCount }) => ({

@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     vite: { plugins: [tailwindcss()] },
     css: ["~/assets/css/main.css"],
     typescript: {
-        typeCheck: true,
+        typeCheck: "build",
         tsConfig: {
             include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },

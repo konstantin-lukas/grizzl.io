@@ -1,4 +1,4 @@
-import { arr, str } from "@@/test-utils/helpers/data";
+import { arr, str, strArr } from "@@/test-utils/helpers/data";
 import { omit } from "@@/test-utils/helpers/object";
 import { BASE_INTERVAL, BASE_TIMER } from "~~/test-utils/constants/timer";
 import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
@@ -28,10 +28,10 @@ function createInvalidTypeIntervalTestCases(
 const topLevelCases = [
     ["the title is empty", withTimer("title", "")],
     ["the title is too long", withTimer("title", str({ length: 101 }))],
-    ["the ttsVoice is empty", withTimer("ttsVoice", "")],
-    ["the ttsVoice is too long", withTimer("ttsVoice", str({ length: 201 }))],
+    ["the ttsVoices contains a value that is too long", withTimer("ttsVoices", [str({ length: 201 })])],
+    ["the ttsVoices is too long", withTimer("ttsVoices", strArr({ arrLength: 101 }))],
     ["the title is missing", omit(BASE_TIMER, "title")],
-    ["the ttsVoice is missing", omit(BASE_TIMER, "ttsVoice")],
+    ["the ttsVoices is missing", omit(BASE_TIMER, "ttsVoices")],
     ["the intervals is missing", omit(BASE_TIMER, "intervals")],
     ["there are no intervals", withTimer("intervals", [])],
     ["there are too many intervals", withTimer("intervals", Array.from({ length: 101 }).fill(BASE_INTERVAL))],
@@ -53,7 +53,7 @@ const intervalLevelCases = [
 
 const invalidTypeCases = [
     ...createInvalidTypeTestCases(BASE_TIMER, "title", { valid: ["string"] }),
-    ...createInvalidTypeTestCases(BASE_TIMER, "ttsVoice", { valid: ["string", "null"] }),
+    ...createInvalidTypeTestCases(BASE_TIMER, "ttsVoices", { valid: ["array"] }),
     ...createInvalidTypeTestCases(BASE_TIMER, "intervals", { valid: ["null"] }),
     ...createInvalidTypeIntervalTestCases("title", ["string", "null"]),
     ...createInvalidTypeIntervalTestCases("beatPattern", ["null"]),

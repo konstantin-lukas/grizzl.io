@@ -25,7 +25,7 @@ const PostIntervalSchema = z.object({
 
 export const PostTimerSchema = z.object({
     title: z.string().min(TITLE_MIN).max(TITLE_MAX),
-    ttsVoice: z.nullable(z.string().min(TITLE_MIN).max(LONG_TITLE_MAX)),
+    ttsVoices: z.array(z.string().min(TITLE_MIN).max(LONG_TITLE_MAX)).max(LIST_MAX),
     intervals: z.array(PostIntervalSchema).min(LIST_MIN).max(LIST_MAX),
 });
 

@@ -74,7 +74,7 @@ test("only allows putting certain properties", async ({ request, db }) => {
     expect(intervals).toHaveLength(1);
     const [putTimer] = await db.timer.select(timer.id);
     const [putTimerInterval] = intervals;
-    expect(putTimer).toStrictEqual({ ...timer, title: FULL_TIMER.title, ttsVoice: FULL_TIMER.ttsVoice });
+    expect(putTimer).toStrictEqual({ ...timer, title: FULL_TIMER.title, ttsVoices: FULL_TIMER.ttsVoices });
     expect(putTimerInterval).toStrictEqual({
         ...timerInterval,
         beatPattern: FULL_INTERVAL.beatPattern,

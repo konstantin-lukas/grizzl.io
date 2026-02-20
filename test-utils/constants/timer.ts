@@ -9,7 +9,7 @@ export const BASE_INTERVAL = {
 
 export const BASE_TIMER = {
     title: "Upper Body Workout",
-    ttsVoice: "Virtual Voice Victor",
+    ttsVoices: ["Virtual Voice Victor"],
     intervals: [BASE_INTERVAL],
 };
 

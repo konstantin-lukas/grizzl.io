@@ -18,14 +18,14 @@ test("returns only the timers belonging to the requested user", async ({ db, use
             id: anyId,
             intervals: [],
             title: "lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibus",
-            ttsVoice: null,
+            ttsVoices: [],
         },
         {
             createdAt: new Date("2025-01-23T02:17:18.000Z"),
             id: anyId,
             intervals: [],
             title: "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau",
-            ttsVoice: null,
+            ttsVoices: [],
         },
     ]);
 });
@@ -55,7 +55,7 @@ test("automatically includes the intervals belonging to a timer", async ({ db, u
             },
         ],
         title: "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau",
-        ttsVoice: null,
+        ttsVoices: [],
     });
 });
 
