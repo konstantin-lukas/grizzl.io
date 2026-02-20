@@ -3,8 +3,9 @@ import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
 import beep from "~/assets/sound/intermittent_beep.wav";
 import useTimer from "~/features/timer/composables/useTimer";
+import useVoiceDigest from "~/features/timer/composables/useVoiceDigest";
 
-export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, voiceUri: string | null) {
+export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, savedVoices: string[]) {
     const {
         progress,
         intervalStartTime,
@@ -19,6 +20,12 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
     } = useTimer();
     const speak = useSpeakUtterance();
     const ttsVoices = useVoices();
+
+    const voiceDigest = useVoiceDigest();
+    const voiceUri = computed(() => {
+        const voice = savedVoices.find(v => v.slice(0, voiceDigest.value.length) === voiceDigest.value);
+        return voice?.slice(voiceDigest.value.length) || null;
+    });
 
     const animateTimer = () => {
         if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
@@ -64,8 +71,8 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
     watch(
         () => [interval.value?.title, playing.value] as const,
         ([t, p]) => {
-            const voice = voiceUri;
             const isVoiceValid = (uri: string | null): uri is string => ttsVoices.value.some(v => v.voiceURI === uri);
+            const voice = voiceUri.value;
             if (t && p && lastIntervalTitleRead.value !== interval.value?.id && isVoiceValid(voice)) {
                 if (!mute.value) setTimeout(() => speak(t, voice), 500);
                 lastIntervalTitleRead.value = interval.value?.id;

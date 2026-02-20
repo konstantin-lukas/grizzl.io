@@ -28,7 +28,7 @@ function createInvalidTypeIntervalTestCases(
 const topLevelCases = [
     ["the title is empty", withTimer("title", "")],
     ["the title is too long", withTimer("title", str({ length: 101 }))],
-    ["the ttsVoices contains a value that is too long", withTimer("ttsVoices", [str({ length: 201 })])],
+    ["the ttsVoices contains a value that is too long", withTimer("ttsVoices", [str({ length: 501 })])],
     ["the ttsVoices is too long", withTimer("ttsVoices", strArr({ arrLength: 101 }))],
     ["the title is missing", omit(BASE_TIMER, "title")],
     ["the ttsVoices is missing", omit(BASE_TIMER, "ttsVoices")],

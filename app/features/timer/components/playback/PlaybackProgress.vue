@@ -8,12 +8,11 @@ import useTimer from "~/features/timer/composables/useTimer";
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
     rounds: number;
-    voiceUri: string | null;
     timer: Timer;
     index: number;
 }>();
 
-useAnimateTimer(emit, props.rounds, props.voiceUri);
+useAnimateTimer(emit, props.rounds, props.timer.ttsVoices);
 const { progress, elapsedIntervalTime, round, interval, repetition } = useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {

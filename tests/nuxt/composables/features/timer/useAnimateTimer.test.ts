@@ -5,38 +5,53 @@ import { nextTick } from "vue";
 import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";
 import useTimer from "~/features/timer/composables/useTimer";
 
-const { usesVoicesMock, useSpeakUtteranceMock, requestAnimationFrameMock, audioPlayMock, audioConstructorMock, speak } =
-    await vi.hoisted(async () => {
-        const { ref } = await import("vue");
-        const voices = ref([{ voiceURI: "oranges" }]);
-        const usesVoicesMock = vi.fn(() => voices);
-        const speak = vi.fn();
-        const useSpeakUtteranceMock = () => speak;
-        const audioPlayMock = vi.fn(() => Promise.resolve());
-        const audioConstructorMock = vi.fn();
-        class AudioMock {
-            constructor() {
-                audioConstructorMock();
-            }
-            async play() {
-                await audioPlayMock();
-            }
-        }
-        const requestAnimationFrameMock = vi.spyOn(globalThis, "requestAnimationFrame").mockImplementation(() => 0);
-        vi.stubGlobal("Audio", AudioMock);
+const voiceDigest = "apple";
 
-        return {
-            speak,
-            usesVoicesMock,
-            useSpeakUtteranceMock,
-            requestAnimationFrameMock,
-            audioPlayMock,
-            audioConstructorMock,
-        };
-    });
+const {
+    useVoicesMock,
+    useVoiceDigestMock,
+    useSpeakUtteranceMock,
+    requestAnimationFrameMock,
+    audioPlayMock,
+    audioConstructorMock,
+    speak,
+} = await vi.hoisted(async () => {
+    const { ref } = await import("vue");
+    const voices = ref([{ voiceURI: "oranges" }]);
+    const useVoicesMock = vi.fn(() => voices);
+    const useVoiceDigestMock = vi.fn(() => ({ value: voiceDigest }));
+    const speak = vi.fn();
+    const useSpeakUtteranceMock = () => speak;
+    const audioPlayMock = vi.fn(() => Promise.resolve());
+    const audioConstructorMock = vi.fn();
+    class AudioMock {
+        constructor() {
+            audioConstructorMock();
+        }
+        async play() {
+            await audioPlayMock();
+        }
+    }
+    const requestAnimationFrameMock = vi.spyOn(globalThis, "requestAnimationFrame").mockImplementation(() => 0);
+    vi.stubGlobal("Audio", AudioMock);
+
+    return {
+        speak,
+        useVoicesMock,
+        useVoiceDigestMock,
+        useSpeakUtteranceMock,
+        requestAnimationFrameMock,
+        audioPlayMock,
+        audioConstructorMock,
+    };
+});
 
 mockNuxtImport("useVoices", () => {
-    return usesVoicesMock;
+    return useVoicesMock;
+});
+
+vi.mock("~/features/timer/composables/useVoiceDigest", () => {
+    return { default: useVoiceDigestMock };
 });
 
 mockNuxtImport("useSpeakUtterance", () => {
@@ -48,7 +63,7 @@ beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
     requestAnimationFrameMock.mockReset();
-    usesVoicesMock.mockClear();
+    useVoicesMock.mockClear();
     speak.mockClear();
     audioPlayMock.mockReset();
     audioConstructorMock.mockReset();
@@ -59,7 +74,7 @@ test("loops the animation function", async () => {
     interval.value = { duration: 1000, id: "123" } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     animateTimer();
 
@@ -72,7 +87,7 @@ test("stops the animation when no interval is selected", async () => {
     interval.value = undefined;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     animateTimer();
 
@@ -84,7 +99,7 @@ test("stops the animation when timer is not playing", async () => {
     interval.value = { duration: 1000, id: "123" } as never;
     playing.value = false;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     animateTimer();
 
@@ -99,7 +114,7 @@ test("stops the animation when the last interval of current timer completed and 
     interval.value = { duration: 1000, id: "123", repeatCount: 1 } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(emit, 3, "oranges");
+    const animateTimer = useAnimateTimer(emit, 3, ["appleoranges"]);
     vi.setSystemTime(3000);
 
     animateTimer();
@@ -120,7 +135,7 @@ test("should not play audio at the end of the timer if muted", async () => {
     playing.value = true;
     mute.value = true;
 
-    const animateTimer = useAnimateTimer(emit, 3, "oranges");
+    const animateTimer = useAnimateTimer(emit, 3, ["appleoranges"]);
     vi.setSystemTime(3000);
 
     animateTimer();
@@ -137,7 +152,7 @@ test("should move on to the next interval if the current interval has completed"
     interval.value = { duration: 1000, id: "123", repeatCount: 2 } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(emit, 3, "oranges");
+    const animateTimer = useAnimateTimer(emit, 3, ["appleoranges"]);
     vi.setSystemTime(3000);
 
     animateTimer();
@@ -152,7 +167,7 @@ test("should play audio when a beat pattern is specified and the next beat is re
     interval.value = { duration: 1000, id: "123", beatPattern: ["high", "low", "pause"] } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     expect(audioConstructorMock).not.toHaveBeenCalled();
     expect(audioPlayMock).not.toHaveBeenCalled();
@@ -173,7 +188,7 @@ test("should play audio when a beat pattern is specified and the next beat is re
     interval.value = { duration: 1000, id: "123", beatPattern: ["low", "low", "pause"] } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     expect(audioConstructorMock).not.toHaveBeenCalled();
     expect(audioPlayMock).not.toHaveBeenCalled();
@@ -190,7 +205,7 @@ test("should not play audio when a beat pattern is specified but the timer is mu
     playing.value = true;
     mute.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     expect(audioConstructorMock).not.toHaveBeenCalled();
     expect(audioPlayMock).not.toHaveBeenCalled();
@@ -206,7 +221,7 @@ test("should play audio when the interval title changes", async () => {
     interval.value = { duration: 1000, id: "123", title: "bananas" } as never;
     playing.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     expect(speak).not.toHaveBeenCalled();
 
@@ -225,7 +240,7 @@ test("should not play audio when the interval title changes but the timer is mut
     playing.value = true;
     mute.value = true;
 
-    const animateTimer = useAnimateTimer(() => undefined, 3, "oranges");
+    const animateTimer = useAnimateTimer(() => undefined, 3, ["appleoranges"]);
 
     expect(speak).not.toHaveBeenCalled();
 
@@ -242,7 +257,7 @@ test("should stop playback if the round changes and is past the last one", async
     interval.value = { duration: 1000, id: "123" } as never;
     playing.value = true;
 
-    useAnimateTimer(() => undefined, 1, "oranges");
+    useAnimateTimer(() => undefined, 1, ["appleoranges"]);
     round.value = 2;
     await nextTick();
     expect(playing.value).toBe(false);
