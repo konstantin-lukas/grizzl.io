@@ -241,7 +241,8 @@
 
     @media (prefers-reduced-motion: no-preference) {
         @keyframes bounce-letter {
-            0%, 100% {
+            0%,
+            100% {
                 transform: none;
                 animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
             }
@@ -285,5 +286,4 @@
             animation-delay: 0.9s;
         }
     }
-
 }
