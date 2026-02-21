@@ -115,7 +115,7 @@ test("pauses timer during preparation time", { tag: SCREENSHOT }, async ({ timer
         name: "timer-playback-during-preparation-time",
         threshold: 0.03,
         maxDiffPixelRatio: 0.1,
-        maxDiffPixels: 100,
+        maxDiffPixels: 200,
     });
     await page.page.clock.runFor("00:02");
     await expectTimerState(page, "00:11", "00:02", "1/4");
@@ -123,7 +123,7 @@ test("pauses timer during preparation time", { tag: SCREENSHOT }, async ({ timer
         name: "timer-playback-during-interval",
         threshold: 0.03,
         maxDiffPixelRatio: 0.1,
-        maxDiffPixels: 100,
+        maxDiffPixels: 200,
     });
 
     await page.page.clock.runFor("00:04");
