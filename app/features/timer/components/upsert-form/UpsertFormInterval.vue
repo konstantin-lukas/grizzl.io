@@ -85,14 +85,14 @@ const preparationTimeSeconds = computed({
                 </UFormField>
                 <UFormField
                     :label="$t('timer.form.interval.preparationTime')"
-                    :name="`intervals.${index}.preparationTimeSeconds`"
+                    :name="`intervals.${index}.preparationTime`"
                     required
                     class="w-[calc(50%-0.5rem)] text-nowrap not-xs:w-full sm:w-full"
                 >
                     <UInputNumber
                         v-model="preparationTimeSeconds"
                         class="w-full"
-                        data-test-id="interval-preparationTime-input"
+                        data-test-id="interval-preparation-time-input"
                         :min="ZERO"
                         :max="TIMER_DURATION_MAX / 1000"
                         :format-options="{ style: 'unit', unit: 'second' }"

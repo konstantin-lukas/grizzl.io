@@ -4,8 +4,8 @@ import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 const title = str({ length: 100 });
 const intervals = [
-    { title: str({ length: 10 }), duration: 42, repeatCount: 3, type: 0 },
-    { title: str({ length: 15 }), duration: 69, repeatCount: 1, type: 1 },
+    { title: str({ length: 10 }), duration: 42, preparationTime: 10, repeatCount: 3, type: 0 },
+    { title: str({ length: 15 }), duration: 69, preparationTime: 5, repeatCount: 1, type: 1 },
 ] as const;
 
 test("should register a service worker if supported", async ({ timerPage: page }) => {
@@ -96,11 +96,13 @@ test("allows creating timers with multiple intervals", async ({ timerPage: page,
 
     expect(createdIntervals[0]!.title).toBe(intervals[0].title);
     expect(createdIntervals[0]!.duration).toBe(intervals[0].duration * 1000);
+    expect(createdIntervals[0]!.preparationTime).toBe(intervals[0].preparationTime * 1000);
     expect(createdIntervals[0]!.repeatCount).toBe(intervals[0].repeatCount);
     expect(createdIntervals[0]!.beatPattern).toBe(null);
 
     expect(createdIntervals[1]!.title).toBe(intervals[1].title);
     expect(createdIntervals[1]!.duration).toBe(intervals[1].duration * 1000);
+    expect(createdIntervals[1]!.preparationTime).toBe(intervals[1].preparationTime * 1000);
     expect(createdIntervals[1]!.repeatCount).toBe(intervals[1].repeatCount);
     expect(createdIntervals[1]!.beatPattern).toEqual(["high", "low", "low", "low"]);
 

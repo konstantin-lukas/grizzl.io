@@ -94,6 +94,57 @@ test(
     },
 );
 
+test("pauses timer during preparation time", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
+    const [timer] = await db.timer.insert(1);
+    await db.timerInterval.insert(3, i => ({
+        timerId: timer.id,
+        repeatCount: (i % 2) + 1,
+        preparationTime: 3000,
+    }));
+
+    await page.page.clock.install({ time: new Date("2024-02-02T07:00:00") });
+    await page.goto();
+    await page.page.clock.pauseAt(new Date("2024-02-02T08:00:00"));
+    await page.click("listItemPlayButtons");
+    await page.click("playButton");
+
+    await expectTimerState(page, "00:12", "00:03", "1/4");
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:12", "00:03", "1/4");
+    await page.expect().toHaveScreenshot({ name: "timer-playback-during-preparation-time", threshold: 0.03 });
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:11", "00:02", "1/4");
+    await page.expect().toHaveScreenshot({ name: "timer-playback-during-interval", threshold: 0.03 });
+
+    await page.page.clock.runFor("00:04");
+    await expectTimerState(page, "00:09", "00:03", "2/4");
+    await page.page.clock.runFor("00:03");
+    await expectTimerState(page, "00:07", "00:01", "2/4");
+
+    await page.click("previousButton");
+    await page.click("playButton");
+
+    await expectTimerState(page, "00:12", "00:03", "1/4");
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:12", "00:03", "1/4");
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:11", "00:02", "1/4");
+
+    await page.click("nextButton");
+    await page.click("nextButton");
+    await page.click("playButton");
+
+    await expectTimerState(page, "00:06", "00:03", "3/4");
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:04", "00:01", "3/4");
+    await page.page.clock.runFor("00:03");
+    await expectTimerState(page, "00:03", "00:03", "4/4");
+    await page.page.clock.runFor("00:02");
+    await expectTimerState(page, "00:02", "00:02", "4/4");
+    await page.page.clock.runFor("00:03");
+    await expectTimerState(page, "00:00", "––:––", "–/–");
+});
+
 test("allows pausing, resuming, and resetting timer playback", async ({ timerPage: page, db }) => {
     const [timer] = await db.timer.insert(1);
     await db.timerInterval.insert(1, {

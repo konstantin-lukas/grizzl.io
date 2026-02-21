@@ -50,7 +50,7 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         }
 
         elapsedIntervalTime.value = isInPreparationTime.value ? 0 : Date.now() - intervalStartTime.value;
-        if (interval.value.beatPattern && interval.value.beatPattern.length > 0) {
+        if (interval.value.beatPattern && interval.value.beatPattern.length > 0 && !isInPreparationTime.value) {
             const barLengthInMs = interval.value.duration;
             const moduloTime = (Date.now() - intervalStartTime.value) % barLengthInMs;
             const beatLength = barLengthInMs / interval.value.beatPattern.length;
