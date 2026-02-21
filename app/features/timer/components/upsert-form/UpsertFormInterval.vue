@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { Beat } from "#shared/features/timer/enums/beat.enum";
-import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
-import { COUNT_MIN, TITLE_MAX } from "#shared/validators/core.validator";
+import {
+    type PutTimer,
+    TIMER_DURATION_MAX,
+    TIMER_DURATION_MIN,
+} from "#shared/features/timer/validators/timer.validator";
+import { COUNT_MAX, COUNT_MIN, TITLE_MAX, ZERO } from "#shared/validators/core.validator";
 import UpsertFormBeatPatternInput from "~/features/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import UpsertFormIntervalActionButtons from "~/features/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 
@@ -10,6 +14,10 @@ const { index } = defineProps<{ index: number }>();
 const durationSeconds = computed({
     get: () => intervals!.value![index]!.duration / 1000,
     set: v => (intervals!.value![index]!.duration = v * 1000),
+});
+const preparationTimeSeconds = computed({
+    get: () => intervals!.value![index]!.preparationTime / 1000,
+    set: v => (intervals!.value![index]!.preparationTime = v * 1000),
 });
 </script>
 
@@ -60,31 +68,48 @@ const durationSeconds = computed({
                     </template>
                 </USelect>
             </UFormField>
-            <div class="flex gap-4">
+            <div class="flex flex-col gap-4 not-sm:flex-wrap xs:flex-row">
                 <UFormField
                     :label="$t('timer.form.interval.repetitions')"
                     :name="`intervals.${index}.repeatCount`"
                     required
-                    class="w-full"
+                    class="w-full grow"
                 >
                     <UInputNumber
                         v-model="intervals![index]!.repeatCount"
                         class="w-full"
                         :min="COUNT_MIN"
+                        :max="COUNT_MAX"
                         data-test-id="interval-repetitions-input"
+                    />
+                </UFormField>
+                <UFormField
+                    :label="$t('timer.form.interval.preparationTime')"
+                    :name="`intervals.${index}.duration`"
+                    required
+                    class="w-[calc(50%-0.5rem)] not-xs:w-full sm:w-full"
+                >
+                    <UInputNumber
+                        v-model="preparationTimeSeconds"
+                        class="w-full"
+                        data-test-id="interval-preparationTime-input"
+                        :min="ZERO"
+                        :max="TIMER_DURATION_MAX / 1000"
+                        :format-options="{ style: 'unit', unit: 'second' }"
                     />
                 </UFormField>
                 <UFormField
                     :label="$t('timer.form.interval.duration')"
                     :name="`intervals.${index}.duration`"
                     required
-                    class="w-full"
+                    class="w-[calc(50%-0.5rem)] not-xs:w-full sm:w-full"
                 >
                     <UInputNumber
                         v-model="durationSeconds"
                         class="w-full"
                         data-test-id="interval-duration-input"
-                        :min="COUNT_MIN"
+                        :min="TIMER_DURATION_MIN / 1000"
+                        :max="TIMER_DURATION_MAX / 1000"
                         :format-options="{ style: 'unit', unit: 'second' }"
                     />
                 </UFormField>

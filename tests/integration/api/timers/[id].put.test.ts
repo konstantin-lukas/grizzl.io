@@ -80,6 +80,7 @@ test("only allows putting certain properties", async ({ request, db }) => {
         beatPattern: FULL_INTERVAL.beatPattern,
         title: FULL_INTERVAL.title,
         duration: FULL_INTERVAL.duration,
+        preparationTime: FULL_INTERVAL.preparationTime,
         repeatCount: FULL_INTERVAL.repeatCount,
     });
 });

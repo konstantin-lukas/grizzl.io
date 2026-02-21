@@ -19,6 +19,7 @@ test("creates a timer with intervals and returns the id of the created timer", a
 
     expect(interval).toHaveProperty("title", BASE_TIMER.intervals[0]!.title);
     expect(interval).toHaveProperty("duration", BASE_TIMER.intervals[0]!.duration);
+    expect(interval).toHaveProperty("preparationTime", BASE_TIMER.intervals[0]!.preparationTime);
     expect(interval).toHaveProperty("repeatCount", BASE_TIMER.intervals[0]!.repeatCount);
     expect(interval).toHaveProperty("beatPattern", BASE_TIMER.intervals[0]!.beatPattern);
     expect(interval).toHaveProperty("timerId", id);

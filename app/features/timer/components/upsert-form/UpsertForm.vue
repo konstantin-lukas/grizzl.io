@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/features/timer/validators/timer.validator";
 import { ellipsize } from "#shared/utils/string.util";
-import { COUNT_MIN, ID_LENGTH, TITLE_MAX } from "#shared/validators/core.validator";
+import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/validators/core.validator";
 import type { FormErrorEvent } from "#ui/types";
 import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
@@ -24,7 +24,16 @@ const state = reactive<PutTimer>(
         : {
               title: "",
               ttsVoices: [],
-              intervals: [{ title: "", repeatCount: COUNT_MIN, duration: 3000, id: nanoid(), beatPattern: null }],
+              intervals: [
+                  {
+                      title: "",
+                      repeatCount: COUNT_MIN,
+                      duration: 3000,
+                      preparationTime: ZERO,
+                      id: nanoid(),
+                      beatPattern: null,
+                  },
+              ],
           },
 );
 const previousIntervalCount = ref(state.intervals.length);

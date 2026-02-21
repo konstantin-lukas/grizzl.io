@@ -16,6 +16,7 @@
                 "rhythm": "Rhythm",
                 "repetitions": "Repetitions",
                 "duration": "Duration",
+                "preparationTime": "Preparation Time",
                 "beatPattern": "Beat pattern",
                 "addAccent": "Add accented beat",
                 "addBeat": "Add beat",

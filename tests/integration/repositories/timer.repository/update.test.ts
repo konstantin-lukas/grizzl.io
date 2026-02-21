@@ -37,6 +37,7 @@ test("updates timers overriding previous intervals and returns the number of upd
         {
             beatPattern: ["high", "low"],
             duration: 10000,
+            preparationTime: 5000,
             id: anyId,
             index: 0,
             repeatCount: 1,

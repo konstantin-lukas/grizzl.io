@@ -42,6 +42,7 @@ test("automatically includes the intervals belonging to a timer", async ({ db, u
             {
                 beatPattern: ["low", "low", "low"],
                 duration: 3000,
+                preparationTime: 0,
                 id: anyId,
                 repeatCount: 2,
                 title: "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau",
@@ -49,6 +50,7 @@ test("automatically includes the intervals belonging to a timer", async ({ db, u
             {
                 beatPattern: null,
                 duration: 3000,
+                preparationTime: 0,
                 id: anyId,
                 repeatCount: 2,
                 title: "lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibus",
