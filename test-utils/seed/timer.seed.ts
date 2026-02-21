@@ -15,7 +15,8 @@ test("insert timer test data", async ({ db }) => {
                 timerId: timer.id,
                 title: str({ length: int({ min: 1, max: 100, seed }), seed }),
                 repeatCount: int({ min: 1, max: 5, seed }),
-                duration: int({ min: 1000, max: 60 * 1000, seed }),
+                duration: int({ min: 1, max: 60, seed }) * 1000,
+                preparationTime: int({ min: 0, max: 60, seed }) * 1000,
                 beatPattern: maybe(() => arr(Object.values(Beat), { length: int({ min: 2, max: 30, seed }) }), seed),
             });
         }
