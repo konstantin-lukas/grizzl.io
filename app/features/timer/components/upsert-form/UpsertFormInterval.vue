@@ -73,7 +73,7 @@ const preparationTimeSeconds = computed({
                     :label="$t('timer.form.interval.repetitions')"
                     :name="`intervals.${index}.repeatCount`"
                     required
-                    class="w-full grow"
+                    class="w-full grow text-nowrap"
                 >
                     <UInputNumber
                         v-model="intervals![index]!.repeatCount"
@@ -85,9 +85,9 @@ const preparationTimeSeconds = computed({
                 </UFormField>
                 <UFormField
                     :label="$t('timer.form.interval.preparationTime')"
-                    :name="`intervals.${index}.duration`"
+                    :name="`intervals.${index}.preparationTimeSeconds`"
                     required
-                    class="w-[calc(50%-0.5rem)] not-xs:w-full sm:w-full"
+                    class="w-[calc(50%-0.5rem)] text-nowrap not-xs:w-full sm:w-full"
                 >
                     <UInputNumber
                         v-model="preparationTimeSeconds"
@@ -102,7 +102,7 @@ const preparationTimeSeconds = computed({
                     :label="$t('timer.form.interval.duration')"
                     :name="`intervals.${index}.duration`"
                     required
-                    class="w-[calc(50%-0.5rem)] not-xs:w-full sm:w-full"
+                    class="w-[calc(50%-0.5rem)] text-nowrap not-xs:w-full sm:w-full"
                 >
                     <UInputNumber
                         v-model="durationSeconds"
