@@ -2,6 +2,7 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { intervalToDuration } from "date-fns";
+import PlaybackBouncyLetter from "~/features/timer/components/playback/PlaybackBouncyLetter.vue";
 import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";
 import useTimer from "~/features/timer/composables/useTimer";
 
@@ -44,6 +45,16 @@ const transform = computed(
     () => `rotate(${isInPreparationTime.value ? preparationTimeProgress.value : progress.value}turn)`,
 );
 
+const stoppedLetters1 = ref(0);
+const stoppedLetters2 = ref(0);
+const stoppedLetters3 = ref(0);
+
+watch(isInPreparationTime, () => {
+    stoppedLetters1.value = 0;
+    stoppedLetters2.value = 0;
+    stoppedLetters3.value = 0;
+});
+
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
 
@@ -65,15 +76,44 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
                     data-test-id="timer-remaining-time"
                     :class="baseClass"
                 >
-                    {{ remainingTime }}
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in remainingTime"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters1"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters1++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
                 </span>
-                <span data-test-id="timer-remaining-interval-time">{{ remainingTimeInInterval }}</span>
+                <span data-test-id="timer-remaining-interval-time">
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in remainingTimeInInterval"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters2"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters2++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
+                </span>
                 <span
                     class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
                     data-test-id="timer-active-round"
                     :class="baseClass"
                 >
-                    {{ activeRound }}
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in activeRound"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters3"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters3++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
                 </span>
             </span>
         </div>
