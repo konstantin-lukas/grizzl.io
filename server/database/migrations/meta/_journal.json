@@ -22,6 +22,13 @@
             "when": 1771622332252,
             "tag": "0002_late_blade",
             "breakpoints": true
+        },
+        {
+            "idx": 3,
+            "version": "7",
+            "when": 1771666583607,
+            "tag": "0003_next_tyrannus",
+            "breakpoints": true
         }
     ]
 }

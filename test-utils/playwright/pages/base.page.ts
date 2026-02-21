@@ -110,8 +110,22 @@ export default abstract class BasePage<T extends Record<string, string>> {
         await expect(target).toMatchAriaSnapshot({ name });
     }
 
-    private async toHaveScreenshot(target: Locator | Page, options: { name: string; blur?: boolean }) {
-        const { blur = true } = options;
+    private async toHaveScreenshot(
+        target: Locator | Page,
+        options: {
+            name: string;
+            blur?: boolean;
+            threshold?: number;
+            maxDiffPixels?: number;
+            maxDiffPixelRatio?: number;
+        },
+    ) {
+        const {
+            blur = true,
+            threshold = config.expect?.toHaveScreenshot?.threshold,
+            maxDiffPixels = config.expect?.toHaveScreenshot?.maxDiffPixels,
+            maxDiffPixelRatio = config.expect?.toHaveScreenshot?.maxDiffPixelRatio,
+        } = options;
         const name = options.name.endsWith(".png") ? options.name : `${options.name}.png`;
         const fullPage = target === this.page;
 
@@ -125,8 +139,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await this.page.click("body", { position: { x: 0, y: 0 } });
         }
 
-        if (name) return expect(target).toHaveScreenshot(name, { fullPage });
-        return expect(target).toHaveScreenshot({ fullPage });
+        if (name)
+            return expect(target).toHaveScreenshot(name, { fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
+        return expect(target).toHaveScreenshot({ fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
     }
 
     private async toBeAccessible() {

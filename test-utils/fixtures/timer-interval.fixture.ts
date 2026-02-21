@@ -9,6 +9,7 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
         title: str({ length: 100, spaces: false, seed: index }),
         repeatCount: 2,
         duration: 3000,
+        preparationTime: 0,
         beatPattern: index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null,
     });
 

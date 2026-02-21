@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
+import { generateId } from "#shared/utils/id.util";
 import { LIST_MAX, LIST_MIN } from "#shared/validators/core.validator";
-import { nanoid } from "nanoid";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();
@@ -24,7 +24,7 @@ const { index } = defineProps<{ index: number }>();
                     const newIntervals = duplicateNthElement(intervals!, index);
                     newIntervals[index + 1] = {
                         ...newIntervals[index + 1]!,
-                        id: nanoid(),
+                        id: generateId() + 'A',
                     };
                     intervals = newIntervals;
                 }

@@ -13,11 +13,27 @@ const {
     elapsedIntervalTime,
     currentBeat,
     repetition,
+    isInPreparationTime,
+    elapsedPreparationTime,
+    preparationTimeProgress,
     lastIntervalTitleRead,
     reset,
 } = useTimer();
 
 const activeIntervalIndex = ref(0);
+
+const resetPreparationTime = () => {
+    if (!interval.value) return;
+    if (repetition.value > 1) {
+        preparationTimeProgress.value = 1;
+        elapsedPreparationTime.value = interval.value.preparationTime;
+        isInPreparationTime.value = false;
+    } else {
+        preparationTimeProgress.value = 0;
+        elapsedPreparationTime.value = 0;
+        isInPreparationTime.value = true;
+    }
+};
 
 const next = () => {
     if (!interval.value) return;
@@ -97,8 +113,14 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 activeIntervalIndex = 0;
                 reset(true);
             "
-            @next="next()"
-            @previous="previous()"
+            @next="
+                next();
+                resetPreparationTime();
+            "
+            @previous="
+                previous();
+                resetPreparationTime();
+            "
         />
     </section>
 </template>

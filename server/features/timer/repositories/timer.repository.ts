@@ -41,6 +41,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
                             'title', ${timerInterval.title},
                             'repeatCount', ${timerInterval.repeatCount},
                             'duration', ${timerInterval.duration},
+                            'preparationTime', ${timerInterval.preparationTime},
                             'beatPattern', ${timerInterval.beatPattern}
                         )
                         ORDER BY ${timerInterval.index}
@@ -81,6 +82,7 @@ export default class TimerRepository extends BaseRepository<typeof schema> {
                     title: interval.title,
                     repeatCount: interval.repeatCount,
                     duration: interval.duration,
+                    preparationTime: interval.preparationTime,
                     beatPattern: interval.beatPattern,
                 };
                 if (interval.id) {

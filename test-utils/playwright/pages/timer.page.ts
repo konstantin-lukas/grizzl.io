@@ -18,6 +18,7 @@ const LOCATORS = {
     repetitionsInputs: "interval-repetitions-input",
     intervalTitleInputs: "interval-title-input",
     durationInputs: "interval-duration-input",
+    preparationTimeInputs: "interval-preparation-time-input",
     beatPatternInputs: "interval-beat-pattern-input",
 
     // TIMER LIST
@@ -42,7 +43,7 @@ const LOCATORS = {
     intervalTitle: "interval-title",
 };
 
-type Interval = { title?: string; duration?: number; repeatCount?: number; type?: number };
+type Interval = { title?: string; duration?: number; preparationTime?: number; repeatCount?: number; type?: number };
 
 export default class TimerPage extends BasePage<typeof LOCATORS> {
     constructor(page: Page) {
@@ -69,6 +70,7 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
     async fillNthInterval(n: number, data: Interval) {
         if (data.title) await this.fill("intervalTitleInputs", data.title, { nth: n });
         if (data.duration) await this.fill("durationInputs", data.duration.toString(), { nth: n });
+        if (data.preparationTime) await this.fill("preparationTimeInputs", data.preparationTime.toString(), { nth: n });
         if (data.repeatCount) await this.fill("repetitionsInputs", data.repeatCount.toString(), { nth: n });
         if (data.type) {
             await this.click("typeSelect", { nth: n });

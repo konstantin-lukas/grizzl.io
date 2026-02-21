@@ -47,6 +47,8 @@ const intervalLevelCases = [
     ["an interval repeatCount is too large", withInterval("repeatCount", 101)],
     ["an interval duration is too small", withInterval("duration", 0)],
     ["an interval duration is too large", withInterval("duration", 3600001)],
+    ["an interval preparationTime is too small", withInterval("preparationTime", -1)],
+    ["an interval preparationTime is too large", withInterval("preparationTime", 3600001)],
     ["an interval has an empty beatPattern", withInterval("beatPattern", [])],
     ["an interval has a beatPattern that's too short", withInterval("beatPattern", ["low"])],
     ["an interval has a beatPattern that's too long", withInterval("beatPattern", arr("low", { length: 31 }))],

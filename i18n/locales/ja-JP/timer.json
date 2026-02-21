@@ -16,6 +16,7 @@
                 "rhythm": "リズム",
                 "repetitions": "回数",
                 "duration": "時間",
+                "preparationTime": "準備時間",
                 "beatPattern": "ビートパターン",
                 "addAccent": "アクセントビートを追加",
                 "addBeat": "ビートを追加",

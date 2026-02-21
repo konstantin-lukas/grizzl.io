@@ -2,6 +2,7 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import type { Timer } from "#shared/features/timer/validators/timer.validator";
 import { intervalToDuration } from "date-fns";
+import PlaybackBouncyLetter from "~/features/timer/components/playback/PlaybackBouncyLetter.vue";
 import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";
 import useTimer from "~/features/timer/composables/useTimer";
 
@@ -13,7 +14,8 @@ const props = defineProps<{
 }>();
 
 useAnimateTimer(emit, props.rounds, props.timer.ttsVoices);
-const { progress, elapsedIntervalTime, round, interval, repetition } = useTimer();
+const { progress, preparationTimeProgress, isInPreparationTime, elapsedIntervalTime, round, interval, repetition } =
+    useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -39,7 +41,19 @@ const activeRound = computed(() => {
     return `${round.value}/${props.rounds}`;
 });
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
-const transform = computed(() => `rotate(${progress.value}turn)`);
+const transform = computed(
+    () => `rotate(${isInPreparationTime.value ? preparationTimeProgress.value : progress.value}turn)`,
+);
+
+const stoppedLetters1 = ref(0);
+const stoppedLetters2 = ref(0);
+const stoppedLetters3 = ref(0);
+
+watch(isInPreparationTime, () => {
+    stoppedLetters1.value = 0;
+    stoppedLetters2.value = 0;
+    stoppedLetters3.value = 0;
+});
 
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
@@ -62,15 +76,44 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
                     data-test-id="timer-remaining-time"
                     :class="baseClass"
                 >
-                    {{ remainingTime }}
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in remainingTime"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters1"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters1++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
                 </span>
-                <span data-test-id="timer-remaining-interval-time">{{ remainingTimeInInterval }}</span>
+                <span data-test-id="timer-remaining-interval-time">
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in remainingTimeInInterval"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters2"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters2++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
+                </span>
                 <span
                     class="top-[calc(50%+1.25rem)] xs:top-[calc(50%+1.5rem)] sm:top-[calc(50%+1.75rem)]"
                     data-test-id="timer-active-round"
                     :class="baseClass"
                 >
-                    {{ activeRound }}
+                    <PlaybackBouncyLetter
+                        v-for="(char, charIndex) in activeRound"
+                        :key="charIndex"
+                        :index="charIndex"
+                        :stopped-letters="stoppedLetters3"
+                        :is-in-preparation-time="isInPreparationTime"
+                        @stop="stoppedLetters3++"
+                    >
+                        {{ char }}
+                    </PlaybackBouncyLetter>
                 </span>
             </span>
         </div>
@@ -79,7 +122,10 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             class="absolute top-0 left-1/2 block size-5 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="interval?.id && elapsedIntervalTime > 0"
+            v-if="
+                (interval?.id && isInPreparationTime && preparationTimeProgress > 0) ||
+                (!isInPreparationTime && progress > 0)
+            "
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
