@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.5.0...v1.6.0) (2026-02-21)
+
+
+### Features
+
+* save selected tts voice on a per-device basis ([#232](https://github.com/konstantin-lukas/grizzl.io/issues/232)) ([fca7b01](https://github.com/konstantin-lukas/grizzl.io/commit/fca7b0153435f4c8efc59950d1455f04f04b3eb7))
+* **timer:** add per-interval preparation time ([#238](https://github.com/konstantin-lukas/grizzl.io/issues/238)) ([9efc17b](https://github.com/konstantin-lukas/grizzl.io/commit/9efc17beba5b7560659031ad2fc00bbc2edfbd49))
+
 ## [1.5.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.4.1...v1.5.0) (2026-02-19)
 
 
