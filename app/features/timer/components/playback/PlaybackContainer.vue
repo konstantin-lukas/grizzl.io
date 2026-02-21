@@ -22,6 +22,19 @@ const {
 
 const activeIntervalIndex = ref(0);
 
+const resetPreparationTime = () => {
+    if (!interval.value) return;
+    if (repetition.value > 1) {
+        preparationTimeProgress.value = 1;
+        elapsedPreparationTime.value = interval.value.preparationTime;
+        isInPreparationTime.value = false;
+    } else {
+        preparationTimeProgress.value = 0;
+        elapsedPreparationTime.value = 0;
+        isInPreparationTime.value = true;
+    }
+};
+
 const next = () => {
     if (!interval.value) return;
     playing.value = false;
@@ -34,15 +47,6 @@ const next = () => {
     } else {
         repetition.value = 1;
         activeIntervalIndex.value++;
-    }
-    if (repetition.value > 1) {
-        preparationTimeProgress.value = 1;
-        elapsedPreparationTime.value = interval.value.preparationTime;
-        isInPreparationTime.value = false;
-    } else {
-        preparationTimeProgress.value = 0;
-        elapsedPreparationTime.value = 0;
-        isInPreparationTime.value = true;
     }
 };
 
@@ -61,15 +65,6 @@ const previous = () => {
     }
     if (round.value > 1) {
         round.value--;
-    }
-    if (repetition.value > 1) {
-        preparationTimeProgress.value = 1;
-        elapsedPreparationTime.value = interval.value.preparationTime;
-        isInPreparationTime.value = false;
-    } else {
-        preparationTimeProgress.value = 0;
-        elapsedPreparationTime.value = 0;
-        isInPreparationTime.value = true;
     }
 };
 
@@ -118,8 +113,14 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
                 activeIntervalIndex = 0;
                 reset(true);
             "
-            @next="next()"
-            @previous="previous()"
+            @next="
+                next();
+                resetPreparationTime();
+            "
+            @previous="
+                previous();
+                resetPreparationTime();
+            "
         />
     </section>
 </template>

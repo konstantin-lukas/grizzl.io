@@ -3,7 +3,6 @@ import { PostTimerSchema, type PutTimer, type Timer } from "#shared/features/tim
 import { ellipsize } from "#shared/utils/string.util";
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/validators/core.validator";
 import type { FormErrorEvent } from "#ui/types";
-import { nanoid } from "nanoid";
 import { VueDraggable } from "vue-draggable-plus";
 import UpsertFormInterval from "~/features/timer/components/upsert-form/UpsertFormInterval.vue";
 import UpsertFormVoiceSelect from "~/features/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
@@ -30,7 +29,7 @@ const state = reactive<PutTimer>(
                       repeatCount: COUNT_MIN,
                       duration: 3000,
                       preparationTime: ZERO,
-                      id: nanoid(),
+                      id: `${generateId()}A`,
                       beatPattern: null,
                   },
               ],
