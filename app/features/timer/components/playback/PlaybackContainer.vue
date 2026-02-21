@@ -13,6 +13,9 @@ const {
     elapsedIntervalTime,
     currentBeat,
     repetition,
+    isInPreparationTime,
+    elapsedPreparationTime,
+    preparationTimeProgress,
     lastIntervalTitleRead,
     reset,
 } = useTimer();
@@ -32,6 +35,15 @@ const next = () => {
         repetition.value = 1;
         activeIntervalIndex.value++;
     }
+    if (repetition.value > 1) {
+        preparationTimeProgress.value = 1;
+        elapsedPreparationTime.value = interval.value.preparationTime;
+        isInPreparationTime.value = false;
+    } else {
+        preparationTimeProgress.value = 0;
+        elapsedPreparationTime.value = 0;
+        isInPreparationTime.value = true;
+    }
 };
 
 const previous = () => {
@@ -49,6 +61,15 @@ const previous = () => {
     }
     if (round.value > 1) {
         round.value--;
+    }
+    if (repetition.value > 1) {
+        preparationTimeProgress.value = 1;
+        elapsedPreparationTime.value = interval.value.preparationTime;
+        isInPreparationTime.value = false;
+    } else {
+        preparationTimeProgress.value = 0;
+        elapsedPreparationTime.value = 0;
+        isInPreparationTime.value = true;
     }
 };
 

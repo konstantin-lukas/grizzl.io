@@ -1,13 +1,16 @@
 import { Beat } from "#shared/features/timer/enums/beat.enum";
 import accentedAudio from "~/assets/sound/accented_beat.wav";
 import beatAudio from "~/assets/sound/beat.wav";
-import beep from "~/assets/sound/intermittent_beep.wav";
+import intervalCommenceAudio from "~/assets/sound/interval_commence.wav";
+import intervalCompleteAudio from "~/assets/sound/interval_complete.wav";
+import timerCompleteAudio from "~/assets/sound/timer_complete.wav";
 import useTimer from "~/features/timer/composables/useTimer";
 import useVoiceDigest from "~/features/timer/composables/useVoiceDigest";
 
 export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, savedVoices: string[]) {
     const {
         progress,
+        preparationTimeProgress,
         intervalStartTime,
         elapsedIntervalTime,
         repetition,
@@ -15,11 +18,15 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
         playing,
         mute,
         currentBeat,
+        preparationStartTime,
+        elapsedPreparationTime,
         lastIntervalTitleRead,
         interval,
+        isInPreparationTime,
     } = useTimer();
     const speak = useSpeakUtterance();
     const ttsVoices = useVoices();
+    const wasBeepPlayed = ref(false);
 
     const voiceDigest = useVoiceDigest();
     const voiceUri = computed(() => {
@@ -29,8 +36,20 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
 
     const animateTimer = () => {
         if (!interval.value?.duration || !interval.value?.id || !playing.value) return;
-        elapsedIntervalTime.value = Date.now() - intervalStartTime.value;
 
+        isInPreparationTime.value = elapsedPreparationTime.value < interval.value.preparationTime;
+        if (isInPreparationTime.value) {
+            elapsedPreparationTime.value = Date.now() - preparationStartTime.value;
+            preparationTimeProgress.value = elapsedPreparationTime.value / interval.value.preparationTime;
+            intervalStartTime.value = Date.now();
+            if (!wasBeepPlayed.value && preparationTimeProgress.value >= 1 && !mute.value) {
+                const beat = new Audio(intervalCommenceAudio);
+                beat.play().then(undefined);
+                wasBeepPlayed.value = true;
+            }
+        }
+
+        elapsedIntervalTime.value = isInPreparationTime.value ? 0 : Date.now() - intervalStartTime.value;
         if (interval.value.beatPattern && interval.value.beatPattern.length > 0) {
             const barLengthInMs = interval.value.duration;
             const moduloTime = (Date.now() - intervalStartTime.value) % barLengthInMs;
@@ -47,17 +66,20 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
             }
         }
 
-        const newProgress = elapsedIntervalTime.value / interval.value.duration;
+        const newProgress = isInPreparationTime.value ? 0 : elapsedIntervalTime.value / interval.value.duration;
         if (newProgress >= 1) {
+            round.value++;
+
             if (!mute.value) {
-                const beat = new Audio(beep);
+                const beat = new Audio(round.value - 1 === rounds ? timerCompleteAudio : intervalCompleteAudio);
                 beat.play().then(undefined);
             }
-            round.value++;
+
             if (repetition.value === interval.value.repeatCount) {
                 emit("finish");
                 return;
             }
+
             progress.value = 0;
             intervalStartTime.value = Date.now();
             repetition.value++;
@@ -86,11 +108,13 @@ export default function useAnimateTimer(emit: (e: "finish") => void, rounds: num
 
     watch(round, r => {
         if (r > rounds) playing.value = false;
+        wasBeepPlayed.value = false;
     });
 
     watch(playing, p => {
         if (p) {
             intervalStartTime.value = Date.now() - elapsedIntervalTime.value;
+            preparationStartTime.value = Date.now() - elapsedPreparationTime.value;
             // This gets put in the microtask queue to avoid the animation loop starting while the old one is running.
             // It prevents the first beat being played twice when clicking the play button after the timer has completed.
             queueMicrotask(() => animateTimer());

@@ -13,7 +13,8 @@ const props = defineProps<{
 }>();
 
 useAnimateTimer(emit, props.rounds, props.timer.ttsVoices);
-const { progress, elapsedIntervalTime, round, interval, repetition } = useTimer();
+const { progress, preparationTimeProgress, isInPreparationTime, elapsedIntervalTime, round, interval, repetition } =
+    useTimer();
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
@@ -39,7 +40,9 @@ const activeRound = computed(() => {
     return `${round.value}/${props.rounds}`;
 });
 const backgroundImage = computed(() => `conic-gradient(var(--ui-primary) ${progress.value}turn, var(--ui-border) 0)`);
-const transform = computed(() => `rotate(${progress.value}turn)`);
+const transform = computed(
+    () => `rotate(${isInPreparationTime.value ? preparationTimeProgress.value : progress.value}turn)`,
+);
 
 const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neutral-400`;
 </script>
@@ -79,7 +82,10 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
             class="absolute top-0 left-1/2 block size-5 -translate-x-1/2 rounded-full bg-primary xs:size-6"
         />
         <div
-            v-if="interval?.id && elapsedIntervalTime > 0"
+            v-if="
+                (interval?.id && isInPreparationTime && preparationTimeProgress > 0) ||
+                (!isInPreparationTime && progress > 0)
+            "
             class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
             :style="{ transform }"
         >
