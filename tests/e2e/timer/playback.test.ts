@@ -111,24 +111,20 @@ test("pauses timer during preparation time", { tag: SCREENSHOT }, async ({ timer
     await expectTimerState(page, "00:12", "00:03", "1/4");
     await page.page.clock.runFor("00:02");
     await expectTimerState(page, "00:12", "00:03", "1/4");
-    await page
-        .expect()
-        .toHaveScreenshot({
-            name: "timer-playback-during-preparation-time",
-            threshold: 0.03,
-            maxDiffPixelRatio: 0.1,
-            maxDiffPixels: 100,
-        });
+    await page.expect().toHaveScreenshot({
+        name: "timer-playback-during-preparation-time",
+        threshold: 0.03,
+        maxDiffPixelRatio: 0.1,
+        maxDiffPixels: 100,
+    });
     await page.page.clock.runFor("00:02");
     await expectTimerState(page, "00:11", "00:02", "1/4");
-    await page
-        .expect()
-        .toHaveScreenshot({
-            name: "timer-playback-during-interval",
-            threshold: 0.03,
-            maxDiffPixelRatio: 0.1,
-            maxDiffPixels: 100,
-        });
+    await page.expect().toHaveScreenshot({
+        name: "timer-playback-during-interval",
+        threshold: 0.03,
+        maxDiffPixelRatio: 0.1,
+        maxDiffPixels: 100,
+    });
 
     await page.page.clock.runFor("00:04");
     await expectTimerState(page, "00:09", "00:03", "2/4");
