@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from "@@/test-utils/vitest";
-import BaseRepository from "~~/server/repositories/base.repository";
+import BaseRepository from "~~/server/core/repositories/base.repository";
 
 beforeEach(() => vi.resetAllMocks());
 
