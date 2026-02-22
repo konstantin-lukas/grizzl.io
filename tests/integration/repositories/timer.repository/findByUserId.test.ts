@@ -1,5 +1,5 @@
 import { expect, test } from "@@/test-utils/vitest";
-import TimerRepository from "~~/server/features/timer/repositories/timer.repository";
+import TimerRepository from "~~/server/timer/repositories/timer.repository";
 import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the timers belonging to the requested user", async ({ db, user }) => {

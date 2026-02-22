@@ -17,6 +17,9 @@ export default defineNuxtConfig({
             include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },
     },
+    nitro: {
+        scanDirs: ["core", "timer"],
+    },
     app: {
         head: {
             link: [

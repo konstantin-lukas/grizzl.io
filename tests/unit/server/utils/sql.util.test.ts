@@ -1,11 +1,11 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { resetContainer } from "~~/server/utils/di.util";
-import { purgeAll } from "~~/server/utils/sql.util";
+import { resetContainer } from "~~/server/core/utils/di.util";
+import { purgeAll } from "~~/server/core/utils/sql.util";
 
 const timerPurgeMock = vi.fn();
 let isSoftDeletable = true;
 
-vi.mock("~~/server/features/timer/repositories/timer.repository", () => {
+vi.mock("~~/server/timer/repositories/timer.repository", () => {
     return {
         default: vi.fn(
             class {

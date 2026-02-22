@@ -1,8 +1,8 @@
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { beforeEach, expect, test, vi } from "vitest";
-import DomainError from "~~/server/errors/domain.error";
-import NotFoundError from "~~/server/errors/not-found.error";
-import { createContainer, resetContainer } from "~~/server/utils/di.util";
+import DomainError from "~~/server/core/errors/domain.error";
+import NotFoundError from "~~/server/core/errors/not-found.error";
+import { createContainer, resetContainer } from "~~/server/core/utils/di.util";
 
 const { db, BaseRepository } = vi.hoisted(() => {
     return {
@@ -16,13 +16,13 @@ mockNuxtImport("generateId", () => {
     return () => id;
 });
 
-vi.mock("~~/server/database", () => {
+vi.mock("~~/database", () => {
     return {
         db,
     };
 });
 
-vi.mock("~~/server/repositories/base.repository", () => {
+vi.mock("~~/server/core/repositories/base.repository", () => {
     return {
         default: BaseRepository,
     };
