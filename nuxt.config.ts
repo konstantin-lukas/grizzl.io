@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     vite: { plugins: [tailwindcss()] },
-    css: ["~/assets/css/main.css"],
+    css: ["~/core/assets/css/main.css"],
     typescript: {
         typeCheck: "build",
         tsConfig: {
@@ -19,6 +19,12 @@ export default defineNuxtConfig({
     },
     nitro: {
         scanDirs: ["core", "timer"],
+    },
+    dir: {
+        middleware: "core/middleware",
+        layouts: "core/layouts",
+        pages: "core/pages",
+        assets: "core/assets",
     },
     app: {
         head: {

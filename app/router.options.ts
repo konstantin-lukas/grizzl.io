@@ -10,12 +10,12 @@ export default {
                 title: "timer.meta.title",
                 description: "timer.meta.description",
             },
-            component: () => import("~/features/timer/pages/timer.page.vue"),
+            component: () => import("~/timer/pages/timer.page.vue"),
         },
         {
             name: "home",
             path: "/",
-            component: () => import("~/pages/root.page.vue"),
+            component: () => import("~/core/pages/root.page.vue"),
         },
         {
             name: "signin",
@@ -24,7 +24,7 @@ export default {
                 title: "ui.signIn",
                 description: "meta.signInDescription",
             },
-            component: () => import("~/pages/signin.page.vue"),
+            component: () => import("~/core/pages/signin.page.vue"),
         },
         {
             name: "legal-notice",
@@ -32,7 +32,7 @@ export default {
             meta: {
                 title: "legal.notice",
             },
-            component: () => import("~/pages/legal-notice.page.vue"),
+            component: () => import("~/core/pages/legal-notice.page.vue"),
         },
         {
             name: "privacy-policy",
@@ -40,7 +40,7 @@ export default {
             meta: {
                 title: "privacy.title",
             },
-            component: () => import("~/pages/privacy-policy.page.vue"),
+            component: () => import("~/core/pages/privacy-policy.page.vue"),
         },
     ],
 } satisfies RouterConfig;
