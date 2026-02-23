@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { authClient } from "~/core/constants/auth-client";
 import useMenu from "~/core/composables/useMenu";
+import { authClient } from "~/core/constants/auth-client.constant";
 
 const session = authClient.useSession();
 const { close } = useMenu();

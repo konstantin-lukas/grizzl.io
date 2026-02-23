@@ -17,7 +17,7 @@ const { closeMock, navigateToMock, signOutMock, useSessionMock, setSession } = v
     return { closeMock, navigateToMock, signOutMock, useSessionMock, setSession };
 });
 
-vi.mock("~/core/constants/auth-client", () => ({
+vi.mock("~/core/constants/auth-client.constant", () => ({
     authClient: {
         useSession: () => useSessionMock(),
         signOut: () => signOutMock(),

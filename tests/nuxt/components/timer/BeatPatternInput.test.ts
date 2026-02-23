@@ -1,4 +1,4 @@
-import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
+import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
 import BeatPattern from "~/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import { UTooltip } from "~~/test-utils/vitest/stubs";
@@ -20,8 +20,12 @@ const { formFieldColorMock, useFormFieldMock } = await vi.hoisted(async () => {
     };
 });
 
-mockNuxtImport("useFormField", async () => {
-    return useFormFieldMock;
+vi.mock("#ui/composables/useFormField", async importOriginal => {
+    const actual: object = await importOriginal();
+    return {
+        ...actual,
+        useFormField: useFormFieldMock,
+    };
 });
 
 test("should display the provided beats by default", async () => {

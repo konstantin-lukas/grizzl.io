@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { APP_NAV } from "~/core/constants/nav";
-import useMenu from "~/core/composables/useMenu";
-import useEventListener from "~/core/composables/useEventListener";
-import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
 import BlockLink from "~/core/components/nav/BlockLink.vue";
+import LangSelect from "~/core/components/nav/menu/LangSelect.vue";
 import SessionButton from "~/core/components/nav/menu/SessionButton.vue";
 import ThemeToggle from "~/core/components/nav/menu/ThemeToggle.vue";
-import LangSelect from "~/core/components/nav/menu/LangSelect.vue";
+import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
+import useEventListener from "~/core/composables/useEventListener";
+import useMenu from "~/core/composables/useMenu";
+import { APP_NAV } from "~/core/constants/nav.constant";
 
 const { isOpen, close } = useMenu();
 useEventListener(window, "keydown", e => {

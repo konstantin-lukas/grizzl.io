@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ButtonProps } from "#ui/components/Button.vue";
-import { authClient } from "~/core/constants/auth-client";
+import { authClient } from "~/core/constants/auth-client.constant";
 
 const { query } = useRoute();
 const callbackURL =

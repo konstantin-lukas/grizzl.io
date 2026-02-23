@@ -38,8 +38,8 @@ mockNuxtImport("useLoadingIndicator", () => {
     return useLoadingIndicatorMock;
 });
 
-mockNuxtImport("useToast", () => {
-    return useToastMock;
+vi.mock("#ui/composables", () => {
+    return { useToast: useToastMock };
 });
 
 vi.mock("~/core/utils/toast", () => {

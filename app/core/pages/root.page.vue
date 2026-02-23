@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { authClient } from "~/core/constants/auth-client";
-import { APP_NAV } from "~/core/constants/nav";
-import useMenu from "~/core/composables/useMenu";
-import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
-import H1 from "~/core/components/typo/H1.vue";
 import Button from "~/core/components/button/Button.vue";
 import HeroCard from "~/core/components/layout/HeroCard.vue";
+import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
+import H1 from "~/core/components/typo/H1.vue";
+import useMenu from "~/core/composables/useMenu";
+import { authClient } from "~/core/constants/auth-client.constant";
+import { APP_NAV } from "~/core/constants/nav.constant";
 
 const session = authClient.useSession();
 const { close } = useMenu();
@@ -33,7 +33,7 @@ const { close } = useMenu();
                         icon="heroicons:arrow-right-end-on-rectangle"
                         data-test-id="home-sign-out-button"
                         @click="
-                            authClient
+                            authClientConstant
                                 .signOut()
                                 .then(async () => await navigateTo('/signin'))
                                 .then(close)

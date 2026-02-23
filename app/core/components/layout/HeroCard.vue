@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
-import type { APP_NAV } from "~/core/constants/nav";
+import type { APP_NAV } from "~/core/constants/nav.constant";
 
 const {
     label,
