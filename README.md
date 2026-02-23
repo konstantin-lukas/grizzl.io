@@ -162,22 +162,19 @@ That's it! Your new language should now be available.
 
 
 # Architecture
-This project follows a feature-based architecture. `app`, `shared`, and `server` each contain a core directory. This 
+This project follows a feature-based architecture. `app`, `shared`, and `server` each contain a `core` directory. This 
 contains all code that is shared across features/domains. On the same level, as the core directories, you will also find
-specific feature directories. Inside each feature/core directory, the code is grouped by layer, e.g. components, 
-composables, etc. If necessary, code can be further grouped by concern. This is mostly necessary inside the components. 
-So to make this even clearer these are the three levels of code organization:
+specific feature directories, for example `timer` for code belonging to the timer feature. Inside each feature/core 
+directory, the code is grouped by the standard nuxt layers, e.g. components, composables, pages, etc. If necessary,
+code can be further grouped by concern. This is mostly necessary inside the components. So to make this even clearer
+these are the three levels of code organization:
 
 1. Feature
 2. Layer
 3. Concern (Optional)
 
-On the backend, the same feature-based architecture applies but usually feature directories on the backend will just 
-contain schemas, controllers, services, and repositories. These are part of a layered-architecture where the controllers
-translate the results from the domain logic to http responses. Domain logic is handled by services and database access
-is performed through repositories. A single repository doesn't necessarily match one table (or schema) in the database.
-A repository can sometimes abstract away certain tables like in the case of timers where timer intervals are always a
-part of a timer and thus don't need their own repository. This would be similar to a value object in DDD.
+Inside the `server` directory, the same feature-based architecture applies but usually feature directories on the 
+backend will follow a controller-service-repository style layered-architecture.
 
 
 
