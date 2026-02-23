@@ -33,7 +33,7 @@ const { close } = useMenu();
                         icon="heroicons:arrow-right-end-on-rectangle"
                         data-test-id="home-sign-out-button"
                         @click="
-                            authClientConstant
+                            authClient
                                 .signOut()
                                 .then(async () => await navigateTo('/signin'))
                                 .then(close)
