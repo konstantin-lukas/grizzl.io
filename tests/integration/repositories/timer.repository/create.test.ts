@@ -1,5 +1,5 @@
 import { expect, test } from "@@/test-utils/vitest";
-import TimerRepository from "~~/server/features/timer/repositories/timer.repository";
+import TimerRepository from "~~/server/timer/repositories/timer.repository";
 import { BASE_TIMER } from "~~/test-utils/constants/timer";
 
 test("creates a timer with intervals and returns the id of the created timer", async ({ db, user }) => {

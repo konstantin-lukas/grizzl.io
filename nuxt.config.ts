@@ -1,6 +1,6 @@
 import { checkTranslationFileConsistency, getTranslationFiles } from "./config/i18n";
 import pwa from "./config/pwa";
-import { LOCALES } from "./shared/constants/i18n.constant";
+import { LOCALES } from "./shared/core/constants/i18n.constant";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -10,12 +10,27 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     vite: { plugins: [tailwindcss()] },
-    css: ["~/assets/css/main.css"],
+    css: ["~/core/assets/css/main.css"],
     typescript: {
         typeCheck: "build",
         tsConfig: {
             include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },
+    },
+    nitro: {
+        scanDirs: ["core", "timer"],
+    },
+    imports: {
+        scan: false,
+    },
+    components: {
+        dirs: [],
+    },
+    dir: {
+        middleware: "core/middleware",
+        layouts: "core/layouts",
+        pages: "core/pages",
+        assets: "core/assets",
     },
     app: {
         head: {

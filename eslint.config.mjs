@@ -60,7 +60,7 @@ export default withNuxt([
         },
     },
     {
-        files: ["app/**/pages/**/*"],
+        files: ["app/**/pages/**/*", "app/core/components/**/*", "app/core/layouts/**/*"],
         rules: {
             "vue/multi-word-component-names": "off",
         },

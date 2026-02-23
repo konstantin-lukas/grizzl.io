@@ -4,9 +4,9 @@
    <br>
 
    <picture>
-       <source media="(prefers-color-scheme: dark)" srcset="app/assets/svg/grizzl_logo_with_text_white.svg">
-       <source media="(prefers-color-scheme: light)" srcset="app/assets/svg/grizzl_logo_with_text_black.svg">
-       <img src="app/assets/svg/grizzl_logo_with_text_black.svg" alt="Grizzl Logo" width="50%" height="50%">
+       <source media="(prefers-color-scheme: dark)" srcset="app/core/assets/svg/grizzl_logo_with_text_white.svg">
+       <source media="(prefers-color-scheme: light)" srcset="app/core/assets/svg/grizzl_logo_with_text_black.svg">
+       <img src="app/core/assets/svg/grizzl_logo_with_text_black.svg" alt="Grizzl Logo" width="50%" height="50%">
    </picture>
 
    <br>
@@ -48,6 +48,55 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 `.localhost` are reserved for development purposes. This project uses `.localhost` because it automatically points to 
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
+
+## Setting Up A New Installation
+If you are setting up a completely new Linux installation, follow these steps:
+
+### 1. Add an ssh key
+```
+ssh-keygen -t ed25519 -C "your_email@example.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+```
+On GitHub go to `Settings` > `SSH and GPG keys` and add the contents of `~/.ssh/id_ed25519.pub` as a new key.
+
+### 2. Install Docker
+```
+# Add Docker's official GPG key:
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+### 3. Clone The Repository And Set Git Identity
+If git isn't already installed run `apt-get install git` (for Debian/Ubuntu) first.
+```
+cd ~
+mkdir git
+cd git
+git clone https://github.com/konstantin-lukas/grizzl.io.git
+
+git config --global user.name "John Doe"
+git config --global user.email "johndoe@example.com"
+```
 
 ## Tests
 This project is very thoroughly tested. There are roughly seven types of tests in this project:
@@ -113,24 +162,19 @@ That's it! Your new language should now be available.
 
 
 # Architecture
-This project follows a feature-based architecture with some restrictions due to Nuxt enforcing certain standards.
-On the frontend all code that is specific to a section of the app is put inside the respective subdirectory of the
-features directory. Anything else pretty much adheres to the standard nuxt conventions. Inside each feature directory, 
-the code is grouped by layer, e.g. components, composables, etc. If necessary, code can be further grouped by concern.
-This is mostly necessary inside the components. So to make this even clearer these are the three levels of code 
-organization:
+This project follows a feature-based architecture. `app`, `shared`, and `server` each contain a `core` directory. This 
+contains all code that is shared across features/domains. On the same level, as the core directories, you will also find
+specific feature directories, for example `timer` for code belonging to the timer feature. Inside each feature/core 
+directory, the code is grouped by the standard nuxt layers, e.g. components, composables, pages, etc. If necessary,
+code can be further grouped by concern. This is mostly necessary inside the components. So to make this even clearer
+these are the three levels of code organization:
 
 1. Feature
 2. Layer
 3. Concern (Optional)
 
-On the backend, the same feature based architecture applies but usually feature directories on the backend will just 
-contain controllers, services, and repositories. These are part of a layered-architecture where the controllers
-translate the results from the domain logic to http responses. Domain logic is handled by services and database access
-is done through repositories. A single repository doesn't necessarily match one table in the database. A repository can 
-sometimes abstract away certain tables like in the case of timers where timer intervals are always a part of a timer
-and thus don't need their own repository. This would be similar to a value object in DDD. Most other code on the backend
-that is not feature-specific will live somewhere next to the features directory, like for instance errors.
+Inside the `server` directory, the same feature-based architecture applies but usually feature directories on the 
+backend will follow a controller-service-repository style layered-architecture.
 
 
 

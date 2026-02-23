@@ -14,7 +14,7 @@
     "useTabs": false,
     "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
     "tailwindAttributes": ["class"],
-    "tailwindStylesheet": "./app/assets/css/main.css",
+    "tailwindStylesheet": "./app/core/assets/css/main.css",
     "tailwindFunctions": ["tw"],
     "tailwindPreserveWhitespace": true,
     "importOrderSeparation": true,

@@ -1,5 +1,5 @@
 import { expect, test } from "@@/test-utils/vitest";
-import BaseRepository from "~~/server/repositories/base.repository";
+import BaseRepository from "~~/server/core/repositories/base.repository";
 
 test("removes the deleted status from database entries if they have a deletedAt column", async ({ db, user }) => {
     const softDeletableRepository = new BaseRepository(db.client, "timer");

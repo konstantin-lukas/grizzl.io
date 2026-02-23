@@ -1,4 +1,4 @@
-import { Beat } from "#shared/features/timer/enums/beat.enum";
+import { Beat } from "#shared/timer/enums/beat.enum";
 import { test } from "~~/test-utils/playwright";
 import type TimerPage from "~~/test-utils/playwright/pages/timer.page";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
