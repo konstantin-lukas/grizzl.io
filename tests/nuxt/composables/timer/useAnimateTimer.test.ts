@@ -46,7 +46,7 @@ const {
 });
 
 vi.mock("~/core/composables/useVoices", () => {
-    return {default:useVoicesMock};
+    return { default: useVoicesMock };
 });
 
 vi.mock("~/timer/composables/useVoiceDigest", () => {
@@ -54,7 +54,7 @@ vi.mock("~/timer/composables/useVoiceDigest", () => {
 });
 
 vi.mock("~/core/composables/useSpeakUtterance", () => {
-    return {default:useSpeakUtteranceMock};
+    return { default: useSpeakUtteranceMock };
 });
 
 beforeEach(() => {

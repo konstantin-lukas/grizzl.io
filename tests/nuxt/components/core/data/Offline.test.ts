@@ -1,4 +1,4 @@
-import {  mountSuspended } from "@nuxt/test-utils/runtime";
+import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { expect, test, vi } from "vitest";
 import Offline from "~/core/components/data/Offline.vue";
 
@@ -11,7 +11,7 @@ const { useOnlineStatusMock } = vi.hoisted(() => {
 });
 
 vi.mock("~/core/composables/useOnlineStatus", () => {
-    return {default:useOnlineStatusMock};
+    return { default: useOnlineStatusMock };
 });
 
 test("should be hidden when the user is online", async () => {

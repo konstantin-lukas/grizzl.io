@@ -4,10 +4,10 @@ import beatAudio from "~/core/assets/sound/beat.wav";
 import intervalCommenceAudio from "~/core/assets/sound/interval_commence.wav";
 import intervalCompleteAudio from "~/core/assets/sound/interval_complete.wav";
 import timerCompleteAudio from "~/core/assets/sound/timer_complete.wav";
-import useTimer from "~/timer/composables/useTimer";
-import useVoiceDigest from "~/timer/composables/useVoiceDigest";
 import useSpeakUtterance from "~/core/composables/useSpeakUtterance";
 import useVoices from "~/core/composables/useVoices";
+import useTimer from "~/timer/composables/useTimer";
+import useVoiceDigest from "~/timer/composables/useVoiceDigest";
 
 export default function useAnimateTimer(emit: (e: "finish") => void, rounds: number, savedVoices: string[]) {
     const {

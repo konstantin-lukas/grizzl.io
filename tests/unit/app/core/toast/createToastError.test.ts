@@ -1,6 +1,6 @@
-import { createToastError } from "~/core/utils/toast";
 import { expect, test } from "vitest";
 import { h } from "vue";
+import { createToastError } from "~/core/utils/toast";
 
 test("wraps arguments in object when error.data is absent", () => {
     const error = { name: "NetworkError", message: "Oopsie Doodle" };

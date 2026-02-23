@@ -1,5 +1,5 @@
-import { createToastSuccess } from "~/core/utils/toast";
 import { expect, test } from "vitest";
+import { createToastSuccess } from "~/core/utils/toast";
 
 test.each([
     ["no description", "title", undefined],

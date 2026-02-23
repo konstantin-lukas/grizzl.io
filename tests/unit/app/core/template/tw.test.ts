@@ -1,5 +1,5 @@
-import { tw } from "~/core/utils/template";
 import { expect, test } from "vitest";
+import { tw } from "~/core/utils/template";
 
 test("returns a plain string when no interpolations exist", () => {
     const result = tw`hello world`;

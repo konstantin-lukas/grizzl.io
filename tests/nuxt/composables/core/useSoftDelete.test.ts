@@ -43,7 +43,7 @@ mockNuxtImport("useToast", () => {
 });
 
 vi.mock("~/core/utils/toast", () => {
-    return {createToastError:createToastErrorMock};
+    return { createToastError: createToastErrorMock };
 });
 
 registerEndpoint("/api/bananas/123", () => ({

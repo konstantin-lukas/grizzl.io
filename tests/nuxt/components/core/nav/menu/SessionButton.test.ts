@@ -24,7 +24,7 @@ vi.mock("~/core/constants/auth-client", () => ({
     },
 }));
 
-vi.mock("~/core/composables/useMenu", () => ({default: () => ({ close: closeMock })}));
+vi.mock("~/core/composables/useMenu", () => ({ default: () => ({ close: closeMock }) }));
 mockNuxtImport("navigateTo", () => navigateToMock);
 
 beforeEach(() => {

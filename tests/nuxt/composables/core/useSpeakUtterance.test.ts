@@ -31,7 +31,7 @@ beforeEach(() => {
 });
 
 vi.mock("~/core/composables/useVoices", () => {
-    return {default:useVoicesMock};
+    return { default: useVoicesMock };
 });
 
 test("returns early and does not speak when speechSynthesis.speaking is true", () => {
