@@ -1,3 +1,4 @@
+import { tryCatch } from "#shared/core/utils/result.util";
 import { LoggerService } from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import type { Timer } from "#shared/timer/validators/timer.validator";
 import { formatDuration } from "date-fns";
 import OverviewDeleteButton from "~/features/timer/components/overview/OverviewDeleteButton.vue";
 import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";

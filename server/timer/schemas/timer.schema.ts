@@ -1,5 +1,5 @@
 import { createdAt, deletedAt, id } from "../../../database/mixins";
-import { ID_LENGTH, LONG_STRING, TITLE_MAX } from "../../../shared/validators/core.validator";
+import { ID_LENGTH, LONG_STRING, TITLE_MAX } from "../../../shared/core/validators/core.validator";
 import { user } from "../../core/schemas/auth.schema";
 import { sql } from "drizzle-orm";
 import { char, integer, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";

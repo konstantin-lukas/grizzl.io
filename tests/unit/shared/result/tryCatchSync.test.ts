@@ -1,4 +1,4 @@
-import { tryCatchSync } from "#shared/utils/result.util";
+import { tryCatchSync } from "#shared/core/utils/result.util";
 import { expect, test } from "vitest";
 
 test("should catch errors and return them as a value", () => {

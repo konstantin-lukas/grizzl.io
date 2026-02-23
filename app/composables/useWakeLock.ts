@@ -1,3 +1,5 @@
+import { tryCatch } from "#shared/core/utils/result.util";
+
 export default function useWakeLock() {
     const wakeLock = ref<WakeLockSentinel | null>(null);
 

@@ -1,3 +1,4 @@
+import { generateId } from "#shared/core/utils/id.util";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";

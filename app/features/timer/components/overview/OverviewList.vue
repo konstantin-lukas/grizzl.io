@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import type { Timer } from "#shared/timer/validators/timer.validator";
 import OverviewListItem from "~/features/timer/components/overview/OverviewListItem.vue";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();

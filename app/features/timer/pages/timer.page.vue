@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import type { Timer } from "#shared/timer/validators/timer.validator";
 import OverviewList from "~/features/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/features/timer/components/playback/PlaybackContainer.vue";
 import UpsertForm from "~/features/timer/components/upsert-form/UpsertForm.vue";

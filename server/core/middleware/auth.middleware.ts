@@ -1,6 +1,7 @@
 import { sendRedirect } from "#imports";
-import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/constants/auth.constant";
-import { DatabaseIdSchema } from "#shared/validators/core.validator";
+import { PROTECTED_PATHS, PUBLIC_API_PATHS } from "#shared/core/constants/auth.constant";
+import { tryCatchSync } from "#shared/core/utils/result.util";
+import { DatabaseIdSchema } from "#shared/core/validators/core.validator";
 import { auth } from "~~/server/core/auth";
 import BaseController from "~~/server/core/controllers/base.controller";
 

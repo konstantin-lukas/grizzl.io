@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { PutTimer } from "#shared/features/timer/validators/timer.validator";
-import { generateId } from "#shared/utils/id.util";
-import { LIST_MAX, LIST_MIN } from "#shared/validators/core.validator";
+import { deleteNthElement, duplicateNthElement, moveElement } from "#shared/core/utils/array.util";
+import { generateId } from "#shared/core/utils/id.util";
+import { LIST_MAX, LIST_MIN } from "#shared/core/validators/core.validator";
+import type { PutTimer } from "#shared/timer/validators/timer.validator";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index } = defineProps<{ index: number }>();

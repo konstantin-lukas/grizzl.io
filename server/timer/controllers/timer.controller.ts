@@ -1,5 +1,5 @@
-import { PostTimerSchema, PutTimerSchema } from "#shared/features/timer/validators/timer.validator";
-import { DatabaseDeletedSchema } from "#shared/validators/core.validator";
+import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
+import { PostTimerSchema, PutTimerSchema } from "#shared/timer/validators/timer.validator";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
 import TimerService from "~~/server/timer/services/timer.service";

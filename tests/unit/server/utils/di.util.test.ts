@@ -1,4 +1,3 @@
-import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { beforeEach, expect, test, vi } from "vitest";
 import DomainError from "~~/server/core/errors/domain.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
@@ -12,8 +11,8 @@ const { db, BaseRepository } = vi.hoisted(() => {
 });
 
 const id = "AAAAaaaaBBBBbbbb";
-mockNuxtImport("generateId", () => {
-    return () => id;
+vi.mock("#shared/core/utils/id.util", () => {
+    return { generateId: () => id };
 });
 
 vi.mock("~~/database", () => {

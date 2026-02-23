@@ -1,4 +1,4 @@
-import { moveElement } from "#shared/utils/array.util";
+import { moveElement } from "#shared/core/utils/array.util";
 import { expect, test } from "vitest";
 
 test.each([

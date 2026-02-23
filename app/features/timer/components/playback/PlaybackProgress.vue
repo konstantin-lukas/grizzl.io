@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Beat } from "#shared/features/timer/enums/beat.enum";
-import type { Timer } from "#shared/features/timer/validators/timer.validator";
+import { Beat } from "#shared/timer/enums/beat.enum";
+import type { Timer } from "#shared/timer/validators/timer.validator";
 import { intervalToDuration } from "date-fns";
 import PlaybackBouncyLetter from "~/features/timer/components/playback/PlaybackBouncyLetter.vue";
 import useAnimateTimer from "~/features/timer/composables/useAnimateTimer";

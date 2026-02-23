@@ -1,4 +1,4 @@
-import { Beat } from "#shared/features/timer/enums/beat.enum";
+import { Beat } from "#shared/timer/enums/beat.enum";
 
 export const BeatSymbol = {
     [Beat.PAUSE]: "mdi:music-rest-quarter",

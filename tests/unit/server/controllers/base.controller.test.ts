@@ -18,8 +18,8 @@ mockNuxtImport("setResponseStatus", () => {
 });
 
 const id = "AAAAaaaaBBBBbbbb";
-mockNuxtImport("generateId", () => {
-    return () => id;
+vi.mock("#shared/core/utils/id.util", () => {
+    return { generateId: () => id };
 });
 
 const { createErrorSpy } = vi.hoisted(() => {

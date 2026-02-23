@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { Beat } from "#shared/features/timer/enums/beat.enum";
-import {
-    type PutTimer,
-    TIMER_DURATION_MAX,
-    TIMER_DURATION_MIN,
-} from "#shared/features/timer/validators/timer.validator";
-import { COUNT_MAX, COUNT_MIN, TITLE_MAX, ZERO } from "#shared/validators/core.validator";
+import { COUNT_MAX, COUNT_MIN, TITLE_MAX, ZERO } from "#shared/core/validators/core.validator";
+import { Beat } from "#shared/timer/enums/beat.enum";
+import { type PutTimer, TIMER_DURATION_MAX, TIMER_DURATION_MIN } from "#shared/timer/validators/timer.validator";
 import UpsertFormBeatPatternInput from "~/features/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import UpsertFormIntervalActionButtons from "~/features/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 

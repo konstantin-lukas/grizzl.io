@@ -1,4 +1,4 @@
-import type { PostTimer, PutTimer, Timer } from "#shared/features/timer/validators/timer.validator";
+import type { PostTimer, PutTimer, Timer } from "#shared/timer/validators/timer.validator";
 import { and, desc, eq, isNull, notInArray, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { timerInterval } from "~~/database/schema";

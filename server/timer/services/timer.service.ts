@@ -1,4 +1,4 @@
-import type { PostTimer, PutTimer } from "#shared/features/timer/validators/timer.validator";
+import type { PostTimer, PutTimer } from "#shared/timer/validators/timer.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";
 

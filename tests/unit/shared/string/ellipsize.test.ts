@@ -1,4 +1,4 @@
-import { ellipsize } from "#shared/utils/string.util";
+import { ellipsize } from "#shared/core/utils/string.util";
 import { expect, test } from "vitest";
 
 test.each([

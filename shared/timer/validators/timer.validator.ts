@@ -1,4 +1,3 @@
-import { Beat } from "#shared/features/timer/enums/beat.enum";
 import {
     COUNT_MAX,
     COUNT_MIN,
@@ -10,7 +9,8 @@ import {
     TITLE_MAX,
     TITLE_MIN,
     ZERO,
-} from "#shared/validators/core.validator";
+} from "#shared/core/validators/core.validator";
+import { Beat } from "#shared/timer/enums/beat.enum";
 import { z } from "zod";
 
 export const BEAT_PATTERN_MIN = 2;

@@ -1,3 +1,4 @@
+import { tryCatch, tryCatchSync } from "#shared/core/utils/result.util";
 import type { H3Event } from "h3";
 import { db } from "~~/database";
 import BaseController from "~~/server/core/controllers/base.controller";

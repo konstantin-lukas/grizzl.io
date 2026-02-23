@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { deleteNthElement } from "#shared/core/utils/array.util";
 import useVoiceDigest from "~/features/timer/composables/useVoiceDigest";
 
 const userTtsVoices = defineModel<string[]>("ttsVoices");

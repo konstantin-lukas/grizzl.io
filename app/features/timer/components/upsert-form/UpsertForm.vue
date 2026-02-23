@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { PostTimerSchema, type PutTimer, type Timer } from "#shared/features/timer/validators/timer.validator";
-import { ellipsize } from "#shared/utils/string.util";
-import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/validators/core.validator";
+import { generateId } from "#shared/core/utils/id.util";
+import { deepCopy } from "#shared/core/utils/object.util";
+import { ellipsize } from "#shared/core/utils/string.util";
+import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/core/validators/core.validator";
+import { PostTimerSchema, type PutTimer, type Timer } from "#shared/timer/validators/timer.validator";
 import type { FormErrorEvent } from "#ui/types";
 import { VueDraggable } from "vue-draggable-plus";
 import UpsertFormInterval from "~/features/timer/components/upsert-form/UpsertFormInterval.vue";

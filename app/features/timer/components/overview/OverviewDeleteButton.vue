@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ellipsize } from "#shared/core/utils/string.util";
+
 const props = defineProps<{ timer: { id: string; title: string } | undefined }>();
 const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, {
     refresh: async () => {
