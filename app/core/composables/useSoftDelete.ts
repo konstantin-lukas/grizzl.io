@@ -1,3 +1,4 @@
+import { useToast } from "#ui/composables";
 import { createToastError } from "~/core/utils/toast";
 
 export default function useSoftDelete(
