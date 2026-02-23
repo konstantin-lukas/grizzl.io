@@ -20,6 +20,12 @@ export default defineNuxtConfig({
     nitro: {
         scanDirs: ["core", "timer"],
     },
+    imports: {
+        scan: false,
+    },
+    components: {
+        dirs: [],
+    },
     dir: {
         middleware: "core/middleware",
         layouts: "core/layouts",
