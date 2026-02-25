@@ -1,0 +1,104 @@
+services:
+    setup:
+        image: node:24.8-alpine3.22
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        command: npm install --no-save
+
+    postgres:
+        container_name: grizzl-postgres-dev
+        image: postgres:18.0-alpine3.22
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            POSTGRES_DB: admin
+            DB_NAME: grizzl
+            DB_PASSWORD: password
+            DB_USERNAME: grizzl_user
+        volumes:
+            - grizzl_database_dev:/var/lib/postgresql/data
+            - ./docker/postgres/init:/docker-entrypoint-initdb.d
+        ports:
+            - "5432:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+            interval: 1s
+            timeout: 15s
+            retries: 10
+
+    migrations:
+        image: node:24-alpine
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        environment:
+            DB_HOST: postgres
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            DB_NAME: grizzl
+        command: npx drizzle-kit migrate
+        restart: "no"
+
+    keycloak:
+        container_name: grizzl-keycloak-dev
+        image: quay.io/keycloak/keycloak:26.3.4
+        environment:
+            KC_BOOTSTRAP_ADMIN_USERNAME: admin
+            KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+            KC_HOSTNAME: http://keycloak.grizzl.localhost
+        volumes:
+            - ./docker/keycloak:/opt/keycloak/data/import:ro
+        command: start-dev --import-realm
+
+    webserver:
+        container_name: grizzl-web-server-dev
+        image: node:24.8-alpine3.22
+        restart: unless-stopped
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        depends_on:
+            keycloak:
+                condition: service_started
+            caddy:
+                condition: service_started
+            setup:
+                condition: service_completed_successfully
+            migrations:
+                condition: service_completed_successfully
+            postgres:
+                condition: service_healthy
+
+    playwright:
+        container_name: grizzl-playwright-dev
+        image: mcr.microsoft.com/playwright:v1.58.2-noble
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        volumes:
+            - .:/home/grizzl
+        working_dir: /home/grizzl
+        network_mode: "service:caddy"
+        environment:
+            - TZ=Europe/Berlin
+            - DEV_MODE=true
+
+    caddy:
+        container_name: grizzl-caddy-dev
+        image: caddy:2.10-alpine
+        user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
+        restart: unless-stopped
+        extra_hosts:
+            - "grizzl.localhost:127.0.0.1"
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+
+volumes:
+    grizzl_database_dev:
