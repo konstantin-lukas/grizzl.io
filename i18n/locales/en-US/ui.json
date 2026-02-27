@@ -28,6 +28,8 @@
         "offline": "Offline",
         "formErrors": "The Submission Failed Due An Error | The Submission Failed Due to {n} Errors",
         "next": "Next",
-        "previous": "Previous"
+        "previous": "Previous",
+        "error": "Error",
+        "homepage": "Homepage"
     }
 }

@@ -28,6 +28,8 @@
         "offline": "Offline",
         "formErrors": "Das Absenden ist aufgrund eines Fehlers fehlgeschlagen | Das Absenden ist aufgrund von {n} Fehlern fehlgeschlagen",
         "next": "Weiter",
-        "previous": "Zurück"
+        "previous": "Zurück",
+        "error": "Fehler",
+        "homepage": "Startseite"
     }
 }

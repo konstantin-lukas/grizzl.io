@@ -28,6 +28,8 @@
         "offline": "Offline",
         "formErrors": "El envío falló debido a un error | El envío falló debido a {n} errores",
         "next": "Siguiente",
-        "previous": "Anterior"
+        "previous": "Anterior",
+        "error": "Error",
+        "homepage": "Página de inicio"
     }
 }
