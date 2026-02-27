@@ -8,6 +8,10 @@ import Menu from "~/core/components/nav/menu/Menu.vue";
 import MenuButton from "~/core/components/nav/menu/MenuButton.vue";
 import useMenu from "~/core/composables/useMenu";
 
+const toaster = { duration: 15000 };
+const { isOpen, close } = useMenu();
+const { locale } = useI18n();
+const uiLocale = ref();
 const route = useRoute();
 const { t } = useI18n();
 const head = useLocaleHead();
@@ -21,8 +25,7 @@ const title = computed(() => {
 const description = computed(() => {
     return typeof route.meta.description === "string" ? t(route.meta.description) : t("meta.description");
 });
-const { isOpen, close } = useMenu();
-watch(() => route.fullPath, close);
+
 useHead({
     title,
     meta: [
@@ -32,9 +35,8 @@ useHead({
     ],
 });
 
-const toaster = { duration: 15000 };
-const { locale } = useI18n();
-const uiLocale = ref();
+watch(() => route.fullPath, close);
+
 watch(
     locale,
     () => {
