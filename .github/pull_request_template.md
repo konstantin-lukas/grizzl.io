@@ -19,4 +19,4 @@
   - [ ] Labels are assigned
   - [ ] Priority, size, and estimate are adjusted to match actual if necessary
   - [ ] Start date was set and target date is set to date of completion
-  - [ ] Relationships and milestones are set
+  - [ ] Relationships and milestones are set (if applicable)
