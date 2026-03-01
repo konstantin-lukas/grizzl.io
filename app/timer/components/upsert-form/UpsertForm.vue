@@ -117,7 +117,7 @@ function onEnd() {
                 class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%-2rem)] -translate-x-1/2 bg-linear-to-t from-back"
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
-                <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
+                <div class="center w-full max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <Transition name="fade">
                         <UAlert
                             v-if="errors.length > 0"
@@ -147,7 +147,7 @@ function onEnd() {
                     <VueDraggable
                         v-model="state.intervals"
                         :animation="250"
-                        class="center relative gap-4"
+                        class="center relative w-full gap-4"
                         tag="div"
                         handle="[data-handle]"
                         ghost-class="ghost"

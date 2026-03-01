@@ -34,6 +34,7 @@
     --ui-bg-inverted: var(--color-theme-white);
     --ui-border: #4e4e65;
     --ui-border-accented: #4e4e65;
+    --ui-text: var(--color-front);
 }
 
 @media (min-width: 25rem) {
