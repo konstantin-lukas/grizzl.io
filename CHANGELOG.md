@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.6.0...v1.7.0) (2026-03-01)
+
+
+### Features
+
+* add an error page ([#253](https://github.com/konstantin-lukas/grizzl.io/issues/253)) ([34cd24c](https://github.com/konstantin-lukas/grizzl.io/commit/34cd24c125e44d72d3700f65f20707f690dc7a23))
+* make timer intervals in upsert form expandable/collapsible ([#255](https://github.com/konstantin-lukas/grizzl.io/issues/255)) ([bf97e52](https://github.com/konstantin-lukas/grizzl.io/commit/bf97e52e2f8cfc5bf61b016db342d0b14c5cc3a4))
+
 ## [1.6.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.5.0...v1.6.0) (2026-02-21)
 
 
