@@ -1,0 +1,46 @@
+- document:
+  - dialog "Edit a timer":
+    - text: Timer title*
+    - textbox "Timer title*": vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau
+    - group:
+      - button "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [expanded]
+      - region "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau":
+        - separator
+        - text: ""
+        - textbox "Interval title":
+          - /placeholder: Displayed while interval is running
+          - text: vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau
+        - text: ""
+        - combobox "Interval type*"
+        - text: ""
+        - group:
+          - spinbutton "Repetitions*"
+          - button "Increment"
+          - button "Decrement"
+          - textbox: "2"
+        - text: ""
+        - group:
+          - spinbutton "Preparation Time*"
+          - button "Increment"
+          - button "Decrement" [disabled]
+          - textbox: "0"
+        - text: ""
+        - group:
+          - spinbutton "Duration*"
+          - button "Increment"
+          - button "Decrement"
+          - textbox: "3"
+      - separator
+      - button "Duplicate"
+      - button "Move up" [disabled]
+      - button "Move down"
+      - button "Delete"
+    - group:
+      - button "lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibus"
+      - separator
+    - group:
+      - button "pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetinte"
+      - separator
+    - button "Collapse all"
+    - button "Expand all"
+    - button "Save"

@@ -22,6 +22,7 @@ const LOCATORS = {
     durationInputs: "interval-duration-input",
     preparationTimeInputs: "interval-preparation-time-input",
     beatPatternInputs: "interval-beat-pattern-input",
+    fieldsets: "interval-fieldset",
 
     // TIMER LIST
     listItemTitles: "timer-list-item-title",

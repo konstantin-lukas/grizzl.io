@@ -145,3 +145,31 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     await page.expect("durationInputs").toHaveValue(`${intervals[0].duration} sec`);
     await page.expect("typeSelect").toHaveText("Standard");
 });
+
+test("allows expanding and collapsing timer intervals", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
+    const [timer] = await db.timer.insert(1);
+    await db.timerInterval.insert(3, { timerId: timer.id, beatPattern: null });
+
+    await page.goto();
+    await page.click("listItemEditButtons", { nth: 0 });
+
+    await test.step("check that by default only the first interval is expanded", async () => {
+        await page.expect().toBeValid({ name: "interval-list-default-state", skipThemeToggle: true });
+    });
+
+    await test.step("check that the expand/collapse buttons work", async () => {
+        await page.click("expandButton");
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-expanded" });
+
+        await page.click("collapseButton");
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-collapsed" });
+    });
+
+    await test.step("check that you can collapse and expand individual intervals by clicking their legend", async () => {
+        await page.click("legends", { nth: 0 });
+        await page.expect().toHaveScreenshot({ name: "interval-list-with-first-expanded" });
+
+        await page.click("legends", { nth: 0 });
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-collapsed" });
+    });
+});
