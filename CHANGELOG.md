@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.0...v1.7.1) (2026-03-01)
+
+
+### Bug Fixes
+
+* correct production bind mount for database directory ([ae27d58](https://github.com/konstantin-lukas/grizzl.io/commit/ae27d58d14a071b2be27bd5caeb982ce393ef2ae))
+
 ## [1.7.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.6.0...v1.7.0) (2026-03-01)
 
 
