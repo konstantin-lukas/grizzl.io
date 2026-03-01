@@ -159,6 +159,13 @@ To extend the app with another language, you have to provide all translations fi
 the locale of your language. You also have to extend the `languages` constant located in the `shared/constants/i18n.ts` file. 
 That's it! Your new language should now be available.
 
+## Debugging
+To debug the nitro server on the backend, the project comes pre-configured with a run configuration for WebStorm. This
+configuration can be found at `debug.run.xml`. If WebStorm doesn't pick up on this file automatically, you may have to
+copy it to `.idea/runConfigurations`. Make sure to start this configuration by clicking on the bug icon, not the
+start icon. This will start the entire stack in debug mode, so stop any running dev servers first. When running the
+project with this config, you can set breakpoints in WebStorm to debug your code.
+
 
 
 # Architecture

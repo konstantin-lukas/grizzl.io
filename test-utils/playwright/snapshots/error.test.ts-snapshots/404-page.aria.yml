@@ -1,0 +1,12 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading /Error \d+/ [level=1]
+    - text: "Error Page not found: /api"
+    - button "Homepage"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy

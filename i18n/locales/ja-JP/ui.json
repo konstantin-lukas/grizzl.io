@@ -28,6 +28,8 @@
         "offline": "オフライン",
         "formErrors": "エラーにより送信に失敗しました | {n}件のエラーにより送信に失敗しました",
         "next": "次へ",
-        "previous": "前へ"
+        "previous": "前へ",
+        "error": "エラー",
+        "homepage": "ホームページ"
     }
 }
