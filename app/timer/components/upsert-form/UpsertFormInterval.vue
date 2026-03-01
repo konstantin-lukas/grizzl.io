@@ -16,7 +16,7 @@ const preparationTimeSeconds = computed({
     get: () => intervals!.value![index]!.preparationTime / 1000,
     set: v => (intervals!.value![index]!.preparationTime = v * 1000),
 });
-const accordionValue = ref(undefined);
+const accordionValue = ref(index === 0 ? "0" : undefined);
 </script>
 
 <template>
@@ -30,8 +30,11 @@ const accordionValue = ref(undefined);
                 :ui="{ trailingIcon: 'mr-4', leadingIcon: 'ml-4' }"
             >
                 <template #default>
-                    <legend data-test-id="interval-legend">
-                        {{ $t("timer.form.interval.index", index + 1) }}
+                    <legend
+                        data-test-id="interval-legend"
+                        class="max-w-[50dvw] overflow-hidden text-nowrap text-ellipsis sm:max-w-80"
+                    >
+                        {{ intervals![index]!.title || $t("timer.form.interval.index", index + 1) }}
                     </legend>
                 </template>
                 <template #content>
