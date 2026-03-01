@@ -69,7 +69,7 @@ services:
             - ./package.json:/home/grizzl/package.json
             - ./package-lock.json:/home/grizzl/package-lock.json
             - ./drizzle.config.ts:/home/grizzl/drizzle.config.ts
-            - ./server/database:/home/grizzl/server/database
+            - ./database:/home/grizzl/database
         working_dir: /home/grizzl
         environment:
             DB_HOST: ${DB_HOST}
