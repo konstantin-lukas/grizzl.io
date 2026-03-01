@@ -120,7 +120,7 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
         false,
     );
 
-    await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
+    await page.expect("legends", { nth: 0 }).toHaveText(intervals[0].title);
     await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[0].title);
     await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[0].repeatCount.toString());
     await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[0].duration} sec`);
@@ -129,7 +129,7 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     await page.focus("intervalTitleInputs", { nth: 0 });
     await page.click("moveDownButtons", { nth: 0 });
 
-    await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
+    await page.expect("legends", { nth: 0 }).toHaveText(intervals[1].title);
     await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[1].title);
     await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[1].repeatCount.toString());
     await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[1].duration} sec`);
@@ -139,9 +139,37 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     await page.click("deleteButtons", { nth: 0 });
 
     await page.expect("legends").toHaveCount(1);
-    await page.expect("legends").toHaveText("Interval No. 1");
+    await page.expect("legends").toHaveText(intervals[0].title);
     await page.expect("intervalTitleInputs").toHaveValue(intervals[0].title);
     await page.expect("repetitionsInputs").toHaveValue(intervals[0].repeatCount.toString());
     await page.expect("durationInputs").toHaveValue(`${intervals[0].duration} sec`);
     await page.expect("typeSelect").toHaveText("Standard");
+});
+
+test("allows expanding and collapsing timer intervals", { tag: SCREENSHOT }, async ({ timerPage: page, db }) => {
+    const [timer] = await db.timer.insert(1);
+    await db.timerInterval.insert(3, { timerId: timer.id, beatPattern: null });
+
+    await page.goto();
+    await page.click("listItemEditButtons", { nth: 0 });
+
+    await test.step("check that by default only the first interval is expanded", async () => {
+        await page.expect().toBeValid({ name: "interval-list-default-state", skipThemeToggle: true });
+    });
+
+    await test.step("check that the expand/collapse buttons work", async () => {
+        await page.click("expandButton");
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-expanded" });
+
+        await page.click("collapseButton");
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-collapsed" });
+    });
+
+    await test.step("check that you can collapse and expand individual intervals by clicking their legend", async () => {
+        await page.click("legends", { nth: 0 });
+        await page.expect().toHaveScreenshot({ name: "interval-list-default-state" });
+
+        await page.click("legends", { nth: 0 });
+        await page.expect().toHaveScreenshot({ name: "interval-list-all-collapsed" });
+    });
 });

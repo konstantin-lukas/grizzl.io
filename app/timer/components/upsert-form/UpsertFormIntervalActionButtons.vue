@@ -6,12 +6,13 @@ import type { PutTimer } from "#shared/timer/validators/timer.validator";
 import Button from "~/core/components/button/Button.vue";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
-const { index } = defineProps<{ index: number }>();
+const { index, open } = defineProps<{ index: number; open: boolean }>();
 </script>
 
 <template>
     <div
-        class="invisible absolute left-0 mt-4 flex w-full items-center justify-center gap-4 opacity-0 transition-all group-focus-within:visible group-focus-within:opacity-100 sm:top-0 sm:left-full sm:-mt-3 sm:ml-4 sm:w-auto sm:flex-col"
+        class="invisible absolute left-0 mt-4 flex w-full items-center justify-center gap-4 opacity-0 transition-all sm:top-0 sm:left-full sm:mt-0 sm:ml-4 sm:w-auto sm:flex-col"
+        :class="{ 'visible opacity-100': open }"
     >
         <Button
             :content="{ side: 'top', sideOffset: 13 }"

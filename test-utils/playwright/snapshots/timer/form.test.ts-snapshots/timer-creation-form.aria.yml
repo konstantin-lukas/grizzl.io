@@ -1,22 +1,37 @@
 - text: Timer title*
 - textbox "Timer title*"
-- group "Interval No. 1":
-  - text: Interval No. 1 Interval title
-  - textbox "Interval title":
-    - /placeholder: Displayed while interval is running
-  - text: Interval type*
-  - combobox "Interval type*"
-  - text: ""
-  - group:
-    - spinbutton "Repetitions*"
-    - button "Increment"
-    - button "Decrement" [disabled]
-    - textbox: "1"
-  - text: ""
-  - group:
-    - spinbutton "Duration*"
-    - button "Increment"
-    - button "Decrement"
-    - textbox: "3"
+- group:
+  - button "Interval No. 1" [expanded]
+  - region "Interval No. 1":
+    - separator
+    - text: Interval title
+    - textbox "Interval title":
+      - /placeholder: Displayed while interval is running
+    - text: Interval type*
+    - combobox "Interval type*"
+    - text: ""
+    - group:
+      - spinbutton "Repetitions*"
+      - button "Increment"
+      - button "Decrement" [disabled]
+      - textbox: "1"
+    - text: Preparation Time*
+    - group:
+      - spinbutton "Preparation Time*"
+      - button "Increment"
+      - button "Decrement" [disabled]
+      - textbox: "0"
+    - text: ""
+    - group:
+      - spinbutton "Duration*"
+      - button "Increment"
+      - button "Decrement"
+      - textbox: "3"
   - separator
+  - button "Duplicate"
+  - button "Move up" [disabled]
+  - button "Move down" [disabled]
+  - button "Delete" [disabled]
+- button "Collapse all"
+- button "Expand all"
 - button "Create"

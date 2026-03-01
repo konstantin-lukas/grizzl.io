@@ -42,6 +42,7 @@ const state = reactive<PutTimer>(
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 const isDragging = ref(false);
+const forcedAccordionState = ref<"open" | "close" | "">("");
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const { start, finish, isLoading } = useLoadingIndicator();
@@ -117,7 +118,7 @@ function onEnd() {
                 class="pointer-events-none fixed bottom-18 left-1/2 z-10 h-8 w-[calc(100%-2rem)] -translate-x-1/2 bg-linear-to-t from-back"
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
-                <div class="center max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
+                <div class="center w-full max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
                     <Transition name="fade">
                         <UAlert
                             v-if="errors.length > 0"
@@ -147,7 +148,7 @@ function onEnd() {
                     <VueDraggable
                         v-model="state.intervals"
                         :animation="250"
-                        class="center relative gap-4"
+                        class="center relative w-full gap-4"
                         tag="div"
                         handle="[data-handle]"
                         ghost-class="ghost"
@@ -160,7 +161,9 @@ function onEnd() {
                                 :key="interval.id"
                                 v-model:intervals="state.intervals"
                                 :index="index"
+                                :expanded-override="forcedAccordionState"
                                 :style="{ transition: isDragging ? 'none' : '' }"
+                                @toggle="forcedAccordionState = ''"
                             />
                         </TransitionGroup>
                     </VueDraggable>
@@ -169,6 +172,20 @@ function onEnd() {
         </div>
         <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
             <div class="flex w-120 justify-center gap-4 px-8">
+                <Button
+                    variant="subtle"
+                    icon="mdi:collapse-all"
+                    :aria-label="$t('ui.collapseAll')"
+                    data-test-id="timer-upsert-collapse-button"
+                    @click="forcedAccordionState = 'close'"
+                />
+                <Button
+                    variant="subtle"
+                    icon="mdi:expand-all"
+                    :aria-label="$t('ui.expandAll')"
+                    data-test-id="timer-upsert-expand-button"
+                    @click="forcedAccordionState = 'open'"
+                />
                 <Button
                     size="xl"
                     type="submit"

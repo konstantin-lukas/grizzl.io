@@ -23,7 +23,7 @@ function collectKeys(obj: Record<string, never>, prefix = ""): Set<string> {
 export function checkTranslationFileConsistency() {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const translationDir = path.resolve(__dirname, "..", "i18n", "locales");
+    const translationDir = path.resolve(__dirname, "..", "i18n");
 
     const locales = fs.readdirSync(translationDir).filter(f => fs.statSync(path.join(translationDir, f)).isDirectory());
 
@@ -72,7 +72,7 @@ export function checkTranslationFileConsistency() {
 }
 
 export function getTranslationFiles(locale: string) {
-    const dirPath = path.join(process.cwd(), "i18n", "locales", locale);
+    const dirPath = path.join(process.cwd(), "i18n", locale);
     if (!fs.existsSync(dirPath)) {
         throw new Error(`Locale directory does not exist: ${dirPath}`);
     }

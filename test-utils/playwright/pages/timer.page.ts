@@ -5,6 +5,8 @@ const LOCATORS = {
     // TIMER FORM
     titleInput: "timer-upsert-title-input",
     submitButton: "timer-upsert-submit-button",
+    expandButton: "timer-upsert-expand-button",
+    collapseButton: "timer-upsert-collapse-button",
 
     // TIMER FORM - INTERVAL
     legends: "interval-legend",
@@ -20,6 +22,7 @@ const LOCATORS = {
     durationInputs: "interval-duration-input",
     preparationTimeInputs: "interval-preparation-time-input",
     beatPatternInputs: "interval-beat-pattern-input",
+    fieldsets: "interval-fieldset",
 
     // TIMER LIST
     listItemTitles: "timer-list-item-title",
@@ -53,6 +56,7 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
     async createTimer(data: { title: string; intervals?: Interval[] }, submit = true) {
         const { title, intervals = [] } = data;
         await this.fill("titleInput", title);
+        await this.click("expandButton");
         await this.duplicateNthInterval(0, intervals.length - 1);
         for (const [index, interval] of intervals.entries()) {
             await this.fillNthInterval(index, interval);
@@ -61,13 +65,13 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
     }
 
     async duplicateNthInterval(n: number, times: number) {
-        await this.focus("intervalTitleInputs", { nth: n });
         for (let i = 0; i < times; i++) {
             await this.click("duplicateButtons", { nth: n });
         }
     }
 
     async fillNthInterval(n: number, data: Interval) {
+        await this.click("expandButton");
         if (data.title) await this.fill("intervalTitleInputs", data.title, { nth: n });
         if (data.duration) await this.fill("durationInputs", data.duration.toString(), { nth: n });
         if (data.preparationTime) await this.fill("preparationTimeInputs", data.preparationTime.toString(), { nth: n });
