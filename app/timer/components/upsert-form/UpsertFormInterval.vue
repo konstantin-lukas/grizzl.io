@@ -6,8 +6,10 @@ import UAccordion from "#ui/components/Accordion.vue";
 import UpsertFormBeatPatternInput from "~/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import UpsertFormIntervalActionButtons from "~/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 
+const emit = defineEmits(["toggle"]);
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
-const { index, expandedOverride } = defineProps<{ index: number; expandedOverride: boolean }>();
+const { index, expandedOverride } = defineProps<{ index: number; expandedOverride: "open" | "close" | "" }>();
+
 const durationSeconds = computed({
     get: () => intervals!.value![index]!.duration / 1000,
     set: v => (intervals!.value![index]!.duration = v * 1000),
@@ -17,10 +19,13 @@ const preparationTimeSeconds = computed({
     set: v => (intervals!.value![index]!.preparationTime = v * 1000),
 });
 const accordionValue = ref(index === 0 ? "0" : undefined);
+
 watch(
     () => expandedOverride,
     value => {
-        accordionValue.value = value === true ? "0" : undefined;
+        if (value === "") return;
+        accordionValue.value = value === "open" ? "0" : undefined;
+        emit("toggle");
     },
 );
 </script>
@@ -90,7 +95,7 @@ watch(
                                 </template>
                             </USelect>
                         </UFormField>
-                        <div class="flex flex-col gap-4 not-sm:flex-wrap xs:flex-row">
+                        <div class="flex w-full flex-col gap-4 not-sm:flex-wrap xs:flex-row">
                             <UFormField
                                 :label="$t('timer.form.interval.repetitions')"
                                 :name="`intervals.${index}.repeatCount`"

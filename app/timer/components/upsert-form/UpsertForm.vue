@@ -42,7 +42,7 @@ const state = reactive<PutTimer>(
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 const isDragging = ref(false);
-const forcedAccordionState = ref(false);
+const forcedAccordionState = ref<"open" | "close" | "">("");
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const { start, finish, isLoading } = useLoadingIndicator();
@@ -163,6 +163,7 @@ function onEnd() {
                                 :index="index"
                                 :expanded-override="forcedAccordionState"
                                 :style="{ transition: isDragging ? 'none' : '' }"
+                                @toggle="forcedAccordionState = ''"
                             />
                         </TransitionGroup>
                     </VueDraggable>
@@ -175,13 +176,15 @@ function onEnd() {
                     variant="subtle"
                     icon="mdi:collapse-all"
                     :aria-label="$t('ui.collapseAll')"
-                    @click="forcedAccordionState = false"
+                    data-test-id="timer-upsert-collapse-button"
+                    @click="forcedAccordionState = 'close'"
                 />
                 <Button
                     variant="subtle"
                     icon="mdi:expand-all"
                     :aria-label="$t('ui.expandAll')"
-                    @click="forcedAccordionState = true"
+                    data-test-id="timer-upsert-expand-button"
+                    @click="forcedAccordionState = 'open'"
                 />
                 <Button
                     size="xl"

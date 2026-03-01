@@ -120,7 +120,7 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
         false,
     );
 
-    await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
+    await page.expect("legends", { nth: 0 }).toHaveText(intervals[0].title);
     await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[0].title);
     await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[0].repeatCount.toString());
     await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[0].duration} sec`);
@@ -129,7 +129,7 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     await page.focus("intervalTitleInputs", { nth: 0 });
     await page.click("moveDownButtons", { nth: 0 });
 
-    await page.expect("legends", { nth: 0 }).toHaveText("Interval No. 1");
+    await page.expect("legends", { nth: 0 }).toHaveText(intervals[1].title);
     await page.expect("intervalTitleInputs", { nth: 0 }).toHaveValue(intervals[1].title);
     await page.expect("repetitionsInputs", { nth: 0 }).toHaveValue(intervals[1].repeatCount.toString());
     await page.expect("durationInputs", { nth: 0 }).toHaveValue(`${intervals[1].duration} sec`);
@@ -139,7 +139,7 @@ test("allows changing interval order and deleting intervals", async ({ timerPage
     await page.click("deleteButtons", { nth: 0 });
 
     await page.expect("legends").toHaveCount(1);
-    await page.expect("legends").toHaveText("Interval No. 1");
+    await page.expect("legends").toHaveText(intervals[0].title);
     await page.expect("intervalTitleInputs").toHaveValue(intervals[0].title);
     await page.expect("repetitionsInputs").toHaveValue(intervals[0].repeatCount.toString());
     await page.expect("durationInputs").toHaveValue(`${intervals[0].duration} sec`);
