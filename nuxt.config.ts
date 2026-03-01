@@ -67,6 +67,7 @@ export default defineNuxtConfig({
             language,
             files: getTranslationFiles(language),
         })) as LocaleObject[],
+        langDir: ".",
         detectBrowserLanguage: {
             useCookie: true,
             cookieKey: "i18n_redirected",
