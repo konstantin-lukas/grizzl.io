@@ -30,6 +30,8 @@
         "next": "Next",
         "previous": "Previous",
         "error": "Error",
-        "homepage": "Homepage"
+        "homepage": "Homepage",
+        "expandAll": "Expand all",
+        "collapseAll": "Collapse all"
     }
 }

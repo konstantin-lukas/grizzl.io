@@ -30,6 +30,8 @@
         "next": "Siguiente",
         "previous": "Anterior",
         "error": "Error",
-        "homepage": "Página de inicio"
+        "homepage": "Página de inicio",
+        "expandAll": "Expandir todo",
+        "collapseAll": "Contraer todo"
     }
 }

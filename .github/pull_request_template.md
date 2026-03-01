@@ -1,5 +1,6 @@
 # Development
 - [ ] Implementation matches criteria
+- [ ] Translation files updated
 - [ ] Seed scripts updated
 - [ ] Tests written/updated
   - [ ] Nuxt
@@ -14,6 +15,7 @@
 # Review
 - [ ] Code reviewed
 - [ ] Branch merged and deleted
+- [ ] All text uses translations
 - [ ] Review issue quality
   - [ ] Assignee is set
   - [ ] Labels are assigned

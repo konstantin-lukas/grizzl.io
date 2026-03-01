@@ -30,6 +30,8 @@
         "next": "Weiter",
         "previous": "Zurück",
         "error": "Fehler",
-        "homepage": "Startseite"
+        "homepage": "Startseite",
+        "expandAll": "Alle ausklappen",
+        "collapseAll": "Alle einklappen"
     }
 }

@@ -42,6 +42,7 @@ const state = reactive<PutTimer>(
 const previousIntervalCount = ref(state.intervals.length);
 const previousLastId = ref(state.intervals[state.intervals.length - 1]!.id);
 const isDragging = ref(false);
+const forcedAccordionState = ref(false);
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scroll-container");
 const { start, finish, isLoading } = useLoadingIndicator();
@@ -160,6 +161,7 @@ function onEnd() {
                                 :key="interval.id"
                                 v-model:intervals="state.intervals"
                                 :index="index"
+                                :expanded-override="forcedAccordionState"
                                 :style="{ transition: isDragging ? 'none' : '' }"
                             />
                         </TransitionGroup>
@@ -169,6 +171,18 @@ function onEnd() {
         </div>
         <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
             <div class="flex w-120 justify-center gap-4 px-8">
+                <Button
+                    variant="subtle"
+                    icon="mdi:collapse-all"
+                    :aria-label="$t('ui.collapseAll')"
+                    @click="forcedAccordionState = false"
+                />
+                <Button
+                    variant="subtle"
+                    icon="mdi:expand-all"
+                    :aria-label="$t('ui.expandAll')"
+                    @click="forcedAccordionState = true"
+                />
                 <Button
                     size="xl"
                     type="submit"

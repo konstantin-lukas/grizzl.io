@@ -7,7 +7,7 @@ import UpsertFormBeatPatternInput from "~/timer/components/upsert-form/UpsertFor
 import UpsertFormIntervalActionButtons from "~/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
-const { index } = defineProps<{ index: number }>();
+const { index, expandedOverride } = defineProps<{ index: number; expandedOverride: boolean }>();
 const durationSeconds = computed({
     get: () => intervals!.value![index]!.duration / 1000,
     set: v => (intervals!.value![index]!.duration = v * 1000),
@@ -17,11 +17,18 @@ const preparationTimeSeconds = computed({
     set: v => (intervals!.value![index]!.preparationTime = v * 1000),
 });
 const accordionValue = ref(index === 0 ? "0" : undefined);
+watch(
+    () => expandedOverride,
+    value => {
+        accordionValue.value = value === true ? "0" : undefined;
+    },
+);
 </script>
 
 <template>
     <fieldset
-        class="group relative w-full rounded-md border border-border-accented bg-back transition-[margin] not-sm:mb-12"
+        class="group relative w-full rounded-md border border-border-accented bg-back transition-[margin]"
+        :class="{ 'not-sm:mb-12': accordionValue !== undefined }"
     >
         <div>
             <UAccordion
