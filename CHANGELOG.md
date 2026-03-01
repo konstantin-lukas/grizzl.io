@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.1...v1.7.2) (2026-03-01)
+
+
+### Bug Fixes
+
+* adjust space between intervals on touch devices ([173bc96](https://github.com/konstantin-lukas/grizzl.io/commit/173bc962920213ce5d20309598af5130426bd744))
+
 ## [1.7.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.0...v1.7.1) (2026-03-01)
 
 
