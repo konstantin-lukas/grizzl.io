@@ -167,7 +167,7 @@ test("allows expanding and collapsing timer intervals", { tag: SCREENSHOT }, asy
 
     await test.step("check that you can collapse and expand individual intervals by clicking their legend", async () => {
         await page.click("legends", { nth: 0 });
-        await page.expect().toHaveScreenshot({ name: "interval-list-with-first-expanded" });
+        await page.expect().toHaveScreenshot({ name: "interval-list-default-state" });
 
         await page.click("legends", { nth: 0 });
         await page.expect().toHaveScreenshot({ name: "interval-list-all-collapsed" });
