@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
-import useLocalStorage from "~/core/composables/useLocalStorage";
 
-const { data: hideCookieBanner } = useLocalStorage("hide-cookie-banner", "true");
+const key = "hide-cookie-banner";
+const hideCookieBanner = ref<string | null | undefined>("true");
+
+onMounted(() => {
+    hideCookieBanner.value = localStorage.getItem(key);
+});
+
+watch(hideCookieBanner, newValue => {
+    if (newValue === null || newValue === undefined) {
+        localStorage.removeItem(key);
+        hideCookieBanner.value = undefined;
+    } else {
+        localStorage.setItem(key, newValue);
+    }
+});
 </script>
 
 <template>
@@ -24,8 +37,9 @@ const { data: hideCookieBanner } = useLocalStorage("hide-cookie-banner", "true")
                 color="neutral"
                 class="flex shrink-0 justify-center not-sm:w-full"
                 @click="hideCookieBanner = 'true'"
-                >{{ $t("ui.okay") }}</Button
             >
+                {{ $t("ui.okay") }}
+            </Button>
         </div>
     </Transition>
 </template>
