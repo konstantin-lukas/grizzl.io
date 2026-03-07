@@ -11,6 +11,7 @@ import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
 import useTimer from "~/timer/composables/useTimer";
 
 const open = ref(false);
+const route = useRoute();
 const toast = useToast();
 const { data, refresh } = useFetch("/api/timers", {
     key: "/api/timers",
@@ -25,6 +26,11 @@ const { reset, mute } = useTimer();
 
 const activeTimer = ref<Timer | null>(null);
 
+watchEffect(() => {
+    const timerId = route.query.play;
+    activeTimer.value = data.value?.find(timer => timer.id === timerId) ?? null;
+});
+
 watch(open, () => {
     if (!open.value) refresh();
 });
@@ -35,7 +41,7 @@ watch(open, () => {
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <Slideover
                 query-key="play"
-                :open="!!activeTimer"
+                :query-value="activeTimer?.id"
                 @close="
                     () => {
                         reset(true);
