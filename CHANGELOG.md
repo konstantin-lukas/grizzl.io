@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.2...v1.8.0) (2026-03-07)
+
+
+### Features
+
+* add cookie banner ([#277](https://github.com/konstantin-lukas/grizzl.io/issues/277)) ([2c1e7f7](https://github.com/konstantin-lukas/grizzl.io/commit/2c1e7f74af74e82492d55fc7a8ce3b9bb7fae1bb))
+* add forward and backward navigation to slideover ([#280](https://github.com/konstantin-lukas/grizzl.io/issues/280)) ([90a4bdf](https://github.com/konstantin-lukas/grizzl.io/commit/90a4bdfe6db12796c17e7a6eb975133484ad5f65))
+
 ## [1.7.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.1...v1.7.2) (2026-03-01)
 
 
