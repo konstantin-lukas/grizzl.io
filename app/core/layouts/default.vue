@@ -2,8 +2,8 @@
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
+import CookieBanner from "~/core/components/data/CookieBanner.vue";
 import Offline from "~/core/components/data/Offline.vue";
-import CookieBanner from "~/core/components/layout/CookieBanner.vue";
 import Footer from "~/core/components/nav/Footer.vue";
 import Menu from "~/core/components/nav/menu/Menu.vue";
 import MenuButton from "~/core/components/nav/menu/MenuButton.vue";
