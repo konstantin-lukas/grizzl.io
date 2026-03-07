@@ -3,28 +3,19 @@ import Button from "~/core/components/button/Button.vue";
 
 const emit = defineEmits(["close"]);
 const route = useRoute();
-const { open, queryKey = undefined } = defineProps<{ open: boolean; queryKey?: string }>();
+const router = useRouter();
+const open = ref(false);
+const { queryKey, queryValue = null } = defineProps<{ queryKey: string; queryValue?: string }>();
 
-watch(
-    () => open,
-    newOpen => {
-        if (!queryKey) return;
-        if (newOpen) window.history.pushState(null, "", `${route.path}?${queryKey}`);
-    },
-);
-watch(
-    () => route.query,
-    newQuery => {
-        if (!queryKey) return;
-        const value = newQuery[queryKey];
-        if (value === undefined) emit("close");
-    },
-);
-
-function onClick() {
-    window.history.pushState(null, "", route.path);
-    emit("close");
-}
+watchEffect(() => {
+    if (queryValue) {
+        open.value = true;
+        router.push(`${route.path}?${queryKey}=${queryValue}`);
+    } else {
+        open.value = false;
+        router.push(route.path);
+    }
+});
 </script>
 
 <template>
@@ -48,7 +39,7 @@ function onClick() {
                         class="flex size-10 justify-center hover-none:size-12"
                         :aria-label="$t('ui.goBack')"
                         data-test-id="go-back-button"
-                        @click="onClick"
+                        @click="emit('close')"
                     />
                 </div>
                 <slot />
