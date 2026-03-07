@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
 
 const emit = defineEmits(["close"]);
