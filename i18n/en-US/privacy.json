@@ -60,6 +60,7 @@
         "section3RestrictionList2": "If the processing of your personal data was/is unlawful, you can request the restriction of data processing instead of deletion.",
         "section3RestrictionList3": "If we no longer need your personal data, but you need it to exercise, defend, or assert legal claims, you have the right to request the restriction of the processing of your personal data instead of deletion.",
         "section3RestrictionList4": "If you have lodged an objection according to Art. 21(1) GDPR, a balance must be struck between your interests and ours. As long as it has not yet been determined whose interests prevail, you have the right to request the restriction of the processing of your personal data.",
-        "section3RestrictionText2": "If you have restricted the processing of your personal data, such data may only be processed – apart from its storage – with your consent or for the assertion, exercise, or defense of legal claims, for the protection of another natural or legal person, or for reasons of significant public interest of the European Union or a member state."
+        "section3RestrictionText2": "If you have restricted the processing of your personal data, such data may only be processed – apart from its storage – with your consent or for the assertion, exercise, or defense of legal claims, for the protection of another natural or legal person, or for reasons of significant public interest of the European Union or a member state.",
+        "cookieBanner": "We only use necessary cookies to manage your session and remember your language preferences. For more information, please see our {privacyPolicy}."
     }
 }

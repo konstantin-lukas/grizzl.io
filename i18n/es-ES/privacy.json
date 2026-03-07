@@ -60,6 +60,7 @@
         "section3RestrictionList2": "Si el tratamiento de sus datos personales fue/es ilegal, puede solicitar la restricción del tratamiento en lugar de la eliminación.",
         "section3RestrictionList3": "Si ya no necesitamos sus datos personales, pero usted los necesita para el ejercicio, defensa o formulación de reclamaciones legales, tiene derecho a solicitar la restricción del tratamiento de sus datos personales en lugar de su eliminación.",
         "section3RestrictionList4": "Si ha presentado una objeción de acuerdo con el art. 21(1) del RGPD, debe hacerse una ponderación entre sus intereses y los nuestros. Mientras no se haya determinado qué intereses prevalecen, usted tiene derecho a solicitar la restricción del tratamiento de sus datos personales.",
-        "section3RestrictionText2": "Si ha restringido el tratamiento de sus datos personales, dichos datos solo podrán ser procesados, aparte de su almacenamiento, con su consentimiento o para la formulación, ejercicio o defensa de reclamaciones legales, para la protección de otra persona física o jurídica, o por razones de interés público importante de la Unión Europea o de un Estado miembro."
+        "section3RestrictionText2": "Si ha restringido el tratamiento de sus datos personales, dichos datos solo podrán ser procesados, aparte de su almacenamiento, con su consentimiento o para la formulación, ejercicio o defensa de reclamaciones legales, para la protección de otra persona física o jurídica, o por razones de interés público importante de la Unión Europea o de un Estado miembro.",
+        "cookieBanner": "Solo usamos cookies necesarias para gestionar su sesión y recordar sus preferencias de idioma. Para más información, consulte nuestra {privacyPolicy}."
     }
 }
