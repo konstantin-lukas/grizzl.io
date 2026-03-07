@@ -32,6 +32,7 @@
         "error": "Fehler",
         "homepage": "Startseite",
         "expandAll": "Alle ausklappen",
-        "collapseAll": "Alle einklappen"
+        "collapseAll": "Alle einklappen",
+        "okay": "Alles klar!"
     }
 }

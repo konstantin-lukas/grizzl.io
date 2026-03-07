@@ -2,6 +2,7 @@
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
+import CookieBanner from "~/core/components/data/CookieBanner.vue";
 import Offline from "~/core/components/data/Offline.vue";
 import Footer from "~/core/components/nav/Footer.vue";
 import Menu from "~/core/components/nav/menu/Menu.vue";
@@ -71,6 +72,7 @@ watch(
                     <MenuButton />
                     <main :aria-hidden="isOpen" :inert="isOpen" data-test-id="inert-elements" class="min-h-main-height">
                         <slot />
+                        <CookieBanner />
                     </main>
                     <Footer :aria-hidden="isOpen" :inert="isOpen" />
                 </Body>

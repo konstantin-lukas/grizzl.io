@@ -27,6 +27,7 @@ const BASE_LOCATORS = {
     root: "root",
     drawer: "drawer",
     slideover: "slideover",
+    cookieBannerButton: "hide-cookie-banner-button",
 };
 
 type LocatorKey<T extends Record<string, string>> = keyof T | keyof typeof BASE_LOCATORS;

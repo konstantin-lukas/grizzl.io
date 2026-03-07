@@ -32,6 +32,7 @@
         "error": "Error",
         "homepage": "Homepage",
         "expandAll": "Expand all",
-        "collapseAll": "Collapse all"
+        "collapseAll": "Collapse all",
+        "okay": "Got it!"
     }
 }

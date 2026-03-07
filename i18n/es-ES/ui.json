@@ -32,6 +32,7 @@
         "error": "Error",
         "homepage": "Página de inicio",
         "expandAll": "Expandir todo",
-        "collapseAll": "Contraer todo"
+        "collapseAll": "Contraer todo",
+        "okay": "¡Entendido!"
     }
 }
