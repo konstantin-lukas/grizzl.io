@@ -22,7 +22,7 @@ watch(hideCookieBanner, newValue => {
     <Transition name="fade-pure">
         <div
             v-if="!hideCookieBanner"
-            class="fixed top-0 left-0 flex min-h-18 w-full flex-col items-center justify-between gap-4 bg-primary px-6 py-4 text-back not-xs:pt-16 xs:px-18 sm:flex-row"
+            class="fixed top-0 left-0 flex min-h-18 w-full flex-col items-center justify-between gap-4 bg-primary px-6 py-4 text-back not-xs:pt-16 xs:px-18 sm:flex-row hover-none:not-xs:pt-18"
         >
             <div>
                 <i18n-t keypath="privacy.cookieBanner">
@@ -36,6 +36,7 @@ watch(hideCookieBanner, newValue => {
             <Button
                 color="neutral"
                 class="flex shrink-0 justify-center not-sm:w-full"
+                data-test-id="hide-cookie-banner-button"
                 @click="hideCookieBanner = 'true'"
             >
                 {{ $t("ui.okay") }}

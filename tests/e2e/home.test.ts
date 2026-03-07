@@ -27,9 +27,19 @@ test("should register a service worker if supported", async ({ homePage: page })
 });
 
 withoutAuth(() => {
-    test("contains a link to the sign in page", async ({ homePage: page }) => {
-        await page.goto();
-        await page.expect("signInButton").toBeVisible();
-        await page.expect("signOutButton").toBeDisattached();
-    });
+    test(
+        "contains a link to the sign in page and has a hideable cookie banner",
+        { tag: SCREENSHOT },
+        async ({ homePage: page }) => {
+            await page.goto();
+            await page.expect("signInButton").toBeVisible();
+            await page.expect("signOutButton").toBeDisattached();
+
+            await page.expect().toHaveScreenshot({ name: "home-page-with-cookie-banner" });
+
+            await page.click("cookieBannerButton");
+
+            await page.expect().toHaveScreenshot({ name: "home-page-signed-out" });
+        },
+    );
 });
