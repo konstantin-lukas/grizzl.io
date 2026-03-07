@@ -1,3 +1,4 @@
+import { user } from "../server/core/schemas/auth.schema";
 import { generateId } from "../shared/core/utils/id.util";
 import { ID_LENGTH } from "../shared/core/validators/core.validator";
 import { char, timestamp } from "drizzle-orm/pg-core";
@@ -12,4 +13,10 @@ export const createdAt = {
 
 export const deletedAt = {
     deletedAt: timestamp(),
+};
+
+export const userId = {
+    userId: char({ length: ID_LENGTH })
+        .references(() => user.id, { onDelete: "cascade" })
+        .notNull(),
 };
