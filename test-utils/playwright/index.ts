@@ -7,18 +7,18 @@ import TimerPage from "~~/test-utils/playwright/pages/timer.page";
 import globalBeforeAfterEach from "~~/test-utils/playwright/test/globalBeforeAfterEach.fixture";
 import constructPageObject from "~~/test-utils/playwright/test/page.fixture";
 
-export const test = baseTest.extend<
-    {
-        homePage: HomePage;
-        timerPage: TimerPage;
-        globalBeforeAfterEach: unknown;
-    },
-    { db: DBFixtures }
->({
+export const seed = baseTest.extend<object, { db: DBFixtures }>({
+    db: [dbFixture, { scope: "worker" }],
+});
+
+export const test = seed.extend<{
+    globalBeforeAfterEach: unknown;
+    homePage: HomePage;
+    timerPage: TimerPage;
+}>({
     homePage: constructPageObject(HomePage),
     timerPage: constructPageObject(TimerPage),
     globalBeforeAfterEach: [globalBeforeAfterEach(), { auto: true }],
-    db: [dbFixture, { scope: "worker" }],
 });
 
 export const expect = baseExpect.extend({

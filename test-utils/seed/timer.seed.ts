@@ -1,6 +1,6 @@
 import { Beat } from "#shared/timer/enums/beat.enum";
 import { arr, int, maybe } from "@@/test-utils/helpers/data";
-import { test } from "~~/test-utils/playwright";
+import { seed } from "~~/test-utils/playwright";
 
 const timerTitles = ["Core Workout", "Cardio Burst", "Stretch & Mobility", "Upper Body Strength", "Lower Body Power"];
 const intervalTitles = [
@@ -11,7 +11,7 @@ const intervalTitles = [
     ["Squats", "Jump Squats", "Lunges", "Bulgarian Split Squats", "Glute Bridges", "Step-Ups", "Calf Raises"],
 ];
 
-test("insert timer test data", async ({ db }) => {
+seed("insert timer test data", async ({ db }) => {
     for (let i = 0; i < timerTitles.length; i++) {
         const [timer] = await db.timer.insert(1, {
             title: timerTitles[i],

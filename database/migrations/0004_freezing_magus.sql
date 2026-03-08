@@ -14,7 +14,7 @@ CREATE TABLE "finance_transaction" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"account_id" char(16) NOT NULL,
 	"amount" bigint DEFAULT 0 NOT NULL,
-	"reference" varchar(100) NOT NULL,
+	"reference" varchar(100),
 	"category" "finance_category" NOT NULL
 );
 --> statement-breakpoint
@@ -23,7 +23,7 @@ CREATE TABLE "finance_auto_transaction" (
 	"deleted_at" timestamp,
 	"account_id" char(16) NOT NULL,
 	"amount" bigint DEFAULT 0 NOT NULL,
-	"reference" varchar(100) NOT NULL,
+	"reference" varchar(100),
 	"category" "finance_category" NOT NULL,
 	"exec_interval" integer NOT NULL,
 	"exec_on" integer NOT NULL,

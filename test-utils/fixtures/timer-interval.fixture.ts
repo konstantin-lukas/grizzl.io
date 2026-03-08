@@ -1,5 +1,5 @@
 import { Beat } from "#shared/timer/enums/beat.enum";
-import BaseFixture, { type InsertOverrides } from "@@/test-utils/fixtures/base.fixture";
+import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import { str } from "@@/test-utils/helpers/data";
 import type { drizzle } from "drizzle-orm/node-postgres";
 
@@ -19,8 +19,7 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
 
     override async insert<N extends number>(
         count: N,
-        overrides: InsertOverrides<"timerInterval"> &
-            ({ timerId: string } | ((index: number) => InsertOverrides<"timerInterval">)),
+        overrides: ExtendedInsertOverrides<"timerInterval", { timerId: string }>,
     ) {
         return super.insert(count, overrides);
     }

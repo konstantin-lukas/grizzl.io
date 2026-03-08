@@ -236,10 +236,10 @@ export function str(options: StrOptions = {}) {
  * Creates a fully deterministic date.
  * @param options Options to modify how the date is generated.
  * @param [options.when="beforeRef"] In the past or future relative to the reference date.
- * @param [options.days=0] The maximum amount of days between reference date and returned date.
- * @param [options.hours=0] The maximum amount of hours between reference date and returned date.
- * @param [options.minutes=0] The maximum amount of minutes between reference date and returned date.
- * @param [options.seconds=0] The maximum amount of seconds between reference date and returned date.
+ * @param [options.days=365] The maximum amount of days between reference date and returned date.
+ * @param [options.hours=24] The maximum amount of hours between reference date and returned date.
+ * @param [options.minutes=60] The maximum amount of minutes between reference date and returned date.
+ * @param [options.seconds=60] The maximum amount of seconds between reference date and returned date.
  * @param [options.refDate="2025-06-01T12:00:00Z"] The date to base date generation on. Defaults to a deterministic
  * value. If you want true future dates pass Date.now(), but be careful as that will create a non-deterministic date.
  * @returns A date relative to the ref date. The default is to return the ref date.
@@ -284,7 +284,7 @@ export function strArr<N extends number>(options: StrArrayOptions<N>) {
 /**
  * @returns The provided value or undefined depending on the seed
  */
-export function maybe<T>(value: () => T, options: PRNGOptions & { odds?: number }) {
+export function maybe<T>(value: () => T, options: PRNGOptions & { odds?: number } = {}) {
     const { seed, odds = 0.5 } = options;
 
     if (odds <= 0) return null;

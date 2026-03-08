@@ -14,6 +14,6 @@ export const financeTransaction = pgTable("finance_transaction", {
         .references(() => financeAccount.id, { onDelete: "cascade" })
         .notNull(),
     amount: bigint({ mode: "number" }).default(0).notNull(),
-    reference: varchar({ length: TITLE_MAX }).notNull(),
+    reference: varchar({ length: TITLE_MAX }),
     category: financeCategoryEnum().notNull(),
 });

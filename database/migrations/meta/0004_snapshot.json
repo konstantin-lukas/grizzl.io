@@ -1,5 +1,5 @@
 {
-  "id": "9d9b90ba-de8b-4a01-bfd2-259137426a67",
+  "id": "66a8f1e6-81ed-4280-9490-ac1e7ebaaccc",
   "prevId": "fd82fcda-7198-486f-ade9-66690fc7ef55",
   "version": "7",
   "dialect": "postgresql",
@@ -556,7 +556,7 @@
           "name": "reference",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "category": {
           "name": "category",
@@ -620,7 +620,7 @@
           "name": "reference",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "category": {
           "name": "category",
