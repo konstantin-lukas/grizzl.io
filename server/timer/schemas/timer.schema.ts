@@ -1,6 +1,5 @@
-import { createdAt, deletedAt, id } from "../../../database/mixins";
+import { createdAt, deletedAt, id, userId } from "../../../database/mixins";
 import { ID_LENGTH, LONG_STRING, TITLE_MAX } from "../../../shared/core/validators/core.validator";
-import { user } from "../../core/schemas/auth.schema";
 import { sql } from "drizzle-orm";
 import { char, integer, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";
 
@@ -8,16 +7,14 @@ export const beatEnum = pgEnum("beat", ["pause", "low", "high"]);
 
 export const timer = pgTable("timer", {
     ...id,
-    userId: char({ length: ID_LENGTH })
-        .references(() => user.id, { onDelete: "cascade" })
-        .notNull(),
+    ...userId,
+    ...createdAt,
+    ...deletedAt,
     title: varchar({ length: TITLE_MAX }).notNull(),
     ttsVoices: varchar({ length: LONG_STRING })
         .array()
         .notNull()
         .default(sql`ARRAY[]::varchar[]`),
-    ...createdAt,
-    ...deletedAt,
 });
 
 export const timerInterval = pgTable("timer_interval", {

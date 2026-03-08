@@ -1,5 +1,3 @@
-BEGIN;
-
 ALTER TABLE "timer" RENAME COLUMN "tts_voice" TO "tts_voices";
 
 ALTER TABLE "timer"
@@ -8,5 +6,3 @@ ALTER TABLE "timer"
 ALTER TABLE "timer"
     ALTER COLUMN "tts_voices" SET NOT NULL,
     ALTER COLUMN "tts_voices" SET DEFAULT ARRAY[]::varchar[];
-
-COMMIT;

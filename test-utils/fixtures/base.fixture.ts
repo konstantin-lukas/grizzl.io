@@ -8,6 +8,8 @@ type ExcludeEnum<T extends string> = T extends `${string}Enum${string}` ? never 
 type SchemaKey = ExcludeEnum<keyof typeof schema>;
 export type InsertModel<T extends SchemaKey> = Partial<InferInsertModel<(typeof schema)[T]>>;
 export type InsertOverrides<T extends SchemaKey> = InsertModel<T> | ((index: number) => InsertModel<T>);
+export type ExtendedInsertOverrides<T extends SchemaKey, E extends object> = InsertOverrides<T> &
+    (E | ((index: number) => InsertOverrides<T> & E));
 
 export default abstract class BaseFixture<T extends SchemaKey> {
     protected readonly db;
