@@ -10,7 +10,7 @@ export const financeAutoTransaction = pgTable("finance_auto_transaction", {
     accountId: char({ length: ID_LENGTH })
         .references(() => financeAccount.id, { onDelete: "cascade" })
         .notNull(),
-    amount: bigint({ mode: "number" }).default(0).notNull(),
+    amount: bigint({ mode: "number" }).notNull(),
     reference: varchar({ length: TITLE_MAX }),
     category: financeCategoryEnum().notNull(),
     execInterval: integer().notNull(), // 1-12

@@ -13,7 +13,7 @@ CREATE TABLE "finance_transaction" (
 	"deleted_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"account_id" char(16) NOT NULL,
-	"amount" bigint DEFAULT 0 NOT NULL,
+	"amount" bigint NOT NULL,
 	"reference" varchar(100),
 	"category" "finance_category" NOT NULL
 );
@@ -22,7 +22,7 @@ CREATE TABLE "finance_auto_transaction" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"deleted_at" timestamp,
 	"account_id" char(16) NOT NULL,
-	"amount" bigint DEFAULT 0 NOT NULL,
+	"amount" bigint NOT NULL,
 	"reference" varchar(100),
 	"category" "finance_category" NOT NULL,
 	"exec_interval" integer NOT NULL,
