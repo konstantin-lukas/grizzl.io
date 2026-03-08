@@ -284,8 +284,14 @@ export function strArr<N extends number>(options: StrArrayOptions<N>) {
 /**
  * @returns The provided value or undefined depending on the seed
  */
-export function maybe<T>(value: () => T, seed: number) {
-    const scrapValue = int({ min: 0, max: 1, seed });
-    if (scrapValue) return null;
+export function maybe<T>(value: () => T, options: PRNGOptions & { odds?: number }) {
+    const { seed, odds = 0.5 } = options;
+
+    if (odds <= 0) return null;
+    if (odds >= 1) return value();
+
+    const roll = int({ min: 0, max: 1_000_000_000, seed }) / 1_000_000_000;
+
+    if (roll > odds) return null;
     return value();
 }
