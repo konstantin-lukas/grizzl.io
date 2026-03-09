@@ -2,6 +2,7 @@ CREATE TYPE "public"."finance_category" AS ENUM('travel', 'hobbies', 'partying',
 CREATE TABLE "finance_account" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"user_id" char(16) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
 	"title" varchar(100) NOT NULL,
 	"currency" char(3) NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE "finance_account" (
 --> statement-breakpoint
 CREATE TABLE "finance_transaction" (
 	"id" char(16) PRIMARY KEY NOT NULL,
+	"user_id" char(16) NOT NULL,
 	"deleted_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"account_id" char(16) NOT NULL,
@@ -20,7 +22,9 @@ CREATE TABLE "finance_transaction" (
 --> statement-breakpoint
 CREATE TABLE "finance_auto_transaction" (
 	"id" char(16) PRIMARY KEY NOT NULL,
+	"user_id" char(16) NOT NULL,
 	"deleted_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"account_id" char(16) NOT NULL,
 	"amount" bigint NOT NULL,
 	"reference" varchar(100),
@@ -31,5 +35,7 @@ CREATE TABLE "finance_auto_transaction" (
 );
 --> statement-breakpoint
 ALTER TABLE "finance_account" ADD CONSTRAINT "finance_account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "finance_transaction" ADD CONSTRAINT "finance_transaction_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "finance_transaction" ADD CONSTRAINT "finance_transaction_account_id_finance_account_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."finance_account"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "finance_auto_transaction" ADD CONSTRAINT "finance_auto_transaction_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "finance_auto_transaction" ADD CONSTRAINT "finance_auto_transaction_account_id_finance_account_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."finance_account"("id") ON DELETE cascade ON UPDATE no action;

@@ -2,7 +2,7 @@ import { and, eq, isNotNull, lt } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "~~/database/schema";
 
-type Schema = "timer";
+type Schema = "timer" | "financeAccount" | "financeTransaction" | "financeAutoTransaction";
 
 export default class BaseRepository<T extends Schema> {
     protected readonly db;
