@@ -1,4 +1,4 @@
-import type { PostAccount } from "#shared/finance/validators/account.validator";
+import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
 import { and, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -35,5 +35,14 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
             .returning({ id: this.schema.id });
 
         return account!.id;
+    }
+
+    public async update(id: string, userId: string, { title }: PutAccount) {
+        const { rowCount } = await this.db
+            .update(this.schema)
+            .set({ title })
+            .where(and(eq(this.schema.id, id), eq(this.schema.userId, userId)));
+
+        return rowCount;
     }
 }

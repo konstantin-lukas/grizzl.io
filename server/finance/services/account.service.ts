@@ -1,4 +1,4 @@
-import type { PostAccount } from "#shared/finance/validators/account.validator";
+import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 
@@ -12,6 +12,14 @@ export default class AccountService {
         const rowCount = await this.accountRepository[operation]({ id, userId });
         if (rowCount === 0) {
             const logMessage = `Unable to ${operation} account with id ${id} and user id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+    }
+
+    public async update(id: string, userId: string, account: PutAccount) {
+        const rowCount = await this.accountRepository.update(id, userId, account);
+        if (rowCount === 0) {
+            const logMessage = `Unable to update account with id ${id} and user id ${userId}. Given data: ${JSON.stringify(account)}.`;
             throw new NotFoundError("The requested account does not exist.", logMessage);
         }
     }
