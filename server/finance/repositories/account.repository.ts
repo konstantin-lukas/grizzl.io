@@ -1,3 +1,4 @@
+import type { PostAccount } from "#shared/finance/validators/account.validator";
 import { and, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -21,5 +22,18 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
             .from(this.schema)
             .where(and(eq(this.schema.userId, userId), isNull(this.schema.deletedAt)))
             .orderBy(desc(this.schema.createdAt));
+    }
+
+    public async create(userId: string, { title, currency }: PostAccount) {
+        const [account] = await this.db
+            .insert(this.schema)
+            .values({
+                title,
+                currency,
+                userId,
+            })
+            .returning({ id: this.schema.id });
+
+        return account!.id;
     }
 }

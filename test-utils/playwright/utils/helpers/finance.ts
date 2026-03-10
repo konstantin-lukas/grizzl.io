@@ -9,7 +9,6 @@ function withAccount(property: keyof typeof BASE_ACCOUNT, value: unknown) {
 
 const invalidTypeCases = [
     ...createInvalidTypeTestCases(BASE_ACCOUNT, "title", { valid: ["string"] }),
-    ...createInvalidTypeTestCases(BASE_ACCOUNT, "balance", { valid: ["string"] }),
     ...createInvalidTypeTestCases(BASE_ACCOUNT, "currency", { valid: ["int"] }),
 ];
 
@@ -20,6 +19,7 @@ const invalidValueTestCases = [
     ["the currency is too short", withAccount("currency", "US")],
     ["the currency is too long", withAccount("currency", "USDA")],
     ["the currency contains lowercase letters", withAccount("currency", "usd")],
+    ["the currency contains numbers", withAccount("currency", "U2D")],
     ["the currency is missing", omit(BASE_ACCOUNT, "currency")],
 ];
 

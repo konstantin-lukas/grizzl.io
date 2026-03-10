@@ -1,4 +1,5 @@
 import { BASE_ACCOUNT } from "~~/test-utils/constants/finance";
+import { date } from "~~/test-utils/helpers/data";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 import { ACCOUNT_BAD_REQUEST_TEST_CASES } from "~~/test-utils/playwright/utils/helpers/finance";
@@ -23,15 +24,15 @@ test("allows creating a new account with valid values", async ({ request, db }) 
 
 test("only allows setting title and currency", async ({ request, db }) => {
     const id = "2222222222222222";
-    const date = new Date("2021-02-14");
-    await request.post(route, { data: { ...BASE_ACCOUNT, userId: id, id, createdAt: date, deletedAt: date } });
+    const d = date();
+    await request.post(route, { data: { ...BASE_ACCOUNT, userId: id, id, createdAt: d, deletedAt: d } });
     const accounts = await db.financeAccount.select();
     const user = await db.user.selectByEmail("user@test.com");
     expect(accounts[0]!.userId).toBe(user!.id);
     expect(accounts[0]!.balance).toBe(0);
     expect(accounts[0]!.id).not.toBe(id);
-    expect(accounts[0]!.createdAt).not.toBe(date);
-    expect(accounts[0]!.deletedAt).not.toBe(date);
+    expect(accounts[0]!.createdAt).not.toBe(d);
+    expect(accounts[0]!.deletedAt).not.toBe(d);
 });
 
 test401WhenLoggedOut("post", route);
