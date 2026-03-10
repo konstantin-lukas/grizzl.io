@@ -2,11 +2,12 @@ import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 
+const route = "/api/finance/accounts";
 test("allows retrieving a list of accounts sorted by creation date", async ({ request, db }) => {
     const accounts = await db.financeAccount.insert(3);
     sortByCreatedAt(accounts, "desc");
 
-    const response = await request.get("/api/finance/accounts");
+    const response = await request.get(route);
     const expectedAccounts = accounts.map(({ deletedAt, userId, createdAt, ...rest }) => ({
         ...rest,
         createdAt: createdAt.toISOString(),
@@ -17,14 +18,14 @@ test("allows retrieving a list of accounts sorted by creation date", async ({ re
 });
 
 test("returns an empty array when there are no accounts", async ({ request }) => {
-    const response = await request.get("/api/finance/accounts");
+    const response = await request.get(route);
     expect(response.status()).toBe(200);
     expect(await response.json()).toStrictEqual([]);
 });
 
 test("does not return soft-deleted accounts", async ({ request, db }) => {
     await db.financeAccount.insert(1, { deletedAt: new Date() });
-    const response = await request.get("/api/finance/accounts");
+    const response = await request.get(route);
     expect(response.status()).toBe(200);
     expect(await response.json()).toStrictEqual([]);
 });
@@ -37,4 +38,4 @@ test("does not return accounts from other users", async ({ request, db }) => {
     expect(await response.json()).toStrictEqual([]);
 });
 
-test401WhenLoggedOut("get", "/api/finance/accounts");
+test401WhenLoggedOut("get", route);
