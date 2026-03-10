@@ -11,7 +11,7 @@ export default class TimerService {
         const operation = isDeleted ? "delete" : "undelete";
         const rowCount = await this.timerRepository[operation]({ id, userId });
         if (rowCount === 0) {
-            const logMessage = `Unable to ${operation} timer with id ${id} and ${userId}.`;
+            const logMessage = `Unable to ${operation} timer with id ${id} and user id ${userId}.`;
             throw new NotFoundError("The requested timer does not exist.", logMessage);
         }
     }
@@ -19,7 +19,7 @@ export default class TimerService {
     public async update(id: string, userId: string, timer: PutTimer) {
         const rowCount = await this.timerRepository.update(id, userId, timer);
         if (rowCount === 0) {
-            const logMessage = `Unable to update timer with id ${id} and ${userId}. Given data: ${JSON.stringify(timer)}.`;
+            const logMessage = `Unable to update timer with id ${id} and user id ${userId}. Given data: ${JSON.stringify(timer)}.`;
             throw new NotFoundError("The requested timer does not exist.", logMessage);
         }
     }

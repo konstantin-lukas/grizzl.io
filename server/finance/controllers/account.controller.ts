@@ -1,3 +1,4 @@
+import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import { PostAccountSchema } from "#shared/finance/validators/account.validator";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
@@ -9,6 +10,12 @@ export default class AccountController extends BaseController {
 
     constructor(private readonly accountService: AccountService) {
         super();
+    }
+
+    public async setDeletedStatus(event: H3Event) {
+        const id = AccountController.parseIdParameter(event);
+        const body = await AccountController.parseRequestBody(event, DatabaseDeletedSchema);
+        await this.accountService.setDeletedStatus(id, event.context.user.id, body.deleted);
     }
 
     public async getList(event: H3Event) {
