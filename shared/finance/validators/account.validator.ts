@@ -1,4 +1,4 @@
-import { TITLE_MAX, TITLE_MIN } from "#shared/core/validators/core.validator";
+import { TITLE_MAX, TITLE_MIN } from "../../core/validators/core.validator";
 import { z } from "zod";
 
 export const ISO_4217_CODE_LENGTH = 3;
