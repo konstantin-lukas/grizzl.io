@@ -53,7 +53,7 @@ seed("insert finance test data", async ({ db }) => {
 
     for (const [i, account] of accounts.entries()) {
         if (account.title === "Investment Account") continue;
-        await db.financeTransaction.insert(50, j => {
+        const transactions = await db.financeTransaction.insert(50, j => {
             const seed = 50 * i + j;
             const category =
                 db.financeTransaction.categories[
@@ -63,9 +63,13 @@ seed("insert finance test data", async ({ db }) => {
                 accountId: account.id,
                 createdAt: date({ refDate: new Date(), seed, days: 45 }),
                 category,
+                amount: int({ min: account.title === "Travel Account" ? -300_00 : -200_00, max: 300_00, seed }),
                 reference: maybe(() => categoryReferences[category as never], { seed }),
             };
         });
+
+        const balance = transactions.reduce((acc, cur) => acc + cur.amount, 0);
+        await db.financeAccount.update({ balance }, account.id);
 
         if (account.title === "Travel Account") continue;
         await db.financeAutoTransaction.insert(10, j => {

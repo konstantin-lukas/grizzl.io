@@ -1,20 +1,24 @@
+import type { SQL } from "drizzle-orm";
 import { and, eq, isNotNull, lt } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "~~/database/schema";
 
-type Schema = "timer";
+type Schema = "timer" | "financeAccount" | "financeTransaction" | "financeAutoTransaction";
+type OwnershipResolver = (userId: string) => SQL<unknown>;
 
 export default class BaseRepository<T extends Schema> {
     protected readonly db;
     protected readonly schema;
     public readonly isSoftDeletable;
     public readonly tableName;
+    protected readonly ownershipResolver: OwnershipResolver;
 
-    constructor(db: ReturnType<typeof drizzle>, tableName: T) {
+    constructor(db: ReturnType<typeof drizzle>, tableName: T, ownershipResolver: OwnershipResolver) {
         this.db = db;
         this.tableName = tableName;
         this.schema = schema[tableName];
         this.isSoftDeletable = Object.keys(this.schema).includes("deletedAt");
+        this.ownershipResolver = ownershipResolver;
     }
 
     /**
@@ -22,16 +26,20 @@ export default class BaseRepository<T extends Schema> {
      */
     public async delete(options: { id: string; userId: string }) {
         const { id, userId } = options;
-        const isSoftDeletable = Object.keys(this.schema).includes("deletedAt");
 
-        const where = and(eq(this.schema.id, id), eq(this.schema.userId, userId));
+        const whereBase = eq(this.schema.id, id);
 
-        const { rowCount } = isSoftDeletable
-            ? await this.db
-                  .update(this.schema)
-                  .set({ deletedAt: new Date() } as never)
-                  .where(where)
-            : await this.db.delete(this.schema).where(where);
+        const whereUser = this.ownershipResolver(userId);
+
+        const where = and(whereBase, whereUser);
+
+        const { rowCount } =
+            "deletedAt" in this.schema
+                ? await this.db
+                      .update(this.schema)
+                      .set({ deletedAt: new Date() } as never)
+                      .where(where)
+                : await this.db.delete(this.schema).where(where);
 
         return rowCount;
     }
@@ -45,10 +53,16 @@ export default class BaseRepository<T extends Schema> {
 
         const { id, userId } = options;
 
+        const whereBase = eq(this.schema.id, id);
+
+        const whereUser = this.ownershipResolver(userId);
+
+        const where = and(whereBase, whereUser);
+
         const { rowCount } = await this.db
             .update(this.schema)
             .set({ deletedAt: null } as never)
-            .where(and(eq(this.schema.id, id), eq(this.schema.userId, userId)));
+            .where(where);
 
         return rowCount;
     }

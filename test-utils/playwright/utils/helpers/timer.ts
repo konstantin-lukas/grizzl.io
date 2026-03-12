@@ -1,6 +1,7 @@
 import { arr, str, strArr } from "@@/test-utils/helpers/data";
 import { omit } from "@@/test-utils/helpers/object";
 import { BASE_INTERVAL, BASE_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
+import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
@@ -66,3 +67,25 @@ const invalidTypeCases = [
 ];
 
 export const TIMER_BAD_REQUEST_TEST_CASES = [...topLevelCases, ...intervalLevelCases, ...invalidTypeCases];
+
+export async function buildTimers(db: DBFixtures) {
+    return Promise.all(
+        (await db.timer.insert(1)).map(async timer => ({
+            id: timer.id,
+            title: timer.title,
+            createdAt: timer.createdAt,
+            ttsVoices: timer.ttsVoices,
+            intervals: await (async () => {
+                const intervals = await db.timerInterval.insert(2, { timerId: timer.id });
+                return intervals.map(({ title, duration, preparationTime, beatPattern, id, repeatCount }) => ({
+                    title,
+                    duration,
+                    preparationTime,
+                    beatPattern,
+                    id,
+                    repeatCount,
+                }));
+            })(),
+        })),
+    );
+}

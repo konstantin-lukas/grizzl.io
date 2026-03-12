@@ -8,7 +8,7 @@ export default class FinanceTransactionFixture extends BaseFixture<"financeTrans
     protected defaults = (index: number) => ({
         title: str({ length: 100, seed: index, spaces: false }),
         reference: str({ length: 100, seed: index + 100, spaces: false }),
-        amount: int({ min: 5_00, max: 300_00, seed: index }),
+        amount: int({ min: -300_00, max: 300_00, seed: index }),
         category: this.categories[int({ min: 0, max: this.categories.length - 1, seed: index })],
     });
 

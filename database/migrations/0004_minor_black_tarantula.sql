@@ -2,6 +2,7 @@ CREATE TYPE "public"."finance_category" AS ENUM('travel', 'hobbies', 'partying',
 CREATE TABLE "finance_account" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"user_id" char(16) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
 	"title" varchar(100) NOT NULL,
 	"currency" char(3) NOT NULL,
@@ -21,6 +22,7 @@ CREATE TABLE "finance_transaction" (
 CREATE TABLE "finance_auto_transaction" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"deleted_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"account_id" char(16) NOT NULL,
 	"amount" bigint NOT NULL,
 	"reference" varchar(100),

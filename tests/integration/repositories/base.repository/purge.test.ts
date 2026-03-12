@@ -33,7 +33,7 @@ const testCases = [
 test.for(testCases)("$title", async ({ overrides, maxAge, expectedCount }, { db, user }) => {
     await db.timer.insert(3, i => ({ userId: user.id, ...overrides(i) }));
 
-    const softDeletableRepository = new BaseRepository(db.client, "timer");
+    const softDeletableRepository = new BaseRepository(db.client, "timer", null as never);
     await softDeletableRepository.purge({ maxAge });
 
     const timers = await db.timer.select();

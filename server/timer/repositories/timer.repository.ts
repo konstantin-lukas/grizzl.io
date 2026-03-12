@@ -8,7 +8,7 @@ const schema = "timer";
 
 export default class TimerRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
-        super(db, schema);
+        super(db, schema, userId => eq(this.schema.userId, userId));
     }
 
     async create(userId: string, { title, ttsVoices, intervals }: PostTimer) {

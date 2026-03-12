@@ -1,5 +1,5 @@
 {
-    "id": "64092714-fd9d-4c42-84e7-db915d0b3c1c",
+    "id": "da71cde0-2d5f-4184-b49a-b3677f6005bc",
     "prevId": "fd82fcda-7198-486f-ade9-66690fc7ef55",
     "version": "7",
     "dialect": "postgresql",
@@ -448,6 +448,13 @@
                     "primaryKey": false,
                     "notNull": true
                 },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                },
                 "deleted_at": {
                     "name": "deleted_at",
                     "type": "timestamp",
@@ -573,6 +580,13 @@
                     "type": "timestamp",
                     "primaryKey": false,
                     "notNull": false
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
                 },
                 "account_id": {
                     "name": "account_id",

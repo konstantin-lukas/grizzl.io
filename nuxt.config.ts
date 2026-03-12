@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         },
     },
     nitro: {
-        scanDirs: ["core", "timer"],
+        scanDirs: ["core", "timer", "finance"],
     },
     imports: {
         scan: false,

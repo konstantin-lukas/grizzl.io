@@ -11,14 +11,14 @@ const TYPES = [
     ["array", []],
 ] as const;
 
-export function testIdParameter(method: "put" | "patch", apiPath: string, data?: object) {
+export function testIdParameter(method: "put" | "patch", path: string, data?: object) {
     test("returns a 404 status code when the provided id is unknown", async ({ request }) => {
-        const response = await request[method](`${apiPath}/2222222222222222`, { data });
+        const response = await request[method](`${path}/2222222222222222`, { data });
         expect(response.status()).toBe(404);
     });
 
     test("returns a 400 status code when the provided id has the wrong format", async ({ request }) => {
-        const response = await request[method](`${apiPath}/bananas`, { data });
+        const response = await request[method](`${path}/bananas`, { data });
         expect(response.status()).toBe(400);
     });
 }
@@ -45,7 +45,7 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
     for (const [type, value] of TYPES) {
         if (!(options.valid ?? []).includes(type)) {
             testCases.push([
-                options.caseName?.(property as string, type) ?? `property ${property as string} is a ${type}`,
+                options.caseName?.(property as string, type) ?? `property ${property as string} is of type ${type}`,
                 options.dataTransform?.(data, property as string, value) ?? { ...data, [property]: value },
             ]);
         }
