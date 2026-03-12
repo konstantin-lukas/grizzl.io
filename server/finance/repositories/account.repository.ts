@@ -7,7 +7,7 @@ const schema = "financeAccount";
 
 export default class AccountRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
-        super(db, schema);
+        super(db, schema, userId => eq(this.schema.userId, userId));
     }
 
     public async findByUserId(userId: string) {

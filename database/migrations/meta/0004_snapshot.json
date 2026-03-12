@@ -1,5 +1,5 @@
 {
-    "id": "0922e5d5-dc78-48a5-b860-8d5c7c35b4d2",
+    "id": "da71cde0-2d5f-4184-b49a-b3677f6005bc",
     "prevId": "fd82fcda-7198-486f-ade9-66690fc7ef55",
     "version": "7",
     "dialect": "postgresql",
@@ -509,12 +509,6 @@
                     "primaryKey": true,
                     "notNull": true
                 },
-                "user_id": {
-                    "name": "user_id",
-                    "type": "char(16)",
-                    "primaryKey": false,
-                    "notNull": true
-                },
                 "deleted_at": {
                     "name": "deleted_at",
                     "type": "timestamp",
@@ -555,15 +549,6 @@
             },
             "indexes": {},
             "foreignKeys": {
-                "finance_transaction_user_id_user_id_fk": {
-                    "name": "finance_transaction_user_id_user_id_fk",
-                    "tableFrom": "finance_transaction",
-                    "tableTo": "user",
-                    "columnsFrom": ["user_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "cascade",
-                    "onUpdate": "no action"
-                },
                 "finance_transaction_account_id_finance_account_id_fk": {
                     "name": "finance_transaction_account_id_finance_account_id_fk",
                     "tableFrom": "finance_transaction",
@@ -588,12 +573,6 @@
                     "name": "id",
                     "type": "char(16)",
                     "primaryKey": true,
-                    "notNull": true
-                },
-                "user_id": {
-                    "name": "user_id",
-                    "type": "char(16)",
-                    "primaryKey": false,
                     "notNull": true
                 },
                 "deleted_at": {
@@ -654,15 +633,6 @@
             },
             "indexes": {},
             "foreignKeys": {
-                "finance_auto_transaction_user_id_user_id_fk": {
-                    "name": "finance_auto_transaction_user_id_user_id_fk",
-                    "tableFrom": "finance_auto_transaction",
-                    "tableTo": "user",
-                    "columnsFrom": ["user_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "cascade",
-                    "onUpdate": "no action"
-                },
                 "finance_auto_transaction_account_id_finance_account_id_fk": {
                     "name": "finance_auto_transaction_account_id_finance_account_id_fk",
                     "tableFrom": "finance_auto_transaction",
