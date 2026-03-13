@@ -20,6 +20,8 @@ services:
             DB_NAME: ${DB_NAME}
             DB_PASSWORD: ${DB_PASSWORD}
             DB_USERNAME: ${DB_USERNAME}
+            TZ: 'UTC'
+            PGTZ: 'UTC'
         volumes:
             - grizzl_database:/var/lib/postgresql/data
             - ./docker/postgres/init:/docker-entrypoint-initdb.d
@@ -104,6 +106,7 @@ services:
             OAUTH_REDDIT_SECRET: ${OAUTH_REDDIT_SECRET}
             OAUTH_TWITCH_ID: ${OAUTH_TWITCH_ID}
             OAUTH_TWITCH_SECRET: ${OAUTH_TWITCH_SECRET}
+            TZ: 'UTC'
         restart: no
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         depends_on:

@@ -8,11 +8,11 @@ export const id = {
 };
 
 export const createdAt = {
-    createdAt: timestamp().defaultNow().notNull(),
+    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 };
 
 export const deletedAt = {
-    deletedAt: timestamp(),
+    deletedAt: timestamp({ withTimezone: true }),
 };
 
 export const userId = {
