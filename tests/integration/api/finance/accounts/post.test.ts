@@ -1,13 +1,13 @@
-import { BASE_INTERVAL, BASE_TIMER } from "~~/test-utils/constants/timer";
+import { BASE_ACCOUNT } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
-import { TIMER_BAD_REQUEST_TEST_CASES } from "~~/test-utils/playwright/utils/helpers/timer";
+import { ACCOUNT_BAD_REQUEST_TEST_CASES } from "~~/test-utils/playwright/utils/helpers/finance";
 
-const route = "/api/timers";
+const route = "/api/finance/accounts";
 
 test401WhenLoggedOut("post", route);
 
-for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
+for (const [name, data] of ACCOUNT_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request }) => {
         const response = await request.post(route, { data });
         expect(response.status()).toBe(400);
@@ -15,23 +15,17 @@ for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
 }
 
 test("allows creating new resources with valid values", async ({ request, db }) => {
-    const response = await request.post(route, { data: BASE_TIMER });
+    const response = await request.post(route, { data: BASE_ACCOUNT });
     const data = response.headers().location;
     expect(response.status()).toBe(201);
-    const dbData = await db.timer.select();
+    const dbData = await db.financeAccount.select();
     expect(dbData).toHaveLength(1);
     expect(data).toBe(`${route}/${dbData[0]!.id}`);
 });
 
 test("ignores any provided id for determining ownership", async ({ request, db }) => {
-    await request.post(route, { data: { ...BASE_TIMER, userId: "2222222222222222" } });
-    const data = await db.timer.select();
+    await request.post(route, { data: { ...BASE_ACCOUNT, userId: "2222222222222222" } });
+    const data = await db.financeAccount.select();
     const user = await db.user.selectByEmail("user@test.com");
     expect(data[0]!.userId).toBe(user!.id);
-});
-
-test("transforms an empty interval title to null", async ({ request, db }) => {
-    await request.post(route, { data: { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, title: "" }] } });
-    const intervals = await db.timerInterval.select();
-    expect(intervals[0]!.title).toBeNull();
 });

@@ -180,8 +180,8 @@ export default class BaseController {
         return z.parse<T>(schema, body);
     }
 
-    static parseIdParameter(event: H3Event) {
-        return DatabaseIdSchema.parse(getRouterParam(event, "id"));
+    static parseIdParameter(event: H3Event, idName = "id") {
+        return DatabaseIdSchema.parse(getRouterParam(event, idName));
     }
 
     /**
