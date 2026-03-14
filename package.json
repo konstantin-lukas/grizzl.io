@@ -59,6 +59,7 @@
     },
     "overrides": {
         "esbuild": "0.25.10",
-        "vitest": "4.0.18"
+        "vitest": "4.0.18",
+        "vite": "7.3.0"
     }
 }
