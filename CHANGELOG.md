@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.8.0...v1.9.0) (2026-03-14)
+
+
+### Features
+
+* add api endpoints for finance accounts ([#291](https://github.com/konstantin-lukas/grizzl.io/issues/291)) ([161e743](https://github.com/konstantin-lukas/grizzl.io/commit/161e743811720032ca15733161dbc08d2b288dd4))
+
 ## [1.8.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.2...v1.8.0) (2026-03-07)
 
 
