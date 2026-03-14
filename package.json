@@ -56,5 +56,9 @@
         "tailwindcss": "4.2.1",
         "typescript": "5.9.3",
         "vue-tsc": "3.2.5"
+    },
+    "overrides": {
+        "esbuild": "0.25.10",
+        "vitest": "4.0.18"
     }
 }
