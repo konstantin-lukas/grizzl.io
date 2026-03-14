@@ -22,7 +22,7 @@
         "@nuxtjs/color-mode": "4.0.0",
         "@nuxtjs/i18n": "10.2.3",
         "@vite-pwa/nuxt": "1.1.1",
-        "better-auth": "1.4.19",
+        "better-auth": "1.5.5",
         "date-fns": "4.1.0",
         "drizzle-orm": "0.45.1",
         "nanoid": "5.1.6",
@@ -47,7 +47,7 @@
         "@vitest/coverage-v8": "4.0.18",
         "@vue/test-utils": "2.4.6",
         "drizzle-kit": "0.31.9",
-        "eslint": "9.39.4",
+        "eslint": "10.0.2",
         "eslint-plugin-vuejs-accessibility": "2.5.0",
         "happy-dom": "20.7.0",
         "playwright-core": "1.58.2",
@@ -56,9 +56,5 @@
         "tailwindcss": "4.2.1",
         "typescript": "5.9.3",
         "vue-tsc": "3.2.5"
-    },
-    "overrides": {
-        "esbuild": "0.25.10",
-        "vitest": "4.0.18"
     }
 }
