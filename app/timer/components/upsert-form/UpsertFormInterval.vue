@@ -60,6 +60,9 @@ watch(
                         >
                             <UInput
                                 v-model="intervals![index]!.title"
+                                :model-modifiers="{
+                                    nullable: true,
+                                }"
                                 class="w-full"
                                 :maxlength="TITLE_MAX"
                                 data-test-id="interval-title-input"
