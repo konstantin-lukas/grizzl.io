@@ -1,5 +1,5 @@
-import { expect, test } from "@@/test-utils/vitest";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("updates an account's balance", async ({ db, user }) => {
     const newBalance = 123;

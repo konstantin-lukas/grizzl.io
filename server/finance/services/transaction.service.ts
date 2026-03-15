@@ -34,7 +34,7 @@ export default class TransactionService {
                 throw new InvalidAccountBalanceError("The resulting account balance is invalid.", logMessage);
             }
 
-            const affectedRows = await this.accountRepository.updateBalance(account.id, newBalance);
+            const affectedRows = await this.accountRepository.updateBalance(account.id, newBalance, tx);
             if (!affectedRows) {
                 const logMessage = `The account with the id ${account.id} was not updated with new balance ${newBalance} for user with id ${userId}.`;
                 throw new UnknownError("Unable to update account balance.", logMessage);

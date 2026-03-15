@@ -1,6 +1,6 @@
-import { expect, test } from "@@/test-utils/vitest";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";
 import { BASE_TIMER } from "~~/test-utils/constants/timer";
+import { expect, test } from "~~/test-utils/vitest";
 import { anyId } from "~~/test-utils/vitest/patterns";
 
 let id = "";

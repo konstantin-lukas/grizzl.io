@@ -98,14 +98,14 @@ git config --global user.name "John Doe"
 git config --global user.email "johndoe@example.com"
 ```
 
-## Tests
+## Testing
 This project is very thoroughly tested. There are roughly seven types of tests in this project:
 1. Unit tests for utilities and classes (located at tests/unit)
 2. Unit tests for composables (located at tests/nuxt/composables)
 3. Unit tests for components (located at tests/nuxt/components)
-4. Functional tests for the API (located at tests/integration/api)
-5. Functional tests for repository classes (located at tests/integration/repositories)
-6. End-to-end test to simulate user interactions (located at tests/e2e)
+4. Integration tests for the API (located at tests/api)
+5. Integration tests for things like services and repositories (located at tests/integration)
+6. End-to-end tests to simulate user interactions (located at tests/e2e)
 7. Infrastructure-level tests (located at tests/infra)
 
 ### Coverage

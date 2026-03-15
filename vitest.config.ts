@@ -31,8 +31,8 @@ export default defineConfig({
             }),
             await defineVitestProject({
                 test: {
-                    name: "repositories",
-                    include: ["tests/integration/repositories/**/*.test.ts"],
+                    name: "integration",
+                    include: ["tests/integration/**/*.test.ts"],
                     environment: "node",
                     maxWorkers: 1,
                     setupFiles: "./test-utils/vitest/setup/database.setup.ts",

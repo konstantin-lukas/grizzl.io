@@ -1,6 +1,6 @@
-import { expect, test } from "@@/test-utils/vitest";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 import { BASE_ACCOUNT } from "~~/test-utils/constants/finance";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("creates an account and returns the id of the created account", async ({ db, user }) => {
     const accountRepository = new AccountRepository(db.client);

@@ -1,5 +1,5 @@
-import { expect, test } from "@@/test-utils/vitest";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
+import { expect, test } from "~~/test-utils/vitest";
 import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the accounts belonging to the requested user", async ({ db, user }) => {

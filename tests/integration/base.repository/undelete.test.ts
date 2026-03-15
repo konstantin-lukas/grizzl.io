@@ -1,7 +1,7 @@
-import { expect, test } from "@@/test-utils/vitest";
 import { eq } from "drizzle-orm";
 import * as schema from "~~/database/schema";
 import BaseRepository from "~~/server/core/repositories/base.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("removes the deleted status from database entries if they have a deletedAt column", async ({ db, user }) => {
     const softDeletableRepository = new BaseRepository(db.client, "timer", userId => eq(schema.timer.userId, userId));

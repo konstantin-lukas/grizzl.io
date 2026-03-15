@@ -1,8 +1,8 @@
-import { expect, test } from "@@/test-utils/vitest";
+import { Category } from "#shared/finance/enums/category.enum";
 import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
-import { Category } from "~~/shared/finance/enums/category.enum";
 import { generateFilterCombinations } from "~~/test-utils/helpers/object";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
+import { expect, test } from "~~/test-utils/vitest";
 import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the transactions belonging to the requested user", async ({ db, user }) => {
