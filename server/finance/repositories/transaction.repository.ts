@@ -1,4 +1,5 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
+import type { GetTransactionFilters } from "#shared/finance/validators/transaction.validator";
+import { and, desc, eq, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -15,7 +16,20 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         });
     }
 
-    public async findByAccountAndUserId(userId: string, accountId: string) {
+    public async findByUserAndAccountId(
+        userId: string,
+        accountId: string,
+        { from, to, reference, category }: GetTransactionFilters = {},
+    ) {
+        const filters = and(
+            to ? lte(this.schema.createdAt, to) : undefined,
+            from ? gte(this.schema.createdAt, from) : undefined,
+            reference
+                ? ilike(this.schema.reference, `%${reference.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`)
+                : undefined,
+            category ? eq(this.schema.category, category) : undefined,
+        );
+
         return this.db
             .select({
                 id: this.schema.id,
@@ -32,6 +46,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                     eq(dbSchema.financeAccount.userId, userId),
                     isNull(this.schema.deletedAt),
                     isNull(dbSchema.financeAccount.deletedAt),
+                    filters,
                 ),
             )
             .orderBy(desc(this.schema.createdAt));
