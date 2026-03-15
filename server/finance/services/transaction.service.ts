@@ -39,6 +39,7 @@ export default class TransactionService {
                 const logMessage = `The account with the id ${account.id} was not updated with new balance ${newBalance} for user with id ${userId}.`;
                 throw new UnknownError("Unable to update account balance.", logMessage);
             }
+
             return await this.transactionRepository.create(accountId, transaction, tx);
         });
     }
