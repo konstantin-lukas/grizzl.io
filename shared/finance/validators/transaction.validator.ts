@@ -15,4 +15,12 @@ export const GetTransactionFiltersSchema = z.object({
     category: z.enum(Category).optional(),
 });
 
+export const PostTransactionSchema = z.object({
+    amount: z.int(),
+    reference: z.string().min(TITLE_MIN).max(TITLE_MAX).nullable(),
+    category: z.enum(Category),
+});
+
+export const PutTransactionSchema = PostTransactionSchema;
+
 export type GetTransactionFilters = z.infer<typeof GetTransactionFiltersSchema>;
