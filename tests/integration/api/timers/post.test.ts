@@ -1,7 +1,10 @@
 import { BASE_INTERVAL, BASE_TIMER } from "~~/test-utils/constants/timer";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
-import { TIMER_BAD_REQUEST_TEST_CASES } from "~~/test-utils/playwright/utils/helpers/timer";
+import {
+    TIMER_BAD_REQUEST_TEST_CASES,
+    TIMER_VALID_REQUEST_TEST_CASES,
+} from "~~/test-utils/playwright/utils/helpers/timer";
 
 const route = "/api/timers";
 
@@ -14,14 +17,17 @@ for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
     });
 }
 
-test("allows creating new resources with valid values", async ({ request, db }) => {
-    const response = await request.post(route, { data: BASE_TIMER });
-    const data = response.headers().location;
-    expect(response.status()).toBe(201);
-    const dbData = await db.timer.select();
-    expect(dbData).toHaveLength(1);
-    expect(data).toBe(`${route}/${dbData[0]!.id}`);
-});
+for (const [name, data] of TIMER_VALID_REQUEST_TEST_CASES) {
+    test(`allows creating resources when ${name}`, async ({ request, db }) => {
+        const response = await request.post(route, { data });
+        const responseData = response.headers().location;
+        expect(response.status()).toBe(201);
+        const { id, createdAt, deletedAt, userId, ...rest } = (await db.timer.select())[0]!;
+        const intervals = (await db.timerInterval.select()).map(({ id, timerId, index, ...interval }) => interval);
+        expect({ ...rest, intervals }).toStrictEqual(data);
+        expect(responseData).toBe(`${route}/${id}`);
+    });
+}
 
 test("ignores any provided id for determining ownership", async ({ request, db }) => {
     await request.post(route, { data: { ...BASE_TIMER, userId: "2222222222222222" } });

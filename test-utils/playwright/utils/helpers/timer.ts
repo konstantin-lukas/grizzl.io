@@ -1,7 +1,6 @@
-import { arr, str, strArr } from "@@/test-utils/helpers/data";
+import { arr, str } from "@@/test-utils/helpers/data";
 import { omit } from "@@/test-utils/helpers/object";
 import { BASE_INTERVAL, BASE_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
-import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
@@ -26,13 +25,13 @@ function createInvalidTypeIntervalTestCases(
     });
 }
 
-const topLevelCases = [
+const BAD_TOP_LEVEL_CASES = [
     ["the title is empty", withTimer("title", "")],
     ["the title is too long", withTimer("title", str({ length: 101 }))],
     ["the ttsVoices contain a value that is too long", withTimer("ttsVoices", [HASH_40_CHARS + str({ length: 461 })])],
     ["the ttsVoices contain a value that has an invalid hash", withTimer("ttsVoices", [str({ length: 41 })])],
-    ["the ttsVoices contain a value that contains no voice", withTimer("ttsVoices", [HASH_40_CHARS.slice(0, 40)])],
-    ["the ttsVoices array is too long", withTimer("ttsVoices", strArr({ arrLength: 101 }))],
+    ["the ttsVoices contain a value that contains no voice", withTimer("ttsVoices", [HASH_40_CHARS])],
+    ["the ttsVoices array is too long", withTimer("ttsVoices", arr(BASE_TIMER.ttsVoices[0], { length: 101 }))],
     ["the title is missing", omit(BASE_TIMER, "title")],
     ["the ttsVoices are missing", omit(BASE_TIMER, "ttsVoices")],
     ["the intervals is missing", omit(BASE_TIMER, "intervals")],
@@ -40,13 +39,14 @@ const topLevelCases = [
     ["there are too many intervals", withTimer("intervals", Array.from({ length: 101 }).fill(BASE_INTERVAL))],
 ];
 
-const intervalLevelCases = [
+const BAD_INTERVAL_LEVEL_CASES = [
     ["an interval has no duration", { ...BASE_TIMER, intervals: omit(BASE_INTERVAL, "duration") }],
     ["an interval has no repeatCount", { ...BASE_TIMER, intervals: omit(BASE_INTERVAL, "repeatCount") }],
     ["an interval title is too long", withInterval("title", str({ length: 101 }))],
     ["an interval repeatCount is too small", withInterval("repeatCount", 0)],
     ["an interval repeatCount is too large", withInterval("repeatCount", 101)],
-    ["an interval duration is too small", withInterval("duration", 0)],
+    ["an interval duration is too small", withInterval("duration", 999)],
+    ["an interval duration is negative", withInterval("duration", -1)],
     ["an interval duration is too large", withInterval("duration", 3600001)],
     ["an interval preparationTime is too small", withInterval("preparationTime", -1)],
     ["an interval preparationTime is too large", withInterval("preparationTime", 3600001)],
@@ -56,7 +56,7 @@ const intervalLevelCases = [
     ["an interval has a beatPattern that contains invalid values", withInterval("beatPattern", ["bananas"])],
 ];
 
-const invalidTypeCases = [
+const TIMER_INVALID_TYPE_CASES = [
     ...createInvalidTypeTestCases(BASE_TIMER, "title", { valid: ["string"] }),
     ...createInvalidTypeTestCases(BASE_TIMER, "ttsVoices", { valid: ["array"] }),
     ...createInvalidTypeTestCases(BASE_TIMER, "intervals", { valid: ["null"] }),
@@ -66,26 +66,34 @@ const invalidTypeCases = [
     ...createInvalidTypeIntervalTestCases("repeatCount", ["int"]),
 ];
 
-export const TIMER_BAD_REQUEST_TEST_CASES = [...topLevelCases, ...intervalLevelCases, ...invalidTypeCases];
+export const TIMER_BAD_REQUEST_TEST_CASES = [
+    ...BAD_TOP_LEVEL_CASES,
+    ...BAD_INTERVAL_LEVEL_CASES,
+    ...TIMER_INVALID_TYPE_CASES,
+];
 
-export async function buildTimers(db: DBFixtures) {
-    return Promise.all(
-        (await db.timer.insert(1)).map(async timer => ({
-            id: timer.id,
-            title: timer.title,
-            createdAt: timer.createdAt,
-            ttsVoices: timer.ttsVoices,
-            intervals: await (async () => {
-                const intervals = await db.timerInterval.insert(2, { timerId: timer.id });
-                return intervals.map(({ title, duration, preparationTime, beatPattern, id, repeatCount }) => ({
-                    title,
-                    duration,
-                    preparationTime,
-                    beatPattern,
-                    id,
-                    repeatCount,
-                }));
-            })(),
-        })),
-    );
-}
+export const VALID_TIMER_LEVEL_CASES = [
+    ["the title is just long enough", withTimer("title", "a")],
+    ["the title is just short enough", withTimer("title", str({ length: 100 }))],
+    ["the ttsVoices are just short enough", withTimer("ttsVoices", [HASH_40_CHARS + str({ length: 460 })])],
+    ["the ttsVoices are just long enough", withTimer("ttsVoices", [`${HASH_40_CHARS}a`])],
+    ["the ttsVoices array is just short enough", withTimer("ttsVoices", arr(BASE_TIMER.ttsVoices[0], { length: 100 }))],
+    ["the ttsVoices array is empty", withTimer("ttsVoices", [])],
+    ["there are not too many intervals", withTimer("intervals", Array.from({ length: 100 }).fill(BASE_INTERVAL))],
+];
+
+export const VALID_INTERVAL_LEVEL_CASES = [
+    ["the interval titles are just long enough", withInterval("title", "a")],
+    ["the interval titles are just short enough", withInterval("title", str({ length: 100 }))],
+    ["the interval durations are just large enough", withInterval("duration", 1000)],
+    ["the interval durations are just small enough", withInterval("duration", 3600000)],
+    ["an interval repeatCount is just large enough", withInterval("repeatCount", 1)],
+    ["an interval repeatCount is just small enough", withInterval("repeatCount", 100)],
+    ["an interval preparationTime is zero", withInterval("preparationTime", 0)],
+    ["an interval preparationTime is positive", withInterval("preparationTime", 1000)],
+    ["an interval preparationTime is just small enough", withInterval("preparationTime", 3600000)],
+    ["an interval has a beatPattern that's just long enough", withInterval("beatPattern", ["low", "low"])],
+    ["an interval has a beatPattern that's just short enough", withInterval("beatPattern", arr("low", { length: 30 }))],
+];
+
+export const TIMER_VALID_REQUEST_TEST_CASES = [...VALID_TIMER_LEVEL_CASES, ...VALID_INTERVAL_LEVEL_CASES];

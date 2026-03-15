@@ -31,10 +31,26 @@ export const ACCOUNT_BAD_TITLE_TEST_CASES = [
     ["the title is missing", omit(BASE_ACCOUNT, "title")],
 ];
 
+export const ACCOUNT_VALID_TITLE_TEST_CASES = [
+    ["the title is just long enough", withAccount("title", "a")],
+    ["the title is just short enough", withAccount("title", str({ length: 100 }))],
+] as const;
+
+const ACCOUNT_VALID_CURRENCY_TEST_CASES = [
+    ["the currency is USD", withAccount("currency", "USD")],
+    ["the currency is EUR", withAccount("currency", "EUR")],
+    ["the currency is JPY", withAccount("currency", "JPY")],
+] as const;
+
 export const ACCOUNT_BAD_REQUEST_TEST_CASES = [
     ...ACCOUNT_BAD_TITLE_TEST_CASES,
     ...ACCOUNT_INVALID_TYPE_TEST_CASES,
     ...ACCOUNT_BAD_CURRENCY_TEST_CASES,
+];
+
+export const ACCOUNT_VALID_REQUEST_TEST_CASES = [
+    ...ACCOUNT_VALID_TITLE_TEST_CASES,
+    ...ACCOUNT_VALID_CURRENCY_TEST_CASES,
 ];
 
 const TRANSACTION_INVALID_TYPE_TEST_CASES = [

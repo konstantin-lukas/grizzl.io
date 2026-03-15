@@ -32,8 +32,8 @@ export const PostTimerSchema = z.object({
         .array(
             z
                 .string()
-                .regex(/^[0-9a-fA-F]{40}.+/)
-                .min(SHA_1_CHAR_COUNT)
+                .regex(/^[0-9a-fA-F]{40}/)
+                .min(SHA_1_CHAR_COUNT + 1)
                 .max(LONG_STRING),
         )
         .max(LIST_MAX),

@@ -1,7 +1,10 @@
 import { BASE_INTERVAL, BASE_TIMER, FULL_INTERVAL, FULL_TIMER } from "~~/test-utils/constants/timer";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut, testIdParameter } from "~~/test-utils/playwright/utils/helpers";
-import { TIMER_BAD_REQUEST_TEST_CASES } from "~~/test-utils/playwright/utils/helpers/timer";
+import {
+    TIMER_BAD_REQUEST_TEST_CASES,
+    TIMER_VALID_REQUEST_TEST_CASES,
+} from "~~/test-utils/playwright/utils/helpers/timer";
 
 const route = "/api/timers";
 
@@ -14,6 +17,17 @@ for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
         const [insertedData] = await db.timer.select();
         const response = await request.put(`${route}/${insertedData!.id}`, { data });
         expect(response.status()).toBe(400);
+    });
+}
+
+for (const [name, data] of TIMER_VALID_REQUEST_TEST_CASES) {
+    test(`allows updating resources when ${name}`, async ({ request, db }) => {
+        const [insertedData] = await db.timer.insert(1);
+        const response = await request.put(`${route}/${insertedData.id}`, { data });
+        expect(response.status()).toBe(204);
+        const { id, userId, createdAt, deletedAt, ...timer } = (await db.timer.select())[0]!;
+        const intervals = (await db.timerInterval.select()).map(({ id, index, timerId, ...rest }) => rest);
+        expect({ ...timer, intervals }).toStrictEqual(data);
     });
 }
 
