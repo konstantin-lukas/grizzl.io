@@ -68,7 +68,7 @@ const TRANSACTION_INVALID_DATA_TEST_CASES = [
     ["the reference is too long", withTransaction("amount", str({ length: 101 }))],
     ["the category is not a valid enum value", withTransaction("category", "pineapples")],
     ["the category is missing", omit(BASE_TRANSACTION, "category")],
-];
+] as const;
 
 export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is just small enough", withTransaction("amount", Number.MAX_SAFE_INTEGER)],
@@ -76,15 +76,15 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is zero", withTransaction("amount", 0)],
     ["the amount is positive", withTransaction("amount", 1)],
     ["the amount is negative", withTransaction("amount", -1)],
-    ["the reference is just long enough", withTransaction("amount", "a")],
-    ["the reference is just short enough", withTransaction("amount", str({ length: 100 }))],
+    ["the reference is just long enough", withTransaction("reference", "a")],
+    ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
     ["the category is a valid enum value", withTransaction("category", Category.PETS)],
 ] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ...TRANSACTION_INVALID_TYPE_TEST_CASES,
     ...TRANSACTION_INVALID_DATA_TEST_CASES,
-];
+] as const;
 
 export async function buildTransactions(db: DBFixtures, options: object) {
     const accounts = await db.financeAccount.insert(1, options);

@@ -49,14 +49,16 @@ test("updates the account balance automatically", async ({ request, db }) => {
 
 test("rejects creating a transaction if the resulting account balance is too large", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1, { balance: Number.MAX_SAFE_INTEGER });
-    await request.post(route(account.id), { data: BASE_TRANSACTION });
-    expect(response.status()).toBe(400);
+    const response = await request.post(route(account.id), { data: BASE_TRANSACTION });
+    expect(response.status()).toBe(409);
 });
 
 test("rejects creating a transaction if the resulting account balance is too small", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1, { balance: Number.MIN_SAFE_INTEGER });
-    await request.post(route(account.id), { data: { ...BASE_TRANSACTION, amount: -BASE_TRANSACTION.amount } });
-    expect(response.status()).toBe(400);
+    const response = await request.post(route(account.id), {
+        data: { ...BASE_TRANSACTION, amount: -BASE_TRANSACTION.amount },
+    });
+    expect(response.status()).toBe(409);
 });
 
 test("rejects creating a transaction on another user's account", async ({ request, db }) => {
@@ -64,7 +66,7 @@ test("rejects creating a transaction on another user's account", async ({ reques
     const [account] = await db.financeAccount.insert(1, { userId: user!.id });
 
     const response = await request.post(route(account.id), { data: BASE_TRANSACTION });
-    expect(response.status()).toBe(403);
+    expect(response.status()).toBe(404);
 });
 
 test("rejects creating a transaction on a non-existent account", async ({ request }) => {

@@ -6,7 +6,9 @@ import type { H3Event } from "h3";
 import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
 import DomainError from "~~/server/core/errors/domain.error";
+import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
+import UnknownError from "~~/server/core/errors/unknown.error";
 import { LoggerService } from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 
@@ -193,6 +195,8 @@ export default class BaseController {
     static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
         // SPECIFIC DOMAIN ERROR
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
+        if (error instanceof UnknownError) BaseController.throwError(error, "INTERNAL_SERVER_ERROR");
+        if (error instanceof InvalidAccountBalanceError) BaseController.throwError(error, "CONFLICT");
 
         // REQUEST ERROR
         if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");
