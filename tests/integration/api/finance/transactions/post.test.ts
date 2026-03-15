@@ -1,4 +1,5 @@
 import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 import {
@@ -13,7 +14,9 @@ test401WhenLoggedOut("post", route("2222222222222222"));
 for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
-        const response = await request.post(route(account.id), { data });
+        const response = await request.post(route(account.id), {
+            data: JSONWithBigInt(data),
+        });
         expect(response.status()).toBe(400);
     });
 }
@@ -30,7 +33,7 @@ for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
     });
 }
 
-test("updates the account balance implicitly", async ({ request, db }) => {
+test("updates the account balance automatically", async ({ request, db }) => {
     let [account] = await db.financeAccount.insert(1);
 
     await request.post(route(account.id), { data: BASE_TRANSACTION });
