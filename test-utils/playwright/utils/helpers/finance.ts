@@ -1,3 +1,4 @@
+import { Category } from "~~/shared/finance/enums/category.enum";
 import { BASE_ACCOUNT, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { str } from "~~/test-utils/helpers/data";
@@ -68,6 +69,17 @@ const TRANSACTION_INVALID_DATA_TEST_CASES = [
     ["the category is not a valid enum value", withTransaction("category", "pineapples")],
     ["the category is missing", omit(BASE_TRANSACTION, "category")],
 ];
+
+export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
+    ["the amount is just small enough", withTransaction("amount", Number.MAX_SAFE_INTEGER)],
+    ["the amount is just large enough", withTransaction("amount", Number.MIN_SAFE_INTEGER)],
+    ["the amount is zero", withTransaction("amount", 0)],
+    ["the amount is positive", withTransaction("amount", 1)],
+    ["the amount is negative", withTransaction("amount", -1)],
+    ["the reference is just long enough", withTransaction("amount", "a")],
+    ["the reference is just short enough", withTransaction("amount", str({ length: 100 }))],
+    ["the category is a valid enum value", withTransaction("category", Category.PETS)],
+] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ...TRANSACTION_INVALID_TYPE_TEST_CASES,

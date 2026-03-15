@@ -1,7 +1,8 @@
-import type { GetTransactionFilters } from "#shared/finance/validators/transaction.validator";
+import type { GetTransactionFilters, PostTransaction } from "#shared/finance/validators/transaction.validator";
 import { and, desc, eq, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
+import type { DatabaseTransaction } from "~~/server/core/repositories/base.repository";
 import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "financeTransaction";
@@ -14,6 +15,16 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 eq(dbSchema.financeAccount.userId, userId),
             )!;
         });
+    }
+
+    public async create(accountId: string, { amount, reference, category }: PostTransaction, tx?: DatabaseTransaction) {
+        const executor = tx ?? this.db;
+        const [transaction] = await executor
+            .insert(this.schema)
+            .values({ accountId, amount, reference, category })
+            .returning({ id: this.schema.id });
+
+        return transaction!.id;
     }
 
     public async findByUserAndAccountId(

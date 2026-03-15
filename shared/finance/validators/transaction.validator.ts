@@ -24,3 +24,5 @@ export const PostTransactionSchema = z.object({
 export const PutTransactionSchema = PostTransactionSchema;
 
 export type GetTransactionFilters = z.infer<typeof GetTransactionFiltersSchema>;
+export type PostTransaction = z.infer<typeof PostTransactionSchema>;
+export type PutTransaction = z.infer<typeof PutTransactionSchema>;

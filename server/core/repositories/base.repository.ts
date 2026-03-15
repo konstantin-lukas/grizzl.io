@@ -5,6 +5,7 @@ import * as schema from "~~/database/schema";
 
 type Schema = "timer" | "financeAccount" | "financeTransaction" | "financeAutoTransaction";
 type OwnershipResolver = (userId: string) => SQL<unknown>;
+export type DatabaseTransaction = Parameters<Parameters<ReturnType<typeof drizzle>["transaction"]>[0]>[0];
 
 export default class BaseRepository<T extends Schema> {
     protected readonly db;
@@ -19,6 +20,10 @@ export default class BaseRepository<T extends Schema> {
         this.schema = schema[tableName];
         this.isSoftDeletable = Object.keys(this.schema).includes("deletedAt");
         this.ownershipResolver = ownershipResolver;
+    }
+
+    public transaction<T>(callback: (tx: DatabaseTransaction) => Promise<T>) {
+        return this.db.transaction(tx => callback(tx));
     }
 
     /**
