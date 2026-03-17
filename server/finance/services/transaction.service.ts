@@ -13,6 +13,15 @@ export default class TransactionService {
         private readonly accountRepository: AccountRepository,
     ) {}
 
+    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+        const operation = isDeleted ? "delete" : "undelete";
+        const rowCount = await this.transactionRepository[operation]({ id, userId });
+        if (rowCount === 0) {
+            const logMessage = `Unable to ${operation} account with id ${id} and user id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+    }
+
     /* c8 ignore start */
     public async getList(userId: string, accountId: string, filters?: GetTransactionFilters) {
         return this.transactionRepository.findByUserAndAccountId(userId, accountId, filters);

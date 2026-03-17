@@ -1,3 +1,4 @@
+import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import { GetTransactionFiltersSchema, PostTransactionSchema } from "#shared/finance/validators/transaction.validator";
 import type { H3Event } from "h3";
 import { z } from "zod";
@@ -10,6 +11,12 @@ export default class TransactionController extends BaseController {
 
     constructor(private readonly transactionService: TransactionService) {
         super();
+    }
+
+    public async setDeletedStatus(event: H3Event) {
+        const id = TransactionController.parseIdParameter(event);
+        const body = await TransactionController.parseRequestBody(event, DatabaseDeletedSchema);
+        await this.transactionService.setDeletedStatus(id, event.context.user.id, body.deleted);
     }
 
     public async getList(event: H3Event) {

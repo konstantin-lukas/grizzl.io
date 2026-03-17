@@ -1,5 +1,5 @@
 import type { GetTransactionFilters, PostTransaction } from "#shared/finance/validators/transaction.validator";
-import { and, desc, eq, gte, ilike, isNull, lte } from "drizzle-orm";
+import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import type { DatabaseTransaction } from "~~/server/core/repositories/base.repository";
@@ -10,10 +10,17 @@ const schema = "financeTransaction";
 export default class TransactionRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, schema, userId => {
-            return and(
-                eq(this.schema.accountId, dbSchema.financeAccount.id),
-                eq(dbSchema.financeAccount.userId, userId),
-            )!;
+            return exists(
+                db
+                    .select()
+                    .from(dbSchema.financeAccount)
+                    .where(
+                        and(
+                            eq(dbSchema.financeAccount.id, this.schema.accountId),
+                            eq(dbSchema.financeAccount.userId, userId),
+                        ),
+                    ),
+            );
         });
     }
 

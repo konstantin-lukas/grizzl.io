@@ -14,7 +14,7 @@ test("only allows a user to edit their own resources", async ({ request, db }) =
     const response = await request.patch(`${route}/${data.id}`, { data: { deleted: true } });
     expect(response.status()).toBe(404);
     const [patchedData] = await db.financeAccount.select(data.id);
-    expect(patchedData!.id).toBe(data.id);
+    expect(patchedData).toStrictEqual(data);
 });
 
 test("only allows patching the deleted property", async ({ request, db }) => {

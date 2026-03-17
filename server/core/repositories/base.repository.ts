@@ -27,7 +27,7 @@ export default class BaseRepository<T extends Schema> {
     }
 
     /**
-     * @returns null if operation was not successful and number of changed rows otherwise.
+     * @returns null if operation was not successful or number of changed rows otherwise.
      */
     public async delete(options: { id: string; userId: string }) {
         const { id, userId } = options;
@@ -50,7 +50,7 @@ export default class BaseRepository<T extends Schema> {
     }
 
     /**
-     * @returns undefined if entity is not soft deletable, null if operation was not successful and number of changed
+     * @returns undefined if entity is not soft deletable, null if operation was not successful or number of changed
      * rows otherwise.
      */
     public async undelete(options: { id: string; userId: string }) {
@@ -75,7 +75,7 @@ export default class BaseRepository<T extends Schema> {
     /**
      * Permanently deletes all entities that were marked as soft deleted at least one week ago.
      * @param options.maxAge The maximum amount of milliseconds a record may be marked as soft-deleted before it is hard-deleted.
-     * @returns undefined if entity is not soft deletable, null if operation was not successful and number of changed
+     * @returns undefined if entity is not soft deletable, null if operation was not successful or number of changed
      * rows otherwise.
      */
     public async purge(options: { maxAge: number }) {
