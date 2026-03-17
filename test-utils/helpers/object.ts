@@ -23,7 +23,7 @@ export function omit<T extends Record<string, unknown>>(obj: T, path: Path<T>): 
 export function generateFilterCombinations<T>(filters: T[]) {
     const result: Partial<T>[] = [];
 
-    const combine = (index: number, current: Filter) => {
+    const combine = (index: number, current: object) => {
         if (index === filters.length) {
             if (Object.keys(current).length > 0) {
                 result.push(current);
