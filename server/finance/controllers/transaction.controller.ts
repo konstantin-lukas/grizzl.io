@@ -1,5 +1,9 @@
 import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
-import { GetTransactionFiltersSchema, PostTransactionSchema } from "#shared/finance/validators/transaction.validator";
+import {
+    GetTransactionFiltersSchema,
+    PostTransactionSchema,
+    PutTransactionSchema,
+} from "#shared/finance/validators/transaction.validator";
 import type { H3Event } from "h3";
 import { z } from "zod";
 import BaseController from "~~/server/core/controllers/base.controller";
@@ -23,6 +27,13 @@ export default class TransactionController extends BaseController {
         const accountId = BaseController.parseIdParameter(event, "accountId");
         const filters = z.parse(GetTransactionFiltersSchema, getQuery(event));
         return this.transactionService.getList(event.context.user.id, accountId, filters);
+    }
+
+    public async update(event: H3Event) {
+        const id = TransactionController.parseIdParameter(event);
+        const accountId = TransactionController.parseIdParameter(event, "accountId");
+        const body = await TransactionController.parseRequestBody(event, PutTransactionSchema);
+        await this.transactionService.update(id, event.context.user.id, accountId, body);
     }
 
     public async create(event: H3Event) {

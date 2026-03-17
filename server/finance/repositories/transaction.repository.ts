@@ -1,4 +1,8 @@
-import type { GetTransactionFilters, PostTransaction } from "#shared/finance/validators/transaction.validator";
+import type {
+    GetTransactionFilters,
+    PostTransaction,
+    PutTransaction,
+} from "#shared/finance/validators/transaction.validator";
 import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
@@ -32,6 +36,51 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
             .returning({ id: this.schema.id });
 
         return transaction!.id;
+    }
+
+    public async update(
+        id: string,
+        userId: string,
+        { amount, reference, category }: PutTransaction,
+        tx?: DatabaseTransaction,
+    ) {
+        const executor = tx ?? this.db;
+        return executor
+            .update(this.schema)
+            .set({ amount, reference, category })
+            .from(dbSchema.financeAccount)
+            .where(
+                and(
+                    eq(this.schema.id, id),
+                    this.ownershipResolver(userId),
+                    isNull(this.schema.deletedAt),
+                    isNull(dbSchema.financeAccount.deletedAt),
+                ),
+            );
+    }
+
+    public async getAmountByIdAndUserAndAccount(
+        id: string,
+        userId: string,
+        accountId: string,
+        tx?: DatabaseTransaction,
+    ) {
+        const executor = tx ?? this.db;
+        const result = await executor
+            .select({ amount: this.schema.amount })
+            .from(this.schema)
+            .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
+            .where(
+                and(
+                    eq(this.schema.id, id),
+                    eq(this.schema.accountId, accountId),
+                    eq(dbSchema.financeAccount.userId, userId),
+                    isNull(this.schema.deletedAt),
+                    isNull(dbSchema.financeAccount.deletedAt),
+                ),
+            );
+
+        return result[0]?.amount;
     }
 
     public async findByUserAndAccountId(
