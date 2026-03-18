@@ -7,8 +7,7 @@
     - [ ] Components
     - [ ] Composables
   - [ ] Integration
-    - [ ] Repositories
-    - [ ] API
+  - [ ] API
   - [ ] End-to-End
   - [ ] Unit
 
