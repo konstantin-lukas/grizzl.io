@@ -54,9 +54,36 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
     return testCases;
 }
 
+export function testGetCollectionOwnership(fixtureProvider: (db: DBFixtures, userId: string) => Promise<string>) {
+    test("does not return resources of other users", async ({ request, db }) => {
+        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const route = await fixtureProvider(db, user!.id);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetEmptyCollection(route: string | ((db: DBFixtures) => Promise<string>)) {
+    test("returns an empty array when there are no resources", async ({ request, db }) => {
+        const response = await request.get(typeof route === "string" ? route : await route(db));
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) => Promise<string>) {
+    test("does not return soft-deleted resources", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
 type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "timer";
 
-export function testSoftDeletableTrait({
+export function testPatchSoftDeletableTrait({
     fixtureProvider,
     fixtureName,
     fullData,
