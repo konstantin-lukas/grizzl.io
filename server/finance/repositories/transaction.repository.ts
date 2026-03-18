@@ -22,6 +22,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                         and(
                             eq(dbSchema.financeAccount.id, this.schema.accountId),
                             eq(dbSchema.financeAccount.userId, userId),
+                            isNull(dbSchema.financeAccount.deletedAt),
                         ),
                     ),
             );

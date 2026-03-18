@@ -77,3 +77,13 @@ test("returns a 204 even when the resource hasn't changed", async ({ request, db
     const [dataAfter] = await getResponseAfter.json();
     expect(dataBefore).toStrictEqual(dataAfter);
 });
+
+test("return a 404 when trying to delete a transaction on a deleted account", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1, { deletedAt: new Date() });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id });
+
+    const response = await request.patch(`${route(account.id)}/${transaction.id}`, {
+        data: { ...FULL_TRANSACTION, deleted: true },
+    });
+    expect(response.status()).toBe(404);
+});
