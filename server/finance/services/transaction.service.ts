@@ -61,6 +61,7 @@ export default class TransactionService {
         return this.transactionRepository.transaction(async tx => {
             const accounts = await this.accountRepository.findByUserId(userId, tx);
             const account = accounts.find(account => account.id === accountId);
+
             if (!account) {
                 const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId}.`;
                 throw new NotFoundError("The requested account does not exist.", logMessage);
@@ -91,7 +92,12 @@ export default class TransactionService {
                 throw new UnknownError("Unable to update account balance.", logMessage);
             }
 
-            return this.transactionRepository.update(id, userId, transaction, tx);
+            const rowCount = await this.transactionRepository.update(id, userId, transaction, tx);
+
+            if (!rowCount) {
+                const logMessage = `Unable to update transaction with id ${id} and user id ${userId}. Given data: ${JSON.stringify(transaction)}.`;
+                throw new UnknownError("Unable to update transaction.", logMessage);
+            }
         });
     }
 }

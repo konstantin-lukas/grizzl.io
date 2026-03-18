@@ -45,7 +45,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         tx?: DatabaseTransaction,
     ) {
         const executor = tx ?? this.db;
-        return executor
+        const { rowCount } = await executor
             .update(this.schema)
             .set({ amount, reference, category })
             .from(dbSchema.financeAccount)
@@ -57,6 +57,8 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                     isNull(dbSchema.financeAccount.deletedAt),
                 ),
             );
+
+        return rowCount;
     }
 
     public async getAmountByIdAndUserAndAccount(

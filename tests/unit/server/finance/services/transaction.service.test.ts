@@ -13,8 +13,10 @@ const accountRepositoryMock = {
 const transactionRepositoryMock = {
     findByUserId: vi.fn(),
     create: vi.fn(),
+    update: vi.fn(),
     delete: vi.fn(),
     undelete: vi.fn(),
+    getAmountByIdAndUserAndAccount: vi.fn(),
     transaction: (fn: () => Promise<unknown>) => fn(),
 };
 
@@ -24,6 +26,8 @@ beforeEach(() => {
 
 const transactionService = new TransactionService(transactionRepositoryMock as never, accountRepositoryMock as never);
 const id = "9j3q9ohodjj3aa";
+const userId = "awdk9t3j8sojfo";
+const accountId = "12349ohodjj3aa";
 
 describe("create", () => {
     test("throws a NotFoundError if no accounts exist for a given user", async () => {
@@ -50,8 +54,6 @@ describe("create", () => {
     });
 });
 
-const userId = "awdk9t3j8sojfo";
-
 describe("setDeletedStatus", () => {
     test("calls the transaction repository's delete method when deleted is true", async () => {
         await transactionService.setDeletedStatus(id, userId, true);
@@ -69,5 +71,57 @@ describe("setDeletedStatus", () => {
         transactionRepositoryMock.delete.mockReturnValueOnce(0);
 
         await expect(transactionService.setDeletedStatus(id, userId, true)).rejects.toBeInstanceOf(NotFoundError);
+    });
+});
+
+describe("update", () => {
+    test("does not throw if everything is in order", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
+        accountRepositoryMock.updateBalance.mockReturnValueOnce(1);
+        transactionRepositoryMock.update.mockReturnValueOnce(1);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).resolves.not.toThrow();
+    });
+
+    test("throws an UnknownError if the update of the transaction fails", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
+        accountRepositoryMock.updateBalance.mockReturnValueOnce(1);
+        transactionRepositoryMock.update.mockReturnValueOnce(0);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            UnknownError,
+        );
+    });
+
+    test("throws an UnknownError if the update of the account balance fails", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
+        accountRepositoryMock.updateBalance.mockReturnValueOnce(0);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            UnknownError,
+        );
+    });
+
+    test("throws an InvalidAccountBalanceError if the resulting balance is invalid", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: Number.MAX_SAFE_INTEGER, id: accountId }]);
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(0);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            InvalidAccountBalanceError,
+        );
+    });
+
+    test("throws a NotFoundError if the transaction can't be found", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(undefined);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
+    });
+
+    test("throws a NotFoundError if the account can't be found", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
     });
 });
