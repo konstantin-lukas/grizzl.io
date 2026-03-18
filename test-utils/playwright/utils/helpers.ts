@@ -82,6 +82,16 @@ export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) =
 }
 
 type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "timer";
+type OwnableFixture = "financeAccount" | "timer";
+
+export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture, baseData: object) {
+    test("ignores any provided id for determining ownership", async ({ request, db }) => {
+        await request.post(route, { data: { ...baseData, userId: "2222222222222222" } });
+        const data = await db[fixtureName].select();
+        const user = await db.user.selectByEmail("user@test.com");
+        expect(data[0]!.userId).toBe(user!.id);
+    });
+}
 
 export function testPatchSoftDeletableTrait({
     fixtureProvider,

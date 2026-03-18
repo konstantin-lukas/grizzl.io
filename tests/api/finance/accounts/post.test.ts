@@ -1,6 +1,6 @@
 import { BASE_ACCOUNT } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
+import { test401WhenLoggedOut, testPostIgnoresUserId } from "~~/test-utils/playwright/utils/helpers";
 import {
     ACCOUNT_BAD_REQUEST_TEST_CASES,
     ACCOUNT_VALID_REQUEST_TEST_CASES,
@@ -9,6 +9,7 @@ import {
 const route = "/api/finance/accounts";
 
 test401WhenLoggedOut("post", route);
+testPostIgnoresUserId(route, "financeAccount", BASE_ACCOUNT);
 
 for (const [name, data] of ACCOUNT_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request }) => {
@@ -27,19 +28,3 @@ for (const [name, data] of ACCOUNT_VALID_REQUEST_TEST_CASES) {
         expect(responseData).toBe(`${route}/${id}`);
     });
 }
-
-test("allows creating new resources with valid values", async ({ request, db }) => {
-    const response = await request.post(route, { data: BASE_ACCOUNT });
-    const data = response.headers().location;
-    expect(response.status()).toBe(201);
-    const dbData = await db.financeAccount.select();
-    expect(dbData).toHaveLength(1);
-    expect(data).toBe(`${route}/${dbData[0]!.id}`);
-});
-
-test("ignores any provided id for determining ownership", async ({ request, db }) => {
-    await request.post(route, { data: { ...BASE_ACCOUNT, userId: "2222222222222222" } });
-    const data = await db.financeAccount.select();
-    const user = await db.user.selectByEmail("user@test.com");
-    expect(data[0]!.userId).toBe(user!.id);
-});
