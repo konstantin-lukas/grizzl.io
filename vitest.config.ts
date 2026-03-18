@@ -19,7 +19,7 @@ export default defineConfig({
         },
         // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604
         onConsoleLog: log => {
-            return !log.startsWith("<Suspense>") && !log.includes("middleware");
+            return !log.startsWith("<Suspense>") && !log.includes("middleware") && !log.includes("TypeError");
         },
         projects: [
             await defineVitestProject({
@@ -31,8 +31,8 @@ export default defineConfig({
             }),
             await defineVitestProject({
                 test: {
-                    name: "repositories",
-                    include: ["tests/integration/repositories/**/*.test.ts"],
+                    name: "integration",
+                    include: ["tests/integration/**/*.test.ts"],
                     environment: "node",
                     maxWorkers: 1,
                     setupFiles: "./test-utils/vitest/setup/database.setup.ts",

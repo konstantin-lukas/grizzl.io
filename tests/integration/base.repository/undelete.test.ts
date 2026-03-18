@@ -1,0 +1,35 @@
+import { eq } from "drizzle-orm";
+import * as schema from "~~/database/schema";
+import BaseRepository from "~~/server/core/repositories/base.repository";
+import { expect, test } from "~~/test-utils/vitest";
+
+test("removes the deleted status from database entries if they have a deletedAt column", async ({ db, user }) => {
+    const softDeletableRepository = new BaseRepository(db.client, "timer", userId => eq(schema.timer.userId, userId));
+
+    const [timer] = await db.timer.insert(5, { userId: user.id, deletedAt: new Date() });
+    await db.timerInterval.insert(2, { timerId: timer.id });
+
+    await softDeletableRepository.undelete({ id: timer.id, userId: user.id });
+
+    const timersAfterUndelete = await db.timer.select();
+    const { notDeleted, deleted } = Object.groupBy(timersAfterUndelete, ({ deletedAt }) => {
+        if (deletedAt) return "deleted";
+        return "notDeleted";
+    });
+
+    expect(deleted).toHaveLength(4);
+    expect(notDeleted![0]).toHaveProperty("id", timer.id);
+    expect(notDeleted![0]).toHaveProperty("deletedAt", null);
+});
+
+test("does nothing on an undeletable entity", async ({ db, user }) => {
+    const deletableRepository = new BaseRepository(db.client, "account" as "timer", userId =>
+        eq(schema.account.userId, userId),
+    );
+
+    const [account] = await db.account.insert(1, { userId: user.id });
+    await deletableRepository.delete({ id: account.id, userId: user.id });
+    await deletableRepository.undelete({ id: account.id, userId: user.id });
+
+    expect(await db.account.select()).toHaveLength(0);
+});

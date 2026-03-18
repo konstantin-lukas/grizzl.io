@@ -1,7 +1,7 @@
 import { Category } from "#shared/finance/enums/category.enum";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import type { drizzle } from "drizzle-orm/node-postgres";
-import { int, str } from "~~/test-utils/helpers/data";
+import { date, int, str } from "~~/test-utils/helpers/data";
 
 export default class FinanceTransactionFixture extends BaseFixture<"financeTransaction"> {
     public readonly categories = Object.values(Category);
@@ -10,6 +10,7 @@ export default class FinanceTransactionFixture extends BaseFixture<"financeTrans
         reference: str({ length: 100, seed: index + 100, spaces: false }),
         amount: int({ min: -300_00, max: 300_00, seed: index }),
         category: this.categories[int({ min: 0, max: this.categories.length - 1, seed: index })],
+        createdAt: date({ seed: index }),
     });
 
     constructor(db: ReturnType<typeof drizzle>) {

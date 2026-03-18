@@ -13,13 +13,13 @@ export default class AccountController extends BaseController {
     }
 
     public async setDeletedStatus(event: H3Event) {
-        const id = AccountController.parseIdParameter(event);
+        const id = AccountController.parseIdParameter(event, "accountId");
         const body = await AccountController.parseRequestBody(event, DatabaseDeletedSchema);
         await this.accountService.setDeletedStatus(id, event.context.user.id, body.deleted);
     }
 
     public async update(event: H3Event) {
-        const id = AccountController.parseIdParameter(event);
+        const id = AccountController.parseIdParameter(event, "accountId");
         const body = await AccountController.parseRequestBody(event, PutAccountSchema);
         await this.accountService.update(id, event.context.user.id, body);
     }

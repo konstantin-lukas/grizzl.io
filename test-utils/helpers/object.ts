@@ -19,3 +19,22 @@ export function omit<T extends Record<string, unknown>>(obj: T, path: Path<T>): 
         [key!]: omit(obj[key!] as Record<string, unknown>, rest.join(".")),
     };
 }
+
+export function generateFilterCombinations<T>(filters: T[]) {
+    const result: Partial<T>[] = [];
+
+    const combine = (index: number, current: object) => {
+        if (index === filters.length) {
+            if (Object.keys(current).length > 0) {
+                result.push(current);
+            }
+            return;
+        }
+
+        combine(index + 1, { ...current, ...filters[index] });
+        combine(index + 1, current);
+    };
+
+    combine(0, {});
+    return result;
+}

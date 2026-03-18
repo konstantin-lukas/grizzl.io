@@ -8,7 +8,6 @@ node_modules
 *.log
 .DS_Store
 .fleet
-.idea
 .env.*
 !.env.example
 test-utils/playwright/storage.json
@@ -17,3 +16,4 @@ backups
 coverage
 playwright-report
 app/assets/sound/*.Identifier
+.idea/**/*.local.xml
