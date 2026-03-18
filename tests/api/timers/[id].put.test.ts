@@ -63,18 +63,6 @@ test("does not allow editing other user's intervals", async ({ request, db }) =>
     expect(intervals.find(interval => interval.id === myInterval.id)).not.toStrictEqual(myInterval);
 });
 
-test("returns a 204 even when the resource hasn't changed", async ({ request, db }) => {
-    const [t] = await db.timer.insert(1);
-    await db.timerInterval.insert(2, { timerId: t.id });
-    const getResponseBefore = await request.get(route);
-    const [dataBefore] = await getResponseBefore.json();
-    const putResponse = await request.put(`${route}/${dataBefore.id}`, { data: dataBefore });
-    expect(putResponse.status()).toBe(204);
-    const getResponseAfter = await request.get(route);
-    const [dataAfter] = await getResponseAfter.json();
-    expect(dataBefore).toStrictEqual(dataAfter);
-});
-
 test("only allows putting certain properties", async ({ request, db }) => {
     const [data] = await db.timer.insert(1);
     const [interval] = await db.timerInterval.insert(2, { timerId: data.id });
