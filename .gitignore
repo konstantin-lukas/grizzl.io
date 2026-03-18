@@ -16,3 +16,4 @@ backups
 coverage
 playwright-report
 app/assets/sound/*.Identifier
+.idea/**/*.local.xml
