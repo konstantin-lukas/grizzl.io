@@ -20,7 +20,7 @@ export default abstract class BaseFixture<T extends SchemaKey> {
         this.schema = schema[tableName];
     }
 
-    public get testUser() {
+    protected get testUser() {
         return (async () => {
             const result = await this.db.select().from(schema.user).where(eq(schema.user.email, "user@test.com"));
             return result[0]!;
