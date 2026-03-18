@@ -1,7 +1,11 @@
 import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
+import {
+    test401WhenLoggedOut,
+    testGetCollectionOwnership,
+    testGetEmptyCollection,
+} from "~~/test-utils/playwright/utils/helpers";
 
 async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?: string } = {}) {
     return Promise.all(
@@ -33,6 +37,11 @@ async function buildTimers(db: DBFixtures, options: { deleted?: boolean; userId?
 const route = "/api/timers";
 
 test401WhenLoggedOut("get", route);
+testGetEmptyCollection(route);
+testGetCollectionOwnership(async (db, userId) => {
+    await buildTimers(db, { userId });
+    return route;
+});
 
 test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
     const data = await buildTimers(db);
@@ -42,22 +51,8 @@ test("allows retrieving a list of resources sorted by creation date", async ({ r
     expect(await response.json()).toStrictEqual(data);
 });
 
-test("returns an empty array when there are no resources", async ({ request }) => {
-    const response = await request.get(route);
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
 test("does not return soft-deleted resources", async ({ request, db }) => {
     await buildTimers(db, { deleted: true });
-    const response = await request.get(route);
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
-test("does not return resources of other users", async ({ request, db }) => {
-    const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-    await buildTimers(db, { userId: user!.id });
     const response = await request.get(route);
     expect(response.status()).toBe(200);
     expect(await response.json()).toStrictEqual([]);

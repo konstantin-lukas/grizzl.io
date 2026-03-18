@@ -1,3 +1,4 @@
+import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
@@ -51,4 +52,111 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
         }
     }
     return testCases;
+}
+
+export function testGetCollectionOwnership(fixtureProvider: (db: DBFixtures, userId: string) => Promise<string>) {
+    test("does not return resources of other users", async ({ request, db }) => {
+        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const route = await fixtureProvider(db, user!.id);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetEmptyCollection(route: string | ((db: DBFixtures) => Promise<string>)) {
+    test("returns an empty array when there are no resources", async ({ request, db }) => {
+        const response = await request.get(typeof route === "string" ? route : await route(db));
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) => Promise<string>) {
+    test("does not return soft-deleted resources", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "timer";
+type OwnableFixture = "financeAccount" | "timer";
+
+export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture, baseData: object) {
+    test("ignores any provided id for determining ownership", async ({ request, db }) => {
+        await request.post(route, { data: { ...baseData, userId: "2222222222222222" } });
+        const data = await db[fixtureName].select();
+        const user = await db.user.selectByEmail("user@test.com");
+        expect(data[0]!.userId).toBe(user!.id);
+    });
+}
+
+export function testPatchSoftDeletableTrait({
+    fixtureProvider,
+    fixtureName,
+    fullData,
+    baseData,
+}: {
+    fixtureProvider: (
+        db: DBFixtures,
+        options?: { userId?: string; deleted?: boolean },
+    ) => Promise<{ data: any; route: string }>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    fixtureName: SoftDeletableFixture;
+    fullData: object;
+    baseData: object;
+}) {
+    test("only allows a user to edit their own resources", async ({ request, db }) => {
+        const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+
+        const { data, route } = await fixtureProvider(db, { userId: otherUser!.id });
+        expect(data.deletedAt).toBeNull();
+        const response = await request.patch(route, {
+            data: { deleted: true },
+        });
+
+        expect(response.status()).toBe(404);
+        const [patchedData] = await db[fixtureName].select(data.id);
+        expect(patchedData).toStrictEqual(data);
+    });
+
+    test("only allows patching the deleted property", async ({ request, db }) => {
+        const { data, route } = await fixtureProvider(db);
+
+        const response = await request.patch(route, {
+            data: { ...fullData, deleted: true },
+        });
+        expect(response.status()).toBe(204);
+        const [patchedData] = await db[fixtureName].select(data.id);
+        const { deletedAt: _, ...expected } = data;
+        expect(patchedData).toStrictEqual(expect.objectContaining(expected));
+        expect(patchedData!.deletedAt).not.toBeNull();
+    });
+
+    test("only modifies the requested resource", async ({ request, db }) => {
+        const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const { data: otherData } = await fixtureProvider(db, { userId: otherUser!.id });
+        const { data, route } = await fixtureProvider(db);
+
+        expect(data.deletedAt).toBeNull();
+        expect(otherData.deletedAt).toBeNull();
+        await request.patch(route, { data: { deleted: true } });
+        const [dataAfterPatch] = await db[fixtureName].select(data.id);
+        const [otherDataAfterPatch] = await db[fixtureName].select(otherData.id);
+
+        const { deletedAt: _, ...expected } = data;
+        expect(dataAfterPatch).toStrictEqual(expect.objectContaining(expected));
+        expect(dataAfterPatch!.deletedAt).not.toBeNull();
+
+        expect(otherDataAfterPatch).toStrictEqual(otherData);
+    });
+
+    test("allows undoing a delete", async ({ request, db }) => {
+        const { data, route } = await fixtureProvider(db, { deleted: true });
+        expect(data.deletedAt).not.toBe(null);
+        await request.patch(route, { data: { ...baseData, deleted: false } });
+        const [patchedData] = await db[fixtureName].select(data.id);
+        expect(patchedData!.deletedAt).toBeNull();
+    });
 }

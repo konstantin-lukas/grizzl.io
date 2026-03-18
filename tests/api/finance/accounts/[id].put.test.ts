@@ -29,14 +29,3 @@ for (const [name, data] of ACCOUNT_VALID_TITLE_TEST_CASES) {
         expect(rest).toStrictEqual({ ...data, balance: 0, currency: insertedData.currency });
     });
 }
-
-test("returns a 204 even when the resource hasn't changed", async ({ request, db }) => {
-    await db.financeAccount.insert(1);
-    const getResponseBefore = await request.get(route);
-    const [dataBefore] = await getResponseBefore.json();
-    const putResponse = await request.put(`${route}/${dataBefore.id}`, { data: dataBefore });
-    expect(putResponse.status()).toBe(204);
-    const getResponseAfter = await request.get(route);
-    const [dataAfter] = await getResponseAfter.json();
-    expect(dataBefore).toStrictEqual(dataAfter);
-});

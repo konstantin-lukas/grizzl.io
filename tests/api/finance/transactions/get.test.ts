@@ -1,11 +1,27 @@
 import { generateFilterCombinations } from "~~/test-utils/helpers/object";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
+import {
+    test401WhenLoggedOut,
+    testGetCollectionOwnership,
+    testGetEmptyCollection,
+    testGetSoftDeletedCollection,
+} from "~~/test-utils/playwright/utils/helpers";
 
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 
 test401WhenLoggedOut("get", route("2222222222222222"));
+testGetEmptyCollection(async db => route((await db.financeAccount.insert(1))[0].id));
+testGetCollectionOwnership(async (db, userId) => {
+    const [account] = await db.financeAccount.insert(1, { userId });
+    await db.financeTransaction.insert(1, { accountId: account.id });
+    return route(account.id);
+});
+testGetSoftDeletedCollection(async db => {
+    const [account] = await db.financeAccount.insert(1);
+    await db.financeTransaction.insert(1, { accountId: account.id, deletedAt: new Date() });
+    return route(account.id);
+});
 
 test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1);
@@ -86,32 +102,8 @@ test("allows searching for substrings without wildcard operators", async ({ requ
     expect(receivedData).toHaveLength(2);
 });
 
-test("returns an empty array when there are no resources", async ({ request, db }) => {
-    const [account] = await db.financeAccount.insert(1);
-    const response = await request.get(route(account.id));
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
-test("does not return soft-deleted resources", async ({ request, db }) => {
-    const [account] = await db.financeAccount.insert(1);
-    await db.financeTransaction.insert(1, { accountId: account.id, deletedAt: new Date() });
-    const response = await request.get(route(account.id));
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
 test("does not return transactions of soft-deleted accounts", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1, { deletedAt: new Date() });
-    await db.financeTransaction.insert(1, { accountId: account.id });
-    const response = await request.get(route(account.id));
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
-test("does not return transactions of accounts belonging to other users", async ({ request, db }) => {
-    const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-    const [account] = await db.financeAccount.insert(1, { userId: user!.id });
     await db.financeTransaction.insert(1, { accountId: account.id });
     const response = await request.get(route(account.id));
     expect(response.status()).toBe(200);
