@@ -1,3 +1,4 @@
+import type { PostAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
@@ -21,6 +22,18 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
                     ),
             );
         });
+    }
+
+    public async create(
+        accountId: string,
+        { amount, reference, category, execInterval, execOn, lastExec }: PostAutoTransaction,
+    ) {
+        const [transaction] = await this.db
+            .insert(this.schema)
+            .values({ accountId, amount, reference, category, execInterval, execOn, lastExec })
+            .returning({ id: this.schema.id });
+
+        return transaction!.id;
     }
 
     public async findByUserAndAccountId(userId: string, accountId: string) {

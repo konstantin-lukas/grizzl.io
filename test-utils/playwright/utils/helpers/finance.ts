@@ -1,6 +1,5 @@
 import { Category } from "~~/shared/finance/enums/category.enum";
-import { BASE_ACCOUNT, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
-import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { str } from "~~/test-utils/helpers/data";
 import { omit } from "~~/test-utils/helpers/object";
 import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
@@ -12,6 +11,12 @@ function withAccount(property: keyof typeof BASE_ACCOUNT, value: unknown) {
 function withTransaction(property: keyof typeof BASE_TRANSACTION, value: unknown) {
     return { ...BASE_TRANSACTION, [property]: value };
 }
+
+function withAutoTransaction(property: keyof typeof BASE_AUTO_TRANSACTION, value: unknown) {
+    return { ...BASE_AUTO_TRANSACTION, [property]: value };
+}
+
+// -------------------- ACCOUNT --------------------
 
 const ACCOUNT_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_ACCOUNT, "title", { valid: ["string"] }),
@@ -54,6 +59,7 @@ export const ACCOUNT_VALID_REQUEST_TEST_CASES = [
     ...ACCOUNT_VALID_CURRENCY_TEST_CASES,
 ];
 
+// -------------------- TRANSACTION --------------------
 const TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "amount", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "reference", { valid: ["string", "null"] }),
@@ -86,9 +92,46 @@ export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ...TRANSACTION_INVALID_DATA_TEST_CASES,
 ] as const;
 
-export async function buildTransactions(db: DBFixtures, options: object) {
-    const accounts = await db.financeAccount.insert(1, options);
-    for (const account of accounts) {
-        await db.financeTransaction.insert(3, { ...options, accountId: account.id });
-    }
-}
+// -------------------- AUTO_TRANSACTION --------------------
+
+const AUTO_TRANSACTION_INVALID_TYPE_TEST_CASES = [
+    ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "execInterval", { valid: ["int"] }),
+    ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "execOn", { valid: ["int"] }),
+    ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "lastExec", { valid: ["string"] }),
+];
+
+export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
+    ["the amount is just small enough", withAutoTransaction("amount", Number.MAX_SAFE_INTEGER)],
+    ["the amount is just large enough", withAutoTransaction("amount", Number.MIN_SAFE_INTEGER)],
+    ["the amount is zero", withAutoTransaction("amount", 0)],
+    ["the amount is positive", withAutoTransaction("amount", 1)],
+    ["the amount is negative", withAutoTransaction("amount", -1)],
+    ["the reference is just long enough", withAutoTransaction("reference", "a")],
+    ["the reference is just short enough", withAutoTransaction("reference", str({ length: 100 }))],
+    ["the category is a valid enum value", withAutoTransaction("category", Category.PETS)],
+    ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
+    ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
+    ["execOn is just large enough", withAutoTransaction("execOn", 1)],
+    ["execOn is just small enough", withAutoTransaction("execOn", 31)],
+    ["lastExec is a valid date", withAutoTransaction("lastExec", "2025-06-30")],
+] as const;
+
+export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
+    ...AUTO_TRANSACTION_INVALID_TYPE_TEST_CASES,
+    ["the amount is too large", withAutoTransaction("amount", BigInt(Number.MAX_SAFE_INTEGER) + 1n)],
+    ["the amount is too small", withAutoTransaction("amount", BigInt(Number.MIN_SAFE_INTEGER) - 1n)],
+    ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
+    ["the reference is empty", withAutoTransaction("amount", "")],
+    ["the reference is too long", withAutoTransaction("amount", str({ length: 101 }))],
+    ["the category is not a valid enum value", withAutoTransaction("category", "pineapples")],
+    ["the category is missing", omit(BASE_TRANSACTION, "category")],
+    ["execInterval is too small", withAutoTransaction("execInterval", 0)],
+    ["execInterval is negative", withAutoTransaction("execInterval", -1)],
+    ["execInterval is too large", withAutoTransaction("execInterval", 13)],
+    ["execOn is too small", withAutoTransaction("execOn", 0)],
+    ["execOn is negative", withAutoTransaction("execOn", -1)],
+    ["execOn is too large", withAutoTransaction("execOn", 32)],
+    ["lastExec is not a correctly formatted date", withAutoTransaction("lastExec", "31.06.2025")],
+    ["lastExec is not a valid date", withAutoTransaction("lastExec", "2025-06-31")],
+    ["lastExec is not a date at all", withAutoTransaction("lastExec", "bananas")],
+] as const;

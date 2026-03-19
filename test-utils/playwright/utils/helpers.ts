@@ -131,6 +131,25 @@ export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (d
 type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "timer";
 type OwnableFixture = "financeAccount" | "timer";
 
+export function testPostSubResourceToInvalidParentResource(
+    route: (parentId: string) => string,
+    parentFixture: OwnableFixture,
+    baseData: object,
+) {
+    test("rejects creating a sub-resource on another user's parent resource", async ({ request, db }) => {
+        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const [account] = await db[parentFixture].insert(1, { userId: user!.id });
+
+        const response = await request.post(route(account.id), { data: baseData });
+        expect(response.status()).toBe(404);
+    });
+
+    test("rejects creating a sub-resource on a non-existent parent resource", async ({ request }) => {
+        const response = await request.post(route("2222222222222222"), { data: baseData });
+        expect(response.status()).toBe(404);
+    });
+}
+
 export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture, baseData: object) {
     test("ignores any provided id for determining ownership", async ({ request, db }) => {
         await request.post(route, { data: { ...baseData, userId: "2222222222222222" } });
