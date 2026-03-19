@@ -24,6 +24,7 @@ export default class TransactionService {
     public async getList(userId: string, accountId: string) {
         return this.autoTransactionRepository.findByUserAndAccountId(userId, accountId);
     }
+    /* c8 ignore stop */
 
     public async update(id: string, userId: string, accountId: string, autoTransaction: PutAutoTransaction) {
         const accounts = await this.accountRepository.findByUserId(userId);
@@ -35,7 +36,6 @@ export default class TransactionService {
 
         return this.autoTransactionRepository.update(id, userId, autoTransaction);
     }
-    /* c8 ignore stop */
 
     public async create(userId: string, accountId: string, autoTransaction: PostAutoTransaction) {
         const accounts = await this.accountRepository.findByUserId(userId);
