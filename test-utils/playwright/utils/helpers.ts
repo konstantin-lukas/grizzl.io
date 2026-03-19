@@ -1,4 +1,5 @@
 import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { truncate } from "~~/test-utils/database/truncate";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
@@ -146,6 +147,26 @@ export function testPostSubResourceToInvalidParentResource(
 
     test("rejects creating a sub-resource on a non-existent parent resource", async ({ request }) => {
         const response = await request.post(route("2222222222222222"), { data: baseData });
+        expect(response.status()).toBe(404);
+    });
+}
+
+export function testPutSubResourceOnInvalidParentResource(
+    fixtureProvider: (db: DBFixtures, userId?: string) => Promise<string>,
+    baseData: object,
+) {
+    test("rejects updating a sub-resource on another user's parent resource", async ({ request, db }) => {
+        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const route = await fixtureProvider(db, user!.id);
+
+        const response = await request.put(route, { data: baseData });
+        expect(response.status()).toBe(404);
+    });
+
+    test("rejects updating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        await truncate(db.client);
+        const response = await request.put(route, { data: baseData });
         expect(response.status()).toBe(404);
     });
 }

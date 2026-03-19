@@ -1,8 +1,8 @@
-import type { PostAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
+import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository from "~~/server/core/repositories/base.repository";
+import BaseRepository, { type DatabaseTransaction } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAutoTransaction";
 
@@ -22,6 +22,29 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
                     ),
             );
         });
+    }
+
+    public async update(
+        id: string,
+        userId: string,
+        { amount, reference, category, execInterval, execOn, lastExec }: PutAutoTransaction,
+        tx?: DatabaseTransaction,
+    ) {
+        const executor = tx ?? this.db;
+        const { rowCount } = await executor
+            .update(this.schema)
+            .set({ amount, reference, category, execInterval, execOn, lastExec })
+            .from(dbSchema.financeAccount)
+            .where(
+                and(
+                    eq(this.schema.id, id),
+                    this.ownershipResolver(userId),
+                    isNull(this.schema.deletedAt),
+                    isNull(dbSchema.financeAccount.deletedAt),
+                ),
+            );
+
+        return rowCount;
     }
 
     public async create(

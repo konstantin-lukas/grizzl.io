@@ -13,4 +13,7 @@ export const PostAutoTransactionSchema = PostTransactionSchema.extend({
     lastExec: z.iso.date(),
 });
 
+export const PutAutoTransactionSchema = PostAutoTransactionSchema;
+
 export type PostAutoTransaction = z.infer<typeof PostAutoTransactionSchema>;
+export type PutAutoTransaction = z.infer<typeof PutAutoTransactionSchema>;

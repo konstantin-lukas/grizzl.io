@@ -1,4 +1,4 @@
-import type { PostAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
+import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
@@ -14,6 +14,10 @@ export default class TransactionService {
     /* c8 ignore start */
     public async getList(userId: string, accountId: string) {
         return this.autoTransactionRepository.findByUserAndAccountId(userId, accountId);
+    }
+
+    public async update(id: string, userId: string, autoTransaction: PutAutoTransaction) {
+        return this.autoTransactionRepository.update(id, userId, autoTransaction);
     }
     /* c8 ignore stop */
 
