@@ -2,7 +2,7 @@ import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/va
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository, { type DatabaseTransaction } from "~~/server/core/repositories/base.repository";
+import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAutoTransaction";
 
@@ -28,10 +28,8 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
         id: string,
         userId: string,
         { amount, reference, category, execInterval, execOn, lastExec }: PutAutoTransaction,
-        tx?: DatabaseTransaction,
     ) {
-        const executor = tx ?? this.db;
-        const { rowCount } = await executor
+        const { rowCount } = await this.db
             .update(this.schema)
             .set({ amount, reference, category, execInterval, execOn, lastExec })
             .from(dbSchema.financeAccount)
