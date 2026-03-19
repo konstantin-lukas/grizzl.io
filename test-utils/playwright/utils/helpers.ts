@@ -1,4 +1,5 @@
 import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
@@ -74,6 +75,52 @@ export function testGetEmptyCollection(route: string | ((db: DBFixtures) => Prom
 
 export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) => Promise<string>) {
     test("does not return soft-deleted resources", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetCollectionSubResourceFiltering(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fixtureProvider: (db: DBFixtures) => Promise<{ thisRoute: string; otherRoute: string; subResources: any[] }>,
+) {
+    test("does not return sub-resources belonging to other resources", async ({ request, db }) => {
+        const { subResources, thisRoute, otherRoute } = await fixtureProvider(db);
+        const mappedSubResources = subResources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
+            ...rest,
+            createdAt: createdAt.toISOString(),
+        }));
+        sortByCreatedAt(mappedSubResources, "desc");
+        const response1 = await request.get(thisRoute);
+        const response2 = await request.get(otherRoute);
+        expect(response1.status()).toBe(200);
+        expect(response2.status()).toBe(200);
+        expect(await response1.json()).toStrictEqual(mappedSubResources);
+        expect(await response2.json()).toStrictEqual([]);
+    });
+}
+
+export function testGetCollectionSortedByCreationDate(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fixtureProvider: (db: DBFixtures) => Promise<{ route: string; resources: any[] }>,
+) {
+    test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
+        const { route, resources } = await fixtureProvider(db);
+        const mappedResources = resources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
+            ...rest,
+            createdAt: createdAt.toISOString(),
+        }));
+        sortByCreatedAt(mappedResources, "desc");
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual(mappedResources);
+    });
+}
+
+export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (db: DBFixtures) => Promise<string>) {
+    test("does not return sub-resources of soft-deleted resources", async ({ request, db }) => {
         const route = await fixtureProvider(db);
         const response = await request.get(route);
         expect(response.status()).toBe(200);
