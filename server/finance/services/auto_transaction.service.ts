@@ -1,0 +1,50 @@
+import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
+import NotFoundError from "~~/server/core/errors/not-found.error";
+import AccountRepository from "~~/server/finance/repositories/account.repository";
+import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
+
+export default class TransactionService {
+    static readonly deps = [AutoTransactionRepository, AccountRepository];
+
+    constructor(
+        private readonly autoTransactionRepository: AutoTransactionRepository,
+        private readonly accountRepository: AccountRepository,
+    ) {}
+
+    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+        const operation = isDeleted ? "delete" : "undelete";
+        const rowCount = await this.autoTransactionRepository[operation]({ id, userId });
+        if (rowCount === 0) {
+            const logMessage = `Unable to ${operation} account with id ${id} and user id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+    }
+
+    /* c8 ignore start */
+    public async getList(userId: string, accountId: string) {
+        return this.autoTransactionRepository.findByUserAndAccountId(userId, accountId);
+    }
+    /* c8 ignore stop */
+
+    public async update(id: string, userId: string, accountId: string, autoTransaction: PutAutoTransaction) {
+        const accounts = await this.accountRepository.findByUserId(userId);
+        const account = accounts.find(account => account.id === accountId);
+        if (!account) {
+            const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+
+        return this.autoTransactionRepository.update(id, userId, autoTransaction);
+    }
+
+    public async create(userId: string, accountId: string, autoTransaction: PostAutoTransaction) {
+        const accounts = await this.accountRepository.findByUserId(userId);
+        const account = accounts.find(account => account.id === accountId);
+        if (!account) {
+            const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+
+        return await this.autoTransactionRepository.create(accountId, autoTransaction);
+    }
+}

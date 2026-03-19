@@ -28,3 +28,20 @@ export const FULL_TRANSACTION = {
     createdAt: new Date("1999-12-31"),
     deleted: false,
 };
+
+export const BASE_AUTO_TRANSACTION = {
+    amount: -20_99,
+    reference: "Rent",
+    category: Category.ENTERTAINMENT,
+    execInterval: 1,
+    execOn: 1,
+    lastExec: "2026-01-01",
+};
+
+export const FULL_AUTO_TRANSACTION = {
+    ...BASE_AUTO_TRANSACTION,
+    id: "VbvbykXQUeBBs5n8",
+    accountId: "VbvbykXQUeBBs5n8",
+    userId: "VbvbykXQUeBBs5n8",
+    createdAt: new Date("2026-01-01"),
+};

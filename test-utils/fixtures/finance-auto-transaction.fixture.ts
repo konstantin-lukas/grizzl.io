@@ -13,6 +13,7 @@ export default class FinanceAutoTransactionFixture extends BaseFixture<"financeA
         execInterval: int({ min: 1, max: 12, seed: index }),
         execOn: int({ min: 1, max: 31, seed: index }),
         lastExec: date({ seed: index }).toISOString().split("T")[0],
+        createdAt: date({ seed: index * 2 + 1 }),
     });
 
     constructor(db: ReturnType<typeof drizzle>) {

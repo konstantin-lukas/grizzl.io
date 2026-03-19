@@ -1,7 +1,10 @@
 import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
+import {
+    test401WhenLoggedOut,
+    testPostSubResourceToInvalidParentResource,
+} from "~~/test-utils/playwright/utils/helpers";
 import {
     TRANSACTION_BAD_REQUEST_TEST_CASES,
     TRANSACTION_VALID_REQUEST_TEST_CASES,
@@ -10,6 +13,7 @@ import {
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 
 test401WhenLoggedOut("post", route("2222222222222222"));
+testPostSubResourceToInvalidParentResource(id => route(id), "financeAccount", BASE_TRANSACTION);
 
 for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request, db }) => {
@@ -59,17 +63,4 @@ test("rejects creating a transaction if the resulting account balance is too sma
         data: { ...BASE_TRANSACTION, amount: -BASE_TRANSACTION.amount },
     });
     expect(response.status()).toBe(409);
-});
-
-test("rejects creating a transaction on another user's account", async ({ request, db }) => {
-    const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-    const [account] = await db.financeAccount.insert(1, { userId: user!.id });
-
-    const response = await request.post(route(account.id), { data: BASE_TRANSACTION });
-    expect(response.status()).toBe(404);
-});
-
-test("rejects creating a transaction on a non-existent account", async ({ request }) => {
-    const response = await request.post(route("2222222222222222"), { data: BASE_TRANSACTION });
-    expect(response.status()).toBe(404);
 });

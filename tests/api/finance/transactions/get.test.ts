@@ -3,7 +3,10 @@ import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
 import {
     test401WhenLoggedOut,
+    testGetCollectionOfSoftDeletedParentResource,
     testGetCollectionOwnership,
+    testGetCollectionSortedByCreationDate,
+    testGetCollectionSubResourceFiltering,
     testGetEmptyCollection,
     testGetSoftDeletedCollection,
 } from "~~/test-utils/playwright/utils/helpers";
@@ -22,19 +25,21 @@ testGetSoftDeletedCollection(async db => {
     await db.financeTransaction.insert(1, { accountId: account.id, deletedAt: new Date() });
     return route(account.id);
 });
+testGetCollectionSubResourceFiltering(async db => {
+    const accounts = await db.financeAccount.insert(2);
+    const transactions = await db.financeTransaction.insert(2, { accountId: accounts[0].id });
 
-test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
+    return { subResources: transactions, thisRoute: route(accounts[0].id), otherRoute: route(accounts[1].id) };
+});
+testGetCollectionSortedByCreationDate(async db => {
     const [account] = await db.financeAccount.insert(1);
-    const data = (await db.financeTransaction.insert(3, { accountId: account.id })).map(
-        ({ createdAt, deletedAt, accountId, ...rest }) => ({
-            ...rest,
-            createdAt: createdAt.toISOString(),
-        }),
-    );
-    sortByCreatedAt(data, "desc");
-    const response = await request.get(route(account.id));
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual(data);
+    const transactions = await db.financeTransaction.insert(3, { accountId: account.id });
+    return { resources: transactions, route: route(account.id) };
+});
+testGetCollectionOfSoftDeletedParentResource(async db => {
+    const [account] = await db.financeAccount.insert(1, { deletedAt: new Date() });
+    await db.financeTransaction.insert(1, { accountId: account.id });
+    return route(account.id);
 });
 
 const filters = generateFilterCombinations([
@@ -100,29 +105,4 @@ test("allows searching for substrings without wildcard operators", async ({ requ
     const response = await request.get(`${route(account.id)}?reference=123`);
     const receivedData = await response.json();
     expect(receivedData).toHaveLength(2);
-});
-
-test("does not return transactions of soft-deleted accounts", async ({ request, db }) => {
-    const [account] = await db.financeAccount.insert(1, { deletedAt: new Date() });
-    await db.financeTransaction.insert(1, { accountId: account.id });
-    const response = await request.get(route(account.id));
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toStrictEqual([]);
-});
-
-test("does not return transactions of other accounts", async ({ request, db }) => {
-    const accounts = await db.financeAccount.insert(2);
-    const transactions = (await db.financeTransaction.insert(2, { accountId: accounts[0].id })).map(
-        ({ accountId, createdAt, deletedAt, ...rest }) => ({
-            ...rest,
-            createdAt: createdAt.toISOString(),
-        }),
-    );
-    sortByCreatedAt(transactions, "desc");
-    const response1 = await request.get(route(accounts[0].id));
-    const response2 = await request.get(route(accounts[1].id));
-    expect(response1.status()).toBe(200);
-    expect(response2.status()).toBe(200);
-    expect(await response1.json()).toStrictEqual(transactions);
-    expect(await response2.json()).toStrictEqual([]);
 });
