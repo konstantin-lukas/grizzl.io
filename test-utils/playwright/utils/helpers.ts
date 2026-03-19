@@ -129,7 +129,7 @@ export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (d
     });
 }
 
-type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "timer";
+type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "financeAutoTransaction" | "timer";
 type OwnableFixture = "financeAccount" | "timer";
 
 export function testPostSubResourceToInvalidParentResource(

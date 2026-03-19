@@ -1,3 +1,4 @@
+import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import {
     PostAutoTransactionSchema,
     PutAutoTransactionSchema,
@@ -14,6 +15,12 @@ export default class AutoTransactionController extends BaseController {
         super();
     }
 
+    public async setDeletedStatus(event: H3Event) {
+        const id = BaseController.parseIdParameter(event);
+        const body = await BaseController.parseRequestBody(event, DatabaseDeletedSchema);
+        await this.autoTransactionService.setDeletedStatus(id, event.context.user.id, body.deleted);
+    }
+
     public async getList(event: H3Event) {
         const accountId = BaseController.parseIdParameter(event, "accountId");
         return this.autoTransactionService.getList(event.context.user.id, accountId);
@@ -21,8 +28,9 @@ export default class AutoTransactionController extends BaseController {
 
     public async update(event: H3Event) {
         const id = BaseController.parseIdParameter(event);
+        const accountId = BaseController.parseIdParameter(event, "accountId");
         const autoTransaction = await BaseController.parseRequestBody(event, PutAutoTransactionSchema);
-        return this.autoTransactionService.update(id, event.context.user.id, autoTransaction);
+        return this.autoTransactionService.update(id, event.context.user.id, accountId, autoTransaction);
     }
 
     public async create(event: H3Event) {
