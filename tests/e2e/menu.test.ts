@@ -25,7 +25,7 @@ const texts = {
         poll: "アンケート",
         todo: "ToDoリスト",
         timer: "タイマー",
-        finance: "財務",
+        finance: "ファイナンス",
     },
 };
 
@@ -35,7 +35,7 @@ forEachLocale((locale, texts) => {
             { locator: "pollLink", text: texts.poll, href: "" },
             { locator: "todoLink", text: texts.todo, href: "" },
             { locator: "timerLink", text: texts.timer, href: "/timer" },
-            { locator: "financeLink", text: texts.finance, href: "" },
+            { locator: "financeLink", text: texts.finance, href: "/finance" },
         ] as const;
 
         await test.step("Check that menu elements do not exist when the menu is closed", async () => {
