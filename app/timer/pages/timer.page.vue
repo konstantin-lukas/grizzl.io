@@ -55,7 +55,7 @@ watch(open, () => {
                     <PlaybackContainer v-if="activeTimer" :timer="activeTimer" />
                 </Wrapper>
             </Slideover>
-            <div class="mb-16 flex w-full grow flex-col">
+            <div class="relative mb-16 flex w-full grow flex-col">
                 <Drawer v-model:open="open">
                     <UpsertForm @success="open = false" />
                     <template #title>{{ $t("timer.aria.drawer.create") }}</template>
@@ -63,7 +63,7 @@ watch(open, () => {
                 </Drawer>
                 <OverviewList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                 <Transition name="fade">
-                    <div v-if="data && data.length === 0" class="center w-full grow">
+                    <div v-if="data && data.length === 0" class="center absolute h-full w-full grow">
                         <Empty @open="() => (open = true)" />
                     </div>
                 </Transition>
