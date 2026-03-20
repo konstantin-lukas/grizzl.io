@@ -4,6 +4,15 @@ export default {
     // https://router.vuejs.org/api/interfaces/routeroptions#routes
     routes: _routes => [
         {
+            name: "finance",
+            path: "/finance",
+            meta: {
+                title: "finance.meta.title",
+                description: "finance.meta.description",
+            },
+            component: () => import("~/finance/pages/finance.page.vue"),
+        },
+        {
             name: "timer",
             path: "/timer",
             meta: {
