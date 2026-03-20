@@ -5,6 +5,7 @@ import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 
 const accountRepositoryMock = {
     findByUserId: vi.fn(),
+    hasSubResource: vi.fn(),
 };
 
 const autoTransactionRepositoryMock = {
@@ -42,35 +43,47 @@ describe("create", () => {
 
 describe("setDeletedStatus", () => {
     test("calls the transaction repository's delete method when deleted is true", async () => {
-        await autoTransactionService.setDeletedStatus(id, userId, true);
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
+        await autoTransactionService.setDeletedStatus(id, userId, accountId, true);
         expect(autoTransactionRepositoryMock.delete).toHaveBeenCalledExactlyOnceWith({ id, userId });
         expect(autoTransactionRepositoryMock.undelete).not.toHaveBeenCalled();
     });
 
     test("calls the transaction repository's undelete method when deleted is false", async () => {
-        await autoTransactionService.setDeletedStatus(id, userId, false);
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
+        await autoTransactionService.setDeletedStatus(id, userId, accountId, false);
         expect(autoTransactionRepositoryMock.undelete).toHaveBeenCalledExactlyOnceWith({ id, userId });
         expect(autoTransactionRepositoryMock.delete).not.toHaveBeenCalled();
     });
 
+    test("returns an error when the sub-resource doesn't exist", async () => {
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(false);
+
+        await expect(autoTransactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
+    });
+
     test("returns an error when the repository returns 0 affected rows", async () => {
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
         autoTransactionRepositoryMock.delete.mockReturnValueOnce(0);
 
-        await expect(autoTransactionService.setDeletedStatus(id, userId, true)).rejects.toBeInstanceOf(NotFoundError);
+        await expect(autoTransactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
     });
 });
 
 describe("update", () => {
     test("does not throw if everything is in order", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
         autoTransactionRepositoryMock.update.mockReturnValueOnce(1);
         await expect(
             autoTransactionService.update(id, userId, accountId, BASE_AUTO_TRANSACTION),
         ).resolves.not.toThrow();
     });
 
-    test("throws a NotFoundError if the account can't be found", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
+    test("throws a NotFoundError if the auto-transaction can't be updated", async () => {
+        autoTransactionRepositoryMock.update.mockReturnValueOnce(0);
         await expect(
             autoTransactionService.update(id, userId, accountId, BASE_AUTO_TRANSACTION),
         ).rejects.toBeInstanceOf(NotFoundError);

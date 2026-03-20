@@ -27,6 +27,7 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
     public async update(
         id: string,
         userId: string,
+        accountId: string,
         { amount, reference, category, execInterval, execOn, lastExec }: PutAutoTransaction,
     ) {
         const { rowCount } = await this.db
@@ -36,7 +37,8 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
             .where(
                 and(
                     eq(this.schema.id, id),
-                    this.ownershipResolver(userId),
+                    eq(dbSchema.financeAccount.userId, userId),
+                    eq(this.schema.accountId, accountId),
                     isNull(this.schema.deletedAt),
                     isNull(dbSchema.financeAccount.deletedAt),
                 ),

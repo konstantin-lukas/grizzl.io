@@ -17,8 +17,9 @@ export default class AutoTransactionController extends BaseController {
 
     public async setDeletedStatus(event: H3Event) {
         const id = BaseController.parseIdParameter(event);
+        const accountId = BaseController.parseIdParameter(event, "accountId");
         const body = await BaseController.parseRequestBody(event, DatabaseDeletedSchema);
-        await this.autoTransactionService.setDeletedStatus(id, event.context.user.id, body.deleted);
+        await this.autoTransactionService.setDeletedStatus(id, event.context.user.id, accountId, body.deleted);
     }
 
     public async getList(event: H3Event) {

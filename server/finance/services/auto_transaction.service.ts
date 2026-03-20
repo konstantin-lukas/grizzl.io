@@ -11,11 +11,18 @@ export default class TransactionService {
         private readonly accountRepository: AccountRepository,
     ) {}
 
-    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+    public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
         const operation = isDeleted ? "delete" : "undelete";
+
+        const exists = await this.accountRepository.hasSubResource(id, userId, accountId, "financeAutoTransaction");
+        if (!exists) {
+            const logMessage = `Auto-transaction with id ${id} does not exist on account with id ${accountId} of user ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+
         const rowCount = await this.autoTransactionRepository[operation]({ id, userId });
         if (rowCount === 0) {
-            const logMessage = `Unable to ${operation} account with id ${id} and user id ${userId}.`;
+            const logMessage = `Unable to ${operation} auto-transaction with id ${id} and user id ${userId}.`;
             throw new NotFoundError("The requested account does not exist.", logMessage);
         }
     }
@@ -27,14 +34,14 @@ export default class TransactionService {
     /* c8 ignore stop */
 
     public async update(id: string, userId: string, accountId: string, autoTransaction: PutAutoTransaction) {
-        const accounts = await this.accountRepository.findByUserId(userId);
-        const account = accounts.find(account => account.id === accountId);
-        if (!account) {
-            const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
-            throw new NotFoundError("The requested account does not exist.", logMessage);
+        const result = await this.autoTransactionRepository.update(id, userId, accountId, autoTransaction);
+
+        if (!result) {
+            const logMessage = `Unable to update auto-transaction ${id} on account with id ${accountId} for user with id ${userId}.`;
+            throw new NotFoundError("The requested auto-transaction does not exist on the given account.", logMessage);
         }
 
-        return this.autoTransactionRepository.update(id, userId, autoTransaction);
+        return result;
     }
 
     public async create(userId: string, accountId: string, autoTransaction: PostAutoTransaction) {
