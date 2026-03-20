@@ -14,9 +14,13 @@ const route = (id: string) => `/api/finance/accounts/${id}/auto-transactions`;
 
 test401WhenLoggedOut("post", route("2222222222222222"));
 testPutSubResourceOnInvalidParentResource(async (db, userId) => {
-    const [account] = await db.financeAccount.insert(1, userId ? { userId } : undefined);
-    const [transaction] = await db.financeAutoTransaction.insert(1, { accountId: account.id });
-    return `${route(account.id)}/${transaction.id}`;
+    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
+    const [transaction] = await db.financeAutoTransaction.insert(1, { accountId: account1.id });
+    return {
+        validUrl: `${route(account1.id)}/${transaction.id}`,
+        invalidUrl: `${route(account2.id)}/${transaction.id}`,
+        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
+    };
 }, BASE_AUTO_TRANSACTION);
 
 for (const [name, data] of AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES) {

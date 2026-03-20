@@ -8,6 +8,7 @@ import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 const accountRepositoryMock = {
     findByUserId: vi.fn(),
     updateBalance: vi.fn(),
+    hasSubResource: vi.fn(),
 };
 
 const transactionRepositoryMock = {
@@ -56,21 +57,34 @@ describe("create", () => {
 
 describe("setDeletedStatus", () => {
     test("calls the transaction repository's delete method when deleted is true", async () => {
-        await transactionService.setDeletedStatus(id, userId, true);
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
+        await transactionService.setDeletedStatus(id, userId, accountId, true);
         expect(transactionRepositoryMock.delete).toHaveBeenCalledExactlyOnceWith({ id, userId });
         expect(transactionRepositoryMock.undelete).not.toHaveBeenCalled();
     });
 
     test("calls the transaction repository's undelete method when deleted is false", async () => {
-        await transactionService.setDeletedStatus(id, userId, false);
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
+        await transactionService.setDeletedStatus(id, userId, accountId, false);
         expect(transactionRepositoryMock.undelete).toHaveBeenCalledExactlyOnceWith({ id, userId });
         expect(transactionRepositoryMock.delete).not.toHaveBeenCalled();
     });
 
+    test("returns an error when the sub-resource doesn't exist", async () => {
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(false);
+
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
+    });
+
     test("returns an error when the repository returns 0 affected rows", async () => {
+        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
         transactionRepositoryMock.delete.mockReturnValueOnce(0);
 
-        await expect(transactionService.setDeletedStatus(id, userId, true)).rejects.toBeInstanceOf(NotFoundError);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
     });
 });
 

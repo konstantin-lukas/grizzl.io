@@ -19,8 +19,9 @@ export default class TransactionController extends BaseController {
 
     public async setDeletedStatus(event: H3Event) {
         const id = TransactionController.parseIdParameter(event);
+        const accountId = BaseController.parseIdParameter(event, "accountId");
         const body = await TransactionController.parseRequestBody(event, DatabaseDeletedSchema);
-        await this.transactionService.setDeletedStatus(id, event.context.user.id, body.deleted);
+        await this.transactionService.setDeletedStatus(id, event.context.user.id, accountId, body.deleted);
     }
 
     public async getList(event: H3Event) {

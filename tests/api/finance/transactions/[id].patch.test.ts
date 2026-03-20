@@ -2,6 +2,7 @@ import { BASE_TRANSACTION, FULL_TRANSACTION } from "~~/test-utils/constants/fina
 import {
     test401WhenLoggedOut,
     testIdParameter,
+    testPatchDeletedPropertyOnSubResourceWithInvalidParentResource,
     testPatchSoftDeletableTrait,
 } from "~~/test-utils/playwright/utils/helpers";
 
@@ -21,4 +22,13 @@ testPatchSoftDeletableTrait({
     fixtureName: "financeTransaction",
     fullData: FULL_TRANSACTION,
     baseData: BASE_TRANSACTION,
+});
+testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(async (db, userId) => {
+    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id });
+    return {
+        validUrl: `${route(account1.id)}/${transaction.id}`,
+        invalidUrl: `${route(account2.id)}/${transaction.id}`,
+        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
+    };
 });

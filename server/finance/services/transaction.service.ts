@@ -17,8 +17,15 @@ export default class TransactionService {
         private readonly accountRepository: AccountRepository,
     ) {}
 
-    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+    public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
         const operation = isDeleted ? "delete" : "undelete";
+
+        const exists = await this.accountRepository.hasSubResource(id, userId, accountId, "financeTransaction");
+        if (!exists) {
+            const logMessage = `Auto-transaction with id ${id} does not exist on account with id ${accountId} of user ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+
         const rowCount = await this.transactionRepository[operation]({ id, userId });
         if (rowCount === 0) {
             const logMessage = `Unable to ${operation} account with id ${id} and user id ${userId}.`;

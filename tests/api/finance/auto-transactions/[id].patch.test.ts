@@ -2,6 +2,7 @@ import { BASE_AUTO_TRANSACTION, FULL_AUTO_TRANSACTION } from "~~/test-utils/cons
 import {
     test401WhenLoggedOut,
     testIdParameter,
+    testPatchDeletedPropertyOnSubResourceWithInvalidParentResource,
     testPatchSoftDeletableTrait,
 } from "~~/test-utils/playwright/utils/helpers";
 
@@ -21,4 +22,13 @@ testPatchSoftDeletableTrait({
     fixtureName: "financeAutoTransaction",
     fullData: FULL_AUTO_TRANSACTION,
     baseData: BASE_AUTO_TRANSACTION,
+});
+testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(async (db, userId) => {
+    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
+    const [transaction] = await db.financeAutoTransaction.insert(1, { accountId: account1.id });
+    return {
+        validUrl: `${route(account1.id)}/${transaction.id}`,
+        invalidUrl: `${route(account2.id)}/${transaction.id}`,
+        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
+    };
 });

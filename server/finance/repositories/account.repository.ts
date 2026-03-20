@@ -1,6 +1,7 @@
 import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, count, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
+import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type DatabaseTransaction } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAccount";
@@ -8,6 +9,28 @@ const schema = "financeAccount";
 export default class AccountRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, schema, userId => eq(this.schema.userId, userId));
+    }
+
+    public async hasSubResource(
+        subResourceId: string,
+        userId: string,
+        accountId: string,
+        subResourceName: "financeTransaction" | "financeAutoTransaction",
+    ) {
+        const [result] = await this.db
+            .select({ count: count() })
+            .from(dbSchema[subResourceName])
+            .innerJoin(this.schema, eq(dbSchema[subResourceName].accountId, this.schema.id))
+            .where(
+                and(
+                    eq(dbSchema[subResourceName].id, subResourceId),
+                    eq(this.schema.id, accountId),
+                    eq(this.schema.userId, userId),
+                ),
+            )
+            .limit(1);
+
+        return !!result?.count;
     }
 
     public async findByUserId(userId: string, tx?: DatabaseTransaction) {
