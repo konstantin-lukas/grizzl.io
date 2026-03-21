@@ -28,6 +28,8 @@ const BASE_LOCATORS = {
     drawer: "drawer",
     slideover: "slideover",
     cookieBannerButton: "hide-cookie-banner-button",
+    formErrors: "form-error-digest",
+    upsertSubmit: "upsert-form-submit-button",
 };
 
 type LocatorKey<T extends Record<string, string>> = keyof T | keyof typeof BASE_LOCATORS;

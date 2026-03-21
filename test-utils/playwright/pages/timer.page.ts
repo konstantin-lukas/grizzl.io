@@ -4,13 +4,11 @@ import BasePage from "~~/test-utils/playwright/pages/base.page";
 const LOCATORS = {
     // TIMER FORM
     titleInput: "timer-upsert-title-input",
-    submitButton: "timer-upsert-submit-button",
     expandButton: "timer-upsert-expand-button",
     collapseButton: "timer-upsert-collapse-button",
 
     // TIMER FORM - INTERVAL
     legends: "interval-legend",
-    formErrors: "timer-upsert-form-errors-alert",
     duplicateButtons: "interval-duplicate-button",
     moveUpButtons: "interval-move-up-button",
     moveDownButtons: "interval-move-down-button",
@@ -61,7 +59,7 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
         for (const [index, interval] of intervals.entries()) {
             await this.fillNthInterval(index, interval);
         }
-        if (submit) await this.click("submitButton");
+        if (submit) await this.click("upsertSubmit");
     }
 
     async duplicateNthInterval(n: number, times: number) {

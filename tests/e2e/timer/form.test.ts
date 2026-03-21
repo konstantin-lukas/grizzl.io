@@ -37,7 +37,7 @@ test("displays an alert if there were form validation errors", async ({ timerPag
     await page.goto();
 
     await page.click("emptyButton");
-    await page.click("submitButton");
+    await page.click("upsertSubmit");
 
     const errorTitle = "The Submission Failed Due An Error";
     const errorDescription = "The provided text has to be at least 1 character long.";
@@ -55,7 +55,7 @@ test("allows editing an existing timer", { tag: SCREENSHOT }, async ({ timerPage
 
     await page.click("listItemEditButtons");
     await page.fill("titleInput", newTitle);
-    await page.click("submitButton");
+    await page.click("upsertSubmit");
 
     await page.expect("listItemTitles").toHaveText(newTitle);
     const [updatedTimer] = await db.timer.select(timer.id);
