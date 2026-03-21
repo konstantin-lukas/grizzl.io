@@ -5,6 +5,7 @@ import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import Slideover from "~/core/components/overlay/Slideover.vue";
+import { onResponseError } from "~/core/utils/toast";
 import OverviewList from "~/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/timer/components/playback/PlaybackContainer.vue";
 import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
@@ -15,12 +16,7 @@ const route = useRoute();
 const toast = useToast();
 const { data, refresh } = useFetch("/api/timers", {
     key: "/api/timers",
-    onResponseError: () =>
-        toast.add({
-            title: $t("timer.toast.unableToFetchTitle"),
-            description: $t("timer.toast.unableToFetchDescription"),
-            color: "error",
-        }),
+    onResponseError: onResponseError(toast),
 });
 const { reset, mute } = useTimer();
 

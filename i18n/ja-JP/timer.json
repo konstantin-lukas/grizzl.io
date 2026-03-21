@@ -40,9 +40,7 @@
             "updatedTitle": "タイマーを更新しました",
             "updatedDescription": "「{title}」というタイトルのタイマーが更新されました。",
             "deletedTitle": "タイマーを削除しました",
-            "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。",
-            "unableToFetchTitle": "タイマーを取得できません",
-            "unableToFetchDescription": "現在、サーバーからタイマーを取得できません。"
+            "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。"
         },
         "meta": {
             "title": "タイマー",

@@ -33,6 +33,10 @@
         "homepage": "Homepage",
         "expandAll": "Expand all",
         "collapseAll": "Collapse all",
-        "okay": "Got it!"
+        "okay": "Got it!",
+        "toast": {
+            "unableToFetchTitle": "Unable To Fetch Data From The Server",
+            "unableToFetchDescription": "We are currently unable to retrieve your data from the server."
+        }
     }
 }

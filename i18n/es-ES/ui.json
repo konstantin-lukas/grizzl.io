@@ -33,6 +33,10 @@
         "homepage": "Página de inicio",
         "expandAll": "Expandir todo",
         "collapseAll": "Contraer todo",
-        "okay": "¡Entendido!"
+        "okay": "¡Entendido!",
+        "toast": {
+            "unableToFetchTitle": "No se pudieron obtener los datos del servidor",
+            "unableToFetchDescription": "Actualmente no podemos obtener tus datos del servidor."
+        }
     }
 }

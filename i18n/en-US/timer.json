@@ -40,9 +40,7 @@
             "updatedTitle": "Timer Updated",
             "updatedDescription": "The timer titled “{title}” was updated.",
             "deletedTitle": "Timer Deleted",
-            "deletedDescription": "The timer titled “{title}” was deleted.",
-            "unableToFetchTitle": "Unable To Load Timers",
-            "unableToFetchDescription": "We are currently unable to retrieve your timers from the server."
+            "deletedDescription": "The timer titled “{title}” was deleted."
         },
         "meta": {
             "title": "Timer",

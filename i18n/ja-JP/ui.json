@@ -33,6 +33,10 @@
         "homepage": "ホームページ",
         "expandAll": "すべて展開",
         "collapseAll": "すべて折りたたむ",
-        "okay": "分かりました！"
+        "okay": "分かりました！",
+        "toast": {
+            "unableToFetchTitle": "サーバーからデータを取得できません",
+            "unableToFetchDescription": "現在、サーバーからデータを取得できません。"
+        }
     }
 }
