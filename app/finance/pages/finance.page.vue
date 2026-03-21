@@ -2,10 +2,12 @@
 import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import AccountH1 from "~/finance/components/AccountH1.vue";
+import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 
 const { accounts, openAccountId } = useAccounts();
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
+const upsertFormOpen = ref(false);
 </script>
 
 <template>
@@ -17,10 +19,11 @@ const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccoun
                 </Transition>
                 <Transition name="fade">
                     <div v-if="showEmptyView" class="center w-full grow">
-                        <Empty />
+                        <Empty @open="upsertFormOpen = true" />
                     </div>
                 </Transition>
             </div>
+            <UpsertForm v-model:open="upsertFormOpen" />
         </div>
     </Wrapper>
 </template>
