@@ -47,7 +47,7 @@ const onError = (e: FormErrorEvent) => {
                     type="submit"
                     :icon="mode === 'insert' ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
                     class="flex w-full justify-center"
-                    data-test-id="drawer-form-submit-button"
+                    data-test-id="upsert-form-submit-button"
                     :disabled="isLoading"
                 >
                     {{ mode === "insert" ? $t("ui.create") : $t("ui.save") }}

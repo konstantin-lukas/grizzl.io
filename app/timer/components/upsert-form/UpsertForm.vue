@@ -7,7 +7,7 @@ import { PostTimerSchema, type PutTimer, type Timer } from "#shared/timer/valida
 import { useToast } from "#ui/composables";
 import { VueDraggable } from "vue-draggable-plus";
 import Button from "~/core/components/button/Button.vue";
-import DrawerForm from "~/core/components/form/DrawerForm.vue";
+import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import { createToastError, createToastSuccess } from "~/core/utils/toast";
 import UpsertFormInterval from "~/timer/components/upsert-form/UpsertFormInterval.vue";
 import UpsertFormVoiceSelect from "~/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
@@ -96,7 +96,7 @@ function onEnd() {
 </script>
 
 <template>
-    <DrawerForm
+    <BaseUpsertForm
         ref="formRef"
         :mode="createNewTimer ? 'insert' : 'update'"
         :schema="PostTimerSchema"
@@ -151,5 +151,5 @@ function onEnd() {
                 @click="forcedAccordionState = 'open'"
             />
         </template>
-    </DrawerForm>
+    </BaseUpsertForm>
 </template>

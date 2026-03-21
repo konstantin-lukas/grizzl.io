@@ -5,7 +5,7 @@ import { ellipsize } from "#shared/core/utils/string.util";
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 import { type PostAccount, PostAccountSchema } from "#shared/finance/validators/account.validator";
 import { useToast } from "#ui/composables";
-import DrawerForm from "~/core/components/form/DrawerForm.vue";
+import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import { createToastError, createToastSuccess } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
@@ -47,7 +47,7 @@ async function onSubmit() {
 
 <template>
     <Drawer>
-        <DrawerForm :schema="PostAccountSchema" :state="state" mode="insert" @submit.prevent="onSubmit">
+        <BaseUpsertForm :schema="PostAccountSchema" :state="state" mode="insert" @submit.prevent="onSubmit">
             <template #default>
                 <UFormField :label="'Title (add translation)'" name="title" class="w-full" required>
                     <UInput
@@ -67,7 +67,7 @@ async function onSubmit() {
                     />
                 </UFormField>
             </template>
-        </DrawerForm>
+        </BaseUpsertForm>
         <template #title>{{ $t("finance.aria.drawer.create") }}</template>
         <template #description>{{ $t("finance.aria.drawer.description") }}</template>
     </Drawer>
