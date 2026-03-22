@@ -5,6 +5,7 @@ import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import Slideover from "~/core/components/overlay/Slideover.vue";
+import { onResponseError } from "~/core/utils/toast";
 import OverviewList from "~/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/timer/components/playback/PlaybackContainer.vue";
 import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
@@ -13,14 +14,10 @@ import useTimer from "~/timer/composables/useTimer";
 const open = ref(false);
 const route = useRoute();
 const toast = useToast();
+const { t } = useI18n();
 const { data, refresh } = useFetch("/api/timers", {
     key: "/api/timers",
-    onResponseError: () =>
-        toast.add({
-            title: $t("timer.toast.unableToFetchTitle"),
-            description: $t("timer.toast.unableToFetchDescription"),
-            color: "error",
-        }),
+    onResponseError: onResponseError(toast, t),
 });
 const { reset, mute } = useTimer();
 
@@ -55,7 +52,7 @@ watch(open, () => {
                     <PlaybackContainer v-if="activeTimer" :timer="activeTimer" />
                 </Wrapper>
             </Slideover>
-            <div class="mb-16 flex w-full grow flex-col">
+            <div class="relative mb-16 flex w-full grow flex-col">
                 <Drawer v-model:open="open">
                     <UpsertForm @success="open = false" />
                     <template #title>{{ $t("timer.aria.drawer.create") }}</template>
@@ -63,7 +60,7 @@ watch(open, () => {
                 </Drawer>
                 <OverviewList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                 <Transition name="fade">
-                    <div v-if="data && data.length === 0" class="center w-full grow">
+                    <div v-if="data && data.length === 0" class="center absolute h-full w-full grow">
                         <Empty @open="() => (open = true)" />
                     </div>
                 </Transition>

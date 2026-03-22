@@ -3,7 +3,7 @@
         "poll": "アンケート",
         "todo": "ToDoリスト",
         "timer": "タイマー",
-        "finance": "財務",
+        "finance": "ファイナンス",
         "signIn": "サインイン",
         "signOut": "サインアウト",
         "save": "保存",
@@ -33,6 +33,11 @@
         "homepage": "ホームページ",
         "expandAll": "すべて展開",
         "collapseAll": "すべて折りたたむ",
-        "okay": "分かりました！"
+        "okay": "分かりました！",
+        "add": "追加",
+        "toast": {
+            "unableToFetchTitle": "サーバーからデータを取得できません",
+            "unableToFetchDescription": "現在、サーバーからデータを取得できません。"
+        }
     }
 }

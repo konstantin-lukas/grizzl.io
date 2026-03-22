@@ -1,4 +1,5 @@
 import type { NuxtError } from "#app";
+import type { useToast } from "#ui/composables";
 import { h } from "vue";
 
 type ApiError = NuxtError<{
@@ -33,3 +34,15 @@ export function createToastSuccess(title: string, description?: string) {
         color: "success",
     } as const;
 }
+
+/* c8 ignore start */
+export function onResponseError(toast: ReturnType<typeof useToast>, t: (key: string) => string) {
+    return () => {
+        toast.add({
+            title: t("ui.toast.unableToFetchTitle"),
+            description: t("ui.toast.unableToFetchDescription"),
+            color: "error",
+        });
+    };
+}
+/* c8 ignore stop */

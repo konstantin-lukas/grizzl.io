@@ -26,8 +26,8 @@
         },
         "aria": {
             "drawer": {
-                "edit": "タイマーを編集",
-                "create": "タイマーを作成",
+                "edit": "タイマーの編集",
+                "create": "タイマーの作成",
                 "description": "さまざまなインターバルタイプから選んで、完全にカスタム可能なタイマーを作成できます"
             },
             "slideover": {
@@ -40,9 +40,7 @@
             "updatedTitle": "タイマーを更新しました",
             "updatedDescription": "「{title}」というタイトルのタイマーが更新されました。",
             "deletedTitle": "タイマーを削除しました",
-            "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。",
-            "unableToFetchTitle": "タイマーを取得できません",
-            "unableToFetchDescription": "現在、サーバーからタイマーを取得できません。"
+            "deletedDescription": "「{title}」というタイトルのタイマーが削除されました。"
         },
         "meta": {
             "title": "タイマー",

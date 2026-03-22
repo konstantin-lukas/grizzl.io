@@ -1,0 +1,30 @@
+{
+    "finance": {
+        "meta": {
+            "title": "Finanzas",
+            "description": "Crea diferentes cuentas y controla tus gastos mensuales."
+        },
+        "account": {
+            "form": {
+                "title": "Nombre de la cuenta",
+                "currency": "Moneda"
+            },
+            "aria": {
+                "controls": "Controles de cuenta",
+                "drawer": {
+                    "edit": "Editar cuenta",
+                    "create": "Crear cuenta",
+                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas"
+                }
+            },
+            "toast": {
+                "createdTitle": "Cuenta de ahorros creada",
+                "createdDescription": "Se creó una nueva cuenta con el nombre «{title}».",
+                "updatedTitle": "Cuenta de ahorros actualizada",
+                "updatedDescription": "La cuenta con el nombre «{title}» fue actualizada.",
+                "deletedTitle": "Cuenta de ahorros eliminada",
+                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
+            }
+        }
+    }
+}

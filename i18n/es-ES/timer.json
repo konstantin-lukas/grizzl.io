@@ -26,8 +26,8 @@
         },
         "aria": {
             "drawer": {
-                "edit": "Editar un temporizador",
-                "create": "Crear un temporizador",
+                "edit": "Editar temporizador",
+                "create": "Crear temporizador",
                 "description": "Elige entre diferentes tipos de intervalos para crear un temporizador totalmente personalizado"
             },
             "slideover": {
@@ -40,9 +40,7 @@
             "updatedTitle": "Temporizador actualizado",
             "updatedDescription": "El temporizador titulado “{title}” se actualizó.",
             "deletedTitle": "Temporizador eliminado",
-            "deletedDescription": "El temporizador titulado “{title}” se eliminó.",
-            "unableToFetchTitle": "No se pudieron obtener los temporizadores",
-            "unableToFetchDescription": "Actualmente no podemos obtener tus temporizadores del servidor."
+            "deletedDescription": "El temporizador titulado “{title}” se eliminó."
         },
         "meta": {
             "title": "Temporizador",

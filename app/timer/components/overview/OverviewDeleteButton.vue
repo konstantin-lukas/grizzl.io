@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ellipsize } from "#shared/core/utils/string.util";
-import useSoftDelete from "~/core/composables/useSoftDelete";
 import Button from "~/core/components/button/Button.vue";
+import useSoftDelete from "~/core/composables/useSoftDelete";
 
 const props = defineProps<{ timer: { id: string; title: string } | undefined }>();
-const execute = useSoftDelete(`/api/timers/${props.timer?.id}`, {
+const apiRoute = computed(() => `/api/timers/${props.timer?.id}`);
+const interpolations = computed(() => ({
+    title: ellipsize(props.timer?.title ?? "", 15),
+}));
+const execute = useSoftDelete(apiRoute, {
     refresh: async () => {
         await refreshNuxtData("/api/timers");
     },
     successTitle: "timer.toast.deletedTitle",
     successDescription: "timer.toast.deletedDescription",
-    interpolations: { title: ellipsize(props.timer?.title ?? "", 15) },
+    interpolations,
 });
 </script>
 

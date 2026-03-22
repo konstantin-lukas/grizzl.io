@@ -33,6 +33,11 @@
         "homepage": "Startseite",
         "expandAll": "Alle ausklappen",
         "collapseAll": "Alle einklappen",
-        "okay": "Alles klar!"
+        "okay": "Alles klar!",
+        "add": "Hinzufügen",
+        "toast": {
+            "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
+            "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."
+        }
     }
 }

@@ -1,0 +1,30 @@
+{
+    "finance": {
+        "meta": {
+            "title": "Finance",
+            "description": "Create different accounts and keep track of your monthly expenses."
+        },
+        "account": {
+            "form": {
+                "title": "Account title",
+                "currency": "Currency"
+            },
+            "aria": {
+                "controls": "Account Controls",
+                "drawer": {
+                    "edit": "Edit Account",
+                    "create": "Create Account",
+                    "description": "Set up a savings account with a fixed currency to manage your finances"
+                }
+            },
+            "toast": {
+                "createdTitle": "Savings Account Created",
+                "createdDescription": "A new account titled “{title}” was created.",
+                "updatedTitle": "Savings Account Updated",
+                "updatedDescription": "The account titled “{title}” was updated.",
+                "deletedTitle": "Savings Account Deleted",
+                "deletedDescription": "The account titled “{title}” was deleted."
+            }
+        }
+    }
+}

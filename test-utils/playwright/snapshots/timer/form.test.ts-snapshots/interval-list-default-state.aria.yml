@@ -1,5 +1,6 @@
 - document:
-  - dialog "Edit a timer":
+  - dialog "Edit Timer":
+    - heading "Edit Timer" [level=1]
     - text: Timer title*
     - textbox "Timer title*": vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau
     - group:

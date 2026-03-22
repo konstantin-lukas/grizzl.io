@@ -56,7 +56,7 @@ beforeEach(() => {
 });
 
 test("should make a call to the provided resource and add a toast with an undo option on success", async () => {
-    const execute = useSoftDelete("/api/bananas/123");
+    const execute = useSoftDelete(ref("/api/bananas/123"));
     expect(t).not.toHaveBeenCalled();
     expect(start).not.toHaveBeenCalled();
     expect(finish).not.toHaveBeenCalled();
@@ -102,7 +102,7 @@ test("should add an error toast and still call optional refresh", async () => {
     const refresh = vi.fn().mockImplementation(() => Promise.resolve(undefined));
     // @ts-expect-error Excessive stack depth comparing types ... introduced by upgrade from Nuxt 4.2.1 Nuxt 4.2.2
     fetchSpy.mockImplementationOnce(() => Promise.reject());
-    const execute = useSoftDelete("/api/bananas/124", { refresh });
+    const execute = useSoftDelete(ref("/api/bananas/124"), { refresh });
     await execute();
 
     expect(fetchSpy).toHaveBeenCalledOnce();
@@ -116,7 +116,7 @@ test("should add an error toast and still call optional refresh", async () => {
 
 test("should add an error toast when undo failed", async () => {
     const refresh = vi.fn().mockImplementation(() => Promise.resolve(undefined));
-    const execute = useSoftDelete("/api/bananas/123", { refresh });
+    const execute = useSoftDelete(ref("/api/bananas/123"), { refresh });
     expect(start).not.toHaveBeenCalled();
     expect(finish).not.toHaveBeenCalled();
     expect(refresh).not.toHaveBeenCalled();
@@ -139,12 +139,12 @@ test("should add an error toast when undo failed", async () => {
 });
 
 test("should allow passing custom translation keys for the title and description of the success toast", async () => {
-    const options = { successTitle: "Oranges", successDescription: "Yay", interpolations: { count: "2" } };
-    const execute = useSoftDelete("/api/bananas/123", options);
+    const options = { successTitle: "Oranges", successDescription: "Yay", interpolations: ref({ count: "2" }) };
+    const execute = useSoftDelete(ref("/api/bananas/123"), options);
     await execute();
     expect(t).toHaveBeenCalledTimes(3);
     expect(t).toHaveBeenCalledWith(options.successTitle);
-    expect(t).toHaveBeenCalledWith(options.successDescription, options.interpolations);
+    expect(t).toHaveBeenCalledWith(options.successDescription, options.interpolations.value);
     expect(t).toHaveBeenCalledWith("ui.undo");
     expect(add).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -156,7 +156,7 @@ test("should allow passing custom translation keys for the title and description
 
 test("should default to providing empty interpolations if only a success description is provided", async () => {
     const options = { successDescription: "Yay" };
-    const execute = useSoftDelete("/api/bananas/123", options);
+    const execute = useSoftDelete(ref("/api/bananas/123"), options);
     await execute();
     expect(t).toHaveBeenCalledTimes(2);
     expect(t).toHaveBeenCalledWith(options.successDescription, {});
