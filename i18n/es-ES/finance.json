@@ -4,11 +4,22 @@
             "title": "Finanzas",
             "description": "Crea diferentes cuentas y controla tus gastos mensuales."
         },
-        "aria": {
-            "drawer": {
-                "edit": "Editar una cuenta de ahorros",
-                "create": "Crear una cuenta de ahorros",
-                "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas"
+        "account": {
+            "aria": {
+                "switch": "Cambiar de cuenta",
+                "drawer": {
+                    "edit": "Editar una cuenta de ahorros",
+                    "create": "Crear una cuenta de ahorros",
+                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas"
+                }
+            },
+            "toast": {
+                "createdTitle": "Cuenta de ahorros creada",
+                "createdDescription": "Se creó una nueva cuenta con el nombre «{title}».",
+                "updatedTitle": "Cuenta de ahorros actualizada",
+                "updatedDescription": "La cuenta con el nombre «{title}» fue actualizada.",
+                "deletedTitle": "Cuenta de ahorros eliminada",
+                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
             }
         }
     }

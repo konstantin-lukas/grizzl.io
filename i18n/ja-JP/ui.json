@@ -34,6 +34,7 @@
         "expandAll": "すべて展開",
         "collapseAll": "すべて折りたたむ",
         "okay": "分かりました！",
+        "add": "追加",
         "toast": {
             "unableToFetchTitle": "サーバーからデータを取得できません",
             "unableToFetchDescription": "現在、サーバーからデータを取得できません。"

@@ -15,6 +15,7 @@ const state = reactive<PostAccount>({
     title: "",
     currency: "",
 });
+const emit = defineEmits(["success"]);
 
 const { refresh } = useAccounts();
 const toast = useToast();
@@ -29,10 +30,11 @@ async function onSubmit() {
         body: submissionState,
     })
         .then(() => {
+            emit("success");
             toast.add(
                 createToastSuccess(
-                    $t("finance.toast.createdTitle"),
-                    $t("finance.toast.createdDescription", {
+                    $t("finance.account.toast.createdTitle"),
+                    $t("finance.account.toast.createdDescription", {
                         title: ellipsize(state.title, 15),
                     }),
                 ),

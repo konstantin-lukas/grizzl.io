@@ -2,6 +2,7 @@
 import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import AccountH1 from "~/finance/components/AccountH1.vue";
+import AccountSelectMenu from "~/finance/components/AccountSelectMenu.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 
@@ -12,6 +13,7 @@ const upsertFormOpen = ref(false);
 
 <template>
     <Wrapper>
+        <AccountSelectMenu class="fixed top-4 right-4" />
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="mb-16 flex w-full grow flex-col">
                 <Transition name="fade">
@@ -23,7 +25,7 @@ const upsertFormOpen = ref(false);
                     </div>
                 </Transition>
             </div>
-            <UpsertForm v-model:open="upsertFormOpen" />
+            <UpsertForm v-model:open="upsertFormOpen" @success="upsertFormOpen = false" />
         </div>
     </Wrapper>
 </template>

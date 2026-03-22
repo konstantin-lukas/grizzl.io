@@ -4,11 +4,22 @@
             "title": "ファイナンス",
             "description": "複数のアカウントを作成し、毎月の支出を管理できます。"
         },
-        "aria": {
-            "drawer": {
-                "edit": "貯蓄口座を編集",
-                "create": "貯蓄口座を作成",
-                "description": "通貨を固定した貯蓄口座を設定して、資産を管理できます"
+        "account": {
+            "aria": {
+                "switch": "口座の切り替え",
+                "drawer": {
+                    "edit": "貯蓄口座を編集",
+                    "create": "貯蓄口座を作成",
+                    "description": "通貨を固定した貯蓄口座を設定して、資産を管理できます"
+                }
+            },
+            "toast": {
+                "createdTitle": "貯蓄口座を作成しました",
+                "createdDescription": "「{title}」という名前の新しい口座を作成しました。",
+                "updatedTitle": "貯蓄口座を更新しました",
+                "updatedDescription": "「{title}」という名前の口座を更新しました。",
+                "deletedTitle": "貯蓄口座を削除しました",
+                "deletedDescription": "「{title}」という名前の口座を削除しました。"
             }
         }
     }

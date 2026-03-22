@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/timer/validators/timer.validator";
+import H1 from "~/core/components/typo/H1.vue";
 import PlaybackControls from "~/timer/components/playback/PlaybackControls.vue";
 import PlaybackProgress from "~/timer/components/playback/PlaybackProgress.vue";
 import useTimer from "~/timer/composables/useTimer";
-import H1 from "~/core/components/typo/H1.vue";
 
 const { timer } = defineProps<{ timer: Timer }>();
 const {
@@ -83,7 +83,7 @@ const duration = computed(() => timer.intervals.reduce((prev, curr) => prev + cu
 
 <template>
     <section aria-labelledby="timer-name" class="center w-full">
-        <H1 id="timer-name" class="line-clamp-2 w-full text-center" data-test-id="timer-title">
+        <H1 id="timer-name" class="w-full text-center" data-test-id="timer-title">
             {{ timer.title }}
         </H1>
         <div class="relative h-6 w-full" aria-live="polite">

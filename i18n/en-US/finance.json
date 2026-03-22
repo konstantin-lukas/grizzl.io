@@ -4,11 +4,22 @@
             "title": "Finance",
             "description": "Create different accounts and keep track of your monthly expenses."
         },
-        "aria": {
-            "drawer": {
-                "edit": "Edit a savings account",
-                "create": "Create a savings account",
-                "description": "Set up a savings account with a fixed currency to manage your finances"
+        "account": {
+            "aria": {
+                "switch": "Switch accounts",
+                "drawer": {
+                    "edit": "Edit a savings account",
+                    "create": "Create a savings account",
+                    "description": "Set up a savings account with a fixed currency to manage your finances"
+                }
+            },
+            "toast": {
+                "createdTitle": "Savings Account Created",
+                "createdDescription": "A new account titled “{title}” was created.",
+                "updatedTitle": "Savings Account Updated",
+                "updatedDescription": "The account titled “{title}” was updated.",
+                "deletedTitle": "Savings Account Deleted",
+                "deletedDescription": "The account titled “{title}” was deleted."
             }
         }
     }

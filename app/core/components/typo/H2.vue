@@ -2,7 +2,7 @@
 const { as = "h2" } = defineProps<{ as?: string }>();
 </script>
 <template>
-    <component :is="as" class="leading-tight text-primary uppercase text-2xl">
+    <component :is="as" class="line-clamp-2 text-2xl leading-tight text-primary uppercase">
         <slot />
     </component>
 </template>

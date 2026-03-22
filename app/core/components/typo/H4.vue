@@ -1,5 +1,6 @@
+<script setup lang="ts"></script>
 <template>
-    <h4 class="leading-tight text-primary text-lg">
+    <h4 class="line-clamp-2 text-lg leading-tight text-primary">
         <slot />
     </h4>
 </template>
