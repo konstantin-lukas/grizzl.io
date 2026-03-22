@@ -15,12 +15,12 @@ const upsertFormOpen = ref(false);
     <Wrapper>
         <AccountSelectMenu class="fixed top-4 right-4" />
         <div class="flex min-h-main-height-no-padding w-full flex-col">
-            <div class="mb-16 flex w-full grow flex-col">
+            <div class="relative mb-16 flex h-full w-full grow flex-col">
                 <Transition name="fade">
                     <AccountH1 v-if="!showEmptyView" />
                 </Transition>
                 <Transition name="fade">
-                    <div v-if="showEmptyView" class="center w-full grow">
+                    <div v-if="showEmptyView" class="center absolute h-full w-full grow">
                         <Empty @open="upsertFormOpen = true" />
                     </div>
                 </Transition>

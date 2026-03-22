@@ -1,5 +1,5 @@
 import { useToast } from "#ui/composables";
-import { useLocalStorage } from "~/core/composables/useLocalStorage";
+import useLocalStorage from "~/core/composables/useLocalStorage";
 import { onResponseError } from "~/core/utils/toast";
 
 export default function useAccounts() {
@@ -8,7 +8,7 @@ export default function useAccounts() {
         key: "/api/finance/accounts",
         onResponseError: onResponseError(toast),
     });
-    const openAccountId = useLocalStorage("openFinanceAccountId", "");
+    const openAccountId = useLocalStorage<string>("openFinanceAccountId", "");
 
     watch(accounts, () => {
         if (openAccountId.value && accounts.value?.every(account => account.id !== openAccountId.value)) {
