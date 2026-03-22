@@ -15,7 +15,7 @@ export default function useSoftDelete(
     const { t } = useI18n();
     async function execute() {
         const route = resource.value;
-        const interpolations = structuredClone(options?.interpolations?.value ?? {});
+        const interpolations = { ...options?.interpolations?.value };
         await $fetch(route, { method: "PATCH", body: { deleted: true } })
             .then(() => {
                 toast.add({

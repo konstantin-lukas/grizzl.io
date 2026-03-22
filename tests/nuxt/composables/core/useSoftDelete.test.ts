@@ -144,7 +144,7 @@ test("should allow passing custom translation keys for the title and description
     await execute();
     expect(t).toHaveBeenCalledTimes(3);
     expect(t).toHaveBeenCalledWith(options.successTitle);
-    expect(t).toHaveBeenCalledWith(options.successDescription, options.interpolations);
+    expect(t).toHaveBeenCalledWith(options.successDescription, options.interpolations.value);
     expect(t).toHaveBeenCalledWith("ui.undo");
     expect(add).toHaveBeenCalledWith(
         expect.objectContaining({
