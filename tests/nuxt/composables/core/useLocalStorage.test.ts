@@ -63,3 +63,12 @@ test("handles unparsable data in the local storage", async () => {
         expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", '{"fruit":"oranges"}');
     });
 });
+
+test("handles parsable data in the local storage", async () => {
+    localStorageStub.getItem.mockReturnValueOnce('{"fruit":"oranges"}');
+    const value = useLocalStorage("bananas", { fruit: "kiwis" });
+
+    await vi.waitFor(() => {
+        expect(value.value).toStrictEqual({ fruit: "oranges" });
+    });
+});
