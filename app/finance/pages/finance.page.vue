@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
+import AccountSelectMenu from "~/finance/components/AccountControlMenu.vue";
 import AccountH1 from "~/finance/components/AccountH1.vue";
-import AccountSelectMenu from "~/finance/components/AccountSelectMenu.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 

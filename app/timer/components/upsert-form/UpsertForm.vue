@@ -8,6 +8,7 @@ import { useToast } from "#ui/composables";
 import { VueDraggable } from "vue-draggable-plus";
 import Button from "~/core/components/button/Button.vue";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
+import H1 from "~/core/components/typo/H1.vue";
 import { createToastError, createToastSuccess } from "~/core/utils/toast";
 import UpsertFormInterval from "~/timer/components/upsert-form/UpsertFormInterval.vue";
 import UpsertFormVoiceSelect from "~/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
@@ -104,6 +105,7 @@ function onEnd() {
         @submit.prevent="onSubmit"
         @error="() => formRef.scrollContainer?.scrollTo({ behavior: 'smooth', top: 0 })"
     >
+        <H1>{{ $t(`timer.aria.drawer.${createNewTimer ? "create" : "edit"}`) }}</H1>
         <UFormField :label="$t('timer.form.title')" name="title" class="w-full" required>
             <UInput
                 v-model="state.title"

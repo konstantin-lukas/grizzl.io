@@ -5,11 +5,15 @@
             "description": "Erstelle verschiedene Konten und behalte deine monatlichen Ausgaben im Blick."
         },
         "account": {
+            "form": {
+                "title": "Kontoname",
+                "currency": "Währung"
+            },
             "aria": {
                 "controls": "Kontoverwaltung",
                 "drawer": {
-                    "edit": "Ein Sparkonto bearbeiten",
-                    "create": "Ein Sparkonto erstellen",
+                    "edit": "Konto bearbeiten",
+                    "create": "Konto erstellen",
                     "description": "Richte ein Sparkonto mit einer festen Währung ein, um deine Finanzen zu verwalten"
                 }
             },

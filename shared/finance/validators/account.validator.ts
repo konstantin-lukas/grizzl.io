@@ -16,3 +16,7 @@ export const PutAccountSchema = z.object({
 
 export type PostAccount = z.infer<typeof PostAccountSchema>;
 export type PutAccount = z.infer<typeof PutAccountSchema>;
+
+export type Account = PostAccount & {
+    id: string;
+};

@@ -26,8 +26,8 @@
         },
         "aria": {
             "drawer": {
-                "edit": "Edit a timer",
-                "create": "Create a timer",
+                "edit": "Edit Timer",
+                "create": "Create Timer",
                 "description": "Choose between different types of timer intervals to create a fully customized timer"
             },
             "slideover": {

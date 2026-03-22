@@ -5,11 +5,15 @@
             "description": "複数のアカウントを作成し、毎月の支出を管理できます。"
         },
         "account": {
+            "form": {
+                "title": "口座名",
+                "currency": "通貨"
+            },
             "aria": {
                 "controls": "口座操作",
                 "drawer": {
-                    "edit": "貯蓄口座を編集",
-                    "create": "貯蓄口座を作成",
+                    "edit": "口座の編集",
+                    "create": "口座の作成",
                     "description": "通貨を固定した貯蓄口座を設定して、資産を管理できます"
                 }
             },

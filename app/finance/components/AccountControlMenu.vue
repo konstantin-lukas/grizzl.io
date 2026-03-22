@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PutAccount } from "#shared/finance/validators/account.validator";
 import Button from "~/core/components/button/Button.vue";
 import AccountDeleteButton from "~/finance/components/AccountDeleteButton.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
@@ -8,6 +9,7 @@ const { accounts, openAccount, openAccountId } = useAccounts();
 const selectOptions = computed(() =>
     accounts.value?.map(account => ({ id: account.id, label: `${account.title} (${account.currency})` })),
 );
+const initialState = ref<PutAccount | undefined>(undefined);
 const selectOpen = ref(false);
 const selectedOption = ref(selectOptions.value?.find(o => o.id === openAccountId.value)?.id);
 watch(openAccountId, () => {
@@ -41,14 +43,17 @@ watch(upsertFormOpen, () => {
             }"
             @update:model-value="value => (openAccountId = value)"
         >
-            <UpsertForm v-model:open="upsertFormOpen" @success="upsertFormOpen = false" />
+            <UpsertForm v-model:open="upsertFormOpen" :initial-state="initialState" @success="upsertFormOpen = false" />
             <template #content-bottom>
                 <USeparator />
                 <div class="m-1">
                     <Button
                         class="flex w-full justify-center"
                         icon="heroicons:plus-circle-16-solid"
-                        @click="upsertFormOpen = true"
+                        @click="
+                            initialState = undefined;
+                            upsertFormOpen = true;
+                        "
                     >
                         {{ $t("ui.add") }}
                     </Button>
@@ -57,7 +62,10 @@ watch(upsertFormOpen, () => {
                             variant="subtle"
                             class="flex w-full justify-center"
                             icon="heroicons:pencil-square"
-                            @click="upsertFormOpen = true"
+                            @click="
+                                initialState = openAccount;
+                                upsertFormOpen = true;
+                            "
                         >
                             {{ $t("ui.edit") }}
                         </Button>

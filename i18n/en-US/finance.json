@@ -5,11 +5,15 @@
             "description": "Create different accounts and keep track of your monthly expenses."
         },
         "account": {
+            "form": {
+                "title": "Account title",
+                "currency": "Currency"
+            },
             "aria": {
                 "controls": "Account Controls",
                 "drawer": {
-                    "edit": "Edit a savings account",
-                    "create": "Create a savings account",
+                    "edit": "Edit Account",
+                    "create": "Create Account",
                     "description": "Set up a savings account with a fixed currency to manage your finances"
                 }
             },
