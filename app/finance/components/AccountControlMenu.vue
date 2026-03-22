@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PutAccount } from "#shared/finance/validators/account.validator";
+import type { Account } from "#shared/finance/validators/account.validator";
 import Button from "~/core/components/button/Button.vue";
 import AccountDeleteButton from "~/finance/components/AccountDeleteButton.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
@@ -9,7 +9,7 @@ const { accounts, openAccount, openAccountId } = useAccounts();
 const selectOptions = computed(() =>
     accounts.value?.map(account => ({ id: account.id, label: `${account.title} (${account.currency})` })),
 );
-const initialState = ref<PutAccount | undefined>(undefined);
+const initialState = ref<Account | undefined>(undefined);
 const selectOpen = ref(false);
 const selectedOption = ref(selectOptions.value?.find(o => o.id === openAccountId.value)?.id);
 watch(openAccountId, () => {
