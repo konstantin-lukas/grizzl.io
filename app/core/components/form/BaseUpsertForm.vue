@@ -4,16 +4,16 @@ import Button from "~/core/components/button/Button.vue";
 import FormErrorDigest from "~/core/components/form/FormErrorDigest.vue";
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scrollContainer");
+const { isLoading } = useLoadingIndicator();
+
+defineProps<{ mode: "insert" | "update" }>();
 defineExpose({
     scrollContainer,
 });
-defineProps<{ mode: "insert" | "update" }>();
 const emit = defineEmits<{
     error: [e: FormErrorEvent];
     submit: [e: FormSubmitEvent<T>];
 }>();
-
-const { isLoading } = useLoadingIndicator();
 
 const errors = ref<string[]>([]);
 

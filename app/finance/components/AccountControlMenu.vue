@@ -6,6 +6,7 @@ import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 
 const { accounts, openAccount, openAccountId } = useAccounts();
+
 const selectOptions = computed(() =>
     accounts.value?.map(account => ({ id: account.id, label: `${account.title} (${account.currency})` })),
 );

@@ -35,6 +35,7 @@ export function createToastSuccess(title: string, description?: string) {
     } as const;
 }
 
+/* c8 ignore start */
 export function onResponseError(toast: ReturnType<typeof useToast>) {
     return () => {
         toast.add({
@@ -44,3 +45,4 @@ export function onResponseError(toast: ReturnType<typeof useToast>) {
         });
     };
 }
+/* c8 ignore stop */

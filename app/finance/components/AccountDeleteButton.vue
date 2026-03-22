@@ -5,6 +5,7 @@ import useSoftDelete from "~/core/composables/useSoftDelete";
 import useAccounts from "~/finance/composables/useAccounts";
 
 const { openAccount, openAccountId, refresh } = useAccounts();
+
 const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}`);
 const interpolations = computed(() => ({ title: ellipsize(openAccount.value?.title ?? "", 15) }));
 
