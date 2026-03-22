@@ -57,7 +57,7 @@ watch(upsertFormOpen, () => {
                     >
                         {{ $t("ui.add") }}
                     </Button>
-                    <div class="mt-1 flex gap-1">
+                    <div v-if="openAccountId" class="mt-1 flex gap-1">
                         <Button
                             variant="subtle"
                             class="flex w-full justify-center"

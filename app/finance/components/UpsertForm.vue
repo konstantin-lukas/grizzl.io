@@ -20,23 +20,23 @@ const { refresh } = useAccounts();
 const toast = useToast();
 const { locale } = useI18n();
 
+const open = ref(false);
 const currencyOptions = computed(() => getCurrencies(LOCALES.find(({ code }) => code === locale.value)!.language));
 
 const emptyState = {
     title: "",
     currency: "",
 };
+
 const state = reactive<PostAccount>({
     ...emptyState,
     ...initialState,
 });
 
-watch(
-    () => initialState,
-    () => {
-        Object.assign(state, initialState ?? emptyState);
-    },
-);
+watch(open, newOpen => {
+    if (!newOpen) return;
+    Object.assign(state, initialState ?? emptyState);
+});
 
 async function onSubmit() {
     const submissionState = deepCopy(state);
@@ -63,7 +63,7 @@ async function onSubmit() {
 </script>
 
 <template>
-    <Drawer>
+    <Drawer v-model:open="open">
         <BaseUpsertForm
             :schema="PostAccountSchema"
             :state="state"
