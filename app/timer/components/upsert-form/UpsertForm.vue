@@ -105,7 +105,9 @@ function onEnd() {
         @submit.prevent="onSubmit"
         @error="() => formRef.scrollContainer?.scrollTo({ behavior: 'smooth', top: 0 })"
     >
-        <H1>{{ $t(`timer.aria.drawer.${createNewTimer ? "create" : "edit"}`) }}</H1>
+        <template #heading>
+            <H1>{{ $t(`timer.aria.drawer.${createNewTimer ? "create" : "edit"}`) }}</H1>
+        </template>
         <UFormField :label="$t('timer.form.title')" name="title" class="w-full" required>
             <UInput
                 v-model="state.title"

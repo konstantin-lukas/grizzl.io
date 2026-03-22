@@ -6,6 +6,7 @@ const { localStorageStub } = await vi.hoisted(async () => {
     const localStorageStub = {
         getItem: vi.fn(),
         setItem: vi.fn(),
+        removeItem: vi.fn(),
     };
     vi.stubGlobal("localStorage", localStorageStub);
     return { localStorageStub };
@@ -50,5 +51,15 @@ test("serializes objects and writes them to local storage", async () => {
     value.value.fruit = "kiwis";
     await vi.waitFor(() => {
         expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", '{"fruit":"kiwis"}');
+    });
+});
+
+test("handles unparsable data in the local storage", async () => {
+    localStorageStub.getItem.mockReturnValueOnce("bananas");
+    useLocalStorage("bananas", { fruit: "oranges" });
+
+    await vi.waitFor(() => {
+        expect(localStorageStub.removeItem).toHaveBeenCalledExactlyOnceWith("bananas");
+        expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", '{"fruit":"oranges"}');
     });
 });

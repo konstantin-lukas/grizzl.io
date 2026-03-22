@@ -70,7 +70,7 @@ watch(upsertFormOpen, () => {
                         >
                             {{ $t("ui.edit") }}
                         </Button>
-                        <AccountDeleteButton :account="openAccount" />
+                        <AccountDeleteButton />
                     </div>
                 </div>
             </template>

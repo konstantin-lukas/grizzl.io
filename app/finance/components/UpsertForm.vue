@@ -20,7 +20,7 @@ const { refresh } = useAccounts();
 const toast = useToast();
 const { locale } = useI18n();
 
-const open = ref(false);
+const open = defineModel<boolean>("open");
 const currencyOptions = computed(() => getCurrencies(LOCALES.find(({ code }) => code === locale.value)!.language));
 
 const emptyState = {
@@ -70,8 +70,10 @@ async function onSubmit() {
             :mode="isInsert ? 'insert' : 'update'"
             @submit.prevent="onSubmit"
         >
-            <template #default>
+            <template #heading>
                 <H1>{{ $t(`finance.account.aria.drawer.${isInsert ? "create" : "edit"}`) }}</H1>
+            </template>
+            <template #default>
                 <UFormField :label="$t('finance.account.form.title')" name="title" class="w-full" required>
                     <UInput
                         v-model="state.title"

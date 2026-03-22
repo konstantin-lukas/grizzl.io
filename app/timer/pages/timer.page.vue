@@ -14,9 +14,10 @@ import useTimer from "~/timer/composables/useTimer";
 const open = ref(false);
 const route = useRoute();
 const toast = useToast();
+const { t } = useI18n();
 const { data, refresh } = useFetch("/api/timers", {
     key: "/api/timers",
-    onResponseError: onResponseError(toast),
+    onResponseError: onResponseError(toast, t),
 });
 const { reset, mute } = useTimer();
 

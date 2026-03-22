@@ -34,6 +34,7 @@ const onError = (e: FormErrorEvent) => {
             />
             <div class="flex min-h-full flex-col items-center justify-start overflow-hidden">
                 <div class="center w-full max-w-120 gap-4 px-8 pt-8 pb-12 xl:w-120">
+                    <slot name="heading" />
                     <FormErrorDigest :errors />
                     <slot :errors="errors" />
                 </div>

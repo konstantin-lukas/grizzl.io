@@ -36,11 +36,11 @@ export function createToastSuccess(title: string, description?: string) {
 }
 
 /* c8 ignore start */
-export function onResponseError(toast: ReturnType<typeof useToast>) {
+export function onResponseError(toast: ReturnType<typeof useToast>, t: (key: string) => string) {
     return () => {
         toast.add({
-            title: $t("ui.toast.unableToFetchTitle"),
-            description: $t("ui.toast.unableToFetchDescription"),
+            title: t("ui.toast.unableToFetchTitle"),
+            description: t("ui.toast.unableToFetchDescription"),
             color: "error",
         });
     };

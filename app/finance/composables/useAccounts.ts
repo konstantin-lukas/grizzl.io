@@ -4,9 +4,10 @@ import { onResponseError } from "~/core/utils/toast";
 
 export default function useAccounts() {
     const toast = useToast();
+    const { t } = useI18n();
     const { data: accounts, refresh: refreshAccounts } = useFetch("/api/finance/accounts", {
         key: "/api/finance/accounts",
-        onResponseError: onResponseError(toast),
+        onResponseError: onResponseError(toast, t),
     });
     const openAccountId = useLocalStorage<string>("openFinanceAccountId", "");
 
@@ -26,7 +27,8 @@ export default function useAccounts() {
     const refresh = async () => {
         const accountCountBeforeRefresh = accounts.value?.length ?? 0;
         await refreshAccounts();
-        const accountsList = accounts.value!;
+        if (!accounts.value) return;
+        const accountsList = accounts.value;
         const accountCountAfterRefresh = accountsList.length ?? 0;
         if (!accountCountAfterRefresh) {
             openAccountId.value = "";
