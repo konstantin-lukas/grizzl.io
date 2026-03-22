@@ -2,24 +2,25 @@ import { useToast } from "#ui/composables";
 import { createToastError } from "~/core/utils/toast";
 
 export default function useSoftDelete(
-    resource: string,
+    resource: Ref<string>,
     options?: {
         refresh?: () => Promise<void>;
         successTitle?: string;
         successDescription?: string;
-        interpolations?: Record<string, string>;
+        interpolations?: Ref<Record<string, string>>;
     },
 ) {
     const toast = useToast();
     const { start, finish } = useLoadingIndicator();
     const { t } = useI18n();
     async function execute() {
-        await $fetch(resource, { method: "PATCH", body: { deleted: true } })
+        const route = resource.value;
+        const interpolations = structuredClone(options?.interpolations?.value ?? {});
+        await $fetch(route, { method: "PATCH", body: { deleted: true } })
             .then(() => {
                 toast.add({
                     title: options?.successTitle && t(options.successTitle),
-                    description:
-                        options?.successDescription && t(options.successDescription, options.interpolations ?? {}),
+                    description: options?.successDescription && t(options.successDescription, interpolations),
                     orientation: "vertical",
                     color: "success",
                     actions: [
@@ -31,7 +32,7 @@ export default function useSoftDelete(
                             variant: "outline",
                             onClick: () => {
                                 start();
-                                $fetch(resource, { method: "PATCH", body: { deleted: false } })
+                                $fetch(route, { method: "PATCH", body: { deleted: false } })
                                     .catch(error => toast.add(createToastError(error)))
                                     .finally(async () => {
                                         await options?.refresh?.();

@@ -6,7 +6,7 @@
         },
         "account": {
             "aria": {
-                "switch": "Cambiar de cuenta",
+                "controls": "Controles de cuenta",
                 "drawer": {
                     "edit": "Editar una cuenta de ahorros",
                     "create": "Crear una cuenta de ahorros",

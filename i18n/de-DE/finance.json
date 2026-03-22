@@ -6,7 +6,7 @@
         },
         "account": {
             "aria": {
-                "switch": "Konten wechseln",
+                "controls": "Kontoverwaltung",
                 "drawer": {
                     "edit": "Ein Sparkonto bearbeiten",
                     "create": "Ein Sparkonto erstellen",

@@ -6,7 +6,7 @@
         },
         "account": {
             "aria": {
-                "switch": "口座の切り替え",
+                "controls": "口座操作",
                 "drawer": {
                     "edit": "貯蓄口座を編集",
                     "create": "貯蓄口座を作成",
