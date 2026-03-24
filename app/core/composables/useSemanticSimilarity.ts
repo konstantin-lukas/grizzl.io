@@ -7,17 +7,17 @@ export function useSemanticSimilarity() {
     async function preloadModel() {
         if (!loadingPromise && import.meta.client) {
             const { pipeline, env } = await import("@xenova/transformers");
+            env.allowRemoteModels = false;
 
+            env.backends.onnx.wasm.wasmPaths = "/wasm/";
             env.useBrowserCache = true;
 
             isLoading.value = true;
-            loadingPromise = pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2").then(
-                model => {
-                    embeddingModel = model;
-                    isLoading.value = false;
-                    return model;
-                },
-            );
+            loadingPromise = pipeline("feature-extraction", "/paraphrase-multilingual-MiniLM-L12-v2").then(model => {
+                embeddingModel = model;
+                isLoading.value = false;
+                return model;
+            });
         }
         return loadingPromise;
     }
@@ -31,9 +31,9 @@ export function useSemanticSimilarity() {
 
     /** Cosine similarity between two vectors */
     function cosineSimilarity(vecA: number[], vecB: number[]): number {
-        let dot = 0,
-            magA = 0,
-            magB = 0;
+        let dot = 0;
+            let magA = 0;
+            let magB = 0;
         for (let i = 0; i < vecA.length; i++) {
             dot += vecA[i]! * vecB[i]!;
             magA += vecA[i]! ** 2;
