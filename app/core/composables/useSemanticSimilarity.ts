@@ -1,30 +1,40 @@
+import type { FeatureExtractionPipeline } from "@huggingface/transformers";
+
 export function useSemanticSimilarity() {
     const isLoading: Ref<boolean> = ref(false);
+    const loadingPromise: Ref<Promise<FeatureExtractionPipeline> | null> = ref(null);
+    const embeddingModel: Ref<FeatureExtractionPipeline | null> = ref(null);
 
-    let embeddingModel: any | null = null;
-    let loadingPromise: Promise<any> | null = null;
     /** Preload the embedding model in background */
     async function preloadModel() {
-        if (!loadingPromise && import.meta.client) {
-            const { pipeline, env } = await import("@xenova/transformers");
-            env.allowRemoteModels = false;
+        if (!loadingPromise.value && import.meta.client) {
+            loadingPromise.value = (async () => {
+                const { pipeline, env } = await import("@huggingface/transformers");
 
-            env.backends.onnx.wasm.wasmPaths = "/wasm/";
-            env.useBrowserCache = true;
+                env.allowRemoteModels = false;
+                env.allowLocalModels = true;
+                env.useBrowserCache = true;
+                env.backends.onnx.wasm!.wasmPaths = "/wasm/";
 
-            isLoading.value = true;
-            loadingPromise = pipeline("feature-extraction", "/paraphrase-multilingual-MiniLM-L12-v2").then(model => {
-                embeddingModel = model;
+                isLoading.value = true;
+
+                const model = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2", {
+                    dtype: "uint8",
+                });
+
+                embeddingModel.value = model;
                 isLoading.value = false;
+
                 return model;
-            });
+            })();
         }
-        return loadingPromise;
+
+        return await loadingPromise.value!;
     }
 
     /** Get embedding vector for a string */
     async function getEmbedding(text: string): Promise<number[]> {
-        const model = embeddingModel ?? (await preloadModel());
+        const model = embeddingModel.value ?? (await preloadModel());
         const result = await model(text, { pooling: "mean", normalize: false });
         return Array.from(result.data) as number[];
     }
@@ -32,8 +42,8 @@ export function useSemanticSimilarity() {
     /** Cosine similarity between two vectors */
     function cosineSimilarity(vecA: number[], vecB: number[]): number {
         let dot = 0;
-            let magA = 0;
-            let magB = 0;
+        let magA = 0;
+        let magB = 0;
         for (let i = 0; i < vecA.length; i++) {
             dot += vecA[i]! * vecB[i]!;
             magA += vecA[i]! ** 2;
@@ -49,7 +59,9 @@ export function useSemanticSimilarity() {
     }
 
     // Load model in background immediately
-    preloadModel();
+    if (import.meta.client) {
+        preloadModel();
+    }
 
     return { compareStrings, isLoading, preloadModel };
 }
