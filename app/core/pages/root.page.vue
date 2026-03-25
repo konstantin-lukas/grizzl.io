@@ -4,20 +4,9 @@ import HeroCard from "~/core/components/layout/HeroCard.vue";
 import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
 import H1 from "~/core/components/typo/H1.vue";
 import useMenu from "~/core/composables/useMenu";
-import { useSemanticSimilarity } from "~/core/composables/useSemanticSimilarity";
 import { authClient } from "~/core/constants/auth-client.constant";
 import { APP_NAV } from "~/core/constants/nav.constant";
 
-const { compareStrings } = useSemanticSimilarity();
-const icons = ["Groceries Home Supplies Shopping Cart", "Vacation Airplane Luggage", "Taxes Finance Money"];
-
-const input = ref("");
-const compare = async () => {
-    const similarities = await Promise.all(
-        icons.map(async icon => ({ name: icon, similarity: await compareStrings(icon, input.value) })),
-    );
-    console.log(similarities);
-};
 const session = authClient.useSession();
 const { close } = useMenu();
 </script>
@@ -38,8 +27,6 @@ const { close } = useMenu();
                     </p>
                 </div>
                 <div class="flex gap-4 px-6 xs:px-12 md:px-24 xl:px-0">
-                    <UInput v-model="input" />
-                    <Button @click="compare">Compare</Button>
                     <Button
                         v-if="session.data"
                         size="xl"
