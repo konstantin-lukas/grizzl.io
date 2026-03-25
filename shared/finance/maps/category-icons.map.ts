@@ -71,4 +71,5 @@ export const CategoryIconsMap = {
     "material-symbols:router-outline-rounded": "Internet WiFi Networking Devices Connectivity",
     "material-symbols:vaping-rooms-rounded": "Vaping Smoking Lounge E-cigarettes Tobacco",
     "material-symbols:contract-edit-outline-rounded": "Subscription Contract Insurance Edit Script",
+    "material-symbols:receipt-long-outline-rounded": "Subscription Contract Insurance Edit Script",
 };
