@@ -37,7 +37,7 @@ CREATE TABLE "finance_category" (
 	"display_name" varchar(100) NOT NULL,
 	"normalized_name" varchar(100) NOT NULL,
 	"icon" varchar(100) NOT NULL,
-	CONSTRAINT "finance_category_normalizedName_unique" UNIQUE("normalized_name")
+	CONSTRAINT "finance_category_accountId_normalizedName_unique" UNIQUE("account_id","normalized_name")
 );
 --> statement-breakpoint
 ALTER TABLE "timer" ALTER COLUMN "created_at" SET DATA TYPE timestamp with time zone;--> statement-breakpoint

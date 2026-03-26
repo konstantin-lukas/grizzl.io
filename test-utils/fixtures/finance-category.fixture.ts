@@ -7,7 +7,7 @@ const icons = Object.keys(CategoryIconsMap);
 export default class FinanceCategoryFixture extends BaseFixture<"financeCategory"> {
     protected defaults = (index: number) => {
         const displayName = str({ length: 100, seed: index });
-        const normalizedName = displayName.toLowerCase().replaceAll(/\s/g, "");
+        const normalizedName = displayName.toLowerCase().replaceAll(/\s/g, "_");
         return {
             displayName,
             normalizedName,

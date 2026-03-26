@@ -19,7 +19,7 @@ test("returns only the transactions belonging to the requested user", async ({ d
     expect(accounts).toStrictEqual([
         {
             amount: -27339,
-            category: "bike",
+            categoryId: myCategory.id,
             createdAt: new Date("2025-01-23T02:17:18.000Z"),
             id: anyId,
             reference:
@@ -63,7 +63,7 @@ test.for(filters)("returns an array filtered by $title", async ({ from, to, refe
         categoryId: categories[index % categories.length]!.id,
     }));
 
-    const categoryId = categories[0].id;
+    const categoryId = category ? categories[0].id : undefined;
 
     sortByCreatedAt(data, "desc");
     let remainingData = data as (typeof data)[0][];

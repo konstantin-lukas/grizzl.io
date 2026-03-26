@@ -16,5 +16,6 @@ test("creates a transaction and returns the id of the created resource", async (
         accountId: anyId,
         createdAt: expect.any(Date),
         deletedAt: null,
+        categoryId: category.id,
     });
 });
