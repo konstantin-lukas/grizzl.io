@@ -5,11 +5,13 @@ import { anyId } from "~~/test-utils/vitest/patterns";
 test("returns only the accounts belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });
     const [otherAccount] = await db.financeAccount.insert(1, { userId: otherUser.id });
-    await db.financeAutoTransaction.insert(1, { accountId: otherAccount.id });
+    const [otherCategory] = await db.financeCategory.insert(1, { accountId: otherAccount.id });
+    await db.financeAutoTransaction.insert(1, { accountId: otherAccount.id, categoryId: otherCategory.id });
 
     const autoTransactionRepository = new AutoTransactionRepository(db.client);
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
-    await db.financeAutoTransaction.insert(1, { accountId: account.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    await db.financeAutoTransaction.insert(1, { accountId: account.id, categoryId: category.id });
     const autoTransactions = await autoTransactionRepository.findByUserAndAccountId(user.id, account.id);
     expect(autoTransactions).toStrictEqual([
         {

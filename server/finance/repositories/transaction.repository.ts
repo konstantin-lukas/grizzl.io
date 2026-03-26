@@ -29,11 +29,15 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         });
     }
 
-    public async create(accountId: string, { amount, reference, category }: PostTransaction, tx?: DatabaseTransaction) {
+    public async create(
+        accountId: string,
+        { amount, reference, categoryId }: PostTransaction,
+        tx?: DatabaseTransaction,
+    ) {
         const executor = tx ?? this.db;
         const [transaction] = await executor
             .insert(this.schema)
-            .values({ accountId, amount, reference, category })
+            .values({ accountId, amount, reference, categoryId })
             .returning({ id: this.schema.id });
 
         return transaction!.id;
@@ -42,13 +46,13 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async update(
         id: string,
         userId: string,
-        { amount, reference, category }: PutTransaction,
+        { amount, reference, categoryId }: PutTransaction,
         tx?: DatabaseTransaction,
     ) {
         const executor = tx ?? this.db;
         const { rowCount } = await executor
             .update(this.schema)
-            .set({ amount, reference, category })
+            .set({ amount, reference, categoryId })
             .from(dbSchema.financeAccount)
             .where(
                 and(
@@ -89,7 +93,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async findByUserAndAccountId(
         userId: string,
         accountId: string,
-        { from, to, reference, category }: GetTransactionFilters = {},
+        { from, to, reference, categoryId }: GetTransactionFilters = {},
     ) {
         const filters = and(
             to ? lte(this.schema.createdAt, to) : undefined,
@@ -97,7 +101,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
             reference
                 ? ilike(this.schema.reference, `%${reference.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`)
                 : undefined,
-            category ? eq(this.schema.category, category) : undefined,
+            categoryId ? eq(this.schema.categoryId, categoryId) : undefined,
         );
 
         return this.db
@@ -106,7 +110,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                category: this.schema.category,
+                category: this.schema.categoryId,
             })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))

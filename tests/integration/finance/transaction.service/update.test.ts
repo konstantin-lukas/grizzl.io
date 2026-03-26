@@ -11,7 +11,12 @@ test("correctly calculates the account balance when multiple updates happens sim
     const transactionService = new TransactionService(transactionRepository, accountRepository);
 
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
-    const transactions = await db.financeTransaction.insert(50, { accountId: account.id, amount: 0 });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const transactions = await db.financeTransaction.insert(50, {
+        accountId: account.id,
+        categoryId: category.id,
+        amount: 0,
+    });
     await Promise.all(
         arr(
             index =>

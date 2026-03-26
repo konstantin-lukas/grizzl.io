@@ -3,7 +3,8 @@ import { expect, test } from "~~/test-utils/vitest";
 
 test("returns true iff the sub resource exists for the given account", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
-    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id, categoryId: category.id });
     const accountRepository = new AccountRepository(db.client);
     const hasTransaction = await accountRepository.hasSubResource(
         transaction.id,

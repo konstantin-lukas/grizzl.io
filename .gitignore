@@ -18,3 +18,4 @@ playwright-report
 app/assets/sound/*.Identifier
 .idea/**/*.local.xml
 .idea/workspace.xml
+.idea/dataSources

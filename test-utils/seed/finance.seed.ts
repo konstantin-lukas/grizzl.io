@@ -52,17 +52,16 @@ seed("insert finance test data", async ({ db }) => {
     }));
 
     for (const [i, account] of accounts.entries()) {
+        const categories = await db.financeCategory.insert(5, { accountId: account.id });
+
         if (account.title === "Investment Account") continue;
         const transactions = await db.financeTransaction.insert(50, j => {
             const seed = 50 * i + j;
-            const category =
-                db.financeTransaction.categories[
-                    int({ min: 0, max: db.financeTransaction.categories.length - 1, seed })
-                ];
+            const category = categories[int({ min: 0, max: categories.length - 1, seed })]!;
             return {
                 accountId: account.id,
                 createdAt: date({ refDate: new Date(), seed, days: 45 }),
-                category,
+                categoryId: category.id,
                 amount: int({ min: account.title === "Travel Account" ? -300_00 : -200_00, max: 300_00, seed }),
                 reference: maybe(() => categoryReferences[category as never], { seed }),
             };
@@ -74,13 +73,10 @@ seed("insert finance test data", async ({ db }) => {
         if (account.title === "Travel Account") continue;
         await db.financeAutoTransaction.insert(10, j => {
             const seed = 10 * i + j;
-            const category =
-                db.financeTransaction.categories[
-                    int({ min: 0, max: db.financeTransaction.categories.length - 1, seed })
-                ];
+            const category = categories[int({ min: 0, max: categories.length - 1, seed })]!;
             return {
                 accountId: account.id,
-                category,
+                categoryId: category.id,
                 reference: maybe(() => categoryReferences[category as never], { seed }),
                 lastExec: date({ seed, refDate: new Date() }).toISOString().split("T")[0],
             };

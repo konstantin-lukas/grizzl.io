@@ -3,6 +3,7 @@ import { createDBConnection } from "~~/test-utils/database/connection";
 import AccountFixture from "~~/test-utils/fixtures/account.fixture";
 import FinanceAccountFixture from "~~/test-utils/fixtures/finance-account.fixture";
 import FinanceAutoTransactionFixture from "~~/test-utils/fixtures/finance-auto-transaction.fixture";
+import FinanceCategoryFixture from "~~/test-utils/fixtures/finance-category.fixture";
 import FinanceTransactionFixture from "~~/test-utils/fixtures/finance-transaction.fixture";
 import TimerIntervalFixture from "~~/test-utils/fixtures/timer-interval.fixture";
 import TimerFixture from "~~/test-utils/fixtures/timer.fixture";
@@ -13,6 +14,7 @@ function createDBFixtures(db: ReturnType<typeof drizzle>) {
         timer: new TimerFixture(db),
         timerInterval: new TimerIntervalFixture(db),
         financeAccount: new FinanceAccountFixture(db),
+        financeCategory: new FinanceCategoryFixture(db),
         financeTransaction: new FinanceTransactionFixture(db),
         financeAutoTransaction: new FinanceAutoTransactionFixture(db),
         user: new UserFixture(db),
