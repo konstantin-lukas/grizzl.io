@@ -17,7 +17,7 @@ test("returns only the accounts belonging to the requested user", async ({ db, u
         {
             id: anyId,
             amount: 7977,
-            category: "bike",
+            categoryId: category.id,
             createdAt: new Date("2025-05-18T01:18:19.000Z"),
             execInterval: 8,
             execOn: 28,

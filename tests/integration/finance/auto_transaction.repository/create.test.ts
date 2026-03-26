@@ -19,5 +19,6 @@ test("creates an auto-transaction and returns the id of the created resource", a
         accountId: anyId,
         createdAt: expect.any(Date),
         deletedAt: null,
+        categoryId: category.id,
     });
 });

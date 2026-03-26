@@ -23,6 +23,7 @@ test("correctly calculates the account balance when multiple updates happens sim
                 transactionService.update(transactions[index]!.id, user.id, account.id, {
                     ...BASE_TRANSACTION,
                     amount: BASE_TRANSACTION.amount,
+                    categoryId: category.id,
                 }),
             {
                 length: transactions.length,
