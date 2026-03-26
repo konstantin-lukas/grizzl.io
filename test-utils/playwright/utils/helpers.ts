@@ -53,7 +53,7 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
             ]);
         }
     }
-    return testCases;
+    return testCases as [string, T][];
 }
 
 export function testGetCollectionOwnership(fixtureProvider: (db: DBFixtures, userId: string) => Promise<string>) {
@@ -134,18 +134,19 @@ type OwnableFixture = "financeAccount" | "timer";
 
 export function testPostSubResourceToInvalidParentResource(
     route: (parentId: string) => string,
-    parentFixture: OwnableFixture,
-    baseData: object,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parentFixture: (db: DBFixtures, userId?: string) => Promise<{ baseData: object; parentResource: any }>,
 ) {
     test("rejects creating a sub-resource on another user's parent resource", async ({ request, db }) => {
         const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-        const [account] = await db[parentFixture].insert(1, { userId: user!.id });
+        const { parentResource, baseData } = await parentFixture(db, user!.id);
 
-        const response = await request.post(route(account.id), { data: baseData });
+        const response = await request.post(route(parentResource.id), { data: baseData });
         expect(response.status()).toBe(404);
     });
 
-    test("rejects creating a sub-resource on a non-existent parent resource", async ({ request }) => {
+    test("rejects creating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
+        const { baseData } = await parentFixture(db);
         const response = await request.post(route("2222222222222222"), { data: baseData });
         expect(response.status()).toBe(404);
     });
@@ -155,26 +156,25 @@ export function testPutSubResourceOnInvalidParentResource(
     fixtureProvider: (
         db: DBFixtures,
         userId?: string,
-    ) => Promise<{ validUrl: string; invalidUrl: string; unknownUrl: string }>,
-    baseData: object,
+    ) => Promise<{ validUrl: string; invalidUrl: string; unknownUrl: string; baseData: object }>,
 ) {
     test("rejects updating a sub-resource on another user's parent resource", async ({ request, db }) => {
         const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-        const { validUrl: route } = await fixtureProvider(db, user!.id);
+        const { validUrl: route, baseData } = await fixtureProvider(db, user!.id);
 
         const response = await request.put(route, { data: baseData });
         expect(response.status()).toBe(404);
     });
 
     test("rejects updating a sub-resource when the parent resource is not associated", async ({ request, db }) => {
-        const { invalidUrl: route } = await fixtureProvider(db);
+        const { invalidUrl: route, baseData } = await fixtureProvider(db);
 
         const response = await request.put(route, { data: baseData });
         expect(response.status()).toBe(404);
     });
 
     test("rejects updating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
-        const { unknownUrl: route } = await fixtureProvider(db);
+        const { unknownUrl: route, baseData } = await fixtureProvider(db);
         await truncate(db.client);
         const response = await request.put(route, { data: baseData });
         expect(response.status()).toBe(404);

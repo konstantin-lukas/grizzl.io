@@ -1,4 +1,4 @@
-import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import {
@@ -13,13 +13,22 @@ import {
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 
 test401WhenLoggedOut("post", route("2222222222222222"));
-testPostSubResourceToInvalidParentResource(id => route(id), "financeAccount", BASE_TRANSACTION);
+testPostSubResourceToInvalidParentResource(route, async (db, userId) => {
+    const [account] = await db.financeAccount.insert(1, userId ? { userId } : undefined);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    return { parentResource: account, baseData: { ...BASE_TRANSACTION, categoryId: category.id } };
+});
 
 for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
+        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+        const payload =
+            (data as { categoryId: string }).categoryId === BASE_AUTO_TRANSACTION.categoryId
+                ? { ...data, categoryId: category.id }
+                : data;
         const response = await request.post(route(account.id), {
-            data: JSONWithBigInt(data),
+            data: JSONWithBigInt(payload),
         });
         expect(response.status()).toBe(400);
     });
@@ -28,24 +37,32 @@ for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
 for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
     test(`allows creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
-        const response = await request.post(route(account.id), { data });
+        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+        const payload =
+            (data as { categoryId: string }).categoryId === BASE_AUTO_TRANSACTION.categoryId
+                ? { ...data, categoryId: category.id }
+                : data;
+        const response = await request.post(route(account.id), { data: payload });
         const responseData = response.headers().location;
         expect(response.status()).toBe(201);
         const { id, createdAt, deletedAt, accountId, ...rest } = (await db.financeTransaction.select())[0]!;
-        expect(rest).toStrictEqual({ ...data });
+        expect(rest).toStrictEqual({ ...data, categoryId: category.id });
         expect(responseData).toBe(`${route(account.id)}/${id}`);
     });
 }
 
 test("updates the account balance automatically", async ({ request, db }) => {
     let [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
 
-    await request.post(route(account.id), { data: BASE_TRANSACTION });
+    await request.post(route(account.id), { data: { ...BASE_TRANSACTION, categoryId: category.id } });
 
     account = (await db.financeAccount.select())[0]!;
     expect(account.balance).toBe(BASE_TRANSACTION.amount);
 
-    await request.post(route(account.id), { data: { ...BASE_TRANSACTION, amount: BASE_TRANSACTION.amount * -3 } });
+    await request.post(route(account.id), {
+        data: { ...BASE_TRANSACTION, categoryId: category.id, amount: BASE_TRANSACTION.amount * -3 },
+    });
 
     account = (await db.financeAccount.select())[0]!;
     expect(account.balance).toBe(BASE_TRANSACTION.amount * -2);
@@ -53,14 +70,16 @@ test("updates the account balance automatically", async ({ request, db }) => {
 
 test("rejects creating a transaction if the resulting account balance is too large", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1, { balance: Number.MAX_SAFE_INTEGER });
-    const response = await request.post(route(account.id), { data: BASE_TRANSACTION });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const response = await request.post(route(account.id), { data: { ...BASE_TRANSACTION, categoryId: category.id } });
     expect(response.status()).toBe(409);
 });
 
 test("rejects creating a transaction if the resulting account balance is too small", async ({ request, db }) => {
     const [account] = await db.financeAccount.insert(1, { balance: Number.MIN_SAFE_INTEGER });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
     const response = await request.post(route(account.id), {
-        data: { ...BASE_TRANSACTION, amount: -BASE_TRANSACTION.amount },
+        data: { ...BASE_TRANSACTION, categoryId: category.id, amount: -BASE_TRANSACTION.amount },
     });
     expect(response.status()).toBe(409);
 });

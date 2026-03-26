@@ -29,20 +29,14 @@ testGetSoftDeletedCollection(async db => {
     return route(account.id);
 });
 testGetCollectionSubResourceFiltering(async db => {
-    const [account1] = await db.financeAccount.insert(1);
-    const [account2] = await db.financeAccount.insert(1);
-    const [category1] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [category2] = await db.financeCategory.insert(1, { accountId: account2.id });
-    const [transaction1] = await db.financeAutoTransaction.insert(1, {
+    const [account1, account2] = await db.financeAccount.insert(2);
+    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
+    const transactions = await db.financeAutoTransaction.insert(2, {
         accountId: account1.id,
-        categoryId: category1.id,
-    });
-    const [transaction2] = await db.financeAutoTransaction.insert(1, {
-        accountId: account2.id,
-        categoryId: category2.id,
+        categoryId: category.id,
     });
     return {
-        subResources: [transaction1, transaction2],
+        subResources: transactions,
         thisRoute: route(account1.id),
         otherRoute: route(account2.id),
     };

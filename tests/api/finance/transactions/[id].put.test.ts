@@ -21,8 +21,9 @@ testPutSubResourceOnInvalidParentResource(async (db, userId) => {
         validUrl: `${route(account1.id)}/${transaction.id}`,
         invalidUrl: `${route(account2.id)}/${transaction.id}`,
         unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
+        baseData: { ...BASE_TRANSACTION, categoryId: category.id },
     };
-}, BASE_TRANSACTION);
+});
 
 for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
     test(`rejects updating resources when ${name}`, async ({ request, db }) => {
@@ -33,8 +34,12 @@ for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
             categoryId: category.id,
             amount: 0,
         });
+        const payload =
+            (data as { categoryId: string }).categoryId === BASE_TRANSACTION.categoryId
+                ? { ...data, categoryId: category.id }
+                : data;
         const response = await request.put(`${route(account.id)}/${transaction.id}`, {
-            data: JSONWithBigInt(data),
+            data: JSONWithBigInt(payload),
         });
         expect(response.status()).toBe(400);
     });
@@ -49,10 +54,13 @@ for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
             categoryId: category.id,
             amount: 0,
         });
-        const response = await request.put(`${route(account.id)}/${transaction.id}`, { data });
+        const payload = data.categoryId === BASE_TRANSACTION.categoryId ? { ...data, categoryId: category.id } : data;
+        const response = await request.put(`${route(account.id)}/${transaction.id}`, {
+            data: payload,
+        });
         expect(response.status()).toBe(204);
         const { id, createdAt, deletedAt, accountId, ...rest } = (await db.financeTransaction.select())[0]!;
-        expect(rest).toStrictEqual({ ...data });
+        expect(rest).toStrictEqual({ ...data, categoryId: category.id });
     });
 }
 
@@ -64,8 +72,9 @@ test("updates the account balance automatically", async ({ request, db }) => {
         categoryId: category.id,
         amount: 0,
     });
-
-    await request.put(`${route(account.id)}/${transaction.id}`, { data: BASE_TRANSACTION });
+    await request.put(`${route(account.id)}/${transaction.id}`, {
+        data: { ...BASE_TRANSACTION, categoryId: category.id },
+    });
 
     account = (await db.financeAccount.select())[0]!;
     expect(account.balance).toBe(BASE_TRANSACTION.amount);

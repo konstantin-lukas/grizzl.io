@@ -83,7 +83,7 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withTransaction("amount", -1)],
     ["the reference is just long enough", withTransaction("reference", "a")],
     ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
-    ["the categoryId is a valid", withTransaction("categoryId", "")],
+    ["the categoryId is a valid", withTransaction("categoryId", BASE_TRANSACTION.categoryId)],
 ] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -107,7 +107,7 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withAutoTransaction("amount", -1)],
     ["the reference is just long enough", withAutoTransaction("reference", "a")],
     ["the reference is just short enough", withAutoTransaction("reference", str({ length: 100 }))],
-    ["the categoryId is valid", withAutoTransaction("categoryId", "Category.PETS")],
+    ["the categoryId is valid", withAutoTransaction("categoryId", BASE_AUTO_TRANSACTION.categoryId)],
     ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
     ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
     ["execOn is just large enough", withAutoTransaction("execOn", 1)],

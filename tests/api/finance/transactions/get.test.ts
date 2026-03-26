@@ -29,13 +29,13 @@ testGetSoftDeletedCollection(async db => {
 });
 testGetCollectionSubResourceFiltering(async db => {
     const [account1, account2] = await db.financeAccount.insert(2);
-    const [category1] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [category2] = await db.financeCategory.insert(1, { accountId: account2.id });
-    const transaction1 = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category1.id });
-    const transaction2 = await db.financeTransaction.insert(1, { accountId: account2.id, categoryId: category2.id });
-
+    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
+    const transactions = await db.financeTransaction.insert(2, {
+        accountId: account1.id,
+        categoryId: category.id,
+    });
     return {
-        subResources: [transaction1, transaction2],
+        subResources: transactions,
         thisRoute: route(account1.id),
         otherRoute: route(account2.id),
     };
@@ -57,22 +57,29 @@ const filters = generateFilterCombinations([
     { from: "2024-07-24T12:00:00Z" },
     { to: "2025-03-25T12:00:00Z" },
     { reference: "labore" },
-    { category: "pets" },
+    { category: true },
 ]);
 
 for (const filter of filters) {
     test(`allows retrieving a list of resources filtered by ${Object.keys(filter)}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
-        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-        const data = (await db.financeTransaction.insert(50, { accountId: account.id, categoryId: category.id })).map(
-            ({ createdAt, deletedAt, accountId, ...rest }) => ({
-                ...rest,
-                createdAt: createdAt.toISOString(),
-            }),
-        );
+        const categories = await db.financeCategory.insert(5, { accountId: account.id });
+        const data = (
+            await db.financeTransaction.insert(50, index => ({
+                accountId: account.id,
+                categoryId: categories[index % categories.length]!.id,
+            }))
+        ).map(({ createdAt, deletedAt, accountId, ...rest }) => ({
+            ...rest,
+            createdAt: createdAt.toISOString(),
+        }));
         sortByCreatedAt(data, "desc");
+        const categoryId = filter.category ? categories[0].id : undefined;
         const queryParams = `?${Object.entries(filter)
-            .map(([key, value]) => `${key}=${value}`)
+            .map(
+                ([key, value]) =>
+                    `${key === "category" ? "categoryId" : key}=${key === "category" ? categoryId : value}`,
+            )
             .join("&")}`;
 
         const response = await request.get(route(account.id) + queryParams);
@@ -94,7 +101,7 @@ for (const filter of filters) {
             remainingData = remainingData.filter(datum => datum.reference?.includes(filter.reference!));
         }
         if ("category" in filter) {
-            remainingData = remainingData.filter(datum => datum.categoryId === filter.category);
+            remainingData = remainingData.filter(datum => datum.categoryId === categoryId);
         }
 
         expect(receivedData).not.toHaveLength(0);
