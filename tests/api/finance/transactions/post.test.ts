@@ -1,4 +1,4 @@
-import { BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import {
@@ -24,7 +24,7 @@ for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
         const [account] = await db.financeAccount.insert(1);
         const [category] = await db.financeCategory.insert(1, { accountId: account.id });
         const payload =
-            (data as { categoryId: string }).categoryId === BASE_AUTO_TRANSACTION.categoryId
+            (data as { categoryId: string }).categoryId === BASE_TRANSACTION.categoryId
                 ? { ...data, categoryId: category.id }
                 : data;
         const response = await request.post(route(account.id), {
@@ -39,7 +39,7 @@ for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
         const [account] = await db.financeAccount.insert(1);
         const [category] = await db.financeCategory.insert(1, { accountId: account.id });
         const payload =
-            (data as { categoryId: string }).categoryId === BASE_AUTO_TRANSACTION.categoryId
+            (data as { categoryId: string }).categoryId === BASE_TRANSACTION.categoryId
                 ? { ...data, categoryId: category.id }
                 : data;
         const response = await request.post(route(account.id), { data: payload });
@@ -82,4 +82,14 @@ test("rejects creating a transaction if the resulting account balance is too sma
         data: { ...BASE_TRANSACTION, categoryId: category.id, amount: -BASE_TRANSACTION.amount },
     });
     expect(response.status()).toBe(409);
+});
+
+test("rejects attaching a category belonging to a different account", async ({ request, db }) => {
+    const [account1, account2] = await db.financeAccount.insert(2);
+    const [category] = await db.financeCategory.insert(1, { accountId: account2.id });
+
+    const response = await request.post(route(account1.id), {
+        data: { ...BASE_TRANSACTION, categoryId: category.id },
+    });
+    expect(response.status()).toBe(400);
 });

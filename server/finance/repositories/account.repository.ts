@@ -1,8 +1,8 @@
 import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
-import { and, count, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository, { type DatabaseTransaction } from "~~/server/core/repositories/base.repository";
+import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAccount";
 
@@ -33,9 +33,8 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         return !!result?.count;
     }
 
-    public async findByUserId(userId: string, tx?: DatabaseTransaction) {
-        const executor = tx ?? this.db;
-        return executor
+    public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
+        return ctx
             .select({
                 id: this.schema.id,
                 title: this.schema.title,
@@ -70,9 +69,8 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         return rowCount;
     }
 
-    public async updateBalance(id: string, balance: number, tx?: DatabaseTransaction) {
-        const executor = tx ?? this.db;
-        const { rowCount } = await executor.update(this.schema).set({ balance }).where(eq(this.schema.id, id));
+    public async updateBalance(id: string, balance: number, ctx: ExecutionContext = this.db) {
+        const { rowCount } = await ctx.update(this.schema).set({ balance }).where(eq(this.schema.id, id));
         return rowCount;
     }
 }

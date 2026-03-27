@@ -107,3 +107,15 @@ test("rejects updating a transaction if the resulting account balance is too sma
     });
     expect(response.status()).toBe(409);
 });
+
+test("rejects attaching a category belonging to a different account", async ({ request, db }) => {
+    const [account1, account2] = await db.financeAccount.insert(2);
+    const [category1] = await db.financeCategory.insert(1, { accountId: account1.id });
+    const [category2] = await db.financeCategory.insert(1, { accountId: account2.id });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category1.id });
+
+    const response = await request.put(`${route(account1.id)}/${transaction.id}`, {
+        data: { ...BASE_TRANSACTION, categoryId: category2.id },
+    });
+    expect(response.status()).toBe(400);
+});

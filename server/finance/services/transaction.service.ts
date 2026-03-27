@@ -4,17 +4,20 @@ import type {
     PutTransaction,
 } from "#shared/finance/validators/transaction.validator";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
+import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
+import CategoryRepository from "~~/server/finance/repositories/category.repository";
 import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
 
 export default class TransactionService {
-    static readonly deps = [TransactionRepository, AccountRepository];
+    static readonly deps = [TransactionRepository, AccountRepository, CategoryRepository];
 
     constructor(
         private readonly transactionRepository: TransactionRepository,
         private readonly accountRepository: AccountRepository,
+        private readonly categoryRepository: CategoryRepository,
     ) {}
 
     public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
@@ -41,11 +44,21 @@ export default class TransactionService {
 
     public async create(userId: string, accountId: string, transaction: PostTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const accounts = await this.accountRepository.findByUserId(userId, tx);
+            const [accounts, categories] = await Promise.all([
+                this.accountRepository.findByUserId(userId, tx),
+                this.categoryRepository.findByUserAndAccountId(userId, accountId, tx),
+            ]);
             const account = accounts.find(account => account.id === accountId);
+            const category = categories.find(category => category.id === transaction.categoryId);
+
             if (!account) {
                 const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
                 throw new NotFoundError("The requested account does not exist.", logMessage);
+            }
+
+            if (!category) {
+                const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId} using category id ${transaction.categoryId}.`;
+                throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
             }
 
             const newBalance = account.balance + transaction.amount;
@@ -66,12 +79,21 @@ export default class TransactionService {
 
     public async update(id: string, userId: string, accountId: string, transaction: PutTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const accounts = await this.accountRepository.findByUserId(userId, tx);
+            const [accounts, categories] = await Promise.all([
+                this.accountRepository.findByUserId(userId, tx),
+                this.categoryRepository.findByUserAndAccountId(userId, accountId, tx),
+            ]);
             const account = accounts.find(account => account.id === accountId);
+            const category = categories.find(category => category.id === transaction.categoryId);
 
             if (!account) {
                 const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId}.`;
                 throw new NotFoundError("The requested account does not exist.", logMessage);
+            }
+
+            if (!category) {
+                const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId} using category id ${transaction.categoryId}.`;
+                throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
             }
 
             const previousAmount = await this.transactionRepository.getAmountByIdAndUserAndAccount(

@@ -6,7 +6,7 @@ import type {
 import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import type { DatabaseTransaction } from "~~/server/core/repositories/base.repository";
+import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
 import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "financeTransaction";
@@ -32,10 +32,9 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async create(
         accountId: string,
         { amount, reference, categoryId }: PostTransaction,
-        tx?: DatabaseTransaction,
+        ctx: ExecutionContext = this.db,
     ) {
-        const executor = tx ?? this.db;
-        const [transaction] = await executor
+        const [transaction] = await ctx
             .insert(this.schema)
             .values({ accountId, amount, reference, categoryId })
             .returning({ id: this.schema.id });
@@ -47,10 +46,9 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         id: string,
         userId: string,
         { amount, reference, categoryId }: PutTransaction,
-        tx?: DatabaseTransaction,
+        ctx: ExecutionContext = this.db,
     ) {
-        const executor = tx ?? this.db;
-        const { rowCount } = await executor
+        const { rowCount } = await ctx
             .update(this.schema)
             .set({ amount, reference, categoryId })
             .from(dbSchema.financeAccount)
@@ -70,10 +68,9 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         id: string,
         userId: string,
         accountId: string,
-        tx?: DatabaseTransaction,
+        ctx: ExecutionContext = this.db,
     ) {
-        const executor = tx ?? this.db;
-        const result = await executor
+        const result = await ctx
             .select({ amount: this.schema.amount })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
+import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import TransactionService from "~~/server/finance/services/transaction.service";
@@ -9,6 +10,10 @@ const accountRepositoryMock = {
     findByUserId: vi.fn(),
     updateBalance: vi.fn(),
     hasSubResource: vi.fn(),
+};
+
+const categoryRepositoryMock = {
+    findByUserAndAccountId: vi.fn(),
 };
 
 const transactionRepositoryMock = {
@@ -25,7 +30,11 @@ beforeEach(() => {
     vi.resetAllMocks();
 });
 
-const transactionService = new TransactionService(transactionRepositoryMock as never, accountRepositoryMock as never);
+const transactionService = new TransactionService(
+    transactionRepositoryMock as never,
+    accountRepositoryMock as never,
+    categoryRepositoryMock as never,
+);
 const id = "9j3q9ohodjj3aa";
 const userId = "awdk9t3j8sojfo";
 const accountId = "12349ohodjj3aa";
@@ -33,25 +42,37 @@ const accountId = "12349ohodjj3aa";
 describe("create", () => {
     test("throws a NotFoundError if no accounts exist for a given user", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.create(id, id, BASE_TRANSACTION)).rejects.toThrow(NotFoundError);
     });
 
     test("throws an InvalidAccountBalanceError if no accounts exist for a given user", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: Number.MAX_SAFE_INTEGER, id }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.create(id, id, BASE_TRANSACTION)).rejects.toThrow(InvalidAccountBalanceError);
     });
 
     test("throws an UnknownError if no accounts exist for a given user", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         accountRepositoryMock.updateBalance.mockReturnValueOnce(null);
         await expect(transactionService.create(id, id, BASE_TRANSACTION)).rejects.toThrow(UnknownError);
     });
 
     test("calls on the transaction repository to create a new transaction if everything is in order", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         accountRepositoryMock.updateBalance.mockReturnValueOnce(1);
         transactionRepositoryMock.create.mockReturnValueOnce(id);
         await expect(transactionService.create(id, id, BASE_TRANSACTION)).resolves.toBe(id);
+    });
+
+    test("throws an InvalidForeignKeyError if the category can't be found", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([]);
+        await expect(transactionService.create(userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            InvalidForeignKeyError,
+        );
     });
 });
 
@@ -94,6 +115,7 @@ describe("update", () => {
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
         accountRepositoryMock.updateBalance.mockReturnValueOnce(1);
         transactionRepositoryMock.update.mockReturnValueOnce(1);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).resolves.not.toThrow();
     });
 
@@ -102,6 +124,7 @@ describe("update", () => {
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
         accountRepositoryMock.updateBalance.mockReturnValueOnce(1);
         transactionRepositoryMock.update.mockReturnValueOnce(0);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
             UnknownError,
         );
@@ -111,6 +134,7 @@ describe("update", () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(123);
         accountRepositoryMock.updateBalance.mockReturnValueOnce(0);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
             UnknownError,
         );
@@ -119,6 +143,7 @@ describe("update", () => {
     test("throws an InvalidAccountBalanceError if the resulting balance is invalid", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: Number.MAX_SAFE_INTEGER, id: accountId }]);
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(0);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
             InvalidAccountBalanceError,
         );
@@ -127,6 +152,7 @@ describe("update", () => {
     test("throws a NotFoundError if the transaction can't be found", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValueOnce(undefined);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
             NotFoundError,
         );
@@ -134,8 +160,17 @@ describe("update", () => {
 
     test("throws a NotFoundError if the account can't be found", async () => {
         accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_TRANSACTION.categoryId }]);
         await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
             NotFoundError,
+        );
+    });
+
+    test("throws an InvalidForeignKeyError if the category can't be found", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
+        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([]);
+        await expect(transactionService.update(id, userId, accountId, BASE_TRANSACTION)).rejects.toBeInstanceOf(
+            InvalidForeignKeyError,
         );
     });
 });

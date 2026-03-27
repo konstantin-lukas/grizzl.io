@@ -48,3 +48,13 @@ for (const [name, data] of AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES) {
         expect(responseData).toBe(`${route(account.id)}/${id}`);
     });
 }
+
+test("rejects attaching a category belonging to a different account", async ({ request, db }) => {
+    const [account1, account2] = await db.financeAccount.insert(2);
+    const [category] = await db.financeCategory.insert(1, { accountId: account2.id });
+
+    const response = await request.post(route(account1.id), {
+        data: { ...BASE_AUTO_TRANSACTION, categoryId: category.id },
+    });
+    expect(response.status()).toBe(400);
+});
