@@ -6,7 +6,7 @@ import type {
 import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import type { DatabaseTransaction } from "~~/server/core/repositories/base.repository";
+import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
 import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "financeTransaction";
@@ -29,11 +29,14 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         });
     }
 
-    public async create(accountId: string, { amount, reference, category }: PostTransaction, tx?: DatabaseTransaction) {
-        const executor = tx ?? this.db;
-        const [transaction] = await executor
+    public async create(
+        accountId: string,
+        { amount, reference, categoryId }: PostTransaction,
+        ctx: ExecutionContext = this.db,
+    ) {
+        const [transaction] = await ctx
             .insert(this.schema)
-            .values({ accountId, amount, reference, category })
+            .values({ accountId, amount, reference, categoryId })
             .returning({ id: this.schema.id });
 
         return transaction!.id;
@@ -42,13 +45,12 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async update(
         id: string,
         userId: string,
-        { amount, reference, category }: PutTransaction,
-        tx?: DatabaseTransaction,
+        { amount, reference, categoryId }: PutTransaction,
+        ctx: ExecutionContext = this.db,
     ) {
-        const executor = tx ?? this.db;
-        const { rowCount } = await executor
+        const { rowCount } = await ctx
             .update(this.schema)
-            .set({ amount, reference, category })
+            .set({ amount, reference, categoryId })
             .from(dbSchema.financeAccount)
             .where(
                 and(
@@ -66,10 +68,9 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         id: string,
         userId: string,
         accountId: string,
-        tx?: DatabaseTransaction,
+        ctx: ExecutionContext = this.db,
     ) {
-        const executor = tx ?? this.db;
-        const result = await executor
+        const result = await ctx
             .select({ amount: this.schema.amount })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
@@ -89,7 +90,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async findByUserAndAccountId(
         userId: string,
         accountId: string,
-        { from, to, reference, category }: GetTransactionFilters = {},
+        { from, to, reference, categoryId }: GetTransactionFilters = {},
     ) {
         const filters = and(
             to ? lte(this.schema.createdAt, to) : undefined,
@@ -97,7 +98,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
             reference
                 ? ilike(this.schema.reference, `%${reference.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`)
                 : undefined,
-            category ? eq(this.schema.category, category) : undefined,
+            categoryId ? eq(this.schema.categoryId, categoryId) : undefined,
         );
 
         return this.db
@@ -106,7 +107,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                category: this.schema.category,
+                categoryId: this.schema.categoryId,
             })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))

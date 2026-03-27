@@ -7,9 +7,12 @@ test("deletes only resources owned by the user", async ({ db, user }) => {
     const otherUser = await db.user.selectByEmail("test" as never);
     const [account1] = await db.financeAccount.insert(1, { userId: user.id });
     const [account2] = await db.financeAccount.insert(1, { userId: otherUser!.id });
+    const [category1, category2] = await db.financeCategory.insert(2, i => ({
+        accountId: i === 0 ? account1.id : account2!.id,
+    }));
 
-    const [transaction1] = await db.financeTransaction.insert(1, { accountId: account1.id });
-    const [transaction2] = await db.financeTransaction.insert(1, { accountId: account2.id });
+    const [transaction1] = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category1.id });
+    const [transaction2] = await db.financeTransaction.insert(1, { accountId: account2.id, categoryId: category2.id });
 
     await transactionRepository.delete({ id: transaction1.id, userId: user.id });
     await transactionRepository.delete({ id: transaction2.id, userId: user.id });

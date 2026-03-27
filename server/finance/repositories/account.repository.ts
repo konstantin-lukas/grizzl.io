@@ -2,7 +2,7 @@ import type { PostAccount, PutAccount } from "#shared/finance/validators/account
 import { and, count, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository, { type DatabaseTransaction } from "~~/server/core/repositories/base.repository";
+import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAccount";
 
@@ -18,7 +18,7 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         subResourceName: "financeTransaction" | "financeAutoTransaction",
     ) {
         const [result] = await this.db
-            .select({ count: count() })
+            .select({ value: count() })
             .from(dbSchema[subResourceName])
             .innerJoin(this.schema, eq(dbSchema[subResourceName].accountId, this.schema.id))
             .where(
@@ -30,12 +30,11 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
             )
             .limit(1);
 
-        return !!result?.count;
+        return !!result?.value;
     }
 
-    public async findByUserId(userId: string, tx?: DatabaseTransaction) {
-        const executor = tx ?? this.db;
-        return executor
+    public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
+        return ctx
             .select({
                 id: this.schema.id,
                 title: this.schema.title,
@@ -70,9 +69,8 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         return rowCount;
     }
 
-    public async updateBalance(id: string, balance: number, tx?: DatabaseTransaction) {
-        const executor = tx ?? this.db;
-        const { rowCount } = await executor.update(this.schema).set({ balance }).where(eq(this.schema.id, id));
+    public async updateBalance(id: string, balance: number, ctx: ExecutionContext = this.db) {
+        const { rowCount } = await ctx.update(this.schema).set({ balance }).where(eq(this.schema.id, id));
         return rowCount;
     }
 }

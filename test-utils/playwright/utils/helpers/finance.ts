@@ -1,4 +1,3 @@
-import { Category } from "~~/shared/finance/enums/category.enum";
 import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { str } from "~~/test-utils/helpers/data";
 import { omit } from "~~/test-utils/helpers/object";
@@ -63,7 +62,7 @@ export const ACCOUNT_VALID_REQUEST_TEST_CASES = [
 const TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "amount", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "reference", { valid: ["string", "null"] }),
-    ...createInvalidTypeTestCases(BASE_TRANSACTION, "category", { valid: ["string"] }),
+    ...createInvalidTypeTestCases(BASE_TRANSACTION, "categoryId", { valid: ["string"] }),
 ];
 
 const TRANSACTION_INVALID_DATA_TEST_CASES = [
@@ -72,8 +71,8 @@ const TRANSACTION_INVALID_DATA_TEST_CASES = [
     ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
     ["the reference is empty", withTransaction("amount", "")],
     ["the reference is too long", withTransaction("amount", str({ length: 101 }))],
-    ["the category is not a valid enum value", withTransaction("category", "pineapples")],
-    ["the category is missing", omit(BASE_TRANSACTION, "category")],
+    ["the categoryId is not valid", withTransaction("categoryId", "pineapples")],
+    ["the categoryId is missing", omit(BASE_TRANSACTION, "categoryId")],
 ] as const;
 
 export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
@@ -84,7 +83,7 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withTransaction("amount", -1)],
     ["the reference is just long enough", withTransaction("reference", "a")],
     ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
-    ["the category is a valid enum value", withTransaction("category", Category.PETS)],
+    ["the categoryId is a valid", withTransaction("categoryId", BASE_TRANSACTION.categoryId)],
 ] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -108,7 +107,7 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withAutoTransaction("amount", -1)],
     ["the reference is just long enough", withAutoTransaction("reference", "a")],
     ["the reference is just short enough", withAutoTransaction("reference", str({ length: 100 }))],
-    ["the category is a valid enum value", withAutoTransaction("category", Category.PETS)],
+    ["the categoryId is valid", withAutoTransaction("categoryId", BASE_AUTO_TRANSACTION.categoryId)],
     ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
     ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
     ["execOn is just large enough", withAutoTransaction("execOn", 1)],
@@ -123,8 +122,8 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
     ["the reference is empty", withAutoTransaction("amount", "")],
     ["the reference is too long", withAutoTransaction("amount", str({ length: 101 }))],
-    ["the category is not a valid enum value", withAutoTransaction("category", "pineapples")],
-    ["the category is missing", omit(BASE_TRANSACTION, "category")],
+    ["the categoryId is not valid", withAutoTransaction("categoryId", "pineapples")],
+    ["the categoryId is missing", omit(BASE_TRANSACTION, "categoryId")],
     ["execInterval is too small", withAutoTransaction("execInterval", 0)],
     ["execInterval is negative", withAutoTransaction("execInterval", -1)],
     ["execInterval is too large", withAutoTransaction("execInterval", 13)],

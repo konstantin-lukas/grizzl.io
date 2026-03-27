@@ -1,7 +1,7 @@
 import { createdAt, deletedAt, id } from "../../../database/mixins";
 import { financeAccount } from "../../../server/finance/schemas/account.schema";
-import { financeCategoryEnum } from "../../../server/finance/schemas/transaction.schema";
 import { ID_LENGTH, TITLE_MAX } from "../../../shared/core/validators/core.validator";
+import { financeCategory } from "./category.schema";
 import { bigint, char, date, integer, pgTable, varchar } from "drizzle-orm/pg-core";
 
 export const financeAutoTransaction = pgTable("finance_auto_transaction", {
@@ -13,7 +13,9 @@ export const financeAutoTransaction = pgTable("finance_auto_transaction", {
         .notNull(),
     amount: bigint({ mode: "number" }).notNull(),
     reference: varchar({ length: TITLE_MAX }),
-    category: financeCategoryEnum().notNull(),
+    categoryId: char({ length: ID_LENGTH })
+        .references(() => financeCategory.id)
+        .notNull(),
     execInterval: integer().notNull(), // 1-12
     execOn: integer().notNull(), // 1-31
     lastExec: date().notNull(),

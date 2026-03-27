@@ -13,8 +13,10 @@ test401WhenLoggedOut("patch", route("2222222222222222"));
 testPatchSoftDeletableTrait({
     fixtureProvider: async (db, options) => {
         const [account] = await db.financeAccount.insert(1, options?.userId ? { userId: options.userId } : undefined);
+        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
         const [data] = await db.financeTransaction.insert(1, {
             accountId: account.id,
+            categoryId: category.id,
             deletedAt: options?.deleted ? new Date() : null,
         });
         return { data, route: `${route(account.id)}/${data.id}` };
@@ -25,7 +27,8 @@ testPatchSoftDeletableTrait({
 });
 testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(async (db, userId) => {
     const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
-    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category.id });
     return {
         validUrl: `${route(account1.id)}/${transaction.id}`,
         invalidUrl: `${route(account2.id)}/${transaction.id}`,

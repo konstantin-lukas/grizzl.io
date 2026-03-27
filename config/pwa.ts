@@ -38,7 +38,7 @@ const pwa: ModuleOptions = {
     },
     injectManifest: {
         globPatterns: ["**/*.{js,json,css,html,txt,svg,png,ico,webp}"],
-        globIgnores: ["manifest**.webmanifest"],
+        globIgnores: ["manifest**.webmanifest", "models/**"],
     },
     devOptions: {
         enabled: false,

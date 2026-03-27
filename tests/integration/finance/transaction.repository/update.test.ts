@@ -5,7 +5,8 @@ import { expect, test } from "~~/test-utils/vitest";
 let id = "";
 test.beforeEach(async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
-    [{ id }] = await db.financeTransaction.insert(1, { accountId: account.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    [{ id }] = await db.financeTransaction.insert(1, { accountId: account.id, categoryId: category.id });
 });
 
 test("throws an error if the input data is faulty", async ({ db, user }) => {

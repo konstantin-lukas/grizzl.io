@@ -28,11 +28,11 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
         id: string,
         userId: string,
         accountId: string,
-        { amount, reference, category, execInterval, execOn, lastExec }: PutAutoTransaction,
+        { amount, reference, categoryId, execInterval, execOn, lastExec }: PutAutoTransaction,
     ) {
         const { rowCount } = await this.db
             .update(this.schema)
-            .set({ amount, reference, category, execInterval, execOn, lastExec })
+            .set({ amount, reference, categoryId, execInterval, execOn, lastExec })
             .from(dbSchema.financeAccount)
             .where(
                 and(
@@ -49,11 +49,11 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
 
     public async create(
         accountId: string,
-        { amount, reference, category, execInterval, execOn, lastExec }: PostAutoTransaction,
+        { amount, reference, categoryId, execInterval, execOn, lastExec }: PostAutoTransaction,
     ) {
         const [transaction] = await this.db
             .insert(this.schema)
-            .values({ accountId, amount, reference, category, execInterval, execOn, lastExec })
+            .values({ accountId, amount, reference, categoryId, execInterval, execOn, lastExec })
             .returning({ id: this.schema.id });
 
         return transaction!.id;
@@ -66,7 +66,7 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                category: this.schema.category,
+                categoryId: this.schema.categoryId,
                 execInterval: this.schema.execInterval,
                 execOn: this.schema.execOn,
                 lastExec: this.schema.lastExec,

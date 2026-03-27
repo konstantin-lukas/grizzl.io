@@ -33,15 +33,8 @@
         {
             "idx": 4,
             "version": "7",
-            "when": 1773347512639,
-            "tag": "0004_minor_black_tarantula",
-            "breakpoints": true
-        },
-        {
-            "idx": 5,
-            "version": "7",
-            "when": 1773436803488,
-            "tag": "0005_regular_whizzer",
+            "when": 1774544688227,
+            "tag": "0004_dark_sprite",
             "breakpoints": true
         }
     ]

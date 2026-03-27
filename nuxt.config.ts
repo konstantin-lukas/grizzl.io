@@ -17,6 +17,7 @@ export default defineNuxtConfig({
             include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },
     },
+    // @ts-expect-error This shows as an unknown field even though it's the correct configuration options for nitro
     nitro: {
         scanDirs: ["core", "timer", "finance"],
     },

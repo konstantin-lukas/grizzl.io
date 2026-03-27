@@ -1,5 +1,5 @@
 {
-    "id": "da71cde0-2d5f-4184-b49a-b3677f6005bc",
+    "id": "4c497cac-241c-4de8-915a-e6b53b3f97cf",
     "prevId": "fd82fcda-7198-486f-ade9-66690fc7ef55",
     "version": "7",
     "dialect": "postgresql",
@@ -317,14 +317,14 @@
                 },
                 "created_at": {
                     "name": "created_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true,
                     "default": "now()"
                 },
                 "deleted_at": {
                     "name": "deleted_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": false
                 },
@@ -450,14 +450,14 @@
                 },
                 "created_at": {
                     "name": "created_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true,
                     "default": "now()"
                 },
                 "deleted_at": {
                     "name": "deleted_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": false
                 },
@@ -511,13 +511,13 @@
                 },
                 "deleted_at": {
                     "name": "deleted_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": false
                 },
                 "created_at": {
                     "name": "created_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true,
                     "default": "now()"
@@ -540,9 +540,9 @@
                     "primaryKey": false,
                     "notNull": false
                 },
-                "category": {
-                    "name": "category",
-                    "type": "finance_category",
+                "category_id": {
+                    "name": "category_id",
+                    "type": "char(16)",
                     "primaryKey": false,
                     "notNull": true
                 }
@@ -556,6 +556,15 @@
                     "columnsFrom": ["account_id"],
                     "columnsTo": ["id"],
                     "onDelete": "cascade",
+                    "onUpdate": "no action"
+                },
+                "finance_transaction_category_id_finance_category_id_fk": {
+                    "name": "finance_transaction_category_id_finance_category_id_fk",
+                    "tableFrom": "finance_transaction",
+                    "tableTo": "finance_category",
+                    "columnsFrom": ["category_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
                     "onUpdate": "no action"
                 }
             },
@@ -577,13 +586,13 @@
                 },
                 "deleted_at": {
                     "name": "deleted_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": false
                 },
                 "created_at": {
                     "name": "created_at",
-                    "type": "timestamp",
+                    "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true,
                     "default": "now()"
@@ -606,9 +615,9 @@
                     "primaryKey": false,
                     "notNull": false
                 },
-                "category": {
-                    "name": "category",
-                    "type": "finance_category",
+                "category_id": {
+                    "name": "category_id",
+                    "type": "char(16)",
                     "primaryKey": false,
                     "notNull": true
                 },
@@ -641,10 +650,78 @@
                     "columnsTo": ["id"],
                     "onDelete": "cascade",
                     "onUpdate": "no action"
+                },
+                "finance_auto_transaction_category_id_finance_category_id_fk": {
+                    "name": "finance_auto_transaction_category_id_finance_category_id_fk",
+                    "tableFrom": "finance_auto_transaction",
+                    "tableTo": "finance_category",
+                    "columnsFrom": ["category_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
                 }
             },
             "compositePrimaryKeys": {},
             "uniqueConstraints": {},
+            "policies": {},
+            "checkConstraints": {},
+            "isRLSEnabled": false
+        },
+        "public.finance_category": {
+            "name": "finance_category",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "char(16)",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "account_id": {
+                    "name": "account_id",
+                    "type": "char(16)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "display_name": {
+                    "name": "display_name",
+                    "type": "varchar(100)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "normalized_name": {
+                    "name": "normalized_name",
+                    "type": "varchar(100)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "icon": {
+                    "name": "icon",
+                    "type": "varchar(100)",
+                    "primaryKey": false,
+                    "notNull": true
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {
+                "finance_category_account_id_finance_account_id_fk": {
+                    "name": "finance_category_account_id_finance_account_id_fk",
+                    "tableFrom": "finance_category",
+                    "tableTo": "finance_account",
+                    "columnsFrom": ["account_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "cascade",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {
+                "finance_category_accountId_normalizedName_unique": {
+                    "name": "finance_category_accountId_normalizedName_unique",
+                    "nullsNotDistinct": false,
+                    "columns": ["account_id", "normalized_name"]
+                }
+            },
             "policies": {},
             "checkConstraints": {},
             "isRLSEnabled": false
@@ -655,42 +732,6 @@
             "name": "beat",
             "schema": "public",
             "values": ["pause", "low", "high"]
-        },
-        "public.finance_category": {
-            "name": "finance_category",
-            "schema": "public",
-            "values": [
-                "travel",
-                "hobbies",
-                "partying",
-                "entertainment",
-                "sports_and_outdoors",
-                "groceries",
-                "food_delivery",
-                "eating_out",
-                "furniture",
-                "garden_and_plants",
-                "home_supplies",
-                "personal_care",
-                "pets",
-                "home_repairs",
-                "public_transit",
-                "bike",
-                "car",
-                "motorbike",
-                "clothing",
-                "electronics",
-                "books",
-                "gaming",
-                "presents",
-                "account_transfer",
-                "education",
-                "childcare",
-                "investments",
-                "donations",
-                "medication",
-                "miscellaneous"
-            ]
         }
     },
     "schemas": {},
