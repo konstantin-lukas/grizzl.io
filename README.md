@@ -28,7 +28,7 @@
 </div>
 
 # Development (Linux)
-Requirements: git, docker
+Requirements: git, docker, (git lfs if you want to edit one of the models)
 
 1. You only need to do this step if your user:group IDs aren't 1000:1000. Add these lines to your `~/.bashrc` or `~/.zshrc` depending on the shell you're using:
    ```
