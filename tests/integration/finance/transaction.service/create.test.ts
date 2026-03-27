@@ -4,11 +4,13 @@ import TransactionService from "~~/server/finance/services/transaction.service";
 import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { arr } from "~~/test-utils/helpers/data";
 import { expect, test } from "~~/test-utils/vitest";
+import CategoryRepository from "~~/server/finance/repositories/category.repository";
 
 test("correctly calculates the account balance when multiple updates happens simultaneously", async ({ db, user }) => {
     const accountRepository = new AccountRepository(db.client);
     const transactionRepository = new TransactionRepository(db.client);
-    const transactionService = new TransactionService(transactionRepository, accountRepository);
+    const categoryRepository = new CategoryRepository(db.client);
+    const transactionService = new TransactionService(transactionRepository, accountRepository, categoryRepository);
 
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
     const [category] = await db.financeCategory.insert(1, { accountId: account.id });
