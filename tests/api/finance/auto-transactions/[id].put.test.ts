@@ -1,10 +1,7 @@
 import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
-import {
-    test401WhenLoggedOut,
-    testPutSubResourceOnInvalidParentResource,
-} from "~~/test-utils/playwright/utils/helpers";
+import { test401WhenLoggedOut } from "~~/test-utils/playwright/utils/helpers";
 import {
     AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES,
     AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES,
@@ -13,19 +10,48 @@ import {
 const route = (id: string) => `/api/finance/accounts/${id}/auto-transactions`;
 
 test401WhenLoggedOut("post", route("2222222222222222"));
-testPutSubResourceOnInvalidParentResource(async (db, userId) => {
-    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
-    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [transaction] = await db.financeAutoTransaction.insert(1, {
-        accountId: account1.id,
+
+test("rejects updating a sub-resource on another user's parent resource", async ({ request, db }) => {
+    const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+    const [account] = await db.financeAccount.insert(1, { userId: user!.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [autoTransaction] = await db.financeAutoTransaction.insert(1, {
+        accountId: account.id,
         categoryId: category.id,
     });
-    return {
-        validUrl: `${route(account1.id)}/${transaction.id}`,
-        invalidUrl: `${route(account2.id)}/${transaction.id}`,
-        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
-        baseData: { ...BASE_AUTO_TRANSACTION, categoryId: category.id },
-    };
+
+    const response = await request.put(`${route(account.id)}/${autoTransaction.id}`, {
+        data: { ...BASE_AUTO_TRANSACTION, categoryId: category.id },
+    });
+    expect(response.status()).toBe(400);
+});
+
+test("rejects updating a sub-resource when the parent resource is not associated", async ({ request, db }) => {
+    const [account1, account2] = await db.financeAccount.insert(2);
+    const [category1] = await db.financeCategory.insert(1, { accountId: account1.id });
+    const [category2] = await db.financeCategory.insert(1, { accountId: account2.id });
+    const [autoTransaction] = await db.financeAutoTransaction.insert(1, {
+        accountId: account1.id,
+        categoryId: category1.id,
+    });
+
+    const response = await request.put(`${route(account2.id)}/${autoTransaction.id}`, {
+        data: { ...BASE_AUTO_TRANSACTION, categoryId: category2.id },
+    });
+    expect(response.status()).toBe(404);
+});
+
+test("rejects updating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [autoTransaction] = await db.financeAutoTransaction.insert(1, {
+        accountId: account.id,
+        categoryId: category.id,
+    });
+    const response = await request.put(`${route("2222222222222222")}/${autoTransaction.id}`, {
+        data: { ...BASE_AUTO_TRANSACTION, categoryId: category.id },
+    });
+    expect(response.status()).toBe(400);
 });
 
 for (const [name, data] of AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES) {
