@@ -1,5 +1,5 @@
 import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, count, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -18,7 +18,7 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         subResourceName: "financeTransaction" | "financeAutoTransaction",
     ) {
         const [result] = await this.db
-            .select({ count: count() })
+            .select({ value: count() })
             .from(dbSchema[subResourceName])
             .innerJoin(this.schema, eq(dbSchema[subResourceName].accountId, this.schema.id))
             .where(
@@ -30,7 +30,7 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
             )
             .limit(1);
 
-        return !!result?.count;
+        return !!result?.value;
     }
 
     public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
