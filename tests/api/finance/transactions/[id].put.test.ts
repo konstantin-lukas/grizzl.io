@@ -9,7 +9,7 @@ import {
 
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 
-test401WhenLoggedOut("post", route("2222222222222222"));
+test401WhenLoggedOut("put", route("2222222222222222"));
 
 test("rejects updating a sub-resource on another user's parent resource", async ({ request, db }) => {
     const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");

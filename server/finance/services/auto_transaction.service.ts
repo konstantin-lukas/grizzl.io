@@ -5,7 +5,7 @@ import AccountRepository from "~~/server/finance/repositories/account.repository
 import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
 import CategoryRepository from "~~/server/finance/repositories/category.repository";
 
-export default class TransactionService {
+export default class AutoTransactionService {
     static readonly deps = [AutoTransactionRepository, AccountRepository, CategoryRepository];
 
     constructor(
