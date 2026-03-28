@@ -23,7 +23,7 @@ export default function useLocalStorage<T extends object | string>(key: string, 
     watch(
         state,
         newValue => {
-            if (import.meta.client) {
+            if (import.meta.client && newValue) {
                 localStorage.setItem(key, typeof newValue === "object" ? JSON.stringify(newValue) : newValue);
             }
         },

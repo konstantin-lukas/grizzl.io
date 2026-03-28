@@ -21,7 +21,7 @@ test("should return the defaultValue by default and write it to local storage", 
     localStorageStub.getItem.mockReturnValueOnce(null);
     const value = useLocalStorage("bananas", "oranges");
     expect(value.value).toBe("oranges");
-    expect(localStorageStub.setItem).toHaveBeenCalledOnce();
+    expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", "oranges");
 });
 
 test("should return the value from local storage when one exists", async () => {
