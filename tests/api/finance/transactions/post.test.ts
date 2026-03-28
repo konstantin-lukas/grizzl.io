@@ -32,11 +32,14 @@ for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
 for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
     test(`allows creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
+
         const response = await request.post(route(account.id), { data });
         const responseData = response.headers().location;
         expect(response.status()).toBe(201);
+
         const [category] = await db.financeCategory.select();
         const { id, createdAt, deletedAt, accountId, ...rest } = (await db.financeTransaction.select())[0]!;
+
         expect(rest).toStrictEqual({ amount: data.amount, reference: data.reference, categoryId: category!.id });
         expect(responseData).toBe(`${route(account.id)}/${id}`);
     });

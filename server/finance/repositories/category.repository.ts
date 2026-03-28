@@ -41,7 +41,7 @@ export default class CategoryRepository extends BaseRepository<typeof schema> {
                     isNull(dbSchema.financeAccount.deletedAt),
                 ),
             )
-            .orderBy(desc(this.schema.normalizedName));
+            .orderBy(desc(this.schema.displayName));
     }
 
     async upsert(

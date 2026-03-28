@@ -1,3 +1,5 @@
+import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
+import type { CategoryInternal } from "#shared/finance/validators/category.validator";
 import type {
     GetTransactionFilters,
     PostTransaction,
@@ -41,6 +43,22 @@ export default class TransactionService {
     }
     /* c8 ignore stop */
 
+    private async upsertCategory(
+        userId: string,
+        accountId: string,
+        category: CategoryInternal,
+        tx: DatabaseTransaction,
+    ) {
+        const categories = await this.categoryRepository.upsert(accountId, category, tx);
+
+        if (categories.length !== 1) {
+            const logMessage = `Unable to upsert category on account with id ${accountId} for user with id ${userId}. Given values: ${category}`;
+            throw new UnknownError("Unable to save category.", logMessage);
+        }
+
+        return categories[0]!.id;
+    }
+
     public async create(userId: string, accountId: string, transaction: PostTransaction) {
         return this.transactionRepository.transaction(async tx => {
             const accounts = await this.accountRepository.findByUserId(userId, tx);
@@ -64,18 +82,9 @@ export default class TransactionService {
             }
 
             const { category: newCategory, ...newTransaction } = transaction;
-            const categories = await this.categoryRepository.upsert(accountId, newCategory, tx);
+            const categoryId = await this.upsertCategory(userId, accountId, newCategory, tx);
 
-            if (categories.length !== 1) {
-                const logMessage = `Unable to create category on account with id ${account.id} for user with id ${userId}. Given values: ${transaction.category}`;
-                throw new UnknownError("Unable to save category.", logMessage);
-            }
-
-            return await this.transactionRepository.create(
-                accountId,
-                { ...newTransaction, categoryId: categories[0]!.id },
-                tx,
-            );
+            return await this.transactionRepository.create(accountId, { ...newTransaction, categoryId }, tx);
         });
     }
 
@@ -114,7 +123,10 @@ export default class TransactionService {
                 throw new UnknownError("Unable to update account balance.", logMessage);
             }
 
-            const rowCount = await this.transactionRepository.update(id, userId, transaction, tx);
+            const { category: newCategory, ...newTransaction } = transaction;
+            const categoryId = await this.upsertCategory(userId, accountId, newCategory, tx);
+
+            const rowCount = await this.transactionRepository.update(id, userId, { ...newTransaction, categoryId }, tx);
 
             if (!rowCount) {
                 const logMessage = `Unable to update transaction with id ${id} and user id ${userId}. Given data: ${JSON.stringify(transaction)}.`;
