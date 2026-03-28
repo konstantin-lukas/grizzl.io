@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
-import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import TransactionService from "~~/server/finance/services/transaction.service";

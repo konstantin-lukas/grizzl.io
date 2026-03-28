@@ -1,3 +1,4 @@
+import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { str } from "~~/test-utils/helpers/data";
 import { omit } from "~~/test-utils/helpers/object";
@@ -8,11 +9,11 @@ function withAccount(property: keyof typeof BASE_ACCOUNT, value: unknown) {
 }
 
 function withTransaction(property: keyof typeof BASE_TRANSACTION, value: unknown) {
-    return { ...BASE_TRANSACTION, [property]: value };
+    return { ...structuredClone(BASE_TRANSACTION), [property]: value };
 }
 
 function withAutoTransaction(property: keyof typeof BASE_AUTO_TRANSACTION, value: unknown) {
-    return { ...BASE_AUTO_TRANSACTION, [property]: value };
+    return { ...structuredClone(BASE_AUTO_TRANSACTION), [property]: value };
 }
 
 // -------------------- ACCOUNT --------------------
@@ -62,7 +63,25 @@ export const ACCOUNT_VALID_REQUEST_TEST_CASES = [
 const TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "amount", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "reference", { valid: ["string", "null"] }),
-    ...createInvalidTypeTestCases(BASE_TRANSACTION, "categoryId", { valid: ["string"] }),
+    ...createInvalidTypeTestCases(BASE_TRANSACTION, "category", { valid: ["object"] }),
+    ...createInvalidTypeTestCases(BASE_TRANSACTION, "category", {
+        valid: ["string"],
+        caseName: (property, type) => `property ${property.toString()}.name is of type ${type}`,
+        dataTransform: (data, property, value) => {
+            const clone = structuredClone(data); // or lodash.cloneDeep
+            clone[property].name = value as never;
+            return clone;
+        },
+    }),
+    ...createInvalidTypeTestCases(BASE_TRANSACTION, "category", {
+        valid: ["string"],
+        caseName: (property, type) => `property ${property.toString()}.icon is of type ${type}`,
+        dataTransform: (data, property, value) => {
+            const clone = structuredClone(data); // or lodash.cloneDeep
+            clone[property].icon = value as never;
+            return clone;
+        },
+    }),
 ];
 
 const TRANSACTION_INVALID_DATA_TEST_CASES = [
@@ -71,8 +90,14 @@ const TRANSACTION_INVALID_DATA_TEST_CASES = [
     ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
     ["the reference is empty", withTransaction("amount", "")],
     ["the reference is too long", withTransaction("amount", str({ length: 101 }))],
-    ["the categoryId is not valid", withTransaction("categoryId", "pineapples")],
-    ["the categoryId is missing", omit(BASE_TRANSACTION, "categoryId")],
+    [
+        "the category name is too long",
+        withTransaction("category", { ...BASE_TRANSACTION.category, name: str({ length: 101 }) }),
+    ],
+    ["the category name is too short", withTransaction("category", { ...BASE_TRANSACTION.category, name: "" })],
+    ["the category icon is invalid", withTransaction("category", { ...BASE_TRANSACTION.category, icon: "bananas" })],
+    ["the category name is missing", omit(BASE_TRANSACTION, "category.name")],
+    ["the category icon is missing", omit(BASE_TRANSACTION, "category.icon")],
 ] as const;
 
 export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
@@ -83,7 +108,10 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withTransaction("amount", -1)],
     ["the reference is just long enough", withTransaction("reference", "a")],
     ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
-    ["the categoryId is a valid", withTransaction("categoryId", BASE_TRANSACTION.categoryId)],
+    ...(Object.keys(CategoryIconsMap).map(icon => [
+        `the category icon is ${icon}`,
+        withTransaction("category", { ...BASE_TRANSACTION.category, icon }),
+    ]) as [string, typeof BASE_TRANSACTION][]),
 ] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -97,6 +125,24 @@ const AUTO_TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "execInterval", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "execOn", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "lastExec", { valid: ["string"] }),
+    ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "category", {
+        valid: ["string"],
+        caseName: (property, type) => `property ${property.toString()}.name is of type ${type}`,
+        dataTransform: (data, property, value) => {
+            const clone = structuredClone(data); // or lodash.cloneDeep
+            clone[property].name = value as never;
+            return clone;
+        },
+    }),
+    ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "category", {
+        valid: ["string"],
+        caseName: (property, type) => `property ${property.toString()}.icon is of type ${type}`,
+        dataTransform: (data, property, value) => {
+            const clone = structuredClone(data);
+            clone[property].icon = value as never;
+            return clone;
+        },
+    }),
 ];
 
 export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
@@ -107,12 +153,16 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is negative", withAutoTransaction("amount", -1)],
     ["the reference is just long enough", withAutoTransaction("reference", "a")],
     ["the reference is just short enough", withAutoTransaction("reference", str({ length: 100 }))],
-    ["the categoryId is valid", withAutoTransaction("categoryId", BASE_AUTO_TRANSACTION.categoryId)],
     ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
     ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
     ["execOn is just large enough", withAutoTransaction("execOn", 1)],
     ["execOn is just small enough", withAutoTransaction("execOn", 31)],
     ["lastExec is a valid date", withAutoTransaction("lastExec", "2025-06-30")],
+    ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
+    ...Object.keys(CategoryIconsMap).map(icon => [
+        `the category icon is ${icon}`,
+        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon }),
+    ]),
 ] as const;
 
 export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -122,8 +172,6 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
     ["the reference is empty", withAutoTransaction("amount", "")],
     ["the reference is too long", withAutoTransaction("amount", str({ length: 101 }))],
-    ["the categoryId is not valid", withAutoTransaction("categoryId", "pineapples")],
-    ["the categoryId is missing", omit(BASE_TRANSACTION, "categoryId")],
     ["execInterval is too small", withAutoTransaction("execInterval", 0)],
     ["execInterval is negative", withAutoTransaction("execInterval", -1)],
     ["execInterval is too large", withAutoTransaction("execInterval", 13)],
@@ -133,4 +181,16 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["lastExec is not a correctly formatted date", withAutoTransaction("lastExec", "31.06.2025")],
     ["lastExec is not a valid date", withAutoTransaction("lastExec", "2025-06-31")],
     ["lastExec is not a date at all", withAutoTransaction("lastExec", "bananas")],
+    [
+        "the category name is too long",
+        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: str({ length: 101 }) }),
+    ],
+    ["the category name is too short", withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: "" })],
+    [
+        "the category icon is invalid",
+        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon: "bananas" }),
+    ],
+
+    ["the category name is missing", omit(BASE_AUTO_TRANSACTION, "category.name")],
+    ["the category icon is missing", omit(BASE_AUTO_TRANSACTION, "category.icon")],
 ] as const;

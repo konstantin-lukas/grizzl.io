@@ -1,3 +1,4 @@
+import type { CategoryInternal } from "#shared/finance/validators/category.validator";
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
@@ -41,5 +42,23 @@ export default class CategoryRepository extends BaseRepository<typeof schema> {
                 ),
             )
             .orderBy(desc(this.schema.normalizedName));
+    }
+
+    async upsert(
+        accountId: string,
+        { normalizedName, displayName, icon }: CategoryInternal,
+        db: ExecutionContext = this.db,
+    ) {
+        return await db
+            .insert(this.schema)
+            .values({ normalizedName, displayName, icon, accountId })
+            .onConflictDoUpdate({
+                target: [this.schema.accountId, this.schema.normalizedName],
+                set: {
+                    displayName,
+                    icon,
+                },
+            })
+            .returning({ id: this.schema.id });
     }
 }

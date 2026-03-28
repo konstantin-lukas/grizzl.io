@@ -4,7 +4,6 @@ import type {
     PutTransaction,
 } from "#shared/finance/validators/transaction.validator";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
-import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
@@ -44,21 +43,12 @@ export default class TransactionService {
 
     public async create(userId: string, accountId: string, transaction: PostTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const [accounts, categories] = await Promise.all([
-                this.accountRepository.findByUserId(userId, tx),
-                this.categoryRepository.findByUserAndAccountId(userId, accountId, tx),
-            ]);
+            const accounts = await this.accountRepository.findByUserId(userId, tx);
             const account = accounts.find(account => account.id === accountId);
-            const category = categories.find(category => category.id === transaction.categoryId);
 
             if (!account) {
                 const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
                 throw new NotFoundError("The requested account does not exist.", logMessage);
-            }
-
-            if (!category) {
-                const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId} using category id ${transaction.categoryId}.`;
-                throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
             }
 
             const newBalance = account.balance + transaction.amount;
@@ -73,27 +63,30 @@ export default class TransactionService {
                 throw new UnknownError("Unable to update account balance.", logMessage);
             }
 
-            return await this.transactionRepository.create(accountId, transaction, tx);
+            const { category: newCategory, ...newTransaction } = transaction;
+            const categories = await this.categoryRepository.upsert(accountId, newCategory, tx);
+
+            if (categories.length !== 1) {
+                const logMessage = `Unable to create category on account with id ${account.id} for user with id ${userId}. Given values: ${transaction.category}`;
+                throw new UnknownError("Unable to save category.", logMessage);
+            }
+
+            return await this.transactionRepository.create(
+                accountId,
+                { ...newTransaction, categoryId: categories[0]!.id },
+                tx,
+            );
         });
     }
 
     public async update(id: string, userId: string, accountId: string, transaction: PutTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const [accounts, categories] = await Promise.all([
-                this.accountRepository.findByUserId(userId, tx),
-                this.categoryRepository.findByUserAndAccountId(userId, accountId, tx),
-            ]);
+            const accounts = await this.accountRepository.findByUserId(userId, tx);
             const account = accounts.find(account => account.id === accountId);
-            const category = categories.find(category => category.id === transaction.categoryId);
 
             if (!account) {
                 const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId}.`;
                 throw new NotFoundError("The requested account does not exist.", logMessage);
-            }
-
-            if (!category) {
-                const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId} using category id ${transaction.categoryId}.`;
-                throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
             }
 
             const previousAmount = await this.transactionRepository.getAmountByIdAndUserAndAccount(

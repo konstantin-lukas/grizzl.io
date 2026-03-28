@@ -1,5 +1,4 @@
 import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
-import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
@@ -37,14 +36,6 @@ export default class AutoTransactionService {
     /* c8 ignore stop */
 
     public async update(id: string, userId: string, accountId: string, autoTransaction: PutAutoTransaction) {
-        const categories = await this.categoryRepository.findByUserAndAccountId(userId, accountId);
-        const category = categories.find(category => category.id === autoTransaction.categoryId);
-
-        if (!category) {
-            const logMessage = `Unable to create auto transaction on account with id ${accountId} for user with id ${userId} using category id ${autoTransaction.categoryId}.`;
-            throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
-        }
-
         const result = await this.autoTransactionRepository.update(id, userId, accountId, autoTransaction);
 
         if (!result) {
@@ -56,21 +47,12 @@ export default class AutoTransactionService {
     }
 
     public async create(userId: string, accountId: string, autoTransaction: PostAutoTransaction) {
-        const [accounts, categories] = await Promise.all([
-            this.accountRepository.findByUserId(userId),
-            this.categoryRepository.findByUserAndAccountId(userId, accountId),
-        ]);
+        const accounts = await this.accountRepository.findByUserId(userId);
         const account = accounts.find(account => account.id === accountId);
-        const category = categories.find(category => category.id === autoTransaction.categoryId);
 
         if (!account) {
             const logMessage = `Unable to create auto transaction on account with id ${accountId} for user with id ${userId}.`;
             throw new NotFoundError("The requested account does not exist.", logMessage);
-        }
-
-        if (!category) {
-            const logMessage = `Unable to create auto transaction on account with id ${accountId} for user with id ${userId} using category id ${autoTransaction.categoryId}.`;
-            throw new InvalidForeignKeyError("The provided category ID does not exist.", logMessage);
         }
 
         return await this.autoTransactionRepository.create(accountId, autoTransaction);
