@@ -107,10 +107,15 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                categoryId: this.schema.categoryId,
+                category: {
+                    id: dbSchema.financeCategory.id,
+                    name: dbSchema.financeCategory.displayName,
+                    icon: dbSchema.financeCategory.icon,
+                },
             })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
+            .innerJoin(dbSchema.financeCategory, eq(this.schema.categoryId, dbSchema.financeCategory.id))
             .where(
                 and(
                     eq(this.schema.accountId, accountId),

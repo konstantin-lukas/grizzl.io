@@ -34,8 +34,12 @@ testGetCollectionSubResourceFiltering(async db => {
         accountId: account1.id,
         categoryId: category.id,
     });
+    const subResources = transactions.map(({ categoryId: _, ...transaction }) => ({
+        ...transaction,
+        category: { name: category.displayName, icon: category.icon, id: category.id },
+    }));
     return {
-        subResources: transactions,
+        subResources,
         thisRoute: route(account1.id),
         otherRoute: route(account2.id),
     };
@@ -44,7 +48,11 @@ testGetCollectionSortedByCreationDate(async db => {
     const [account] = await db.financeAccount.insert(1);
     const [category] = await db.financeCategory.insert(1, { accountId: account.id });
     const transactions = await db.financeTransaction.insert(3, { accountId: account.id, categoryId: category.id });
-    return { resources: transactions, route: route(account.id) };
+    const resources = transactions.map(({ categoryId: _, ...transaction }) => ({
+        ...transaction,
+        category: { name: category.displayName, icon: category.icon, id: category.id },
+    }));
+    return { resources, route: route(account.id) };
 });
 testGetCollectionOfSoftDeletedParentResource(async db => {
     const [account] = await db.financeAccount.insert(1, { deletedAt: new Date() });
@@ -105,7 +113,12 @@ for (const filter of filters) {
         }
 
         expect(receivedData).not.toHaveLength(0);
-        expect(receivedData).toStrictEqual(remainingData);
+        expect(receivedData).toStrictEqual(
+            remainingData.map(({ categoryId, ...rest }) => {
+                const category = categories.find(category => category.id === categoryId)!;
+                return { ...rest, category: { id: category.id, name: category.displayName, icon: category.icon } };
+            }),
+        );
     });
 }
 

@@ -71,13 +71,18 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                categoryId: this.schema.categoryId,
                 execInterval: this.schema.execInterval,
                 execOn: this.schema.execOn,
                 lastExec: this.schema.lastExec,
+                category: {
+                    id: dbSchema.financeCategory.id,
+                    name: dbSchema.financeCategory.displayName,
+                    icon: dbSchema.financeCategory.icon,
+                },
             })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
+            .innerJoin(dbSchema.financeCategory, eq(this.schema.categoryId, dbSchema.financeCategory.id))
             .where(
                 and(
                     eq(this.schema.accountId, accountId),
