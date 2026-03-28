@@ -1,5 +1,5 @@
-import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
-import type { CategoryInternal } from "#shared/finance/validators/category.validator";
+import AccountService from "#server/finance/services/account.service";
+import CategoryService from "#server/finance/services/category.service";
 import type {
     GetTransactionFilters,
     PostTransaction,
@@ -9,16 +9,16 @@ import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-ba
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
-import CategoryRepository from "~~/server/finance/repositories/category.repository";
 import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
 
 export default class TransactionService {
-    static readonly deps = [TransactionRepository, AccountRepository, CategoryRepository];
+    static readonly deps = [TransactionRepository, AccountRepository, CategoryService, AccountService];
 
     constructor(
         private readonly transactionRepository: TransactionRepository,
         private readonly accountRepository: AccountRepository,
-        private readonly categoryRepository: CategoryRepository,
+        private readonly categoryService: CategoryService,
+        private readonly accountService: AccountService,
     ) {}
 
     public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
@@ -43,31 +43,9 @@ export default class TransactionService {
     }
     /* c8 ignore stop */
 
-    private async upsertCategory(
-        userId: string,
-        accountId: string,
-        category: CategoryInternal,
-        tx: DatabaseTransaction,
-    ) {
-        const categories = await this.categoryRepository.upsert(accountId, category, tx);
-
-        if (categories.length !== 1) {
-            const logMessage = `Unable to upsert category on account with id ${accountId} for user with id ${userId}. Given values: ${category}`;
-            throw new UnknownError("Unable to save category.", logMessage);
-        }
-
-        return categories[0]!.id;
-    }
-
     public async create(userId: string, accountId: string, transaction: PostTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const accounts = await this.accountRepository.findByUserId(userId, tx);
-            const account = accounts.find(account => account.id === accountId);
-
-            if (!account) {
-                const logMessage = `Unable to create transaction on account with id ${accountId} for user with id ${userId}.`;
-                throw new NotFoundError("The requested account does not exist.", logMessage);
-            }
+            const account = await this.accountService.getUserAccount(userId, accountId, tx);
 
             const newBalance = account.balance + transaction.amount;
             if (!Number.isSafeInteger(newBalance)) {
@@ -82,7 +60,7 @@ export default class TransactionService {
             }
 
             const { category: newCategory, ...newTransaction } = transaction;
-            const categoryId = await this.upsertCategory(userId, accountId, newCategory, tx);
+            const categoryId = await this.categoryService.upsert(userId, accountId, newCategory, tx);
 
             return await this.transactionRepository.create(accountId, { ...newTransaction, categoryId }, tx);
         });
@@ -90,13 +68,7 @@ export default class TransactionService {
 
     public async update(id: string, userId: string, accountId: string, transaction: PutTransaction) {
         return this.transactionRepository.transaction(async tx => {
-            const accounts = await this.accountRepository.findByUserId(userId, tx);
-            const account = accounts.find(account => account.id === accountId);
-
-            if (!account) {
-                const logMessage = `Unable to update transaction on account with id ${accountId} for user with id ${userId}.`;
-                throw new NotFoundError("The requested account does not exist.", logMessage);
-            }
+            const account = await this.accountService.getUserAccount(userId, accountId, tx);
 
             const previousAmount = await this.transactionRepository.getAmountByIdAndUserAndAccount(
                 id,
@@ -124,7 +96,7 @@ export default class TransactionService {
             }
 
             const { category: newCategory, ...newTransaction } = transaction;
-            const categoryId = await this.upsertCategory(userId, accountId, newCategory, tx);
+            const categoryId = await this.categoryService.upsert(userId, accountId, newCategory, tx);
 
             const rowCount = await this.transactionRepository.update(id, userId, { ...newTransaction, categoryId }, tx);
 

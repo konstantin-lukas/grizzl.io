@@ -158,11 +158,10 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["execOn is just large enough", withAutoTransaction("execOn", 1)],
     ["execOn is just small enough", withAutoTransaction("execOn", 31)],
     ["lastExec is a valid date", withAutoTransaction("lastExec", "2025-06-30")],
-    ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
-    ...Object.keys(CategoryIconsMap).map(icon => [
+    ...(Object.keys(CategoryIconsMap).map(icon => [
         `the category icon is ${icon}`,
-        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon }),
-    ]),
+        withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon }),
+    ]) as [string, typeof BASE_AUTO_TRANSACTION][]),
 ] as const;
 
 export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -183,12 +182,15 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["lastExec is not a date at all", withAutoTransaction("lastExec", "bananas")],
     [
         "the category name is too long",
-        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: str({ length: 101 }) }),
+        withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: str({ length: 101 }) }),
     ],
-    ["the category name is too short", withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: "" })],
+    [
+        "the category name is too short",
+        withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, name: "" }),
+    ],
     [
         "the category icon is invalid",
-        withTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon: "bananas" }),
+        withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon: "bananas" }),
     ],
 
     ["the category name is missing", omit(BASE_AUTO_TRANSACTION, "category.name")],

@@ -17,3 +17,6 @@ export const PutAutoTransactionSchema = PostAutoTransactionSchema;
 
 export type PostAutoTransaction = z.infer<typeof PostAutoTransactionSchema>;
 export type PutAutoTransaction = z.infer<typeof PutAutoTransactionSchema>;
+
+export type PostAutoTransactionInternal = Omit<PostAutoTransaction, "category"> & { categoryId: string };
+export type PutAutoTransactionInternal = Omit<PutAutoTransaction, "category"> & { categoryId: string };

@@ -1,8 +1,11 @@
-import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
+import type {
+    PostAutoTransactionInternal,
+    PutAutoTransactionInternal,
+} from "#shared/finance/validators/auto_transaction.validator";
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository from "~~/server/core/repositories/base.repository";
+import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAutoTransaction";
 
@@ -28,9 +31,10 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
         id: string,
         userId: string,
         accountId: string,
-        { amount, reference, categoryId, execInterval, execOn, lastExec }: PutAutoTransaction,
+        { amount, reference, categoryId, execInterval, execOn, lastExec }: PutAutoTransactionInternal,
+        db: ExecutionContext = this.db,
     ) {
-        const { rowCount } = await this.db
+        const { rowCount } = await db
             .update(this.schema)
             .set({ amount, reference, categoryId, execInterval, execOn, lastExec })
             .from(dbSchema.financeAccount)
@@ -49,9 +53,10 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
 
     public async create(
         accountId: string,
-        { amount, reference, categoryId, execInterval, execOn, lastExec }: PostAutoTransaction,
+        { amount, reference, categoryId, execInterval, execOn, lastExec }: PostAutoTransactionInternal,
+        db: ExecutionContext = this.db,
     ) {
-        const [transaction] = await this.db
+        const [transaction] = await db
             .insert(this.schema)
             .values({ accountId, amount, reference, categoryId, execInterval, execOn, lastExec })
             .returning({ id: this.schema.id });

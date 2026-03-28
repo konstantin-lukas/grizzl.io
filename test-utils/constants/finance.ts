@@ -18,7 +18,7 @@ export const BASE_TRANSACTION = {
     category: {
         name: "Groceries",
         icon: "grocery",
-    }
+    },
 };
 
 export const FULL_TRANSACTION = {
@@ -38,7 +38,7 @@ export const BASE_AUTO_TRANSACTION = {
     category: {
         name: "Groceries",
         icon: "grocery",
-    }
+    },
 };
 
 export const FULL_AUTO_TRANSACTION = {

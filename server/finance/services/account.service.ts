@@ -1,3 +1,4 @@
+import type { ExecutionContext } from "#server/core/repositories/base.repository";
 import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
@@ -6,6 +7,18 @@ export default class AccountService {
     static readonly deps = [AccountRepository];
 
     constructor(private readonly accountRepository: AccountRepository) {}
+
+    public async getUserAccount(userId: string, accountId: string, tx?: ExecutionContext) {
+        const accounts = await this.accountRepository.findByUserId(userId, tx);
+        const account = accounts.find(account => account.id === accountId);
+
+        if (!account) {
+            const logMessage = `Unable to find account with id ${accountId} for user with id ${userId}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
+        }
+
+        return account;
+    }
 
     public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
         const operation = isDeleted ? "delete" : "undelete";

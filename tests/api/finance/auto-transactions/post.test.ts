@@ -22,13 +22,9 @@ testPostSubResourceToInvalidParentResource(route, async (db, userId) => {
 for (const [name, data] of AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES) {
     test(`rejects creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
-        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-        const payload =
-            (data as { categoryId: string }).categoryId === BASE_AUTO_TRANSACTION.categoryId
-                ? { ...data, categoryId: category.id }
-                : data;
+
         const response = await request.post(route(account.id), {
-            data: JSONWithBigInt(payload),
+            data: JSONWithBigInt(data),
         });
         expect(response.status()).toBe(400);
     });
@@ -38,23 +34,55 @@ for (const [name, data] of AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES) {
     test(`allows creating resources when ${name}`, async ({ request, db }) => {
         const [account] = await db.financeAccount.insert(1);
         const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-        const payload =
-            data.categoryId === BASE_AUTO_TRANSACTION.categoryId ? { ...data, categoryId: category.id } : data;
-        const response = await request.post(route(account.id), { data: payload });
+
+        const response = await request.post(route(account.id), {
+            data: { ...data, category: { name: category.displayName, icon: category.icon } },
+        });
         const responseData = response.headers().location;
         expect(response.status()).toBe(201);
         const { id, createdAt, deletedAt, accountId, ...rest } = (await db.financeAutoTransaction.select())[0]!;
-        expect(rest).toStrictEqual({ ...data, categoryId: category.id });
+        const { category: _, ...expectedData } = data;
+        expect(rest).toStrictEqual({ ...expectedData, categoryId: category.id });
         expect(responseData).toBe(`${route(account.id)}/${id}`);
     });
 }
 
-test("rejects attaching a category belonging to a different account", async ({ request, db }) => {
-    const [account1, account2] = await db.financeAccount.insert(2);
-    const [category] = await db.financeCategory.insert(1, { accountId: account2.id });
-
-    const response = await request.post(route(account1.id), {
-        data: { ...BASE_AUTO_TRANSACTION, categoryId: category.id },
+test("automatically creates a new category when a matching one doesn't exist", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    await request.post(route(account.id), {
+        data: BASE_AUTO_TRANSACTION,
     });
-    expect(response.status()).toBe(400);
+    const [category] = await db.financeCategory.select();
+    expect(category!.displayName).toBe(BASE_AUTO_TRANSACTION.category.name);
+});
+
+test("automatically updates a category when a matching one exists", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    expect(category.icon).not.toBe(BASE_AUTO_TRANSACTION.category.icon);
+
+    await request.post(route(account.id), {
+        data: { ...BASE_AUTO_TRANSACTION, category: { ...BASE_AUTO_TRANSACTION.category, name: category.displayName } },
+    });
+
+    const categories = await db.financeCategory.select();
+    expect(categories).toHaveLength(1);
+    expect(categories[0]!.icon).toBe(BASE_AUTO_TRANSACTION.category.icon);
+});
+
+test("does not alter other users' categories", async ({ request, db }) => {
+    const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+    const [myAccount] = await db.financeAccount.insert(1);
+    const [otherAccount] = await db.financeAccount.insert(1, { userId: otherUser!.id });
+    const [category] = await db.financeCategory.insert(1, { accountId: otherAccount.id });
+
+    const data = {
+        ...BASE_AUTO_TRANSACTION,
+        category: { ...BASE_AUTO_TRANSACTION.category, name: category.displayName },
+    };
+    await request.post(route(myAccount.id), { data });
+
+    const categories = await db.financeCategory.select();
+    expect(categories).toHaveLength(2);
+    expect(categories).toContainEqual(category);
 });

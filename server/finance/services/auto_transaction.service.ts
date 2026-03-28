@@ -1,16 +1,18 @@
+import AccountService from "#server/finance/services/account.service";
+import CategoryService from "#server/finance/services/category.service";
 import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
-import CategoryRepository from "~~/server/finance/repositories/category.repository";
 
 export default class AutoTransactionService {
-    static readonly deps = [AutoTransactionRepository, AccountRepository, CategoryRepository];
+    static readonly deps = [AutoTransactionRepository, AccountRepository, CategoryService, AccountService];
 
     constructor(
         private readonly autoTransactionRepository: AutoTransactionRepository,
         private readonly accountRepository: AccountRepository,
-        private readonly categoryRepository: CategoryRepository,
+        private readonly categoryService: CategoryService,
+        private readonly accountService: AccountService,
     ) {}
 
     public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
@@ -36,25 +38,37 @@ export default class AutoTransactionService {
     /* c8 ignore stop */
 
     public async update(id: string, userId: string, accountId: string, autoTransaction: PutAutoTransaction) {
-        const result = await this.autoTransactionRepository.update(id, userId, accountId, autoTransaction);
+        return this.autoTransactionRepository.transaction(async tx => {
+            await this.accountService.getUserAccount(userId, accountId, tx);
 
-        if (!result) {
-            const logMessage = `Unable to update auto-transaction ${id} on account with id ${accountId} for user with id ${userId}.`;
-            throw new NotFoundError("The requested auto-transaction does not exist on the given account.", logMessage);
-        }
+            const { category, ...newAutoTransaction } = autoTransaction;
+            const categoryId = await this.categoryService.upsert(userId, accountId, category, tx);
+            const result = await this.autoTransactionRepository.update(
+                id,
+                userId,
+                accountId,
+                { ...newAutoTransaction, categoryId },
+                tx,
+            );
 
-        return result;
+            if (!result) {
+                const logMessage = `Unable to update auto-transaction ${id} on account with id ${accountId} for user with id ${userId}.`;
+                throw new NotFoundError(
+                    "The requested auto-transaction does not exist on the given account.",
+                    logMessage,
+                );
+            }
+
+            return result;
+        });
     }
 
     public async create(userId: string, accountId: string, autoTransaction: PostAutoTransaction) {
-        const accounts = await this.accountRepository.findByUserId(userId);
-        const account = accounts.find(account => account.id === accountId);
-
-        if (!account) {
-            const logMessage = `Unable to create auto transaction on account with id ${accountId} for user with id ${userId}.`;
-            throw new NotFoundError("The requested account does not exist.", logMessage);
-        }
-
-        return await this.autoTransactionRepository.create(accountId, autoTransaction);
+        return this.autoTransactionRepository.transaction(async tx => {
+            await this.accountService.getUserAccount(userId, accountId, tx);
+            const { category, ...newAutoTransaction } = autoTransaction;
+            const categoryId = await this.categoryService.upsert(userId, accountId, category, tx);
+            return await this.autoTransactionRepository.create(accountId, { ...newAutoTransaction, categoryId }, tx);
+        });
     }
 }
