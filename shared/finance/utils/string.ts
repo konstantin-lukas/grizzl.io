@@ -4,5 +4,5 @@ export function normalize(str: string) {
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .trim()
-        .replace(/\s+/g, "_");
+        .replaceAll(/\s+/g, "_");
 }

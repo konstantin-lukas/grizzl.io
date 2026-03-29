@@ -1,6 +1,6 @@
 import { TITLE_MAX, TITLE_MIN } from "#shared/core/validators/core.validator";
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
-import { normalize } from "#shared/finance/utils/normalize";
+import { normalize } from "#shared/finance/utils/string";
 import { z } from "zod";
 
 const VALID_ICONS = Object.keys(CategoryIconsMap) as (keyof typeof CategoryIconsMap)[];
