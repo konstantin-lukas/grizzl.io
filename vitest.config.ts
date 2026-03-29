@@ -1,6 +1,20 @@
 import { defineVitestProject } from "@nuxt/test-utils/config";
 import { defineConfig } from "vitest/config";
 
+const plugins = [
+    {
+        name: "patch-conditions",
+        enforce: "post",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        configEnvironment(name: string, config: any) {
+            if (name === "ssr") {
+                config.resolve!.conditions = config.resolve!.conditions!.filter((c: string) => c !== "import");
+            }
+        },
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+] as any;
+
 export default defineConfig({
     test: {
         coverage: {
@@ -28,6 +42,7 @@ export default defineConfig({
                     include: ["tests/unit/**/*.test.ts"],
                     environment: "node",
                 },
+                plugins,
             }),
             await defineVitestProject({
                 test: {
@@ -37,6 +52,7 @@ export default defineConfig({
                     maxWorkers: 1,
                     setupFiles: "./test-utils/vitest/setup/database.setup.ts",
                 },
+                plugins,
             }),
             await defineVitestProject({
                 test: {
