@@ -12,7 +12,7 @@ export default class CategoryService {
         const categories = await this.categoryRepository.upsert(accountId, category, tx);
 
         if (categories.length !== 1) {
-            const logMessage = `Unable to upsert category on account with id ${accountId} for user with id ${userId}. Given values: ${category}`;
+            const logMessage = `Unable to upsert category on account with id ${accountId} for user with id ${userId}. Given values: ${JSON.stringify(category)}`;
             throw new UnknownError("Unable to save category.", logMessage);
         }
 

@@ -8,9 +8,11 @@ test("deletes all associated resources of an account when the account is deleted
 
     await db.financeAccount.delete();
 
-    const categories = await db.financeCategory.select();
-    const transactions = await db.financeTransaction.select();
-    const autoTransactions = await db.financeTransaction.select();
+    const [categories, transactions, autoTransactions] = await Promise.all([
+        db.financeCategory.select(),
+        db.financeTransaction.select(),
+        db.financeAutoTransaction.select(),
+    ]);
 
     expect(categories).toHaveLength(0);
     expect(transactions).toHaveLength(0);
