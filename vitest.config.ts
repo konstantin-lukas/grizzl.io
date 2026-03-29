@@ -17,6 +17,8 @@ const plugins = [
 
 export default defineConfig({
     test: {
+        reporters: process.env.GITHUB_ACTIONS ? ["dot", "github-actions"] : ["dot"],
+        silent: true,
         coverage: {
             include: [
                 "app/**/utils/**/*",
@@ -30,10 +32,6 @@ export default defineConfig({
             ],
             exclude: ["app/timer/**/*", "app/finance/**/*", "app/core/components/data/CookieBanner.vue"],
             reporter: ["text", "lcov", "json"],
-        },
-        // https://github.com/nuxt/nuxt/discussions/25973#discussioncomment-11308604
-        onConsoleLog: log => {
-            return !log.startsWith("<Suspense>") && !log.includes("middleware") && !log.includes("TypeError");
         },
         projects: [
             await defineVitestProject({
