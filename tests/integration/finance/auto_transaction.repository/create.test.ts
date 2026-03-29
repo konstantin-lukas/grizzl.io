@@ -13,8 +13,9 @@ test("creates an auto-transaction and returns the id of the created resource", a
     });
 
     const [transaction] = await db.financeAutoTransaction.select(id);
+    const { category: _, ...rest } = BASE_AUTO_TRANSACTION;
     expect(transaction).toStrictEqual({
-        ...BASE_AUTO_TRANSACTION,
+        ...rest,
         id: anyId,
         accountId: anyId,
         createdAt: expect.any(Date),

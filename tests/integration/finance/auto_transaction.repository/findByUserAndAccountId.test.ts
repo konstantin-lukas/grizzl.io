@@ -17,7 +17,11 @@ test("returns only the accounts belonging to the requested user", async ({ db, u
         {
             id: anyId,
             amount: 7977,
-            categoryId: category.id,
+            category: {
+                name: category.displayName,
+                icon: category.icon,
+                id: category.id,
+            },
             createdAt: new Date("2025-05-18T01:18:19.000Z"),
             execInterval: 8,
             execOn: 28,
