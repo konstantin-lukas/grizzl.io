@@ -7,6 +7,7 @@ test.each([
     ["trims space on the side and collapses multiple spaces", "  a  a  ", "a_a"],
     ["removes diacritics", "¡Buenos días desde España!", "¡buenos_dias_desde_espana!"],
     ["converts to lowercase", "ABC", "abc"],
+    ["does expand characters to create a longer string", "Straße", "straße"],
 ])("$0 (returns $2 when input is $1)", (_, input, expected) => {
     expect(normalize(input)).toBe(expected);
 });
