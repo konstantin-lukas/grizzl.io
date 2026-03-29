@@ -1,15 +1,19 @@
-import { BASE_ACCOUNT } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut, testIdParameter } from "~~/test-utils/playwright/utils/helpers";
 import {
     ACCOUNT_BAD_TITLE_TEST_CASES,
     ACCOUNT_VALID_TITLE_TEST_CASES,
+    makeAccountTestBuilder,
 } from "~~/test-utils/playwright/utils/helpers/finance";
 
 const route = "/api/finance/accounts";
 
-testIdParameter("put", route, BASE_ACCOUNT);
-test401WhenLoggedOut("put", route);
+const testBuilder = makeAccountTestBuilder("put");
+
+testBuilder
+    .returnsA404StatusCodeWhenTheProvidedIdIsUnknown()
+    .returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat()
+    .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
+    .build();
 
 for (const [name, data] of ACCOUNT_BAD_TITLE_TEST_CASES) {
     test(`rejects updating resources when ${name}`, async ({ request, db }) => {

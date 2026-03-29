@@ -4,7 +4,7 @@ import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
-const TYPES = [
+const Types = [
     ["string", "42"],
     ["int", 42],
     ["float", 42.5],
@@ -14,7 +14,10 @@ const TYPES = [
     ["array", []],
 ] as const;
 
-type Method = "get" | "get-collection" | "post" | "patch" | "delete" | "put";
+type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "financeAutoTransaction" | "timer";
+type OwnableFixture = "financeAccount" | "timer";
+
+export type Method = "get" | "get-collection" | "post" | "patch" | "delete" | "put";
 type FixtureKey = Exclude<keyof DBFixtures, "client">;
 interface FixtureResource {
     id: string;
@@ -28,26 +31,50 @@ type ConstructorOptions = {
     baseData: object;
     fullData: object;
     fixtureName: FixtureKey;
+    method: Method;
+    badPut: any[];
+    validPut: any[];
+    badPost: any[];
+    validPost: any[];
 };
 
 export class TestBuilder {
     private tests: (() => void)[] = [];
     private readonly fixtureProvider: FixtureProvider;
-    private method: Method = "get";
-    private resolvedMethod: Exclude<Method, "get-collection"> = "get";
+    private readonly method: Method = "get";
+    private readonly resolvedMethod: Exclude<Method, "get-collection"> = "get";
     private readonly baseData: object;
     private readonly fullData: object;
-    private fixtureName: FixtureKey;
-    constructor({ fixtureProvider, baseData, fullData, fixtureName }: ConstructorOptions) {
+    private readonly badPut: any[];
+    private readonly validPut: any[];
+    private readonly badPost: any[];
+    private readonly validPost: any[];
+    private readonly fixtureName: FixtureKey;
+
+    constructor({
+        fixtureProvider,
+        baseData,
+        fullData,
+        fixtureName,
+        method,
+        badPut,
+        validPut,
+        badPost,
+        validPost,
+    }: ConstructorOptions) {
+        this.method = method;
+        this.resolvedMethod = method === "get-collection" ? "get" : method;
         this.fixtureProvider = fixtureProvider;
         this.baseData = baseData;
         this.fullData = fullData;
         this.fixtureName = fixtureName;
+        this.badPut = badPut;
+        this.validPut = validPut;
+        this.badPost = badPost;
+        this.validPost = validPost;
     }
 
-    public build(method: Method) {
-        this.method = method;
-        this.resolvedMethod = method === "get-collection" ? "get" : method;
+    public build() {
         for (const test of this.tests) {
             test();
         }
@@ -99,6 +126,7 @@ export class TestBuilder {
                 "put",
                 "post",
                 "get",
+                "get-collection",
             ]);
 
             withoutAuth(() => {
@@ -143,7 +171,7 @@ export class TestBuilder {
             test("only allows patching the deleted property", async ({ request, db }) => {
                 const { data, fullPath } = await this.fixtureProvider({ db });
 
-                const response = await request.patch(fullPath, {
+                const response = await request[this.resolvedMethod](fullPath, {
                     data: { ...this.fullData, deleted: true },
                 });
                 expect(response.status()).toBe(204);
@@ -170,7 +198,7 @@ export class TestBuilder {
                 expect(data.deletedAt).toBeNull();
                 expect(otherData.deletedAt).toBeNull();
 
-                await request.patch(fullPath, { data: { deleted: true } });
+                await request[this.resolvedMethod](fullPath, { data: { deleted: true } });
                 const [dataAfterPatch] = await db[this.fixtureName].select(data.id);
                 const [otherDataAfterPatch] = await db[this.fixtureName].select(otherData.id);
 
@@ -195,10 +223,147 @@ export class TestBuilder {
                 const softDeletedDatum = await db[this.fixtureName].select(id);
                 expect((softDeletedDatum as unknown as { deletedAt: unknown }).deletedAt).not.toBe(null);
 
-                await request.patch(fullPath, { data: { ...this.baseData, deleted: false } });
+                await request[this.resolvedMethod](fullPath, { data: { ...this.baseData, deleted: false } });
                 const [patchedData] = await db[this.fixtureName].select(data.id);
                 expect((patchedData as { deletedAt: unknown }).deletedAt).toBeNull();
             });
+        });
+
+        return this;
+    }
+
+    public returnsAnEmptyArrayWhenThereAreNoResources() {
+        this.tests.push(() => {
+            this.checkMethods("returnsAnEmptyArrayWhenThereAreNoResources", ["get-collection"]);
+
+            test("returns an empty array when there are no resources", async ({ request, db }) => {
+                const { basePath } = await this.fixtureProvider({ db });
+                await db[this.fixtureName].delete();
+
+                const response = await request[this.resolvedMethod](basePath);
+
+                expect(response.status()).toBe(200);
+                expect(await response.json()).toStrictEqual([]);
+            });
+        });
+
+        return this;
+    }
+
+    public doesNotReturnResourcesOfOtherUsers() {
+        this.tests.push(() => {
+            this.checkMethods("doesNotReturnResourcesOfOtherUsers", ["get-collection"]);
+
+            test("does not return resources of other users", async ({ request, db }) => {
+                const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+                const { basePath } = await this.fixtureProvider({ db, userId: user!.id });
+
+                const response = await request[this.resolvedMethod](basePath);
+                expect(response.status()).toBe(200);
+                expect(await response.json()).toStrictEqual([]);
+            });
+        });
+
+        return this;
+    }
+
+    public doesNotReturnSoftDeletedResources() {
+        this.tests.push(() => {
+            this.checkMethods("doesNotReturnSoftDeletedResources", ["get-collection"]);
+
+            test("does not return soft-deleted resources", async ({ request, db }) => {
+                const { id, basePath } = await this.fixtureProvider({ db });
+                await db[this.fixtureName].update({ deletedAt: new Date() }, id);
+
+                const response = await request[this.resolvedMethod](basePath);
+                expect(response.status()).toBe(200);
+                expect(await response.json()).toStrictEqual([]);
+            });
+        });
+
+        return this;
+    }
+
+    public allowsRetrievingAListOfResourcesSortedByCreationDate() {
+        this.tests.push(() => {
+            this.checkMethods("allowsRetrievingAListOfResourcesSortedByCreationDate", ["get-collection"]);
+
+            test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
+                const { basePath, data: d1 } = await this.fixtureProvider({ db });
+                const { data: d2 } = await this.fixtureProvider({ db });
+                const { data: d3 } = await this.fixtureProvider({ db });
+                const mappedResources = [d1, d2, d3].map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
+                    ...rest,
+                    createdAt: createdAt.toISOString(),
+                }));
+                sortByCreatedAt(mappedResources, "desc");
+
+                const response = await request[this.resolvedMethod](basePath);
+
+                expect(response.status()).toBe(200);
+                expect(await response.json()).toStrictEqual(mappedResources);
+            });
+        });
+
+        return this;
+    }
+
+    public ignoresAnyProvidedIdForDeterminingOwnership() {
+        this.tests.push(() => {
+            this.checkMethods("ignoresAnyProvidedIdForDeterminingOwnership", ["post"]);
+
+            test("ignores any provided id for determining ownership", async ({ request, db }) => {
+                const { basePath } = await this.fixtureProvider({ db });
+                await db[this.fixtureName].delete();
+
+                await request[this.resolvedMethod](basePath, {
+                    data: { ...this.baseData, userId: "2222222222222222" },
+                });
+                const data = await db[this.fixtureName].select();
+                const user = await db.user.selectByEmail("user@test.com");
+                expect((data[0] as { userId: string }).userId).toBe(user!.id);
+            });
+        });
+
+        return this;
+    }
+
+    public rejectsRequestsWhenPayloadIsInvalid() {
+        this.tests.push(() => {
+            this.checkMethods("rejectsRequestsWhenPayloadIsInvalid", ["post", "put"]);
+
+            const testCases = this.method === "post" ? this.badPost : this.badPut;
+            for (const [name, data] of testCases) {
+                test(`rejects creating resources when ${name}`, async ({ request, db }) => {
+                    const { basePath } = await this.fixtureProvider({ db });
+                    const response = await request[this.resolvedMethod](basePath, { data });
+                    expect(response.status()).toBe(400);
+                });
+            }
+        });
+
+        return this;
+    }
+
+    public acceptsRequestsWhenPayloadIsValid() {
+        this.tests.push(() => {
+            this.checkMethods("acceptsRequestsWhenPayloadIsValid", ["post", "put"]);
+
+            const testCases = this.method === "post" ? this.validPost : this.validPut;
+            for (const [name, data] of testCases) {
+                test(`allows creating resources when ${name}`, async ({ request, db }) => {
+                    const { basePath } = await this.fixtureProvider({ db });
+                    await db[this.fixtureName].delete();
+
+                    const response = await request[this.resolvedMethod](basePath, { data });
+                    const responseData = response.headers().location;
+
+                    expect(response.status()).toBe(201);
+                    const { id, createdAt, deletedAt, userId, ...rest } = (await db.financeAccount.select())[0]!;
+                    expect(rest).toStrictEqual({ ...data, balance: 0 });
+                    expect(responseData).toBe(`${basePath}/${id}`);
+                });
+            }
         });
 
         return this;
@@ -209,13 +374,13 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>, K 
     data: T,
     property: K,
     options: {
-        valid?: (typeof TYPES)[number][0][];
+        valid?: (typeof Types)[number][0][];
         caseName?: (property: K, type: string) => string;
-        dataTransform?: (data: T, property: K, value: (typeof TYPES)[number][1]) => unknown;
+        dataTransform?: (data: T, property: K, value: (typeof Types)[number][1]) => unknown;
     },
 ) {
     const testCases = [];
-    for (const [type, value] of TYPES) {
+    for (const [type, value] of Types) {
         if (!(options.valid ?? []).includes(type)) {
             testCases.push([
                 options.caseName?.(property, type) ?? `property ${property.toString()} is of type ${type}`,
@@ -224,33 +389,6 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>, K 
         }
     }
     return testCases as [string, T][];
-}
-
-export function testGetCollectionOwnership(fixtureProvider: (db: DBFixtures, userId: string) => Promise<string>) {
-    test("does not return resources of other users", async ({ request, db }) => {
-        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-        const route = await fixtureProvider(db, user!.id);
-        const response = await request.get(route);
-        expect(response.status()).toBe(200);
-        expect(await response.json()).toStrictEqual([]);
-    });
-}
-
-export function testGetEmptyCollection(route: string | ((db: DBFixtures) => Promise<string>)) {
-    test("returns an empty array when there are no resources", async ({ request, db }) => {
-        const response = await request.get(typeof route === "string" ? route : await route(db));
-        expect(response.status()).toBe(200);
-        expect(await response.json()).toStrictEqual([]);
-    });
-}
-
-export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) => Promise<string>) {
-    test("does not return soft-deleted resources", async ({ request, db }) => {
-        const route = await fixtureProvider(db);
-        const response = await request.get(route);
-        expect(response.status()).toBe(200);
-        expect(await response.json()).toStrictEqual([]);
-    });
 }
 
 export function testGetCollectionSubResourceFiltering(
@@ -272,22 +410,6 @@ export function testGetCollectionSubResourceFiltering(
     });
 }
 
-export function testGetCollectionSortedByCreationDate(
-    fixtureProvider: (db: DBFixtures) => Promise<{ route: string; resources: any[] }>,
-) {
-    test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
-        const { route, resources } = await fixtureProvider(db);
-        const mappedResources = resources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
-            ...rest,
-            createdAt: createdAt.toISOString(),
-        }));
-        sortByCreatedAt(mappedResources, "desc");
-        const response = await request.get(route);
-        expect(response.status()).toBe(200);
-        expect(await response.json()).toStrictEqual(mappedResources);
-    });
-}
-
 export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (db: DBFixtures) => Promise<string>) {
     test("does not return sub-resources of soft-deleted resources", async ({ request, db }) => {
         const route = await fixtureProvider(db);
@@ -296,9 +418,6 @@ export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (d
         expect(await response.json()).toStrictEqual([]);
     });
 }
-
-type SoftDeletableFixture = "financeTransaction" | "financeAccount" | "financeAutoTransaction" | "timer";
-type OwnableFixture = "financeAccount" | "timer";
 
 export function testPostSubResourceToInvalidParentResource(
     route: (parentId: string) => string,
@@ -346,15 +465,6 @@ export function testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(
         await truncate(db.client);
         const response = await request.patch(route, { data: { deleted: true } });
         expect(response.status()).toBe(404);
-    });
-}
-
-export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture, baseData: object) {
-    test("ignores any provided id for determining ownership", async ({ request, db }) => {
-        await request.post(route, { data: { ...baseData, userId: "2222222222222222" } });
-        const data = await db[fixtureName].select();
-        const user = await db.user.selectByEmail("user@test.com");
-        expect(data[0]!.userId).toBe(user!.id);
     });
 }
 
@@ -457,5 +567,72 @@ export function testPatchSoftDeletableTrait({
         await request.patch(route, { data: { ...baseData, deleted: false } });
         const [patchedData] = await db[fixtureName].select(data.id);
         expect(patchedData!.deletedAt).toBeNull();
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetEmptyCollection(route: string | ((db: DBFixtures) => Promise<string>)) {
+    test("returns an empty array when there are no resources", async ({ request, db }) => {
+        const response = await request.get(typeof route === "string" ? route : await route(db));
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetCollectionOwnership(fixtureProvider: (db: DBFixtures, userId: string) => Promise<string>) {
+    test("does not return resources of other users", async ({ request, db }) => {
+        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+        const route = await fixtureProvider(db, user!.id);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetSoftDeletedCollection(fixtureProvider: (db: DBFixtures) => Promise<string>) {
+    test("does not return soft-deleted resources", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetCollectionSortedByCreationDate(
+    fixtureProvider: (db: DBFixtures) => Promise<{ route: string; resources: any[] }>,
+) {
+    test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
+        const { route, resources } = await fixtureProvider(db);
+        const mappedResources = resources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
+            ...rest,
+            createdAt: createdAt.toISOString(),
+        }));
+        sortByCreatedAt(mappedResources, "desc");
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual(mappedResources);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture, baseData: object) {
+    test("ignores any provided id for determining ownership", async ({ request, db }) => {
+        await request.post(route, { data: { ...baseData, userId: "2222222222222222" } });
+        const data = await db[fixtureName].select();
+        const user = await db.user.selectByEmail("user@test.com");
+        expect(data[0]!.userId).toBe(user!.id);
     });
 }

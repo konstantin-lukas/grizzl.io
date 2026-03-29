@@ -1,6 +1,6 @@
 import { makeAccountTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
 
-const testBuilder = makeAccountTestBuilder();
+const testBuilder = makeAccountTestBuilder("patch");
 
 testBuilder
     .returnsA404StatusCodeWhenTheProvidedIdIsUnknown()
@@ -10,4 +10,4 @@ testBuilder
     .onlyAllowsPatchingTheDeletedProperty()
     .onlySoftDeletesTheRequestedResource()
     .allowsUndoingADelete()
-    .build("patch");
+    .build();
