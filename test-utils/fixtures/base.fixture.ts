@@ -77,4 +77,11 @@ export default abstract class BaseFixture<T extends SchemaKey> {
         // @ts-expect-error schema inference
         return this.db.select().from(this.schema);
     }
+
+    async delete(id?: string) {
+        if (id) {
+            return this.db.delete(this.schema).where(eq(this.schema.id, id));
+        }
+        return this.db.delete(this.schema);
+    }
 }
