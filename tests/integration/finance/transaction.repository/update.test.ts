@@ -16,12 +16,12 @@ test("throws an error if the input data is faulty", async ({ db, user }) => {
 
 test("returns 0 when the given account id doesn't exist", async ({ db, user }) => {
     const accountRepository = new TransactionRepository(db.client);
-    const rows = await accountRepository.update("bananas", user.id, BASE_TRANSACTION);
+    const rows = await accountRepository.update("bananas", user.id, { ...BASE_TRANSACTION, categoryId: "" });
     expect(rows).toBe(0);
 });
 
 test("returns 0 when the given user id doesn't exist", async ({ db }) => {
     const accountRepository = new TransactionRepository(db.client);
-    const rows = await accountRepository.update(id, "bananas", BASE_TRANSACTION);
+    const rows = await accountRepository.update(id, "bananas", { ...BASE_TRANSACTION, categoryId: "" });
     expect(rows).toBe(0);
 });

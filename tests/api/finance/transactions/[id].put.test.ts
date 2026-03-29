@@ -63,12 +63,8 @@ for (const [name, data] of TRANSACTION_BAD_REQUEST_TEST_CASES) {
             categoryId: category.id,
             amount: 0,
         });
-        const payload =
-            (data as { categoryId: string }).categoryId === BASE_TRANSACTION.categoryId
-                ? { ...data, categoryId: category.id }
-                : data;
         const response = await request.put(`${route(account.id)}/${transaction.id}`, {
-            data: JSONWithBigInt(payload),
+            data: JSONWithBigInt(data),
         });
         expect(response.status()).toBe(400);
     });
@@ -83,13 +79,12 @@ for (const [name, data] of TRANSACTION_VALID_REQUEST_TEST_CASES) {
             categoryId: category.id,
             amount: 0,
         });
-        const payload = data.categoryId === BASE_TRANSACTION.categoryId ? { ...data, categoryId: category.id } : data;
         const response = await request.put(`${route(account.id)}/${transaction.id}`, {
-            data: payload,
+            data: { ...data, category: { name: category.displayName, icon: category.icon } },
         });
         expect(response.status()).toBe(204);
         const { id, createdAt, deletedAt, accountId, ...rest } = (await db.financeTransaction.select())[0]!;
-        expect(rest).toStrictEqual({ ...data, categoryId: category.id });
+        expect(rest).toStrictEqual({ amount: data.amount, reference: data.reference, categoryId: category.id });
     });
 }
 
@@ -137,14 +132,49 @@ test("rejects updating a transaction if the resulting account balance is too sma
     expect(response.status()).toBe(409);
 });
 
-test("rejects attaching a category belonging to a different account", async ({ request, db }) => {
-    const [account1, account2] = await db.financeAccount.insert(2);
-    const [category1] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [category2] = await db.financeCategory.insert(1, { accountId: account2.id });
-    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category1.id });
+test("automatically creates a new category when a matching one doesn't exist", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id, categoryId: category.id });
+    await request.put(`${route(account.id)}/${transaction.id}`, { data: BASE_TRANSACTION });
+    const categories = await db.financeCategory.select();
+    expect(categories).toHaveLength(2);
+    expect(categories).toContainEqual(
+        expect.objectContaining({ icon: BASE_TRANSACTION.category.icon, displayName: BASE_TRANSACTION.category.name }),
+    );
+});
 
-    const response = await request.put(`${route(account1.id)}/${transaction.id}`, {
-        data: { ...BASE_TRANSACTION, categoryId: category2.id },
+test("automatically updates a category when a matching one exists", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id, categoryId: category.id });
+    expect(category.icon).not.toBe(BASE_TRANSACTION.category.icon);
+
+    await request.put(`${route(account.id)}/${transaction.id}`, {
+        data: { ...BASE_TRANSACTION, category: { ...BASE_TRANSACTION.category, name: category.displayName } },
     });
-    expect(response.status()).toBe(400);
+
+    const categories = await db.financeCategory.select();
+    expect(categories).toHaveLength(1);
+    expect(categories[0]!.icon).toBe(BASE_TRANSACTION.category.icon);
+});
+
+test("does not alter other users' categories", async ({ request, db }) => {
+    const otherUser = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+    const [myAccount] = await db.financeAccount.insert(1);
+    const [otherAccount] = await db.financeAccount.insert(1, { userId: otherUser!.id });
+    const [myCategory, otherCategory] = await db.financeCategory.insert(2, i => ({
+        accountId: i === 0 ? myAccount.id : otherAccount.id,
+    }));
+    const [myTransaction] = await db.financeTransaction.insert(1, {
+        accountId: myAccount.id,
+        categoryId: myCategory.id,
+    });
+
+    const data = { ...BASE_TRANSACTION, category: { ...BASE_TRANSACTION.category, name: otherCategory.displayName } };
+    await request.put(`${route(myAccount.id)}/${myTransaction.id}`, { data });
+
+    const categories = await db.financeCategory.select();
+    expect(categories).toHaveLength(3);
+    expect(categories).toContainEqual(otherCategory);
 });

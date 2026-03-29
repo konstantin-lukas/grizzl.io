@@ -35,21 +35,21 @@ export function test401WhenLoggedOut(method: "get" | "post" | "patch" | "delete"
     });
 }
 
-export function createInvalidTypeTestCases<T extends Record<string, unknown>>(
+export function createInvalidTypeTestCases<T extends Record<string, unknown>, K extends keyof T>(
     data: T,
-    property: keyof T,
+    property: K,
     options: {
         valid?: (typeof TYPES)[number][0][];
-        caseName?: (property: string, type: string) => string;
-        dataTransform?: (data: T, property: string, value: (typeof TYPES)[number][1]) => unknown;
+        caseName?: (property: K, type: string) => string;
+        dataTransform?: (data: T, property: K, value: (typeof TYPES)[number][1]) => unknown;
     },
 ) {
     const testCases = [];
     for (const [type, value] of TYPES) {
         if (!(options.valid ?? []).includes(type)) {
             testCases.push([
-                options.caseName?.(property as string, type) ?? `property ${property as string} is of type ${type}`,
-                options.dataTransform?.(data, property as string, value) ?? { ...data, [property]: value },
+                options.caseName?.(property, type) ?? `property ${property.toString()} is of type ${type}`,
+                options.dataTransform?.(data, property, value) ?? { ...data, [property]: value },
             ]);
         }
     }

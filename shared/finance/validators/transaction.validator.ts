@@ -1,4 +1,5 @@
 import { DatabaseIdSchema, TITLE_MAX, TITLE_MIN } from "#shared/core/validators/core.validator";
+import { CategorySchema } from "#shared/finance/validators/category.validator";
 import { z } from "zod";
 
 export const GetTransactionFiltersSchema = z.object({
@@ -17,7 +18,7 @@ export const GetTransactionFiltersSchema = z.object({
 export const PostTransactionSchema = z.object({
     amount: z.int(),
     reference: z.string().min(TITLE_MIN).max(TITLE_MAX).nullable(),
-    categoryId: DatabaseIdSchema,
+    category: CategorySchema,
 });
 
 export const PutTransactionSchema = PostTransactionSchema;
@@ -25,3 +26,6 @@ export const PutTransactionSchema = PostTransactionSchema;
 export type GetTransactionFilters = z.infer<typeof GetTransactionFiltersSchema>;
 export type PostTransaction = z.infer<typeof PostTransactionSchema>;
 export type PutTransaction = z.infer<typeof PutTransactionSchema>;
+
+export type PostTransactionInternal = Omit<PostTransaction, "category"> & { categoryId: string };
+export type PutTransactionInternal = Omit<PutTransaction, "category"> & { categoryId: string };

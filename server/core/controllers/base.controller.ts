@@ -7,7 +7,6 @@ import { getRouterParam, parseCookies, readBody } from "h3";
 import { ZodError, z } from "zod";
 import DomainError from "~~/server/core/errors/domain.error";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
-import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
 import { LoggerService } from "~~/server/core/services/logger.service";
@@ -198,7 +197,6 @@ export default class BaseController {
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
         if (error instanceof UnknownError) BaseController.throwError(error, "INTERNAL_SERVER_ERROR");
         if (error instanceof InvalidAccountBalanceError) BaseController.throwError(error, "CONFLICT");
-        if (error instanceof InvalidForeignKeyError) BaseController.throwError(error, "BAD_REQUEST");
 
         // REQUEST ERROR
         if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");

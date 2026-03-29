@@ -19,7 +19,11 @@ test("returns only the transactions belonging to the requested user", async ({ d
     expect(accounts).toStrictEqual([
         {
             amount: -27339,
-            categoryId: myCategory.id,
+            category: {
+                id: myCategory.id,
+                icon: myCategory.icon,
+                name: myCategory.displayName,
+            },
             createdAt: new Date("2025-01-23T02:17:18.000Z"),
             id: anyId,
             reference:
@@ -82,12 +86,13 @@ test.for(filters)("returns an array filtered by $title", async ({ from, to, refe
     }
 
     const transactionRepository = new TransactionRepository(db.client);
-    expect(
+    const transactions = (
         await transactionRepository.findByUserAndAccountId(user.id, account.id, {
             from,
             to,
             reference,
             categoryId,
-        }),
-    ).toStrictEqual(remainingData.map(({ accountId, deletedAt, ...rest }) => rest));
+        })
+    ).map(({ category, ...rest }) => ({ ...rest, categoryId: category.id }));
+    expect(transactions).toStrictEqual(remainingData.map(({ accountId, deletedAt, ...rest }) => rest));
 });

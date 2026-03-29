@@ -15,8 +15,20 @@ export const FULL_ACCOUNT = {
 export const BASE_TRANSACTION = {
     amount: 100_00,
     reference: "Fresh Fruit",
-    categoryId: "VbvbykXQUeBBs5n8",
+    category: {
+        name: "Groceries",
+        icon: "grocery",
+    },
 };
+
+export const INTERNAL_TRANSACTION = {
+    ...BASE_TRANSACTION,
+    category: {
+        displayName: "Groceries",
+        normalizedName: "groceries",
+        icon: "grocery",
+    },
+} as const;
 
 export const FULL_TRANSACTION = {
     ...BASE_TRANSACTION,
@@ -32,23 +44,24 @@ export const BASE_AUTO_TRANSACTION = {
     execInterval: 1,
     execOn: 1,
     lastExec: "2026-01-01",
-    categoryId: "VbvbykXQUeBBs5n8",
+    category: {
+        name: "Groceries",
+        icon: "grocery",
+    },
 };
+
+export const INTERNAL_AUTO_TRANSACTION = {
+    ...BASE_AUTO_TRANSACTION,
+    category: {
+        displayName: "Groceries",
+        normalizedName: "groceries",
+        icon: "grocery",
+    },
+} as const;
 
 export const FULL_AUTO_TRANSACTION = {
     ...BASE_AUTO_TRANSACTION,
     id: "VbvbykXQUeBBs5n8",
     accountId: "VbvbykXQUeBBs5n8",
     createdAt: new Date("2026-01-01"),
-};
-
-export const BASE_CATEGORY = {
-    displayName: "Groceries",
-    normalizedName: "groceries",
-    icon: "grocery",
-};
-
-export const FULL_CATEGORY = {
-    id: "VbvbykXQUeBBs5n8",
-    accountId: "VbvbykXQUeBBs5n8",
 };

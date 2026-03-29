@@ -58,3 +58,14 @@ describe("update", () => {
         await expect(accountService.update(id, userId, account)).resolves.not.toThrow();
     });
 });
+
+describe("getUserAccount", () => {
+    test("returns the found account when a matching ID exists in the user's accounts", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ id: "123" }]);
+        await expect(accountService.getUserAccount("", "123")).resolves.toStrictEqual({ id: "123" });
+    });
+    test("throws a NotFoundError when no matching ID exists in the user's accounts", async () => {
+        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ id: "123" }]);
+        await expect(accountService.getUserAccount("", "124")).rejects.toBeInstanceOf(NotFoundError);
+    });
+});

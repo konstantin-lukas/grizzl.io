@@ -1,59 +1,48 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import InvalidForeignKeyError from "~~/server/core/errors/invalid-foreign-key.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AutoTransactionService from "~~/server/finance/services/auto_transaction.service";
-import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
+import { INTERNAL_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 
 const accountRepositoryMock = {
-    findByUserId: vi.fn(),
     hasSubResource: vi.fn(),
 };
 
-const categoryRepositoryMock = {
-    findByUserAndAccountId: vi.fn(),
-};
-
 const autoTransactionRepositoryMock = {
-    findByUserId: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
     undelete: vi.fn(),
+    transaction: (fn: () => Promise<unknown>) => fn(),
 };
 
-beforeEach(() => {
-    vi.resetAllMocks();
-});
+const categoryServiceMock = {
+    upsert: vi.fn(),
+};
+
+const accountServiceMock = {
+    getUserAccount: vi.fn(),
+};
 
 const autoTransactionService = new AutoTransactionService(
     autoTransactionRepositoryMock as never,
     accountRepositoryMock as never,
-    categoryRepositoryMock as never,
+    categoryServiceMock as never,
+    accountServiceMock as never,
 );
+
 const id = "9j3q9ohodjj3aa";
 const userId = "awdk9t3j8sojfo";
 const accountId = "12349ohodjj3aa";
 
+beforeEach(() => {
+    vi.resetAllMocks();
+    autoTransactionRepositoryMock.update.mockResolvedValue(1);
+});
+
 describe("create", () => {
-    test("throws a NotFoundError if no accounts exist for a given user", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([]);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_AUTO_TRANSACTION.categoryId }]);
-        await expect(autoTransactionService.create(id, id, BASE_AUTO_TRANSACTION)).rejects.toThrow(NotFoundError);
-    });
-
     test("calls on the transaction repository to create a new transaction if everything is in order", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id }]);
-        autoTransactionRepositoryMock.create.mockReturnValueOnce(id);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_AUTO_TRANSACTION.categoryId }]);
-        await expect(autoTransactionService.create(id, id, BASE_AUTO_TRANSACTION)).resolves.toBe(id);
-    });
-
-    test("throws an InvalidForeignKeyError if the category can't be found", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([]);
-        await expect(autoTransactionService.create(userId, accountId, BASE_AUTO_TRANSACTION)).rejects.toBeInstanceOf(
-            InvalidForeignKeyError,
-        );
+        autoTransactionRepositoryMock.create.mockResolvedValueOnce(id);
+        await expect(autoTransactionService.create(id, id, INTERNAL_AUTO_TRANSACTION)).resolves.toBe(id);
     });
 });
 
@@ -92,26 +81,15 @@ describe("setDeletedStatus", () => {
 
 describe("update", () => {
     test("does not throw if everything is in order", async () => {
-        autoTransactionRepositoryMock.update.mockReturnValueOnce(1);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_AUTO_TRANSACTION.categoryId }]);
         await expect(
-            autoTransactionService.update(id, userId, accountId, BASE_AUTO_TRANSACTION),
+            autoTransactionService.update(id, userId, accountId, INTERNAL_AUTO_TRANSACTION),
         ).resolves.not.toThrow();
     });
 
     test("throws a NotFoundError if the auto-transaction can't be updated", async () => {
-        autoTransactionRepositoryMock.update.mockReturnValueOnce(0);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([{ id: BASE_AUTO_TRANSACTION.categoryId }]);
+        autoTransactionRepositoryMock.update.mockResolvedValue(0);
         await expect(
-            autoTransactionService.update(id, userId, accountId, BASE_AUTO_TRANSACTION),
+            autoTransactionService.update(id, userId, accountId, INTERNAL_AUTO_TRANSACTION),
         ).rejects.toBeInstanceOf(NotFoundError);
-    });
-
-    test("throws an InvalidForeignKeyError if the category can't be found", async () => {
-        accountRepositoryMock.findByUserId.mockReturnValueOnce([{ balance: 0, id: accountId }]);
-        categoryRepositoryMock.findByUserAndAccountId.mockReturnValueOnce([]);
-        await expect(
-            autoTransactionService.update(id, userId, accountId, BASE_AUTO_TRANSACTION),
-        ).rejects.toBeInstanceOf(InvalidForeignKeyError);
     });
 });

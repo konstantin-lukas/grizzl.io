@@ -1,7 +1,7 @@
 import type {
     GetTransactionFilters,
-    PostTransaction,
-    PutTransaction,
+    PostTransactionInternal,
+    PutTransactionInternal,
 } from "#shared/finance/validators/transaction.validator";
 import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
@@ -31,7 +31,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
 
     public async create(
         accountId: string,
-        { amount, reference, categoryId }: PostTransaction,
+        { amount, reference, categoryId }: PostTransactionInternal,
         ctx: ExecutionContext = this.db,
     ) {
         const [transaction] = await ctx
@@ -45,7 +45,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
     public async update(
         id: string,
         userId: string,
-        { amount, reference, categoryId }: PutTransaction,
+        { amount, reference, categoryId }: PutTransactionInternal,
         ctx: ExecutionContext = this.db,
     ) {
         const { rowCount } = await ctx
@@ -107,10 +107,15 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
-                categoryId: this.schema.categoryId,
+                category: {
+                    id: dbSchema.financeCategory.id,
+                    name: dbSchema.financeCategory.displayName,
+                    icon: dbSchema.financeCategory.icon,
+                },
             })
             .from(this.schema)
             .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
+            .innerJoin(dbSchema.financeCategory, eq(this.schema.categoryId, dbSchema.financeCategory.id))
             .where(
                 and(
                     eq(this.schema.accountId, accountId),

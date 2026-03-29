@@ -11,7 +11,8 @@ test("creates a transaction and returns the id of the created resource", async (
 
     const [transaction] = await db.financeTransaction.select(id);
     expect(transaction).toStrictEqual({
-        ...BASE_TRANSACTION,
+        amount: BASE_TRANSACTION.amount,
+        reference: BASE_TRANSACTION.reference,
         id: anyId,
         accountId: anyId,
         createdAt: expect.any(Date),
