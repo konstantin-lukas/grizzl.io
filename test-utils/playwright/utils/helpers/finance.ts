@@ -1,8 +1,8 @@
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
-import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION, FULL_ACCOUNT } from "~~/test-utils/constants/finance";
 import { str } from "~~/test-utils/helpers/data";
 import { omit } from "~~/test-utils/helpers/object";
-import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
+import { TestBuilder, createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
 
 function withAccount(property: keyof typeof BASE_ACCOUNT, value: unknown) {
     return { ...BASE_ACCOUNT, [property]: value };
@@ -196,3 +196,20 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["the category name is missing", omit(BASE_AUTO_TRANSACTION, "category.name")],
     ["the category icon is missing", omit(BASE_AUTO_TRANSACTION, "category.icon")],
 ] as const;
+
+export function makeAccountTestBuilder() {
+    return new TestBuilder({
+        fixtureProvider: async ({ db, userId }) => {
+            const [account] = await db.financeAccount.insert(1, userId ? { userId } : undefined);
+            return {
+                id: account.id,
+                data: account,
+                basePath: "/api/finance/accounts",
+                fullPath: `/api/finance/accounts/${account.id}`,
+            };
+        },
+        baseData: BASE_ACCOUNT,
+        fullData: FULL_ACCOUNT,
+        fixtureName: "financeAccount",
+    });
+}
