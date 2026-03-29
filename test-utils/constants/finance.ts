@@ -21,6 +21,15 @@ export const BASE_TRANSACTION = {
     },
 };
 
+export const INTERNAL_TRANSACTION = {
+    ...BASE_TRANSACTION,
+    category: {
+        displayName: "Groceries",
+        normalizedName: "groceries",
+        icon: "grocery",
+    },
+} as const;
+
 export const FULL_TRANSACTION = {
     ...BASE_TRANSACTION,
     id: "VbvbykXQUeBBs5n8",
@@ -40,6 +49,15 @@ export const BASE_AUTO_TRANSACTION = {
         icon: "grocery",
     },
 };
+
+export const INTERNAL_AUTO_TRANSACTION = {
+    ...BASE_AUTO_TRANSACTION,
+    category: {
+        displayName: "Groceries",
+        normalizedName: "groceries",
+        icon: "grocery",
+    },
+} as const;
 
 export const FULL_AUTO_TRANSACTION = {
     ...BASE_AUTO_TRANSACTION,
