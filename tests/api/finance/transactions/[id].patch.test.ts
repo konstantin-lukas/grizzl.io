@@ -1,37 +1,16 @@
-import { BASE_TRANSACTION, FULL_TRANSACTION } from "~~/test-utils/constants/finance";
-import {
-    test401WhenLoggedOut,
-    testIdParameter,
-    testPatchDeletedPropertyOnSubResourceWithInvalidParentResource,
-    testPatchSoftDeletableTrait,
-} from "~~/test-utils/playwright/utils/helpers";
+import { makeTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
 
-const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
+const testBuilder = makeTransactionTestBuilder("patch");
 
-testIdParameter("patch", route("2222222222222222"), { deleted: true });
-test401WhenLoggedOut("patch", route("2222222222222222"));
-testPatchSoftDeletableTrait({
-    fixtureProvider: async (db, options) => {
-        const [account] = await db.financeAccount.insert(1, options?.userId ? { userId: options.userId } : undefined);
-        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-        const [data] = await db.financeTransaction.insert(1, {
-            accountId: account.id,
-            categoryId: category.id,
-            deletedAt: options?.deleted ? new Date() : null,
-        });
-        return { data, route: `${route(account.id)}/${data.id}` };
-    },
-    fixtureName: "financeTransaction",
-    fullData: FULL_TRANSACTION,
-    baseData: BASE_TRANSACTION,
-});
-testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(async (db, userId) => {
-    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
-    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [transaction] = await db.financeTransaction.insert(1, { accountId: account1.id, categoryId: category.id });
-    return {
-        validUrl: `${route(account1.id)}/${transaction.id}`,
-        invalidUrl: `${route(account2.id)}/${transaction.id}`,
-        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
-    };
-});
+testBuilder
+    .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
+    .returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat()
+    .returnsA404StatusCodeWhenTheProvidedIdIsUnknown()
+    .onlySoftDeletesTheRequestedResource()
+    .onlyAllowsPatchingTheDeletedProperty()
+    .onlyAllowsAUserToSoftDeleteTheirOwnResources()
+    .allowsUndoingADelete()
+    .rejectsAnOperationOnASubResourceOwnedByAnotherUsersParentResource()
+    .rejectsAnOperationOnASubResourceOnANonExistentParentResource()
+    .rejectsAnOperationOnASubResourceWhenTheParentResourceIsNotAssociated()
+    .build();

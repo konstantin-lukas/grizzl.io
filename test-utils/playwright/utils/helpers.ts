@@ -1,6 +1,8 @@
+import { ID_LENGTH } from "#shared/core/validators/core.validator";
 import type { DBFixtures } from "~~/test-utils/database/fixture";
-import { truncate } from "~~/test-utils/database/truncate";
+import { wrapArray } from "~~/test-utils/helpers/array";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
+import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
@@ -21,22 +23,33 @@ export type Method = "get" | "get-collection" | "post" | "patch" | "delete" | "p
 type FixtureKey = Exclude<keyof DBFixtures, "client">;
 interface FixtureResource {
     id: string;
+    parentId?: string;
     data: any;
     basePath: string;
     fullPath: string;
+    postDatabaseOverrides?: object;
+    postRequestOverrides?: object;
+    putDatabaseOverrides?: object;
+    putRequestOverrides?: object;
+    getDatabaseOverrides?: object;
 }
-type FixtureProvider = (options: { db: DBFixtures; userId?: string }) => Promise<FixtureResource>;
+type FixtureProvider = (options: { db: DBFixtures; userId?: string; count?: number }) => Promise<FixtureResource>;
 type ConstructorOptions = {
     fixtureProvider: FixtureProvider;
     baseData: object;
     fullData: object;
     fixtureName: FixtureKey;
+    parentFixtureName?: FixtureKey;
     method: Method;
-    badPut: any[];
-    validPut: any[];
-    badPost: any[];
-    validPost: any[];
+    badPut: readonly any[];
+    validPut: readonly any[];
+    badPost: readonly any[];
+    validPost: readonly any[];
 };
+
+function removeUndefinedFields(obj: object) {
+    return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined));
+}
 
 export class TestBuilder {
     private tests: (() => void)[] = [];
@@ -45,11 +58,12 @@ export class TestBuilder {
     private readonly resolvedMethod: Exclude<Method, "get-collection"> = "get";
     private readonly baseData: object;
     private readonly fullData: object;
-    private readonly badPut: any[];
-    private readonly validPut: any[];
-    private readonly badPost: any[];
-    private readonly validPost: any[];
+    private readonly badPut: readonly any[];
+    private readonly validPut: readonly any[];
+    private readonly badPost: readonly any[];
+    private readonly validPost: readonly any[];
     private readonly fixtureName: FixtureKey;
+    private readonly parentFixtureName?: FixtureKey;
 
     constructor({
         fixtureProvider,
@@ -61,6 +75,7 @@ export class TestBuilder {
         validPut,
         badPost,
         validPost,
+        parentFixtureName,
     }: ConstructorOptions) {
         this.method = method;
         this.resolvedMethod = method === "get-collection" ? "get" : method;
@@ -72,6 +87,7 @@ export class TestBuilder {
         this.validPut = validPut;
         this.badPost = badPost;
         this.validPost = validPost;
+        this.parentFixtureName = parentFixtureName;
     }
 
     public build() {
@@ -87,6 +103,9 @@ export class TestBuilder {
         }
     }
 
+    /**
+     * @allowed patch, put
+     */
     public returnsA404StatusCodeWhenTheProvidedIdIsUnknown() {
         this.tests.push(() => {
             this.checkMethods("returnsA404StatusCodeWhenTheProvidedIdIsUnknown", ["patch", "put"]);
@@ -103,6 +122,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch, put
+     */
     public returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat() {
         this.tests.push(() => {
             this.checkMethods("returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat", ["patch", "put"]);
@@ -119,6 +141,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch, put, post, get, get-collection
+     */
     public returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade() {
         this.tests.push(() => {
             this.checkMethods("returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade", [
@@ -142,6 +167,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch
+     */
     public onlyAllowsAUserToSoftDeleteTheirOwnResources() {
         this.tests.push(() => {
             this.checkMethods("onlyAllowsAUserToSoftDeleteTheirOwnResources", ["patch"]);
@@ -164,6 +192,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch
+     */
     public onlyAllowsPatchingTheDeletedProperty() {
         this.tests.push(() => {
             this.checkMethods("onlyAllowsPatchingTheDeletedProperty", ["patch"]);
@@ -186,6 +217,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch
+     */
     public onlySoftDeletesTheRequestedResource() {
         this.tests.push(() => {
             this.checkMethods("onlySoftDeletesTheRequestedResource", ["patch"]);
@@ -213,6 +247,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed patch
+     */
     public allowsUndoingADelete() {
         this.tests.push(() => {
             this.checkMethods("allowsUndoingADelete", ["patch"]);
@@ -232,6 +269,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed get-collection
+     */
     public returnsAnEmptyArrayWhenThereAreNoResources() {
         this.tests.push(() => {
             this.checkMethods("returnsAnEmptyArrayWhenThereAreNoResources", ["get-collection"]);
@@ -250,6 +290,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed get-collection
+     */
     public doesNotReturnResourcesOfOtherUsers() {
         this.tests.push(() => {
             this.checkMethods("doesNotReturnResourcesOfOtherUsers", ["get-collection"]);
@@ -267,6 +310,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed get-collection
+     */
     public doesNotReturnSoftDeletedResources() {
         this.tests.push(() => {
             this.checkMethods("doesNotReturnSoftDeletedResources", ["get-collection"]);
@@ -284,19 +330,25 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed get-collection
+     */
     public allowsRetrievingAListOfResourcesSortedByCreationDate() {
         this.tests.push(() => {
             this.checkMethods("allowsRetrievingAListOfResourcesSortedByCreationDate", ["get-collection"]);
 
             test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
-                const { basePath, data: d1 } = await this.fixtureProvider({ db });
-                const { data: d2 } = await this.fixtureProvider({ db });
-                const { data: d3 } = await this.fixtureProvider({ db });
-                const mappedResources = [d1, d2, d3].map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
-                    ...rest,
-                    createdAt: createdAt.toISOString(),
-                }));
-                sortByCreatedAt(mappedResources, "desc");
+                const { basePath, data, getDatabaseOverrides } = await this.fixtureProvider({ db, count: 3 });
+                const mappedResources = wrapArray(data).map(
+                    ({ accountId, createdAt, deletedAt, userId, ...rest }: any) => {
+                        return removeUndefinedFields({
+                            ...rest,
+                            createdAt: createdAt.toISOString(),
+                            ...getDatabaseOverrides,
+                        });
+                    },
+                );
+                sortByCreatedAt(mappedResources as never, "desc");
 
                 const response = await request[this.resolvedMethod](basePath);
 
@@ -308,6 +360,9 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed post
+     */
     public ignoresAnyProvidedIdForDeterminingOwnership() {
         this.tests.push(() => {
             this.checkMethods("ignoresAnyProvidedIdForDeterminingOwnership", ["post"]);
@@ -328,15 +383,20 @@ export class TestBuilder {
         return this;
     }
 
+    /**
+     * @allowed post, put
+     */
     public rejectsRequestsWhenPayloadIsInvalid() {
         this.tests.push(() => {
             this.checkMethods("rejectsRequestsWhenPayloadIsInvalid", ["post", "put"]);
 
-            const testCases = this.method === "post" ? this.badPost : this.badPut;
+            const isPost = this.method === "post";
+            const testCases = isPost ? this.badPost : this.badPut;
             for (const [name, data] of testCases) {
                 test(`rejects creating resources when ${name}`, async ({ request, db }) => {
-                    const { basePath } = await this.fixtureProvider({ db });
-                    const response = await request[this.resolvedMethod](basePath, { data });
+                    const { basePath, fullPath } = await this.fixtureProvider({ db });
+                    const path = isPost ? basePath : fullPath;
+                    const response = await request[this.resolvedMethod](path, { data: JSONWithBigInt(data) });
                     expect(response.status()).toBe(400);
                 });
             }
@@ -344,26 +404,198 @@ export class TestBuilder {
 
         return this;
     }
-
+    /**
+     * @allowed post, put
+     */
     public acceptsRequestsWhenPayloadIsValid() {
         this.tests.push(() => {
             this.checkMethods("acceptsRequestsWhenPayloadIsValid", ["post", "put"]);
 
-            const testCases = this.method === "post" ? this.validPost : this.validPut;
+            const isPost = this.method === "post";
+            const testCases = isPost ? this.validPost : this.validPut;
             for (const [name, data] of testCases) {
                 test(`allows creating resources when ${name}`, async ({ request, db }) => {
-                    const { basePath } = await this.fixtureProvider({ db });
-                    await db[this.fixtureName].delete();
+                    const {
+                        basePath,
+                        fullPath,
+                        id,
+                        putDatabaseOverrides,
+                        postDatabaseOverrides,
+                        postRequestOverrides,
+                        putRequestOverrides,
+                    } = await this.fixtureProvider({ db });
+                    const path = isPost ? basePath : fullPath;
 
-                    const response = await request[this.resolvedMethod](basePath, { data });
+                    const requestOverrides = isPost ? postRequestOverrides : putRequestOverrides;
+                    const response = await request[this.resolvedMethod](path, {
+                        data: JSONWithBigInt({ ...data, ...requestOverrides }),
+                    });
+
+                    expect(response.status()).toBe(isPost ? 201 : 204);
+
+                    const {
+                        id: createdId,
+                        createdAt,
+                        deletedAt,
+                        userId,
+                        ...resource
+                    } = (await db[this.fixtureName].select()).find(r => (isPost ? r.id !== id : r.id === id)) as any;
+
+                    const databaseOverrides = isPost ? postDatabaseOverrides : putDatabaseOverrides;
+                    const expectedData = removeUndefinedFields({ ...data, ...databaseOverrides });
+                    expect(resource).toStrictEqual(expectedData);
+
+                    if (!isPost) return;
+
                     const responseData = response.headers().location;
-
-                    expect(response.status()).toBe(201);
-                    const { id, createdAt, deletedAt, userId, ...rest } = (await db.financeAccount.select())[0]!;
-                    expect(rest).toStrictEqual({ ...data, balance: 0 });
-                    expect(responseData).toBe(`${basePath}/${id}`);
+                    expect(responseData).toBe(`${basePath}/${createdId}`);
                 });
             }
+        });
+
+        return this;
+    }
+
+    /**
+     * @allowed post, patch, put
+     */
+    public rejectsAnOperationOnASubResourceOwnedByAnotherUsersParentResource() {
+        this.tests.push(() => {
+            this.checkMethods("rejectsAnOperationOnASubResourceOwnedByAnotherUsersParentResource", [
+                "post",
+                "put",
+                "patch",
+            ]);
+
+            test("rejects an operation on a sub-resource owned by another user's parent resource", async ({
+                request,
+                db,
+            }) => {
+                const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
+                const { fullPath, basePath } = await this.fixtureProvider({ db, userId: user!.id });
+                const path = this.method === "post" ? basePath : fullPath;
+                const data = this.method === "patch" ? { deleted: true } : this.baseData;
+
+                const response = await request[this.resolvedMethod](path, { data });
+                expect(response.status()).toBe(404);
+            });
+        });
+
+        return this;
+    }
+
+    /**
+     * @allowed patch, put
+     */
+    public rejectsAnOperationOnASubResourceWhenTheParentResourceIsNotAssociated() {
+        this.tests.push(() => {
+            this.checkMethods("rejectsAnOperationOnASubResourceWhenTheParentResourceIsNotAssociated", ["put", "patch"]);
+
+            test("rejects an operation on a sub-resource when the parent resource is not associated", async ({
+                request,
+                db,
+            }) => {
+                const { basePath } = await this.fixtureProvider({ db });
+                const { id } = await this.fixtureProvider({ db });
+                const data = this.method === "patch" ? { deleted: true } : this.baseData;
+
+                const response = await request[this.resolvedMethod](`${basePath}/${id}`, { data });
+                expect(response.status()).toBe(404);
+            });
+        });
+
+        return this;
+    }
+
+    /**
+     * @allowed post, patch, put
+     */
+    public rejectsAnOperationOnASubResourceOnANonExistentParentResource() {
+        this.tests.push(() => {
+            this.checkMethods("rejectsAnOperationOnASubResourceOnANonExistentParentResource", ["post", "put", "patch"]);
+
+            test("rejects an operation a sub-resource on a non-existent parent resource", async ({ request, db }) => {
+                const { basePath, fullPath, parentId } = await this.fixtureProvider({ db });
+
+                expect(parentId?.length).toBe(ID_LENGTH);
+                const path = this.method === "post" ? basePath : fullPath;
+                const invalidPath = path.replace(parentId!, "2222222222222222");
+
+                expect(invalidPath).not.toBe(path);
+                const data = this.method === "patch" ? { deleted: true } : this.baseData;
+
+                const response = await request[this.resolvedMethod](invalidPath, { data });
+                expect(response.status()).toBe(404);
+            });
+        });
+
+        return this;
+    }
+
+    /**
+     * Get on a single resource is currently not implement but can be added if needed
+     * @allowed get-collection
+     */
+    public doesNotReturnSubResourcesBelongingToOtherResources() {
+        this.tests.push(() => {
+            this.checkMethods("doesNotReturnSubResourcesBelongingToOtherResources", ["get-collection"]);
+
+            test("does not return sub-resources belonging to other resources", async ({ request, db }) => {
+                const {
+                    basePath: path1,
+                    data: data1,
+                    getDatabaseOverrides: o1,
+                } = await this.fixtureProvider({ db, count: 2 });
+                const {
+                    basePath: path2,
+                    data: data2,
+                    getDatabaseOverrides: o2,
+                } = await this.fixtureProvider({ db, count: 3 });
+
+                const mappedSubResources1 = data1.map(({ accountId, createdAt, deletedAt, userId, ...rest }: any) =>
+                    removeUndefinedFields({
+                        ...rest,
+                        createdAt: createdAt.toISOString(),
+                        ...o1,
+                    }),
+                );
+                const mappedSubResources2 = data2.map(({ accountId, createdAt, deletedAt, userId, ...rest }: any) =>
+                    removeUndefinedFields({
+                        ...rest,
+                        createdAt: createdAt.toISOString(),
+                        ...o2,
+                    }),
+                );
+
+                sortByCreatedAt(mappedSubResources1, "desc");
+                sortByCreatedAt(mappedSubResources2, "desc");
+                const response1 = await request.get(path1);
+                const response2 = await request.get(path2);
+                expect(response1.status()).toBe(200);
+                expect(response2.status()).toBe(200);
+                expect(await response1.json()).toStrictEqual(mappedSubResources1);
+                expect(await response2.json()).toStrictEqual(mappedSubResources2);
+            });
+        });
+
+        return this;
+    }
+
+    /**
+     * Get on a single resource is currently not implement but can be added if needed
+     * @allowed get-collection
+     */
+    public doesNotReturnSubResourcesOfSoftDeletedResources() {
+        this.tests.push(() => {
+            this.checkMethods("doesNotReturnSubResourcesOfSoftDeletedResources", ["get-collection"]);
+
+            test("does not return sub-resources of soft-deleted resources", async ({ request, db }) => {
+                const { parentId, basePath } = await this.fixtureProvider({ db });
+                await db[this.parentFixtureName!].update({ deletedAt: new Date() }, parentId);
+                const response = await request.get(basePath);
+                expect(response.status()).toBe(200);
+                expect(await response.json()).toStrictEqual([]);
+            });
         });
 
         return this;
@@ -391,34 +623,9 @@ export function createInvalidTypeTestCases<T extends Record<string, unknown>, K 
     return testCases as [string, T][];
 }
 
-export function testGetCollectionSubResourceFiltering(
-    fixtureProvider: (db: DBFixtures) => Promise<{ thisRoute: string; otherRoute: string; subResources: any[] }>,
-) {
-    test("does not return sub-resources belonging to other resources", async ({ request, db }) => {
-        const { subResources, thisRoute, otherRoute } = await fixtureProvider(db);
-        const mappedSubResources = subResources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
-            ...rest,
-            createdAt: createdAt.toISOString(),
-        }));
-        sortByCreatedAt(mappedSubResources, "desc");
-        const response1 = await request.get(thisRoute);
-        const response2 = await request.get(otherRoute);
-        expect(response1.status()).toBe(200);
-        expect(response2.status()).toBe(200);
-        expect(await response1.json()).toStrictEqual(mappedSubResources);
-        expect(await response2.json()).toStrictEqual([]);
-    });
-}
-
-export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (db: DBFixtures) => Promise<string>) {
-    test("does not return sub-resources of soft-deleted resources", async ({ request, db }) => {
-        const route = await fixtureProvider(db);
-        const response = await request.get(route);
-        expect(response.status()).toBe(200);
-        expect(await response.json()).toStrictEqual([]);
-    });
-}
-
+/**
+ * @deprecated
+ */
 export function testPostSubResourceToInvalidParentResource(
     route: (parentId: string) => string,
 
@@ -435,35 +642,6 @@ export function testPostSubResourceToInvalidParentResource(
     test("rejects creating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
         const { baseData } = await parentFixture(db);
         const response = await request.post(route("2222222222222222"), { data: baseData });
-        expect(response.status()).toBe(404);
-    });
-}
-
-export function testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(
-    fixtureProvider: (
-        db: DBFixtures,
-        userId?: string,
-    ) => Promise<{ validUrl: string; invalidUrl: string; unknownUrl: string }>,
-) {
-    test("rejects updating a sub-resource on another user's parent resource", async ({ request, db }) => {
-        const user = await db.user.selectByEmail("cmontgomeryburns@springfieldnuclear.com");
-        const { validUrl: route } = await fixtureProvider(db, user!.id);
-
-        const response = await request.patch(route, { data: { deleted: true } });
-        expect(response.status()).toBe(404);
-    });
-
-    test("rejects updating a sub-resource when the parent resource is not associated", async ({ request, db }) => {
-        const { invalidUrl: route } = await fixtureProvider(db);
-
-        const response = await request.patch(route, { data: { deleted: true } });
-        expect(response.status()).toBe(404);
-    });
-
-    test("rejects updating a sub-resource on a non-existent parent resource", async ({ request, db }) => {
-        const { unknownUrl: route } = await fixtureProvider(db);
-        await truncate(db.client);
-        const response = await request.patch(route, { data: { deleted: true } });
         expect(response.status()).toBe(404);
     });
 }
@@ -634,5 +812,39 @@ export function testPostIgnoresUserId(route: string, fixtureName: OwnableFixture
         const data = await db[fixtureName].select();
         const user = await db.user.selectByEmail("user@test.com");
         expect(data[0]!.userId).toBe(user!.id);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetCollectionSubResourceFiltering(
+    fixtureProvider: (db: DBFixtures) => Promise<{ thisRoute: string; otherRoute: string; subResources: any[] }>,
+) {
+    test("does not return sub-resources belonging to other resources", async ({ request, db }) => {
+        const { subResources, thisRoute, otherRoute } = await fixtureProvider(db);
+        const mappedSubResources = subResources.map(({ accountId, createdAt, deletedAt, userId, ...rest }) => ({
+            ...rest,
+            createdAt: createdAt.toISOString(),
+        }));
+        sortByCreatedAt(mappedSubResources, "desc");
+        const response1 = await request.get(thisRoute);
+        const response2 = await request.get(otherRoute);
+        expect(response1.status()).toBe(200);
+        expect(response2.status()).toBe(200);
+        expect(await response1.json()).toStrictEqual(mappedSubResources);
+        expect(await response2.json()).toStrictEqual([]);
+    });
+}
+
+/**
+ * @deprecated
+ */
+export function testGetCollectionOfSoftDeletedParentResource(fixtureProvider: (db: DBFixtures) => Promise<string>) {
+    test("does not return sub-resources of soft-deleted resources", async ({ request, db }) => {
+        const route = await fixtureProvider(db);
+        const response = await request.get(route);
+        expect(response.status()).toBe(200);
+        expect(await response.json()).toStrictEqual([]);
     });
 }

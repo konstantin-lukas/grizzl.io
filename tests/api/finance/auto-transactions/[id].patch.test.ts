@@ -1,40 +1,16 @@
-import { BASE_AUTO_TRANSACTION, FULL_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
-import {
-    test401WhenLoggedOut,
-    testIdParameter,
-    testPatchDeletedPropertyOnSubResourceWithInvalidParentResource,
-    testPatchSoftDeletableTrait,
-} from "~~/test-utils/playwright/utils/helpers";
+import { makeAutoTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
 
-const route = (id: string) => `/api/finance/accounts/${id}/auto-transactions`;
+const testBuilder = makeAutoTransactionTestBuilder("patch");
 
-testIdParameter("patch", route("2222222222222222"), { deleted: true });
-test401WhenLoggedOut("patch", route("2222222222222222"));
-testPatchSoftDeletableTrait({
-    fixtureProvider: async (db, options) => {
-        const [account] = await db.financeAccount.insert(1, options?.userId ? { userId: options.userId } : undefined);
-        const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-        const [data] = await db.financeAutoTransaction.insert(1, {
-            accountId: account.id,
-            categoryId: category.id,
-            deletedAt: options?.deleted ? new Date() : null,
-        });
-        return { data, route: `${route(account.id)}/${data.id}` };
-    },
-    fixtureName: "financeAutoTransaction",
-    fullData: FULL_AUTO_TRANSACTION,
-    baseData: BASE_AUTO_TRANSACTION,
-});
-testPatchDeletedPropertyOnSubResourceWithInvalidParentResource(async (db, userId) => {
-    const [account1, account2] = await db.financeAccount.insert(2, userId ? { userId } : undefined);
-    const [category] = await db.financeCategory.insert(1, { accountId: account1.id });
-    const [transaction] = await db.financeAutoTransaction.insert(1, {
-        accountId: account1.id,
-        categoryId: category.id,
-    });
-    return {
-        validUrl: `${route(account1.id)}/${transaction.id}`,
-        invalidUrl: `${route(account2.id)}/${transaction.id}`,
-        unknownUrl: `${route("2222222222222222")}/${transaction.id}`,
-    };
-});
+testBuilder
+    .returnsA404StatusCodeWhenTheProvidedIdIsUnknown()
+    .returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat()
+    .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
+    .onlySoftDeletesTheRequestedResource()
+    .onlyAllowsPatchingTheDeletedProperty()
+    .onlyAllowsAUserToSoftDeleteTheirOwnResources()
+    .allowsUndoingADelete()
+    .rejectsAnOperationOnASubResourceOwnedByAnotherUsersParentResource()
+    .rejectsAnOperationOnASubResourceWhenTheParentResourceIsNotAssociated()
+    .rejectsAnOperationOnASubResourceOnANonExistentParentResource()
+    .build();
