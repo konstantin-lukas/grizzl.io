@@ -1,4 +1,4 @@
-import { makeTimerTestBuilder } from "~~/test-utils/playwright/utils/helpers/timer";
+import { makeTimerTestBuilder } from "~~/test-utils/playwright/builders/timer";
 
 const testBuilder = makeTimerTestBuilder("patch");
 

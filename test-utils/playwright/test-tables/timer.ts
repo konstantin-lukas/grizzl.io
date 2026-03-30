@@ -1,7 +1,7 @@
-import { arr, str } from "@@/test-utils/helpers/data";
-import { omit } from "@@/test-utils/helpers/object";
-import { BASE_INTERVAL, BASE_TIMER, FULL_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
-import { type Method, TestBuilder, createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
+import { BASE_INTERVAL, BASE_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
+import { arr, str } from "~~/test-utils/helpers/data";
+import { omit } from "~~/test-utils/helpers/object";
+import { createInvalidTypeTestCases } from "~~/test-utils/playwright/test-tables/base";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
     return { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, [property]: value }] };
@@ -97,35 +97,3 @@ export const VALID_INTERVAL_LEVEL_CASES = [
 ];
 
 export const TIMER_VALID_REQUEST_TEST_CASES = [...VALID_TIMER_LEVEL_CASES, ...VALID_INTERVAL_LEVEL_CASES];
-
-export function makeTimerTestBuilder(method: Method) {
-    return new TestBuilder({
-        fixtureProvider: async ({ db, userId }) => {
-            const [timer] = await db.timer.insert(1, userId ? { userId } : undefined);
-            const intervals = await db.timerInterval.insert(2, { timerId: timer.id });
-            return {
-                id: timer.id,
-                data: timer,
-                basePath: "/api/timers",
-                fullPath: `/api/timers/${timer.id}`,
-                getDatabaseOverrides: { intervals: intervals.map(({ index, timerId, ...rest }) => rest) },
-            };
-        },
-        baseData: BASE_TIMER,
-        fullData: FULL_TIMER,
-        badPost: TIMER_BAD_REQUEST_TEST_CASES,
-        badPut: TIMER_BAD_REQUEST_TEST_CASES,
-        validPost: TIMER_VALID_REQUEST_TEST_CASES,
-        validPut: TIMER_VALID_REQUEST_TEST_CASES,
-        fixtureName: "timer",
-        dataObjects: [
-            {
-                fixtureName: "timerInterval",
-                foreignKeyName: "timerId",
-                objectName: "intervals",
-                omittedFields: ["id", "index", "timerId"],
-            },
-        ],
-        method,
-    });
-}

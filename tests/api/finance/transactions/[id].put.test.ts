@@ -1,6 +1,6 @@
 import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/playwright";
-import { makeTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
+import { makeTransactionTestBuilder } from "~~/test-utils/playwright/builders/finance";
 
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 

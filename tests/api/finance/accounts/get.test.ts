@@ -1,4 +1,4 @@
-import { makeAccountTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
+import { makeAccountTestBuilder } from "~~/test-utils/playwright/builders/finance";
 
 const testBuilder = makeAccountTestBuilder("get-collection");
 

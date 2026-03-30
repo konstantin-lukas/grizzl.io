@@ -1,23 +1,15 @@
 import { ID_LENGTH } from "#shared/core/validators/core.validator";
 import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { wrapArray } from "~~/test-utils/helpers/array";
+import { removeUndefinedFields } from "~~/test-utils/helpers/object";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
-const Types = [
-    ["string", "42"],
-    ["int", 42],
-    ["float", 42.5],
-    ["boolean", true],
-    ["null", null],
-    ["object", {}],
-    ["array", []],
-] as const;
-
 export type Method = "get" | "get-collection" | "post" | "patch" | "delete" | "put";
 type FixtureKey = Exclude<keyof DBFixtures, "client">;
+
 interface FixtureResource {
     id: string;
     parentId?: string;
@@ -30,6 +22,7 @@ interface FixtureResource {
     putRequestOverrides?: object;
     getDatabaseOverrides?: object;
 }
+
 type FixtureProvider = (options: { db: DBFixtures; userId?: string; count?: number }) => Promise<FixtureResource>;
 type DataObjectOptions = {
     fixtureName: FixtureKey;
@@ -50,10 +43,6 @@ type ConstructorOptions = {
     badPost: readonly any[];
     validPost: readonly any[];
 };
-
-function removeUndefinedFields(obj: object) {
-    return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined));
-}
 
 export class TestBuilder {
     private tests: (() => void)[] = [];
@@ -625,25 +614,4 @@ export class TestBuilder {
 
         return this;
     }
-}
-
-export function createInvalidTypeTestCases<T extends Record<string, unknown>, K extends keyof T>(
-    data: T,
-    property: K,
-    options: {
-        valid?: (typeof Types)[number][0][];
-        caseName?: (property: K, type: string) => string;
-        dataTransform?: (data: T, property: K, value: (typeof Types)[number][1]) => unknown;
-    },
-) {
-    const testCases = [];
-    for (const [type, value] of Types) {
-        if (!(options.valid ?? []).includes(type)) {
-            testCases.push([
-                options.caseName?.(property, type) ?? `property ${property.toString()} is of type ${type}`,
-                options.dataTransform?.(data, property, value) ?? { ...data, [property]: value },
-            ]);
-        }
-    }
-    return testCases as [string, T][];
 }

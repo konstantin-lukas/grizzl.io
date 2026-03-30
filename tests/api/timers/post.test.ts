@@ -1,6 +1,6 @@
 import { BASE_INTERVAL, BASE_TIMER } from "~~/test-utils/constants/timer";
 import { expect, test } from "~~/test-utils/playwright";
-import { makeTimerTestBuilder } from "~~/test-utils/playwright/utils/helpers/timer";
+import { makeTimerTestBuilder } from "~~/test-utils/playwright/builders/timer";
 
 const route = "/api/timers";
 

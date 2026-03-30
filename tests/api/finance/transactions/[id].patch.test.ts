@@ -1,4 +1,4 @@
-import { makeTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
+import { makeTransactionTestBuilder } from "~~/test-utils/playwright/builders/finance";
 
 const testBuilder = makeTransactionTestBuilder("patch");
 

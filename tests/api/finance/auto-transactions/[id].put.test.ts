@@ -1,6 +1,6 @@
 import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/playwright";
-import { makeAutoTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
+import { makeAutoTransactionTestBuilder } from "~~/test-utils/playwright/builders/finance";
 
 const route = (id: string) => `/api/finance/accounts/${id}/auto-transactions`;
 

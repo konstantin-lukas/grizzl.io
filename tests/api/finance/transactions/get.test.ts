@@ -1,7 +1,7 @@
 import { generateFilterCombinations } from "~~/test-utils/helpers/object";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
-import { makeTransactionTestBuilder } from "~~/test-utils/playwright/utils/helpers/finance";
+import { makeTransactionTestBuilder } from "~~/test-utils/playwright/builders/finance";
 
 const route = (id: string) => `/api/finance/accounts/${id}/transactions`;
 
