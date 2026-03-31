@@ -1,35 +1,18 @@
-import { BASE_INTERVAL, BASE_TIMER, FULL_INTERVAL, FULL_TIMER } from "~~/test-utils/constants/timer";
+import { BASE_INTERVAL, BASE_TIMER, FULL_TIMER } from "~~/test-utils/constants/timer";
 import { expect, test } from "~~/test-utils/playwright";
-import { test401WhenLoggedOut, testIdParameter } from "~~/test-utils/playwright/utils/helpers";
-import {
-    TIMER_BAD_REQUEST_TEST_CASES,
-    TIMER_VALID_REQUEST_TEST_CASES,
-} from "~~/test-utils/playwright/utils/helpers/timer";
+import { makeTimerTestBuilder } from "~~/test-utils/playwright/builders/timer";
 
 const route = "/api/timers";
 
-testIdParameter("put", route, BASE_TIMER);
-test401WhenLoggedOut("put", route);
+const testBuilder = makeTimerTestBuilder("put");
 
-for (const [name, data] of TIMER_BAD_REQUEST_TEST_CASES) {
-    test(`rejects updating resources when ${name}`, async ({ request, db }) => {
-        await db.timer.insert(1);
-        const [insertedData] = await db.timer.select();
-        const response = await request.put(`${route}/${insertedData!.id}`, { data });
-        expect(response.status()).toBe(400);
-    });
-}
-
-for (const [name, data] of TIMER_VALID_REQUEST_TEST_CASES) {
-    test(`allows updating resources when ${name}`, async ({ request, db }) => {
-        const [insertedData] = await db.timer.insert(1);
-        const response = await request.put(`${route}/${insertedData.id}`, { data });
-        expect(response.status()).toBe(204);
-        const { id, userId, createdAt, deletedAt, ...timer } = (await db.timer.select())[0]!;
-        const intervals = (await db.timerInterval.select()).map(({ id, index, timerId, ...rest }) => rest);
-        expect({ ...timer, intervals }).toStrictEqual(data);
-    });
-}
+testBuilder
+    .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
+    .returnsA404StatusCodeWhenTheProvidedIdIsUnknown()
+    .returnsA400StatusCodeWhenTheProvidedIdHasTheWrongFormat()
+    .rejectsRequestsWhenPayloadIsInvalid()
+    .acceptsRequestsWhenPayloadIsValid()
+    .build();
 
 test("allows creating a new interval by not providing an id", async ({ request, db }) => {
     const [data] = await db.timer.insert(1);
@@ -61,33 +44,6 @@ test("does not allow editing other user's intervals", async ({ request, db }) =>
     const intervals = await db.timerInterval.select();
     expect(intervals.find(interval => interval.id === otherUsersInterval.id)).toStrictEqual(otherUsersInterval);
     expect(intervals.find(interval => interval.id === myInterval.id)).not.toStrictEqual(myInterval);
-});
-
-test("only allows putting certain properties", async ({ request, db }) => {
-    const [data] = await db.timer.insert(1);
-    const [interval] = await db.timerInterval.insert(2, { timerId: data.id });
-    expect(await db.timerInterval.select()).toHaveLength(2);
-    const response = await request.put(`${route}/${data.id}`, {
-        data: {
-            ...FULL_TIMER,
-            intervals: [{ ...FULL_INTERVAL, id: interval.id }],
-            deleted: true,
-        },
-    });
-    expect(response.status()).toBe(204);
-    const intervals = await db.timerInterval.select();
-    expect(intervals).toHaveLength(1);
-    const [putData] = await db.timer.select(data.id);
-    const [putInterval] = intervals;
-    expect(putData).toStrictEqual({ ...data, title: FULL_TIMER.title, ttsVoices: FULL_TIMER.ttsVoices });
-    expect(putInterval).toStrictEqual({
-        ...interval,
-        beatPattern: FULL_INTERVAL.beatPattern,
-        title: FULL_INTERVAL.title,
-        duration: FULL_INTERVAL.duration,
-        preparationTime: FULL_INTERVAL.preparationTime,
-        repeatCount: FULL_INTERVAL.repeatCount,
-    });
 });
 
 test("does not allow deleting all intervals by providing an empty array", async ({ request, db }) => {

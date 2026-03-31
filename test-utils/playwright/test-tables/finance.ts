@@ -2,7 +2,7 @@ import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { BASE_ACCOUNT, BASE_AUTO_TRANSACTION, BASE_TRANSACTION } from "~~/test-utils/constants/finance";
 import { str } from "~~/test-utils/helpers/data";
 import { omit } from "~~/test-utils/helpers/object";
-import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
+import { createInvalidTypeTestCases } from "~~/test-utils/playwright/test-tables/base";
 
 function withAccount(property: keyof typeof BASE_ACCOUNT, value: unknown) {
     return { ...BASE_ACCOUNT, [property]: value };
@@ -60,6 +60,7 @@ export const ACCOUNT_VALID_REQUEST_TEST_CASES = [
 ];
 
 // -------------------- TRANSACTION --------------------
+
 const TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "amount", { valid: ["int"] }),
     ...createInvalidTypeTestCases(BASE_TRANSACTION, "reference", { valid: ["string", "null"] }),
@@ -119,7 +120,7 @@ export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ...TRANSACTION_INVALID_DATA_TEST_CASES,
 ] as const;
 
-// -------------------- AUTO_TRANSACTION --------------------
+// -------------------- AUTO TRANSACTION --------------------
 
 const AUTO_TRANSACTION_INVALID_TYPE_TEST_CASES = [
     ...createInvalidTypeTestCases(BASE_AUTO_TRANSACTION, "execInterval", { valid: ["int"] }),

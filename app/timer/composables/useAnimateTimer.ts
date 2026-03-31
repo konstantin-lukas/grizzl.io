@@ -1,9 +1,9 @@
 import { Beat } from "#shared/timer/enums/beat.enum";
-import accentedAudio from "~/core/assets/sound/accented_beat.wav";
+import accentedAudio from "~/core/assets/sound/accented-beat.wav";
 import beatAudio from "~/core/assets/sound/beat.wav";
-import intervalCommenceAudio from "~/core/assets/sound/interval_commence.wav";
-import intervalCompleteAudio from "~/core/assets/sound/interval_complete.wav";
-import timerCompleteAudio from "~/core/assets/sound/timer_complete.wav";
+import intervalCommenceAudio from "~/core/assets/sound/interval-commence.wav";
+import intervalCompleteAudio from "~/core/assets/sound/interval-complete.wav";
+import timerCompleteAudio from "~/core/assets/sound/timer-complete.wav";
 import useSpeakUtterance from "~/core/composables/useSpeakUtterance";
 import useVoices from "~/core/composables/useVoices";
 import useTimer from "~/timer/composables/useTimer";

@@ -57,7 +57,7 @@ test("should display the correct version number", async () => {
     expect(appVersion.text()).toBe(version);
 });
 
-test("should have aria-hidden iff it is closed", async () => {
+test("should have aria-hidden when it is closed", async () => {
     const wrapper = await mountSuspended(Menu, {
         scoped: true,
         global: { stubs },

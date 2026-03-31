@@ -54,9 +54,10 @@ export default withNuxt([
         },
     },
     {
-        files: ["tests/**/*"],
+        files: ["tests/**/*", "test-utils/**/*"],
         rules: {
             "@typescript-eslint/no-extraneous-class": "off",
+            "@typescript-eslint/no-explicit-any": "off",
         },
     },
     {

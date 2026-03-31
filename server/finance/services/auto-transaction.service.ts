@@ -1,9 +1,9 @@
+import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import AccountService from "#server/finance/services/account.service";
 import CategoryService from "#server/finance/services/category.service";
-import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto_transaction.validator";
+import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto-transaction.validator";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
-import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
 
 export default class AutoTransactionService {
     static readonly deps = [AutoTransactionRepository, AccountRepository, CategoryService, AccountService];

@@ -1,6 +1,6 @@
+import AutoTransactionService from "#server/finance/services/auto-transaction.service";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import NotFoundError from "~~/server/core/errors/not-found.error";
-import AutoTransactionService from "~~/server/finance/services/auto_transaction.service";
 import { INTERNAL_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 
 const accountRepositoryMock = {
@@ -40,7 +40,7 @@ beforeEach(() => {
 });
 
 describe("create", () => {
-    test("calls on the transaction repository to create a new transaction if everything is in order", async () => {
+    test("calls on the transaction repository to create a new transaction when everything is in order", async () => {
         autoTransactionRepositoryMock.create.mockResolvedValueOnce(id);
         await expect(autoTransactionService.create(id, id, INTERNAL_AUTO_TRANSACTION)).resolves.toBe(id);
     });
@@ -80,13 +80,13 @@ describe("setDeletedStatus", () => {
 });
 
 describe("update", () => {
-    test("does not throw if everything is in order", async () => {
+    test("does not throw when everything is in order", async () => {
         await expect(
             autoTransactionService.update(id, userId, accountId, INTERNAL_AUTO_TRANSACTION),
         ).resolves.not.toThrow();
     });
 
-    test("throws a NotFoundError if the auto-transaction can't be updated", async () => {
+    test("throws a NotFoundError when the auto-transaction can't be updated", async () => {
         autoTransactionRepositoryMock.update.mockResolvedValue(0);
         await expect(
             autoTransactionService.update(id, userId, accountId, INTERNAL_AUTO_TRANSACTION),

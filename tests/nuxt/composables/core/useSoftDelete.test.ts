@@ -154,7 +154,7 @@ test("should allow passing custom translation keys for the title and description
     );
 });
 
-test("should default to providing empty interpolations if only a success description is provided", async () => {
+test("should default to providing empty interpolations when only a success description is provided", async () => {
     const options = { successDescription: "Yay" };
     const execute = useSoftDelete(ref("/api/bananas/123"), options);
     await execute();

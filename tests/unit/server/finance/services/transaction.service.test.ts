@@ -51,19 +51,19 @@ beforeEach(() => {
 });
 
 describe("create", () => {
-    test("throws an InvalidAccountBalanceError if no accounts exist for a given user", async () => {
+    test("throws an InvalidAccountBalanceError when no accounts exist for a given user", async () => {
         accountServiceMock.getUserAccount.mockReturnValue({ balance: Number.MAX_SAFE_INTEGER });
         await expect(transactionService.create(id, id, INTERNAL_TRANSACTION)).rejects.toThrow(
             InvalidAccountBalanceError,
         );
     });
 
-    test("throws an UnknownError if no accounts exist for a given user", async () => {
+    test("throws an UnknownError when no accounts exist for a given user", async () => {
         accountRepositoryMock.updateBalance.mockReturnValue(null);
         await expect(transactionService.create(id, id, INTERNAL_TRANSACTION)).rejects.toThrow(UnknownError);
     });
 
-    test("calls on the transaction repository to create a new transaction if everything is in order", async () => {
+    test("calls on the transaction repository to create a new transaction when everything is in order", async () => {
         await expect(transactionService.create(id, accountId, INTERNAL_TRANSACTION)).resolves.toBe(id);
     });
 });
@@ -102,32 +102,32 @@ describe("setDeletedStatus", () => {
 });
 
 describe("update", () => {
-    test("does not throw if everything is in order", async () => {
+    test("does not throw when everything is in order", async () => {
         await expect(transactionService.update(id, userId, accountId, INTERNAL_TRANSACTION)).resolves.not.toThrow();
     });
 
-    test("throws an UnknownError if the update of the transaction fails", async () => {
+    test("throws an UnknownError when the update of the transaction fails", async () => {
         transactionRepositoryMock.update.mockReturnValue(0);
         await expect(transactionService.update(id, userId, accountId, INTERNAL_TRANSACTION)).rejects.toBeInstanceOf(
             UnknownError,
         );
     });
 
-    test("throws an UnknownError if the update of the account balance fails", async () => {
+    test("throws an UnknownError when the update of the account balance fails", async () => {
         accountRepositoryMock.updateBalance.mockReturnValue(0);
         await expect(transactionService.update(id, userId, accountId, INTERNAL_TRANSACTION)).rejects.toBeInstanceOf(
             UnknownError,
         );
     });
 
-    test("throws an InvalidAccountBalanceError if the resulting balance is invalid", async () => {
+    test("throws an InvalidAccountBalanceError when the resulting balance is invalid", async () => {
         accountServiceMock.getUserAccount.mockReturnValue({ balance: Number.MAX_SAFE_INTEGER });
         await expect(transactionService.update(id, userId, accountId, INTERNAL_TRANSACTION)).rejects.toBeInstanceOf(
             InvalidAccountBalanceError,
         );
     });
 
-    test("throws a NotFoundError if the transaction can't be found", async () => {
+    test("throws a NotFoundError when the transaction can't be found", async () => {
         transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValue(undefined);
         await expect(transactionService.update(id, userId, accountId, INTERNAL_TRANSACTION)).rejects.toBeInstanceOf(
             NotFoundError,

@@ -1,4 +1,4 @@
-import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
+import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import { expect, test } from "~~/test-utils/vitest";
 import { anyId } from "~~/test-utils/vitest/patterns";
 

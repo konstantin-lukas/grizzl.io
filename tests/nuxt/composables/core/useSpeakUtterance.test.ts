@@ -44,7 +44,7 @@ test("returns early and does not speak when speechSynthesis.speaking is true", (
     expect(SpeechSynthesisUtteranceStub).not.toHaveBeenCalled();
 });
 
-test("speaks an utterance if provided voice exists", () => {
+test("speaks an utterance when provided voice exists", () => {
     speechSynthesisStub.speaking = false;
     voices.value = [{ voiceURI: "voice-uri-1" } as never];
 
@@ -56,7 +56,7 @@ test("speaks an utterance if provided voice exists", () => {
     expect(SpeechSynthesisUtteranceStub).toHaveBeenCalledOnce();
 });
 
-test("does not speak an utterance if the provided voice does not exist", () => {
+test("does not speak an utterance when the provided voice does not exist", () => {
     speechSynthesisStub.speaking = false;
     voices.value = [{ voiceURI: "voice-uri-1" } as never];
 

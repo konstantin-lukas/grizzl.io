@@ -36,7 +36,7 @@ test("invokes the provided listener when the event fires", async () => {
     expect(calledEvent.target).toEqual(target);
 });
 
-test("does nothing if the target is null on mount, then attaches when it becomes available", async () => {
+test("does nothing when the target is null on mount, then attaches when it becomes available", async () => {
     const targetRef = ref<EventTarget | null>(null);
     const listener = vi.fn();
 

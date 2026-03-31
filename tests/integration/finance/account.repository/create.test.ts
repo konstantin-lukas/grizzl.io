@@ -18,7 +18,7 @@ test("creates an account and returns the id of the created account", async ({ db
     expect(account).toHaveProperty("createdAt", expect.any(Date));
 });
 
-test("throws an error if the input data is faulty", async ({ db, user }) => {
+test("throws an error when the input data is faulty", async ({ db, user }) => {
     const accountRepository = new AccountRepository(db.client);
     await expect(accountRepository.create(user.id, "" as never)).rejects.toThrow();
 });

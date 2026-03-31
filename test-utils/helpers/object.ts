@@ -38,3 +38,7 @@ export function generateFilterCombinations<T>(filters: T[]) {
     combine(0, {});
     return result;
 }
+
+export function removeUndefinedFields(obj: object) {
+    return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined));
+}

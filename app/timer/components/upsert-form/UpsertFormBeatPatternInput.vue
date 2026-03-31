@@ -3,7 +3,7 @@ import { Beat } from "#shared/timer/enums/beat.enum";
 import { BeatSymbol } from "#shared/timer/maps/beat.map";
 import { BEAT_PATTERN_MAX } from "#shared/timer/validators/timer.validator";
 import { useFormField } from "#ui/composables/useFormField";
-import accentedAudio from "~/core/assets/sound/accented_beat.wav";
+import accentedAudio from "~/core/assets/sound/accented-beat.wav";
 import beatAudio from "~/core/assets/sound/beat.wav";
 import Button from "~/core/components/button/Button.vue";
 

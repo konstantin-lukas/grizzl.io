@@ -1,7 +1,7 @@
-import { arr, str } from "@@/test-utils/helpers/data";
-import { omit } from "@@/test-utils/helpers/object";
 import { BASE_INTERVAL, BASE_TIMER, HASH_40_CHARS } from "~~/test-utils/constants/timer";
-import { createInvalidTypeTestCases } from "~~/test-utils/playwright/utils/helpers";
+import { arr, str } from "~~/test-utils/helpers/data";
+import { omit } from "~~/test-utils/helpers/object";
+import { createInvalidTypeTestCases } from "~~/test-utils/playwright/test-tables/base";
 
 function withInterval(property: keyof typeof BASE_INTERVAL, value: unknown) {
     return { ...BASE_TIMER, intervals: [{ ...BASE_INTERVAL, [property]: value }] };
