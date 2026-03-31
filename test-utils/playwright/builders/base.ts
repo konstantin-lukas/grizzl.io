@@ -153,7 +153,7 @@ export class TestBuilder {
             withoutAuth(() => {
                 test("returns a 401 status code when an unauthenticated request is made", async ({ request, db }) => {
                     const { basePath, fullPath } = await this.fixtureProvider({ db });
-                    const path = this.method === "get" || this.method === "post" ? basePath : fullPath;
+                    const path = this.method === "get-collection" || this.method === "post" ? basePath : fullPath;
                     const response = await request[this.resolvedMethod](path);
                     expect(response.status()).toBe(401);
                 });
@@ -389,7 +389,7 @@ export class TestBuilder {
             const isPost = this.method === "post";
             const testCases = isPost ? this.badPost : this.badPut;
             for (const [name, data] of testCases) {
-                test(`rejects creating resources when ${name}`, async ({ request, db }) => {
+                test(`rejects operations on resources when ${name}`, async ({ request, db }) => {
                     const { basePath, fullPath } = await this.fixtureProvider({ db });
                     const path = isPost ? basePath : fullPath;
                     const response = await request[this.resolvedMethod](path, { data: JSONWithBigInt(data) });
@@ -410,7 +410,7 @@ export class TestBuilder {
             const isPost = this.method === "post";
             const testCases = isPost ? this.validPost : this.validPut;
             for (const [name, data] of testCases) {
-                test(`allows creating resources when ${name}`, async ({ request, db }) => {
+                test(`allows operations on resources when ${name}`, async ({ request, db }) => {
                     const {
                         basePath,
                         fullPath,
@@ -453,7 +453,7 @@ export class TestBuilder {
                                     );
                                 });
 
-                            completeResource = { ...resource, [dataObject.objectName]: relatedData };
+                            completeResource = { ...completeResource, [dataObject.objectName]: relatedData };
                         }
                     }
 
@@ -547,7 +547,7 @@ export class TestBuilder {
     }
 
     /**
-     * Get on a single resource is currently not implement but can be added if needed
+     * Get on a single resource is currently not implemented but can be added if needed
      * @allowed get-collection
      */
     public doesNotReturnSubResourcesBelongingToOtherResources() {
@@ -596,7 +596,7 @@ export class TestBuilder {
     }
 
     /**
-     * Get on a single resource is currently not implement but can be added if needed
+     * Get on a single resource is currently not implemented but can be added if needed
      * @allowed get-collection
      */
     public doesNotReturnSubResourcesOfSoftDeletedResources() {

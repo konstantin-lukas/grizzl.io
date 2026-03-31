@@ -49,8 +49,9 @@ TLDs like `.dev` you will run into issues with HSTS. That's why the TLDs `.test`
 the loop back IP address. In practice this means, you don't have to create an entry inside the `/etc/hosts`, so it's 
 just one step less to get the project running.
 
-Note: Because files inside the file-system router use `kebap-case`, all source files do with the addition of a type 
-suffix. The exception are components and composables which are `PascalCase` and `camelCase` respectively.
+Note: Because files inside the file-system router use `kebab-case`, all source files follow this convention, with the
+addition of a type suffix for files for certain types. The exceptions are components and composables, which are 
+`PascalCase` and `camelCase`, respectively.
 
 ## Setting Up A New Installation
 If you are setting up a completely new Linux installation, follow these steps:
