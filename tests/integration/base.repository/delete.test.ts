@@ -3,7 +3,7 @@ import * as schema from "~~/database/schema";
 import BaseRepository from "~~/server/core/repositories/base.repository";
 import { expect, test } from "~~/test-utils/vitest";
 
-test("soft-deletes database entries if the table has a deletedAt column", async ({ db, user }) => {
+test("soft-deletes database entries when the table has a deletedAt column", async ({ db, user }) => {
     const softDeletableRepository = new BaseRepository(db.client, "timer", userId => eq(schema.timer.userId, userId));
 
     const [timer] = await db.timer.insert(5, { userId: user.id });
@@ -24,7 +24,7 @@ test("soft-deletes database entries if the table has a deletedAt column", async 
     expect(intervalsBeforeDelete).toStrictEqual(intervalsAfterDelete);
 });
 
-test("deletes database entries if the table does not have a deletedAt column", async ({ db, user }) => {
+test("deletes database entries when the table does not have a deletedAt column", async ({ db, user }) => {
     const deletableRepository = new BaseRepository(db.client, "account" as "timer", userId =>
         eq(schema.account.userId, userId),
     );

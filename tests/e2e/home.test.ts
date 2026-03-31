@@ -20,7 +20,7 @@ test(
     },
 );
 
-test("should register a service worker if supported", async ({ homePage: page }) => {
+test("should register a service worker when supported", async ({ homePage: page }) => {
     await page.goto();
     const ready = await page.swReady();
     expect(ready).not.toBe(null);

@@ -7,7 +7,7 @@ test.beforeEach(async ({ db, user }) => {
     [{ id }] = await db.financeAccount.insert(5, { userId: user.id });
 });
 
-test("throws an error if the input data is faulty", async ({ db, user }) => {
+test("throws an error when the input data is faulty", async ({ db, user }) => {
     const accountRepository = new AccountRepository(db.client);
     await expect(accountRepository.update(id, user.id, "" as never)).rejects.toThrow();
 });

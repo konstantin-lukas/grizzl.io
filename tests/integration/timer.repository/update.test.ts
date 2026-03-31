@@ -47,7 +47,7 @@ test("updates timers overriding previous intervals and returns the number of upd
     ]);
 });
 
-test("throws an error if the input data is faulty", async ({ db, user }) => {
+test("throws an error when the input data is faulty", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
     await expect(timerRepository.update(id, user.id, "" as never)).rejects.toThrow();
 });
@@ -64,7 +64,7 @@ test("returns 0 when the given user id doesn't exist", async ({ db }) => {
     expect(rows).toBe(0);
 });
 
-test("updates existing intervals instead of replacing them if an existing id was provided", async ({ db, user }) => {
+test("updates existing intervals instead of replacing them when an existing id was provided", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
     const [timer] = await db.timer.insert(1, { userId: user.id });
     const intervals = await db.timerInterval.insert(2, { timerId: timer.id });

@@ -12,7 +12,7 @@ test("should display a button with the provided content", async () => {
     expect(wrapper.text()).toBe(text);
 });
 
-test("should add a tooltip if an aria-label is provided", async () => {
+test("should add a tooltip when an aria-label is provided", async () => {
     const wrapper = await mountSuspended(Button, {
         scoped: true,
         props: { "aria-label": text, "data-test-id": "button" },
@@ -24,7 +24,7 @@ test("should add a tooltip if an aria-label is provided", async () => {
     expect(tooltip.text()).toBe(text);
 });
 
-test("should not add a tooltip if no aria-label is provided", async () => {
+test("should not add a tooltip when no aria-label is provided", async () => {
     const wrapper = await mountSuspended(Button, {
         scoped: true,
         props: { "data-test-id": "button" },

@@ -39,7 +39,7 @@ test("creates a timer with multiple intervals", async ({ db, user }) => {
     expect(intervals).toHaveLength(2);
 });
 
-test("throws an error if the input data is faulty", async ({ db, user }) => {
+test("throws an error when the input data is faulty", async ({ db, user }) => {
     const timerRepository = new TimerRepository(db.client);
     await expect(timerRepository.create(user.id, "" as never)).rejects.toThrow();
 });

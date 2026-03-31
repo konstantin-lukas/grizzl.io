@@ -8,7 +8,7 @@ const intervals = [
     { title: str({ length: 15 }), duration: 69, preparationTime: 5, repeatCount: 1, type: 1 },
 ] as const;
 
-test("should register a service worker if supported", async ({ timerPage: page }) => {
+test("should register a service worker when supported", async ({ timerPage: page }) => {
     await page.goto();
     const ready = await page.swReady();
     expect(ready).not.toBe(null);
@@ -33,7 +33,7 @@ test("allows creating a new timer when no timers exist", { tag: SCREENSHOT }, as
     expect(timer!.title).toBe(title);
 });
 
-test("displays an alert if there were form validation errors", async ({ timerPage: page }) => {
+test("displays an alert when there were form validation errors", async ({ timerPage: page }) => {
     await page.goto();
 
     await page.click("emptyButton");

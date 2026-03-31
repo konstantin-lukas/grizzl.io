@@ -23,7 +23,7 @@ const testCases = [
         expectedCount: 1,
     },
     {
-        title: "deletes all soft-deleted entities if maxAge is 0",
+        title: "deletes all soft-deleted entities when maxAge is 0",
         overrides: () => ({ deletedAt: new Date() }),
         maxAge: 0,
         expectedCount: 0,

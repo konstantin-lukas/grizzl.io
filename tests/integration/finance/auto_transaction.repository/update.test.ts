@@ -9,7 +9,7 @@ test.beforeEach(async ({ db, user }) => {
     [{ id }] = await db.financeAutoTransaction.insert(1, { accountId: account.id, categoryId: category.id });
 });
 
-test("throws an error if the input data is faulty", async ({ db, user }) => {
+test("throws an error when the input data is faulty", async ({ db, user }) => {
     const accountRepository = new AutoTransactionRepository(db.client);
     await expect(accountRepository.update(id, user.id, id, "" as never)).rejects.toThrow();
 });

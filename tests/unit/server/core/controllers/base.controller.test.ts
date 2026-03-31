@@ -128,12 +128,12 @@ describe("parseIdParameter", () => {
 
 describe("parseRequestBody", () => {
     const schema = z.string();
-    test("should throw an error if the body doesn't match the schema", async () => {
+    test("should throw an error when the body doesn't match the schema", async () => {
         const { default: Base } = await import("~~/server/core/controllers/base.controller");
         await expect(Base.parseRequestBody({} as unknown as H3Event, schema)).rejects.toThrow();
     });
 
-    test("should return the parsed body if it matches the schema", async () => {
+    test("should return the parsed body when it matches the schema", async () => {
         const body = "bananas";
         vi.doMock("h3", () => {
             return {

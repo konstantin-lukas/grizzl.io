@@ -125,7 +125,7 @@ test("stops the animation when the last interval of current timer completed and 
     expect(audioPlayMock).toHaveBeenCalledOnce();
 });
 
-test("should not play audio at the end of the timer if muted", async () => {
+test("should not play audio at the end of the timer when muted", async () => {
     const emit = vi.fn();
     const { interval, playing, intervalStartTime, mute } = useTimer();
 
@@ -143,7 +143,7 @@ test("should not play audio at the end of the timer if muted", async () => {
     expect(audioPlayMock).not.toHaveBeenCalled();
 });
 
-test("should move on to the next interval if the current interval has completed", async () => {
+test("should move on to the next interval when the current interval has completed", async () => {
     const emit = vi.fn();
     const { interval, playing, intervalStartTime, progress, repetition } = useTimer();
 
@@ -251,7 +251,7 @@ test("should not play audio when the interval title changes but the timer is mut
     expect(speak).not.toHaveBeenCalled();
 });
 
-test("should stop playback if the round changes and is past the last one", async () => {
+test("should stop playback when the round changes and is past the last one", async () => {
     const { interval, playing, round } = useTimer();
     interval.value = { duration: 1000, id: "123" } as never;
     playing.value = true;
