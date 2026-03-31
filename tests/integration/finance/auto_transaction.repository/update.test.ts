@@ -1,4 +1,4 @@
-import AutoTransactionRepository from "~~/server/finance/repositories/auto_transaction.repository";
+import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 import { expect, test } from "~~/test-utils/vitest";
 

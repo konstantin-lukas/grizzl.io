@@ -4,9 +4,9 @@
    <br>
 
    <picture>
-       <source media="(prefers-color-scheme: dark)" srcset="app/core/assets/svg/grizzl_logo_with_text_white.svg">
-       <source media="(prefers-color-scheme: light)" srcset="app/core/assets/svg/grizzl_logo_with_text_black.svg">
-       <img src="app/core/assets/svg/grizzl_logo_with_text_black.svg" alt="Grizzl Logo" width="50%" height="50%">
+       <source media="(prefers-color-scheme: dark)" srcset="app/core/assets/svg/grizzl-logo-with-text-white.svg">
+       <source media="(prefers-color-scheme: light)" srcset="app/core/assets/svg/grizzl-logo-with-text-black.svg">
+       <img src="app/core/assets/svg/grizzl-logo-with-text-black.svg" alt="Grizzl Logo" width="50%" height="50%">
    </picture>
 
    <br>

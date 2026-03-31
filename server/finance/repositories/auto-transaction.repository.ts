@@ -1,7 +1,7 @@
 import type {
     PostAutoTransactionInternal,
     PutAutoTransactionInternal,
-} from "#shared/finance/validators/auto_transaction.validator";
+} from "#shared/finance/validators/auto-transaction.validator";
 import { and, desc, eq, exists, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";

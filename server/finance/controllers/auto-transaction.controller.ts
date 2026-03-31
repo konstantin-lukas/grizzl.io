@@ -1,11 +1,11 @@
+import AutoTransactionService from "#server/finance/services/auto-transaction.service";
 import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import {
     PostAutoTransactionSchema,
     PutAutoTransactionSchema,
-} from "#shared/finance/validators/auto_transaction.validator";
+} from "#shared/finance/validators/auto-transaction.validator";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
-import AutoTransactionService from "~~/server/finance/services/auto_transaction.service";
 
 /* c8 ignore start */
 export default class AutoTransactionController extends BaseController {

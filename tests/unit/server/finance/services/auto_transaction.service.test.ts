@@ -1,6 +1,6 @@
+import AutoTransactionService from "#server/finance/services/auto-transaction.service";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import NotFoundError from "~~/server/core/errors/not-found.error";
-import AutoTransactionService from "~~/server/finance/services/auto_transaction.service";
 import { INTERNAL_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
 
 const accountRepositoryMock = {
