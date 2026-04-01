@@ -27,13 +27,14 @@ export default function useOnSubmit<T extends object>({
 
     const { start, finish } = useLoadingIndicator();
     async function onSubmit() {
-        const isPost = method() === "POST";
+        const m = method();
+        const isPost = m === "POST";
         const action = isPost ? "created" : "updated";
-        start({ force: true });
         let submissionState = deepCopy(state);
         if (transform) submissionState = transform(submissionState);
+        start({ force: true });
         await $fetch(url(), {
-            method: method(),
+            method: m,
             body: submissionState,
         })
             .then(() => {
