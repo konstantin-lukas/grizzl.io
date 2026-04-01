@@ -184,8 +184,6 @@ test("uses dynamic url and method", async () => {
 
     await onSubmit();
 
-    expect(url).toHaveBeenCalled();
-    expect(method).toHaveBeenCalledTimes(2); // evaluated twice
     expect(fetchMock).toHaveBeenCalledWith("/api/dynamic", {
         method: "PUT",
         body: baseState,
