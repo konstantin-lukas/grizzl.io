@@ -61,10 +61,6 @@ vi.mock("#shared/core/utils/object.util", () => ({
     deepCopy: vi.fn(v => ({ ...v })),
 }));
 
-vi.mock("#shared/core/utils/string.util", () => ({
-    ellipsize: vi.fn(v => v),
-}));
-
 const fetchMock = vi.fn();
 vi.stubGlobal("$fetch", fetchMock);
 const emit = vi.fn();
@@ -175,5 +171,55 @@ test("calls loading start and finish", async () => {
     await onSubmit();
 
     expect(start).toHaveBeenCalledWith({ force: true });
+    expect(finish).toHaveBeenCalled();
+});
+
+test("uses dynamic url and method", async () => {
+    const url = vi.fn(() => "/api/dynamic");
+    const method = vi.fn(() => "PUT");
+
+    const onSubmit = setup({ url, method });
+
+    fetchMock.mockResolvedValueOnce({});
+
+    await onSubmit();
+
+    expect(url).toHaveBeenCalled();
+    expect(method).toHaveBeenCalledTimes(2); // evaluated twice
+    expect(fetchMock).toHaveBeenCalledWith("/api/dynamic", {
+        method: "PUT",
+        body: baseState,
+    });
+});
+
+test("passes resourceName result to description", async () => {
+    const resourceName = vi.fn(() => "My Resource");
+
+    const onSubmit = setup({ resourceName });
+
+    fetchMock.mockResolvedValueOnce({});
+
+    await onSubmit();
+
+    expect(resourceName).toHaveBeenCalled();
+});
+
+test("does not emit success on error", async () => {
+    fetchMock.mockRejectedValueOnce(new Error("fail"));
+
+    const onSubmit = setup();
+
+    await onSubmit();
+
+    expect(emit).not.toHaveBeenCalled();
+});
+
+test("calls finish even on error", async () => {
+    fetchMock.mockRejectedValueOnce(new Error("fail"));
+
+    const onSubmit = setup();
+
+    await onSubmit();
+
     expect(finish).toHaveBeenCalled();
 });
