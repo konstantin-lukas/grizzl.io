@@ -28,10 +28,11 @@ export default function useOnSubmit<T extends object>({
     const { start, finish } = useLoadingIndicator();
     async function onSubmit() {
         const isPost = method() === "POST";
+        const action = isPost ? "created" : "updated";
         start({ force: true });
         let submissionState = deepCopy(state);
         if (transform) submissionState = transform(submissionState);
-        $fetch(url(), {
+        await $fetch(url(), {
             method: method(),
             body: submissionState,
         })
@@ -42,10 +43,10 @@ export default function useOnSubmit<T extends object>({
                         isPost ? t(`${translationKey}.toast.createdTitle`) : t(`${translationKey}.toast.updatedTitle`),
                         t(
                             isPost
-                                ? `${translationKey}.toast.${isPost ? "created" : "updated"}Description`
-                                : `${translationKey}.toast.${isPost ? "created" : "updated"}Description`,
+                                ? `${translationKey}.toast.${action}Description`
+                                : `${translationKey}.toast.${action}Description`,
                             {
-                                title: ellipsize(resourceName(state), 15),
+                                title: ellipsize(resourceName(submissionState), 15),
                             },
                         ),
                     ),
