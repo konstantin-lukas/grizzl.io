@@ -1,6 +1,7 @@
 import { clearNuxtState } from "#app";
 import { beforeEach, expect, test, vi } from "vitest";
 import useLocalStorage from "~/core/composables/useLocalStorage";
+import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 const { localStorageStub } = await vi.hoisted(async () => {
     const localStorageStub = {
@@ -14,28 +15,28 @@ const { localStorageStub } = await vi.hoisted(async () => {
 
 beforeEach(() => {
     clearNuxtState();
-    vi.restoreAllMocks();
+    vi.resetAllMocks();
 });
 
-test("should return the defaultValue by default and write it to local storage", () => {
+test("should return the defaultValue by default and write it to local storage", async () => {
     localStorageStub.getItem.mockReturnValueOnce(null);
-    const value = useLocalStorage("bananas", "oranges");
-    expect(value.value).toBe("oranges");
+    const { composable } = await withSetup(() => useLocalStorage("bananas", "oranges"));
+    expect(composable.value).toBe("oranges");
     expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", "oranges");
 });
 
 test("should return the value from local storage when one exists", async () => {
     localStorageStub.getItem.mockReturnValueOnce("peaches");
-    const value = useLocalStorage("bananas", "oranges");
+    const { composable } = await withSetup(() => useLocalStorage("bananas", "oranges"));
     await vi.waitFor(() => {
-        expect(value.value).toBe("peaches");
+        expect(composable.value).toBe("peaches");
     });
 });
 
 test("writes the new value to local storage when updated", async () => {
     localStorageStub.getItem.mockReturnValueOnce(null);
-    const value = useLocalStorage<string>("bananas", "oranges");
-    value.value = "kiwis";
+    const { composable } = await withSetup(() => useLocalStorage<string>("bananas", "oranges"));
+    composable.value = "kiwis";
     await vi.waitFor(() => {
         expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", "kiwis");
     });
@@ -43,12 +44,12 @@ test("writes the new value to local storage when updated", async () => {
 
 test("serializes objects and writes them to local storage", async () => {
     localStorageStub.getItem.mockReturnValueOnce(null);
-    const value = useLocalStorage("bananas", { fruit: "oranges" });
+    const { composable } = await withSetup(() => useLocalStorage("bananas", { fruit: "oranges" }));
     await vi.waitFor(() => {
         expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", '{"fruit":"oranges"}');
     });
 
-    value.value.fruit = "kiwis";
+    composable.value.fruit = "kiwis";
     await vi.waitFor(() => {
         expect(localStorageStub.setItem).toHaveBeenLastCalledWith("bananas", '{"fruit":"kiwis"}');
     });
@@ -56,7 +57,7 @@ test("serializes objects and writes them to local storage", async () => {
 
 test("handles unparsable data in the local storage", async () => {
     localStorageStub.getItem.mockReturnValueOnce("bananas");
-    useLocalStorage("bananas", { fruit: "oranges" });
+    await withSetup(() => useLocalStorage("bananas", { fruit: "oranges" }));
 
     await vi.waitFor(() => {
         expect(localStorageStub.removeItem).toHaveBeenCalledExactlyOnceWith("bananas");
@@ -66,9 +67,9 @@ test("handles unparsable data in the local storage", async () => {
 
 test("handles parsable data in the local storage", async () => {
     localStorageStub.getItem.mockReturnValueOnce('{"fruit":"oranges"}');
-    const value = useLocalStorage("bananas", { fruit: "kiwis" });
+    const { composable } = await withSetup(() => useLocalStorage("bananas", { fruit: "kiwis" }));
 
     await vi.waitFor(() => {
-        expect(value.value).toStrictEqual({ fruit: "oranges" });
+        expect(composable.value).toStrictEqual({ fruit: "oranges" });
     });
 });

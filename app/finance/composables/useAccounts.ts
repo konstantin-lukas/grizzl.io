@@ -9,6 +9,7 @@ export default function useAccounts() {
         key: "/api/finance/accounts",
         onResponseError: onResponseError(toast, t),
     });
+
     const openAccountId = useLocalStorage<string>("openFinanceAccountId", "");
 
     watch(accounts, () => {

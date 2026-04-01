@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { LOCALES } from "#shared/core/constants/i18n.constant";
-import { deepCopy } from "#shared/core/utils/object.util";
-import { ellipsize } from "#shared/core/utils/string.util";
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 import { type Account, type PostAccount, PostAccountSchema } from "#shared/finance/validators/account.validator";
-import { useToast } from "#ui/composables";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import H1 from "~/core/components/typo/H1.vue";
-import { createToastError, createToastSuccess } from "~/core/utils/toast";
+import useOnSubmit from "~/core/composables/useOnSubmit";
 import useAccounts from "~/finance/composables/useAccounts";
 import { getCurrencies } from "~/finance/utils/currency";
 
@@ -17,7 +14,6 @@ const emit = defineEmits(["success"]);
 const isInsert = computed(() => initialState === null);
 
 const { refresh } = useAccounts();
-const toast = useToast();
 const { locale } = useI18n();
 
 const open = defineModel<boolean>("open");
@@ -38,28 +34,15 @@ watch(open, newOpen => {
     Object.assign(state, initialState ?? emptyState);
 });
 
-async function onSubmit() {
-    const submissionState = deepCopy(state);
-    $fetch(isInsert.value ? "/api/finance/accounts" : `/api/finance/accounts/${initialState?.id}`, {
-        method: isInsert.value ? "POST" : "PUT",
-        body: submissionState,
-    })
-        .then(() => {
-            emit("success");
-            toast.add(
-                createToastSuccess(
-                    $t(`finance.account.toast.${isInsert.value ? "created" : "updated"}Title`),
-                    $t(`finance.account.toast.${isInsert.value ? "created" : "updated"}Description`, {
-                        title: ellipsize(state.title, 15),
-                    }),
-                ),
-            );
-            refresh();
-        })
-        .catch(error => {
-            toast.add(createToastError(error));
-        });
-}
+const onSubmit = useOnSubmit({
+    url: () => (isInsert.value ? "/api/finance/accounts" : `/api/finance/accounts/${initialState?.id}`),
+    method: () => (isInsert.value ? "POST" : "PUT"),
+    state,
+    emit,
+    refresh,
+    translationKey: "finance.account",
+    resourceName: d => d.title,
+});
 </script>
 
 <template>
