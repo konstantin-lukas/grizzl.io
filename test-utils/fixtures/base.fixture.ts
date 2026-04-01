@@ -14,7 +14,7 @@ export type ExtendedInsertOverrides<T extends SchemaKey, E extends object> = Ins
 export default abstract class BaseFixture<T extends SchemaKey> {
     protected readonly db;
     protected readonly schema;
-    protected abstract readonly defaults: (index: number) => InsertModel<T>;
+    protected abstract readonly defaults: (index: number, count: number) => InsertModel<T>;
     protected constructor(db: ReturnType<typeof drizzle>, tableName: T) {
         this.db = db;
         this.schema = schema[tableName];
@@ -44,7 +44,7 @@ export default abstract class BaseFixture<T extends SchemaKey> {
         const mapper = (_: unknown, index: number) => {
             return {
                 ...(userId !== undefined ? { userId } : {}),
-                ...this.defaults(index),
+                ...this.defaults(index, count),
                 ...getOverrides(index),
             };
         };

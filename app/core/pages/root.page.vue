@@ -6,8 +6,10 @@ import H1 from "~/core/components/typo/H1.vue";
 import useMenu from "~/core/composables/useMenu";
 import { authClient } from "~/core/constants/auth-client.constant";
 import { APP_NAV } from "~/core/constants/nav.constant";
+import { relativeFetch } from "~/core/utils/fetch";
 
-const session = authClient.useSession();
+const { data } = await authClient.useSession(relativeFetch);
+
 const { close } = useMenu();
 </script>
 
@@ -28,7 +30,7 @@ const { close } = useMenu();
                 </div>
                 <div class="flex gap-4 px-6 xs:px-12 md:px-24 xl:px-0">
                     <Button
-                        v-if="session.data"
+                        v-if="data"
                         size="xl"
                         icon="heroicons:arrow-right-end-on-rectangle"
                         data-test-id="home-sign-out-button"

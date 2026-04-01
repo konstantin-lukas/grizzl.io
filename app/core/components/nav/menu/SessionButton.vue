@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import useMenu from "~/core/composables/useMenu";
 import { authClient } from "~/core/constants/auth-client.constant";
+import { relativeFetch } from "~/core/utils/fetch";
 
-const session = authClient.useSession();
+const { data } = await authClient.useSession(relativeFetch);
 const { close } = useMenu();
 </script>
 
 <template>
     <div class="flex">
         <button
-            v-if="session.data"
+            v-if="data"
             class="inline-link group mx-auto mt-4 flex justify-center gap-2"
             data-test-id="session-button"
             @click="

@@ -9,7 +9,7 @@ import Menu from "~/core/components/nav/menu/Menu.vue";
 import MenuButton from "~/core/components/nav/menu/MenuButton.vue";
 import useMenu from "~/core/composables/useMenu";
 
-const toaster = { duration: 15000 };
+const toaster = { duration: 15000, expand: false };
 const { isOpen, close } = useMenu();
 const { locale } = useI18n();
 const uiLocale = ref();

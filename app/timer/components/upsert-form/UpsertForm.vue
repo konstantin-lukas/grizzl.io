@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { generateId } from "#shared/core/utils/id.util";
-import { deepCopy } from "#shared/core/utils/object.util";
-import { ellipsize } from "#shared/core/utils/string.util";
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/core/validators/core.validator";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/timer/validators/timer.validator";
-import { useToast } from "#ui/composables";
 import { VueDraggable } from "vue-draggable-plus";
 import Button from "~/core/components/button/Button.vue";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import H1 from "~/core/components/typo/H1.vue";
-import { createToastError, createToastSuccess } from "~/core/utils/toast";
+import useOnSubmit from "~/core/composables/useOnSubmit";
 import UpsertFormInterval from "~/timer/components/upsert-form/UpsertFormInterval.vue";
 import UpsertFormVoiceSelect from "~/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
 
@@ -46,8 +43,6 @@ const isDragging = ref(false);
 const forcedAccordionState = ref<"open" | "close" | "">("");
 
 const formRef = ref();
-const { start, finish } = useLoadingIndicator();
-const toast = useToast();
 
 watch(state, () => {
     setTimeout(() => {
@@ -64,32 +59,20 @@ watch(state, () => {
     }, 0);
 });
 
-async function onSubmit() {
-    start({ force: true });
-    const submissionState = deepCopy(state);
-    for (const interval of submissionState.intervals) {
-        if (interval.id?.length !== ID_LENGTH) delete interval.id;
-    }
-    $fetch(createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`, {
-        method: createNewTimer ? "POST" : "PUT",
-        body: submissionState,
-    })
-        .then(() => {
-            emit("success");
-            toast.add(
-                createToastSuccess(
-                    createNewTimer ? $t("timer.toast.createdTitle") : $t("timer.toast.updatedTitle"),
-                    $t(createNewTimer ? "timer.toast.createdDescription" : "timer.toast.updatedDescription", {
-                        title: ellipsize(state.title, 15),
-                    }),
-                ),
-            );
-        })
-        .catch(error => {
-            toast.add(createToastError(error));
-        })
-        .finally(finish);
-}
+const onSubmit = useOnSubmit({
+    url: () => (createNewTimer ? "/api/timers" : `/api/timers/${initialState.id}`),
+    method: () => (createNewTimer ? "POST" : "PUT"),
+    state,
+    emit,
+    translationKey: "timer",
+    resourceName: d => d.title,
+    transform: data => {
+        for (const interval of data.intervals) {
+            if (interval.id?.length !== ID_LENGTH) delete interval.id;
+        }
+        return data;
+    },
+});
 
 function onEnd() {
     setTimeout(() => (isDragging.value = false), 0);
