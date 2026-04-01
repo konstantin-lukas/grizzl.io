@@ -18,7 +18,7 @@ const plugins = [
 export default defineConfig({
     test: {
         reporters: process.env.GITHUB_ACTIONS ? ["dot", "github-actions"] : ["dot"],
-        //silent: true,
+        silent: true,
         coverage: {
             include: [
                 "app/**/utils/**/*",
