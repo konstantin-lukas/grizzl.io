@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { deleteNthElement, duplicateNthElement, moveElement } from "#shared/core/utils/array.util";
-import { generateId } from "#shared/core/utils/id.util";
+import { nanoid } from "#shared/core/utils/id.util";
 import { LIST_MAX, LIST_MIN } from "#shared/core/validators/core.validator";
 import type { PutTimer } from "#shared/timer/validators/timer.validator";
 import Button from "~/core/components/button/Button.vue";
@@ -27,7 +27,7 @@ const { index, open } = defineProps<{ index: number; open: boolean }>();
                     const newIntervals = duplicateNthElement(intervals!, index);
                     newIntervals[index + 1] = {
                         ...newIntervals[index + 1]!,
-                        id: generateId() + 'A',
+                        id: nanoid() + 'A',
                     };
                     intervals = newIntervals;
                 }

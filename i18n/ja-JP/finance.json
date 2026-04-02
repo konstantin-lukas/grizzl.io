@@ -4,6 +4,11 @@
             "title": "ファイナンス",
             "description": "複数のアカウントを作成し、毎月の支出を管理できます。"
         },
+        "tabs": {
+            "account": "口座",
+            "budgets": "予算",
+            "bills": "請求書"
+        },
         "account": {
             "form": {
                 "title": "口座名",

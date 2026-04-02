@@ -4,6 +4,11 @@
             "title": "Finance",
             "description": "Create different accounts and keep track of your monthly expenses."
         },
+        "tabs": {
+            "account": "Account",
+            "budgets": "Budgets",
+            "bills": "Bills"
+        },
         "account": {
             "form": {
                 "title": "Account title",

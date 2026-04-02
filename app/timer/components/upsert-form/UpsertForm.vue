@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { generateId } from "#shared/core/utils/id.util";
+import { nanoid } from "#shared/core/utils/id.util";
 import { COUNT_MIN, ID_LENGTH, TITLE_MAX, ZERO } from "#shared/core/validators/core.validator";
 import { PostTimerSchema, type PutTimer, type Timer } from "#shared/timer/validators/timer.validator";
 import { VueDraggable } from "vue-draggable-plus";
@@ -31,7 +31,7 @@ const state = reactive<PutTimer>(
                       repeatCount: COUNT_MIN,
                       duration: 3000,
                       preparationTime: ZERO,
-                      id: `${generateId()}A`,
+                      id: `${nanoid()}A`,
                       beatPattern: null,
                   },
               ],
