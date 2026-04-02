@@ -19,7 +19,7 @@ mockNuxtImport("setResponseStatus", () => {
 
 const id = "AAAAaaaaBBBBbbbb";
 vi.mock("#shared/core/utils/id.util", () => {
-    return { generateId: () => id };
+    return { nanoid: () => id };
 });
 
 const { createErrorSpy } = vi.hoisted(() => {
