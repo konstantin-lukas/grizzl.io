@@ -17,9 +17,7 @@ export default function useAccounts() {
             openAccountId.value = "";
             return;
         }
-    });
 
-    watch(accounts, () => {
         const firstAccount = accounts.value?.[0]?.id;
         if (openAccountId.value || !firstAccount) return;
         openAccountId.value = firstAccount;

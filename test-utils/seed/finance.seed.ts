@@ -8,42 +8,80 @@ const accountData = [
 ];
 
 const categoryReferences = {
-    travel: "Expedia",
-    hobbies: "Hobby Lobby",
-    partying: "The Tipsy Crow Bar",
-    entertainment: "Netflix",
-    sports_and_outdoors: "REI",
+    // TRAVEL & TRANSPORTATION
+    "flight-rounded": "Delta Air Lines Flight",
+    "luggage-outline-rounded": "Samsonite Luggage Store",
+    "train-outline-rounded": "Amtrak Ticket Purchase",
+    "directions-car-outline-rounded": "Hertz Car Rental",
+    "pedal-bike-outline-rounded": "Lime Bike Ride",
+    "directions-boat-outline-rounded": "Harbor Boat Tour",
+    "local-gas-station-outline-rounded": "Shell Gas Station",
+    "beach-access-outline-rounded": "Airbnb Beach Stay",
 
-    groceries: "Walmart",
-    food_delivery: "DoorDash",
-    eating_out: "Chipotle",
+    // FOODS & DRINKS
+    "shopping-cart-outline-rounded": "Walmart Grocery",
+    "restaurant-rounded": "Chipotle Mexican Grill",
+    "coffee-outline-rounded": "Starbucks Coffee",
+    "grocery": "Kroger Grocery",
+    "bakery-dining-outline": "Panera Bread",
+    "beer-meal-outline-rounded": "Local Bar & Grill",
+    "cookie-outline-rounded": "Insomnia Cookies",
+    "hand-meal-outline-rounded": "DoorDash Order",
+    "local-bar-outline-rounded": "Downtown Bar",
+    "fastfood-outline-rounded": "McDonalds",
 
-    furniture: "IKEA",
-    garden_and_plants: "Home Depot Garden Center",
-    home_supplies: "Home Depot",
-    personal_care: "CVS Pharmacy",
-    pets: "Petco",
-    home_repairs: "Lowe's",
+    // ENTERTAINMENT & LEISURE
+    "movie-outline-rounded": "AMC Theatres",
+    "celebration-outline-rounded": "Party City",
+    "sports-esports-outline-rounded": "PlayStation Store",
+    "book-ribbon-outline-rounded": "Barnes & Noble",
+    "photo-camera-outline-rounded": "Best Buy Camera",
+    "chess-knight-outline-rounded": "GameStop Purchase",
 
-    public_transit: "MTA MetroCard",
-    bike: "Trek Bicycle Store",
-    car: "Chevron Gas Station",
-    motorbike: "Harley-Davidson Dealer",
+    // SPORTS & OUTDOORS
+    "sports-tennis-rounded": "Tennis Club Fee",
+    "sports-basketball-outline": "Nike Store",
+    "sports-baseball-outline": "Sports Authority",
+    "golf-course-rounded": "Golf Course Fee",
+    "hiking-rounded": "REI Outdoor Gear",
+    "pool-rounded": "Community Pool",
+    "downhill-skiing-rounded": "Ski Resort Pass",
+    "sports-volleyball-outline": "Dick's Sporting Goods",
+    "camping-outline-rounded": "Camping World",
+    "surfing-rounded": "Surf Shop",
 
-    clothing: "Target",
-    electronics: "Best Buy",
-    books: "Barnes & Noble",
-    gaming: "Steam - Baldur's Gate 3",
-    presents: "Amazon Gift Purchase",
+    // HOUSEHOLD
+    "house-outline-rounded": "Rent Payment",
+    "potted-plant-outline-rounded": "Home Depot Plants",
+    "pet-supplies-outline": "Petco",
+    "tools-power-drill-outline": "Home Depot Tools",
+    "soap-outline-rounded": "CVS Pharmacy",
+    "lightbulb-outline-rounded": "Lowe's Lighting",
+    "child-friendly-outline-rounded": "Target Toys",
+    "household-supplies-outline-rounded": "Costco Wholesale",
+    "mode-heat-cool-outline-rounded": "Electric Utility Bill",
+    "faucet-outline-rounded": "Water Utility Bill",
 
-    account_transfer: "Transfer to Savings",
-    education: "Coursera Course",
-    childcare: "Bright Horizons Childcare",
-    investments: "Vanguard ETF Purchase",
-    donations: "American Red Cross Donation",
-    medication: "Walgreens Pharmacy",
-    miscellaneous: "PayPal Payment",
-};
+    // SHOPPING
+    "apparel-outline": "Old Navy",
+    "power-plug-outline-rounded": "PG&E Electric",
+    "featured-seasonal-and-gifts-rounded": "Amazon Purchase",
+    "computer-outline-rounded": "Apple Store",
+    "phone-iphone-outline": "AT&T Wireless",
+
+    // OTHER
+    "medical-services-outline-rounded": "Urgent Care Visit",
+    "question-mark-rounded": "Misc Purchase",
+    "monitoring-rounded": "Fidelity Investment",
+    "compare-arrows-rounded": "PayPal Transfer",
+    "business-center-outline-rounded": "Office Depot",
+    "moped-package-outline-rounded": "UPS Shipping",
+    "print-outline-rounded": "FedEx Office",
+    "router-outline-rounded": "Xfinity Internet",
+    "vaping-rooms-rounded": "Smoke Shop",
+    "contract-edit-outline-rounded": "Netflix",
+    "receipt-long-outline-rounded": "Spotify",
+} as const;
 
 seed("insert finance test data", async ({ db }) => {
     const accounts = await db.financeAccount.insert(3, index => ({
@@ -63,7 +101,7 @@ seed("insert finance test data", async ({ db }) => {
                 createdAt: date({ refDate: new Date(), seed, days: 45 }),
                 categoryId: category.id,
                 amount: int({ min: account.title === "Travel Account" ? -300_00 : -200_00, max: 300_00, seed }),
-                reference: maybe(() => categoryReferences[category as never], { seed }),
+                reference: maybe(() => categoryReferences[category.icon as keyof typeof categoryReferences], { seed }),
             };
         });
 
@@ -77,7 +115,7 @@ seed("insert finance test data", async ({ db }) => {
             return {
                 accountId: account.id,
                 categoryId: category.id,
-                reference: maybe(() => categoryReferences[category as never], { seed }),
+                reference: maybe(() => categoryReferences[category.icon as keyof typeof categoryReferences], { seed }),
                 lastExec: date({ seed, refDate: new Date() }).toISOString().split("T")[0],
             };
         });

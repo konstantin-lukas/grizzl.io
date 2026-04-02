@@ -6,8 +6,10 @@ import AccountH1 from "~/finance/components/AccountH1.vue";
 import AccountTabs from "~/finance/components/AccountTabs.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
+import useTransactions from "~/finance/composables/useTransactions";
 
 const { accounts, openAccountId } = useAccounts();
+const { transactions } = useTransactions();
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
 const upsertFormOpen = ref(false);
 </script>
@@ -18,7 +20,7 @@ const upsertFormOpen = ref(false);
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="relative mb-16 flex h-full w-full grow flex-col">
                 <AccountH1 />
-                <AccountTabs class="mt-8" />
+                <AccountTabs v-if="transactions" class="mt-8" />
                 <Transition name="fade">
                     <div v-if="showEmptyView" class="center absolute h-full w-full grow">
                         <Empty @open="upsertFormOpen = true" />
