@@ -1,11 +1,15 @@
 import { nanoid } from "#shared/core/utils/id.util";
 import { ID_LENGTH } from "#shared/core/validators/core.validator";
-import { expect, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import { int } from "~~/test-utils/helpers/data";
 
 const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 const cryptoSpy = vi.spyOn(global.crypto, "getRandomValues");
+
+beforeEach(() => {
+    vi.resetAllMocks();
+});
 
 test.each([
     ["2QVHgERDbcBMz5h4", 0],

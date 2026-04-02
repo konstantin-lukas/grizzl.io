@@ -7,12 +7,12 @@ import { ID_LENGTH } from "../validators/core.validator";
 // requests exceed the maximum buffer size.
 const POOL_SIZE_MULTIPLIER = 128;
 const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-let pool: Buffer<ArrayBuffer>;
+let pool: Uint8Array;
 let poolOffset: number;
 
 function fillPool(bytes: number) {
     if (!pool || pool.length < bytes) {
-        pool = Buffer.allocUnsafe(bytes * POOL_SIZE_MULTIPLIER);
+        pool = new Uint8Array(bytes * POOL_SIZE_MULTIPLIER);
         crypto.getRandomValues(pool);
         poolOffset = 0;
     } else if (poolOffset + bytes > pool.length) {
