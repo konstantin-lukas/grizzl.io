@@ -4,6 +4,11 @@
             "title": "Finanzas",
             "description": "Crea diferentes cuentas y controla tus gastos mensuales."
         },
+        "tabs": {
+            "account": "Cuenta",
+            "budgets": "Presupuestos",
+            "bills": "Facturas"
+        },
         "account": {
             "form": {
                 "title": "Nombre de la cuenta",

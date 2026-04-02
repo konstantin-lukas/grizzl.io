@@ -4,6 +4,11 @@
             "title": "Finanzen",
             "description": "Erstelle verschiedene Konten und behalte deine monatlichen Ausgaben im Blick."
         },
+        "tabs": {
+            "account": "Konto",
+            "budgets": "Budgets",
+            "bills": "Rechnungen"
+        },
         "account": {
             "form": {
                 "title": "Kontoname",

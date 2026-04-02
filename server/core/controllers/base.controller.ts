@@ -1,5 +1,5 @@
 import { LOCALES } from "#shared/core/constants/i18n.constant";
-import { generateId } from "#shared/core/utils/id.util";
+import { nanoid } from "#shared/core/utils/id.util";
 import { DatabaseIdSchema } from "#shared/core/validators/core.validator";
 import type { ZodType } from "better-auth";
 import type { H3Event } from "h3";
@@ -147,7 +147,7 @@ export default class BaseController {
         status: keyof typeof BaseController.HttpStatusCode = "BAD_REQUEST",
         maskError: boolean = false,
     ): never {
-        const id = generateId();
+        const id = nanoid();
 
         const message = (() => {
             if (maskError) return BaseController.HttpStatusMessage[status];

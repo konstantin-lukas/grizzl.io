@@ -12,9 +12,10 @@ export default function useAccounts() {
 
     const openAccountId = useLocalStorage<string>("openFinanceAccountId", "");
 
-    watch(accounts, () => {
+    watchEffect(() => {
         if (openAccountId.value && accounts.value?.every(account => account.id !== openAccountId.value)) {
             openAccountId.value = "";
+            return;
         }
     });
 

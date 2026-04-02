@@ -12,7 +12,7 @@ const { db, BaseRepository } = vi.hoisted(() => {
 
 const id = "AAAAaaaaBBBBbbbb";
 vi.mock("#shared/core/utils/id.util", () => {
-    return { generateId: () => id };
+    return { nanoid: () => id };
 });
 
 vi.mock("~~/database", () => {
