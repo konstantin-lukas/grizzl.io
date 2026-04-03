@@ -6,7 +6,6 @@ export default function useAccounts() {
     const toast = useToast();
     const { t } = useI18n();
     const { data: accounts, refresh: refreshAccounts } = useFetch("/api/finance/accounts", {
-        key: "/api/finance/accounts",
         onResponseError: onResponseError(toast, t),
     });
 
