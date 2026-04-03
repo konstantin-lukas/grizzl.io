@@ -3,7 +3,9 @@ import { subMonths } from "date-fns";
 import { onResponseError } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
 
-type Transactions = Awaited<ReturnType<typeof $fetch<unknown, `/api/finance/accounts/:accountId/transactions`>>>;
+export type Transaction = Awaited<
+    ReturnType<typeof $fetch<unknown, `/api/finance/accounts/:accountId/transactions`>>
+>[number];
 
 export default function useTransactions() {
     const { openAccountId } = useAccounts();
@@ -22,15 +24,15 @@ export default function useTransactions() {
     });
     const reference = useState<string | undefined>(() => undefined);
 
-    const transactions = useState<Transactions>();
+    const transactions = useState<Transaction[]>();
 
     watchEffect(async () => {
-        if (!openAccountId.value) {
+        if (!openAccountId.value || import.meta.server) {
             transactions.value = [];
             return;
         }
 
-        transactions.value = await $fetch<Transactions>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
+        transactions.value = await $fetch<Transaction[]>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
             onResponseError: onResponseError(toast, t),
             query: {
                 categoryId: categoryId.value,
