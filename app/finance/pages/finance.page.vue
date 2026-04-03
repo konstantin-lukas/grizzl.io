@@ -14,7 +14,7 @@ const upsertFormOpen = ref(false);
 
 <template>
     <Wrapper>
-        <AccountSelectMenu class="fixed top-4 right-4" />
+        <AccountSelectMenu class="fixed top-4 right-4 z-10" />
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="relative mb-16 flex h-full w-full grow flex-col">
                 <AccountH1 />
