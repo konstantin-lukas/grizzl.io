@@ -7,7 +7,7 @@ const { transactions } = useTransactions();
 </script>
 
 <template>
-    <H2>Transactions</H2>
+    <H2>{{ $t("finance.account.transactionHistory") }}</H2>
     <div class="mt-4 flex flex-col gap-4">
         <Transaction v-for="transaction in transactions" :key="transaction.id" :transaction />
     </div>

@@ -10,6 +10,7 @@
             "bills": "Rechnungen"
         },
         "account": {
+            "transactionHistory": "Transaktionsverlauf",
             "form": {
                 "title": "Kontoname",
                 "currency": "Währung"

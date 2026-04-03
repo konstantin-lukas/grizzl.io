@@ -10,6 +10,7 @@
             "bills": "請求書"
         },
         "account": {
+            "transactionHistory": "取引履歴",
             "form": {
                 "title": "口座名",
                 "currency": "通貨"

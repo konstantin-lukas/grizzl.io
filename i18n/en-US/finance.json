@@ -10,6 +10,7 @@
             "bills": "Bills"
         },
         "account": {
+            "transactionHistory": "Transaction History",
             "form": {
                 "title": "Account title",
                 "currency": "Currency"

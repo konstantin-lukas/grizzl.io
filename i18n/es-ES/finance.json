@@ -10,6 +10,7 @@
             "bills": "Facturas"
         },
         "account": {
+            "transactionHistory": "Historial de transacciones",
             "form": {
                 "title": "Nombre de la cuenta",
                 "currency": "Moneda"
