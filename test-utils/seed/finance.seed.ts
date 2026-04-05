@@ -1,3 +1,4 @@
+import { normalize } from "#shared/finance/utils/string";
 import { date, int, maybe } from "~~/test-utils/helpers/data";
 import { seed } from "~~/test-utils/playwright";
 
@@ -6,6 +7,82 @@ const accountData = [
     { title: "Travel Account", currency: "JPY" },
     { title: "Investment Account", currency: "USD" },
 ];
+
+export const categoryTitles = {
+    // TRAVEL & TRANSPORTATION
+    "flight-rounded": "Flights",
+    "luggage-outline-rounded": "Travel Gear",
+    "train-outline-rounded": "Train Travel",
+    "directions-car-outline-rounded": "Car Rental",
+    "pedal-bike-outline-rounded": "Bike Sharing",
+    "directions-boat-outline-rounded": "Boat Transport",
+    "local-gas-station-outline-rounded": "Fuel",
+    "beach-access-outline-rounded": "Vacation & Accommodation",
+
+    // FOOD & DRINK
+    "shopping-cart-outline-rounded": "Groceries",
+    "restaurant-rounded": "Restaurants",
+    "coffee-outline-rounded": "Coffee & Cafes",
+    "grocery": "Groceries",
+    "bakery-dining-outline": "Bakery",
+    "beer-meal-outline-rounded": "Bars & Dining",
+    "cookie-outline-rounded": "Snacks & Sweets",
+    "hand-meal-outline-rounded": "Food Delivery",
+    "local-bar-outline-rounded": "Bars",
+    "fastfood-outline-rounded": "Fast Food",
+
+    // ENTERTAINMENT & LEISURE
+    "movie-outline-rounded": "Movies & Cinema",
+    "celebration-outline-rounded": "Events & Parties",
+    "sports-esports-outline-rounded": "Gaming",
+    "book-ribbon-outline-rounded": "Books & Literature",
+    "photo-camera-outline-rounded": "Photography",
+    "chess-knight-outline-rounded": "Games & Hobbies",
+
+    // SPORTS & OUTDOORS
+    "sports-tennis-rounded": "Tennis",
+    "sports-basketball-outline": "Basketball",
+    "sports-baseball-outline": "Baseball",
+    "golf-course-rounded": "Golf",
+    "hiking-rounded": "Hiking & Outdoors",
+    "pool-rounded": "Swimming",
+    "downhill-skiing-rounded": "Skiing",
+    "sports-volleyball-outline": "Volleyball",
+    "camping-outline-rounded": "Camping",
+    "surfing-rounded": "Surfing",
+
+    // HOUSEHOLD
+    "house-outline-rounded": "Rent & Housing",
+    "potted-plant-outline-rounded": "Home & Garden",
+    "pet-supplies-outline": "Pet Supplies",
+    "tools-power-drill-outline": "Home Improvement",
+    "soap-outline-rounded": "Personal Care",
+    "lightbulb-outline-rounded": "Utilities & Electricity",
+    "child-friendly-outline-rounded": "Kids & Toys",
+    "household-supplies-outline-rounded": "Household Supplies",
+    "mode-heat-cool-outline-rounded": "Heating & Cooling",
+    "faucet-outline-rounded": "Water & Utilities",
+
+    // SHOPPING & SERVICES
+    "apparel-outline": "Clothing",
+    "power-plug-outline-rounded": "Electricity",
+    "featured-seasonal-and-gifts-rounded": "General Shopping",
+    "computer-outline-rounded": "Electronics",
+    "phone-iphone-outline": "Mobile & Telecom",
+
+    // OTHER
+    "medical-services-outline-rounded": "Healthcare",
+    "question-mark-rounded": "Miscellaneous",
+    "monitoring-rounded": "Investments",
+    "compare-arrows-rounded": "Transfers",
+    "business-center-outline-rounded": "Office Supplies",
+    "moped-package-outline-rounded": "Shipping",
+    "print-outline-rounded": "Printing Services",
+    "router-outline-rounded": "Internet & Telecom",
+    "vaping-rooms-rounded": "Smoking & Vaping",
+    "contract-edit-outline-rounded": "Subscriptions",
+    "receipt-long-outline-rounded": "Subscriptions",
+} as const;
 
 const categoryReferences = {
     // TRAVEL & TRANSPORTATION
@@ -90,7 +167,13 @@ seed("insert finance test data", async ({ db }) => {
     }));
 
     for (const [i, account] of accounts.entries()) {
-        const categories = await db.financeCategory.insert(5, { accountId: account.id });
+        const categories = await db.financeCategory.insert(5, seed => {
+            const cat = Object.entries(categoryTitles);
+            const index = int({ min: 0, max: cat.length - 1, seed });
+            const [icon, displayName] = cat[index]!;
+            const normalizedName = normalize(displayName);
+            return { accountId: account.id, displayName, icon, normalizedName };
+        });
 
         if (account.title === "Investment Account") continue;
         const transactions = await db.financeTransaction.insert(50, j => {
