@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
+import { ICON_BANK, ICON_BILL, ICON_WALLET } from "~/core/constants/icons.constant";
 import AccountTab from "~/finance/components/tabs/AccountTab.vue";
 
 const items = ref<TabsItem[]>([
     {
         label: "account",
-        icon: "material-symbols:account-balance-outline-rounded",
+        icon: ICON_BANK,
     },
     {
         label: "budgets",
-        icon: "material-symbols:account-balance-wallet-outline-rounded",
+        icon: ICON_WALLET,
     },
     {
         label: "bills",
-        icon: "material-symbols:contract-outline-rounded",
+        icon: ICON_BILL,
     },
 ]);
 </script>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ICON_WARNING } from "~/core/constants/icons.constant";
+
 defineProps<{ errors: string[] }>();
 </script>
 
@@ -11,7 +13,7 @@ defineProps<{ errors: string[] }>();
             :title="$t('ui.formErrors', errors.length)"
             variant="subtle"
             data-test-id="form-error-digest"
-            icon="heroicons:exclamation-triangle"
+            :icon="ICON_WARNING"
         >
             <template #description>
                 <ul class="list-disc">

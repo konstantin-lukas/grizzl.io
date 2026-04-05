@@ -9,7 +9,7 @@ import {
     COLOR_FRONT_LIGHT_MODE,
     COLOR_PRIMARY_DARK_MODE,
     COLOR_PRIMARY_LIGHT_MODE,
-} from "~/core/constants/colors";
+} from "~/core/constants/colors.constant";
 import useAccountBalanceChartData from "~/finance/composables/useAccountBalanceChartData";
 import useAccounts from "~/finance/composables/useAccounts";
 import { formatCurrency } from "~/finance/utils/currency";

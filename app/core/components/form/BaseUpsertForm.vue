@@ -2,6 +2,7 @@
 import type { FormErrorEvent, FormSubmitEvent } from "#ui/types";
 import Button from "~/core/components/button/Button.vue";
 import FormErrorDigest from "~/core/components/form/FormErrorDigest.vue";
+import { ICON_PLUS_CIRCLE, ICON_SAVE } from "~/core/constants/icons.constant";
 
 const scrollContainer = useTemplateRef<HTMLDivElement>("scrollContainer");
 const { isLoading } = useLoadingIndicator();
@@ -46,7 +47,7 @@ const onError = (e: FormErrorEvent) => {
                 <Button
                     size="xl"
                     type="submit"
-                    :icon="mode === 'insert' ? 'heroicons:plus-circle-16-solid' : 'mdi:content-save'"
+                    :icon="mode === 'insert' ? ICON_PLUS_CIRCLE : ICON_SAVE"
                     class="flex w-full justify-center"
                     data-test-id="upsert-form-submit-button"
                     :disabled="isLoading"

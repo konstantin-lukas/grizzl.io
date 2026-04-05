@@ -3,6 +3,7 @@ import { LOCALES } from "#shared/core/constants/i18n.constant";
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { intlFormat } from "date-fns";
 import Button from "~/core/components/button/Button.vue";
+import { ICON_DELETE, ICON_EDIT, ICON_MORE_VERT } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import type { Transaction } from "~/finance/composables/useTransactions";
@@ -12,13 +13,13 @@ const { openAccount } = useAccounts();
 const items = ref<DropdownMenuItem[]>([
     {
         label: "edit",
-        icon: "material-symbols:edit-outline-rounded",
+        icon: ICON_EDIT,
         color: "primary",
         // onSelect: () => console.log(1),
     },
     {
         label: "delete",
-        icon: "material-symbols:delete-outline-rounded",
+        icon: ICON_DELETE,
         color: "error",
         // onSelect: () => console.log(1),
     },
@@ -60,7 +61,7 @@ const amount = computed(() => {
             </UBadge>
             <UDropdownMenu :items="items">
                 <Button
-                    icon="material-symbols:more-vert"
+                    :icon="ICON_MORE_VERT"
                     square
                     variant="ghost"
                     color="neutral"

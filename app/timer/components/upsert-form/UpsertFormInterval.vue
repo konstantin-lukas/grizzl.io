@@ -3,6 +3,7 @@ import { COUNT_MAX, COUNT_MIN, TITLE_MAX, ZERO } from "#shared/core/validators/c
 import { Beat } from "#shared/timer/enums/beat.enum";
 import { type PutTimer, TIMER_DURATION_MAX, TIMER_DURATION_MIN } from "#shared/timer/validators/timer.validator";
 import UAccordion from "#ui/components/Accordion.vue";
+import { ICON_DRAG_HORIZONTAL, ICON_TIMER_INTERVAL } from "~/core/constants/icons.constant";
 import UpsertFormBeatPatternInput from "~/timer/components/upsert-form/UpsertFormBeatPatternInput.vue";
 import UpsertFormIntervalActionButtons from "~/timer/components/upsert-form/UpsertFormIntervalActionButtons.vue";
 
@@ -39,7 +40,7 @@ watch(
         <div>
             <UAccordion
                 v-model="accordionValue"
-                :items="[{ icon: 'mdi:progress-clock' }]"
+                :items="[{ icon: ICON_TIMER_INTERVAL }]"
                 :ui="{ trailingIcon: 'mr-4', leadingIcon: 'ml-4' }"
             >
                 <template #default>
@@ -168,7 +169,7 @@ watch(
         </div>
         <USeparator />
         <div class="relative w-full cursor-move overflow-hidden py-6" data-handle>
-            <UIcon name="mdi:drag-horizontal" class="absolute top-1/2 left-1/2 size-12 -translate-1/2" />
+            <UIcon :name="ICON_DRAG_HORIZONTAL" class="absolute top-1/2 left-1/2 size-12 -translate-1/2" />
         </div>
         <UpsertFormIntervalActionButtons
             v-model:intervals="intervals"

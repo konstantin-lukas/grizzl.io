@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { Beat } from "#shared/timer/enums/beat.enum";
-import { BeatSymbol } from "#shared/timer/maps/beat.map";
 import { BEAT_PATTERN_MAX } from "#shared/timer/validators/timer.validator";
 import { useFormField } from "#ui/composables/useFormField";
 import accentedAudio from "~/core/assets/sound/accented-beat.wav";
 import beatAudio from "~/core/assets/sound/beat.wav";
 import Button from "~/core/components/button/Button.vue";
+import {
+    ICON_EXCLAMATION,
+    ICON_MUSIC_NOTE,
+    ICON_MUSIC_NOTE_DELETE,
+    ICON_MUSIC_REST,
+    ICON_PAUSE,
+    ICON_PLAY,
+} from "~/core/constants/icons.constant";
+import { BeatSymbol } from "~/timer/maps/beat-icon.map";
 
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
@@ -73,14 +81,14 @@ function addBeat(beat: Beat) {
 
 <template>
     <div
-        class="flex flex-col gap-2 rounded-md border border-border-accented p-2"
+        class="flex flex-col gap-2 rounded-md border border-accented p-2"
         :class="{ 'border-error': color === 'error' }"
     >
         <div class="flex justify-between">
             <div>
                 <Button
                     :content="{ side: 'right', align: 'center' }"
-                    :icon="playingComponentId === componentId ? 'heroicons:pause-solid' : 'heroicons:play-solid'"
+                    :icon="playingComponentId === componentId ? ICON_PAUSE : ICON_PLAY"
                     :aria-label="playingComponentId ? $t('ui.pause') : $t('ui.play')"
                     :data-test-id="`beat-pattern-input-${playingComponentId === componentId ? 'pause' : 'play'}-button`"
                     variant="ghost"
@@ -96,21 +104,21 @@ function addBeat(beat: Beat) {
             <div>
                 <Button
                     v-bind="commonButtonProps"
-                    icon="mdi:exclamation-thick"
+                    :icon="ICON_EXCLAMATION"
                     :aria-label="$t('timer.form.interval.addAccent')"
                     data-test-id="beat-pattern-input-add-accent-button"
                     @click="addBeat(Beat.ACCENTED)"
                 />
                 <Button
                     v-bind="commonButtonProps"
-                    icon="mdi:music-note-quarter"
+                    :icon="ICON_MUSIC_NOTE"
                     :aria-label="$t('timer.form.interval.addBeat')"
                     data-test-id="beat-pattern-input-add-beat-button"
                     @click="addBeat(Beat.NORMAL)"
                 />
                 <Button
                     v-bind="commonButtonProps"
-                    icon="mdi:music-rest-quarter"
+                    :icon="ICON_MUSIC_REST"
                     :aria-label="$t('timer.form.interval.addPause')"
                     data-test-id="beat-pattern-input-add-pause-button"
                     @click="addBeat(Beat.PAUSE)"
@@ -118,7 +126,7 @@ function addBeat(beat: Beat) {
                 <Button
                     v-bind="commonButtonProps"
                     :disabled="beats.length === 0"
-                    icon="mdi:music-note-off"
+                    :icon="ICON_MUSIC_NOTE_DELETE"
                     color="error"
                     :aria-label="$t('timer.form.interval.deleteBeat')"
                     data-test-id="beat-pattern-input-delete-button"

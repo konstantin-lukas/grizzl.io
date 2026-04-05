@@ -1,6 +1,8 @@
+import { ICON_FINANCE, ICON_POLL, ICON_TIMER, ICON_TODO } from "~/core/constants/icons.constant";
+
 export const APP_NAV = [
-    ["poll", "heroicons:chart-pie", true],
-    ["todo", "heroicons:clipboard-document-check", true],
-    ["timer", "mdi:timer-outline", false],
-    ["finance", "heroicons:banknotes", false],
+    ["poll", ICON_POLL, true],
+    ["todo", ICON_TODO, true],
+    ["timer", ICON_TIMER, false],
+    ["finance", ICON_FINANCE, false],
 ] as const;

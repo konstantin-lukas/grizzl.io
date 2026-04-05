@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Account } from "#shared/finance/validators/account.validator";
 import Button from "~/core/components/button/Button.vue";
+import { ICON_EDIT, ICON_OPTIONS, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import AccountDeleteButton from "~/finance/components/AccountDeleteButton.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
@@ -28,7 +29,7 @@ watch(upsertFormOpen, () => {
         <USelectMenu
             v-model:open="selectOpen"
             v-model="selectedOption"
-            icon="heroicons:cog-8-tooth"
+            :icon="ICON_OPTIONS"
             variant="ghost"
             :trailing-icon="false"
             value-key="id"
@@ -50,7 +51,7 @@ watch(upsertFormOpen, () => {
                 <div class="m-1">
                     <Button
                         class="flex w-full justify-center"
-                        icon="heroicons:plus-circle-16-solid"
+                        :icon="ICON_PLUS_CIRCLE"
                         @click="
                             initialState = undefined;
                             upsertFormOpen = true;
@@ -62,7 +63,7 @@ watch(upsertFormOpen, () => {
                         <Button
                             variant="subtle"
                             class="flex w-full justify-center"
-                            icon="heroicons:pencil-square"
+                            :icon="ICON_EDIT"
                             @click="
                                 initialState = openAccount;
                                 upsertFormOpen = true;

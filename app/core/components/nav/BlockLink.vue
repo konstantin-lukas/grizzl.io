@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
+import { ICON_ARROW_RIGHT } from "~/core/constants/icons.constant";
 
 const {
     as = NuxtLink,
@@ -32,7 +33,7 @@ const {
                 </span>
                 <span class="absolute top-full left-0 h-full w-full bg-theme-dark px-8 py-3">
                     <UIcon
-                        name="heroicons:arrow-right-20-solid"
+                        :name="ICON_ARROW_RIGHT"
                         class="absolute top-1/2 left-1/2 h-8 w-8 -translate-1/2 text-theme-white"
                     />
                 </span>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { deleteNthElement } from "#shared/core/utils/array.util";
-import useVoiceDigest from "~/timer/composables/useVoiceDigest";
-import useVoices from "~/core/composables/useVoices";
-import useSpeakUtterance from "~/core/composables/useSpeakUtterance";
 import Button from "~/core/components/button/Button.vue";
+import useSpeakUtterance from "~/core/composables/useSpeakUtterance";
+import useVoices from "~/core/composables/useVoices";
+import { ICON_INFO, ICON_UNMUTED, ICON_WARNING } from "~/core/constants/icons.constant";
+import useVoiceDigest from "~/timer/composables/useVoiceDigest";
 
 const userTtsVoices = defineModel<string[]>("ttsVoices");
 
@@ -73,7 +74,7 @@ const handleChange = (value: string | null) => {
                     @update:open="o => (tooltipOpen = o)"
                 >
                     <UIcon
-                        name="mdi:information-outline"
+                        :name="ICON_INFO"
                         tabindex="0"
                         class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
                         @touchstart="tooltipOpen = true"
@@ -91,14 +92,14 @@ const handleChange = (value: string | null) => {
                 role="alert"
                 :title="$t('timer.ttsUnavailableTitle')"
                 :description="$t('timer.ttsUnavailableDescription')"
-                icon="heroicons:exclamation-triangle"
+                :icon="ICON_WARNING"
             />
         </Transition>
     </UFormField>
     <Transition name="fade">
         <div v-if="voiceOptions[1]?.length !== 0 && selectedVoice !== null" class="flex w-full gap-4">
             <Button
-                icon="heroicons:speaker-wave"
+                :icon="ICON_UNMUTED"
                 :aria-label="$t('ui.play')"
                 :content="{ side: 'left' }"
                 @click="

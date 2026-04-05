@@ -2,6 +2,7 @@
 import { ellipsize } from "#shared/core/utils/string.util";
 import Button from "~/core/components/button/Button.vue";
 import useSoftDelete from "~/core/composables/useSoftDelete";
+import { ICON_DELETE } from "~/core/constants/icons.constant";
 import useAccounts from "~/finance/composables/useAccounts";
 
 const { openAccount, openAccountId, refresh } = useAccounts();
@@ -22,7 +23,7 @@ const execute = useSoftDelete(apiRoute, {
         variant="subtle"
         class="flex w-full justify-center"
         color="error"
-        icon="heroicons:trash"
+        :icon="ICON_DELETE"
         :on-async-click="execute"
     >
         {{ $t("ui.delete") }}
