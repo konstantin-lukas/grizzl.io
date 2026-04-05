@@ -40,6 +40,7 @@ export default class TransactionService {
 
     /* c8 ignore start */
     public async getBalance(userId: string, accountId: string, filters: BaseTransactionFilters) {
+        await this.accountService.getUserAccount(userId, accountId);
         return await this.transactionRepository.getAccountBalanceUntil(userId, accountId, filters);
     }
 
