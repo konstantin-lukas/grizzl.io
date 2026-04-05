@@ -14,11 +14,11 @@ const upsertFormOpen = ref(false);
 
 <template>
     <Wrapper>
-        <AccountSelectMenu class="fixed top-4 right-4" />
+        <AccountSelectMenu class="fixed top-4 right-4 z-10" />
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="relative mb-16 flex h-full w-full grow flex-col">
                 <AccountH1 />
-                <AccountTabs class="mt-8" />
+                <AccountTabs v-if="openAccountId" class="mt-8" />
                 <Transition name="fade">
                     <div v-if="showEmptyView" class="center absolute h-full w-full grow">
                         <Empty @open="upsertFormOpen = true" />

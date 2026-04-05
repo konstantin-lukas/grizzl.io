@@ -33,7 +33,7 @@ watch(
 <template>
     <fieldset
         data-test-id="interval-fieldset"
-        class="group relative w-full rounded-md border border-border-accented bg-back transition-[margin]"
+        class="group relative w-full rounded-md border border-accented bg-back transition-[margin]"
         :class="{ 'not-sm:mb-12 hover-none:not-sm:mb-14': accordionValue !== undefined }"
     >
         <div>

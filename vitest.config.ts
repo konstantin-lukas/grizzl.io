@@ -22,15 +22,15 @@ export default defineConfig({
         coverage: {
             include: [
                 "app/**/utils/**/*",
-                "app/**/components/**/*",
-                "app/**/composables/**/*",
+                "app/core/components/**/*",
+                "app/core/composables/**/*",
                 "shared/**/utils/**/*",
                 "server/**/utils/**/*",
                 "server/**/*.repository.ts",
                 "server/**/*.service.ts",
                 "server/**/*.controller.ts",
             ],
-            exclude: ["app/timer/**/*", "app/finance/**/*", "app/core/components/data/CookieBanner.vue"],
+            exclude: ["app/core/components/data/CookieBanner.vue"],
             reporter: ["text", "lcov", "json"],
         },
         projects: [

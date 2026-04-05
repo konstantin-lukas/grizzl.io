@@ -6,7 +6,6 @@ export default function useAccounts() {
     const toast = useToast();
     const { t } = useI18n();
     const { data: accounts, refresh: refreshAccounts } = useFetch("/api/finance/accounts", {
-        key: "/api/finance/accounts",
         onResponseError: onResponseError(toast, t),
     });
 
@@ -17,9 +16,7 @@ export default function useAccounts() {
             openAccountId.value = "";
             return;
         }
-    });
 
-    watch(accounts, () => {
         const firstAccount = accounts.value?.[0]?.id;
         if (openAccountId.value || !firstAccount) return;
         openAccountId.value = firstAccount;

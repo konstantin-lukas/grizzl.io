@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
+import AccountTab from "~/finance/components/tabs/AccountTab.vue";
 
 const items = ref<TabsItem[]>([
     {
@@ -18,12 +19,12 @@ const items = ref<TabsItem[]>([
 </script>
 
 <template>
-    <UTabs :items :ui="{ content: 'mt-8' }">
+    <UTabs :items :ui="{ content: 'mt-6' }">
         <template #default="{ item }">
             {{ $t(`finance.tabs.${item.label}`) }}
         </template>
         <template #content="{ item }">
-            {{ item.label }}
+            <AccountTab v-if="item.label === 'account'" />
         </template>
     </UTabs>
 </template>

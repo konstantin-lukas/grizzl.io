@@ -31,6 +31,7 @@ export default defineNuxtConfig({
         layouts: "core/layouts",
         pages: "core/pages",
         assets: "core/assets",
+        plugins: "core/plugins",
     },
     app: {
         head: {

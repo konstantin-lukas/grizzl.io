@@ -10,6 +10,10 @@
             "bills": "Facturas"
         },
         "account": {
+            "transactionHistory": "Historial de transacciones",
+            "balance": "Saldo de la cuenta",
+            "currentBalance": "Saldo actual de la cuenta",
+            "expectedBalance": "Saldo previsto a fin de mes",
             "form": {
                 "title": "Nombre de la cuenta",
                 "currency": "Moneda"
