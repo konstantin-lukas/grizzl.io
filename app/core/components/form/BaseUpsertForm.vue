@@ -40,7 +40,7 @@ const onError = (e: FormErrorEvent) => {
                 </div>
             </div>
         </div>
-        <div class="flex h-18 w-full justify-center gap-4 border-t border-t-border-accented py-4">
+        <div class="flex h-18 w-full justify-center gap-4 border-t border-t-accented py-4">
             <div class="flex w-120 justify-center gap-4 px-8">
                 <slot name="before-submit" />
                 <Button

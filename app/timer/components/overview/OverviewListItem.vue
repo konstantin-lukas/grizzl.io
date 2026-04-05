@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/timer/validators/timer.validator";
 import { formatDuration } from "date-fns";
-import OverviewDeleteButton from "~/timer/components/overview/OverviewDeleteButton.vue";
-import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
-import useComputedOnLocaleChange from "~/core/composables/useComputedOnLocaleChange";
-import H2 from "~/core/components/typo/H2.vue";
 import Button from "~/core/components/button/Button.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
+import H2 from "~/core/components/typo/H2.vue";
+import useComputedOnLocaleChange from "~/core/composables/useComputedOnLocaleChange";
+import OverviewDeleteButton from "~/timer/components/overview/OverviewDeleteButton.vue";
+import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
 
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
@@ -33,7 +33,7 @@ watch(open, () => {
 <template>
     <li class="relative w-full">
         <div
-            class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-border-accented pb-8 sm:flex-row sm:items-center"
+            class="mb-8 flex w-full flex-col justify-between gap-8 border-b border-b-accented pb-8 sm:flex-row sm:items-center"
         >
             <div class="min-w-0 shrink">
                 <H2
