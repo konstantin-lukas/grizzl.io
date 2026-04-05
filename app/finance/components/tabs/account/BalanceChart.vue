@@ -101,7 +101,7 @@ onMounted(() => {
                     callbacks: {
                         label(context) {
                             const value = context.parsed.y;
-                            if (!openAccount.value || !value) return "";
+                            if (!openAccount.value || value === null) return "";
                             return formatCurrency(language.value, openAccount.value.currency, value);
                         },
                     },
@@ -110,6 +110,8 @@ onMounted(() => {
         },
     });
 });
+
+onUnmounted(() => chart.value?.destroy());
 
 watch(
     [data, labels, gridColor, sm, openAccount],
