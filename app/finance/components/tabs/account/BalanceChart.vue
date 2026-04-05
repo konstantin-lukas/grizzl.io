@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Chart } from "chart.js";
-import { addMonths, eachDayOfInterval, endOfMonth, format, getDate, isSameDay } from "date-fns";
 import useLocale from "~/core/composables/useLocale";
 import { useScreenSize } from "~/core/composables/useScreenSize";
 import {
@@ -9,73 +8,19 @@ import {
     COLOR_PRIMARY_DARK_MODE,
     COLOR_PRIMARY_LIGHT_MODE,
 } from "~/core/constants/colors";
+import useAccountBalanceChartData from "~/finance/composables/useAccountBalanceChartData";
 import useAccounts from "~/finance/composables/useAccounts";
-import useAutoTransactions from "~/finance/composables/useAutoTransactions";
-import useTransactions from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
 const { sm } = useScreenSize();
 const { openAccount } = useAccounts();
-const { from, to, transactions, startBalance } = useTransactions();
-const autoTransactions = useAutoTransactions();
+const { data, labels, expectedBalance, accountBalance } = useAccountBalanceChartData();
 
-const { fnsLocale, language } = useLocale();
+const { language } = useLocale();
 const colorMode = useColorMode();
-
-const dates = computed(() => {
-    if (!from.value || !to.value) return [];
-    return eachDayOfInterval({ start: from.value, end: to.value });
-});
-
-const labels = computed(() => {
-    return dates.value.map(date => format(date, "P", { locale: fnsLocale.value }));
-});
-
-const data = computed(() => {
-    const balance = { value: startBalance.value };
-
-    const getBalanceOnDate = (date: Date) => {
-        const transactionsOnCurrentDay = transactions.value.filter(transaction =>
-            isSameDay(transaction.createdAt, date),
-        );
-
-        const amountOnCurrentDay = transactionsOnCurrentDay.reduce((acc, transaction) => acc + transaction.amount, 0);
-        balance.value += amountOnCurrentDay;
-        return balance.value;
-    };
-
-    return dates.value.map(getBalanceOnDate);
-});
 
 const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
-const accountBalance = computed(() =>
-    openAccount.value ? formatCurrency(language.value, openAccount.value.currency, openAccount.value.balance) : "",
-);
-const expectedBalance = computed(() => {
-    if (!openAccount.value || !autoTransactions.value) return "";
-    const { balance } = openAccount.value;
-    const upcomingAutoTransactions = autoTransactions.value.filter(({ execOn, lastExec, execInterval }) => {
-        // This code assumes that all auto transactions in the past have already been executed and are part of the account balance
-        const now = new Date();
-        const today = now.getDate();
-        const lastDay = getDate(endOfMonth(now));
-        const lastExecution = new Date(lastExec);
-        const nextExecution = addMonths(lastExecution, execInterval);
-        const nextExecutionYear = nextExecution.getFullYear();
-        const nextExecutionMonth = nextExecution.getMonth();
-
-        const isUpcoming = execOn > today;
-        const todayIsLastDayOfMonth = today === lastDay;
-        const isExecutionMonth = nextExecutionYear === now.getFullYear() && nextExecutionMonth === now.getMonth();
-
-        return isUpcoming && !todayIsLastDayOfMonth && isExecutionMonth;
-    });
-    const upcomingBalanceChange = upcomingAutoTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
-
-    const endOfMonthBalance = balance + upcomingBalanceChange;
-    return formatCurrency(language.value, openAccount.value.currency, endOfMonthBalance);
-});
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
