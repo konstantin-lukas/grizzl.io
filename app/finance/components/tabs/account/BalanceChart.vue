@@ -10,12 +10,15 @@ import {
     COLOR_PRIMARY_LIGHT_MODE,
 } from "~/core/constants/colors";
 import useAccounts from "~/finance/composables/useAccounts";
+import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import useTransactions from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
 const { sm } = useScreenSize();
 const { openAccount } = useAccounts();
 const { from, to, transactions, startBalance } = useTransactions();
+const autoTransactions = useAutoTransactions();
+
 const { fnsLocale, language } = useLocale();
 const colorMode = useColorMode();
 
@@ -49,6 +52,18 @@ const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DAR
 const accountBalance = computed(() =>
     openAccount.value ? formatCurrency(language.value, openAccount.value.currency, openAccount.value.balance) : "",
 );
+const expectedBalance = computed(() => {
+    if (!openAccount.value || !autoTransactions.value) return "";
+    const { balance } = openAccount.value;
+    const upcomingAutoTransactions = autoTransactions.value.filter(({ execOn }) => {
+        const now = new Date();
+        return execOn > now.getDate();
+    });
+    const upcomingBalanceChange = upcomingAutoTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    const endOfMonthBalance = balance + upcomingBalanceChange;
+    return formatCurrency(language.value, openAccount.value.currency, endOfMonthBalance);
+});
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
@@ -158,7 +173,7 @@ watch(
             <canvas ref="canvasRef" />
         </div>
         <span class="mt-4 block">Account Balance AAA: {{ accountBalance }}</span>
-        <span class="block">Expected at end of month AAA: </span>
+        <span class="block text-muted">Expected at end of month AAA: {{ expectedBalance }}</span>
     </div>
 </template>
 
