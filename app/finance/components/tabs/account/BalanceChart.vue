@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { Chart } from "chart.js";
 import { eachDayOfInterval, format, isSameDay } from "date-fns";
-import { COLOR_PRIMARY_DARK_MODE, COLOR_PRIMARY_LIGHT_MODE } from "~/core/constants/colors";
+import useLocale from "~/core/composables/useLocale";
+import { useScreenSize } from "~/core/composables/useScreenSize";
+import {
+    COLOR_FRONT_DARK_MODE,
+    COLOR_FRONT_LIGHT_MODE,
+    COLOR_PRIMARY_DARK_MODE,
+    COLOR_PRIMARY_LIGHT_MODE,
+} from "~/core/constants/colors";
+import useAccounts from "~/finance/composables/useAccounts";
 import useTransactions from "~/finance/composables/useTransactions";
+import { formatCurrency } from "~/finance/utils/currency";
 
+const { sm } = useScreenSize();
+const { openAccount } = useAccounts();
 const { from, to, transactions, startBalance } = useTransactions();
-const { locale } = useI18n();
+const { fnsLocale, language } = useLocale();
 const colorMode = useColorMode();
 
 const dates = computed(() => {
@@ -15,8 +25,7 @@ const dates = computed(() => {
 });
 
 const labels = computed(() => {
-    const loc = LOCALES.find(l => l.code === locale.value)!.fnsLocale;
-    return dates.value.map(date => format(date, "P", { locale: loc }));
+    return dates.value.map(date => format(date, "P", { locale: fnsLocale.value }));
 });
 
 const data = computed(() => {
@@ -35,6 +44,12 @@ const data = computed(() => {
     return dates.value.map(getBalanceOnDate);
 });
 
+const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
+const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
+const accountBalance = computed(() =>
+    openAccount.value ? formatCurrency(language.value, openAccount.value.currency, openAccount.value.balance) : "",
+);
+
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
 onMounted(() => {
@@ -45,8 +60,9 @@ onMounted(() => {
             labels: labels.value,
             datasets: [
                 {
-                    borderColor: colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE,
+                    borderColor: dataColor.value,
                     data: data.value,
+                    borderWidth: 2,
                 },
             ],
         },
@@ -57,22 +73,40 @@ onMounted(() => {
                 mode: "index",
                 intersect: false,
             },
+            elements: {
+                point: {
+                    radius: Math.min(200 / (data.value.length || 1), 10),
+                },
+            },
             scales: {
                 x: {
                     type: "category",
                     grid: {
+                        tickColor: gridColor.value,
                         color: "rgba(255,255,255,0)",
                         lineWidth: 1,
+                    },
+                    ticks: {
+                        display: false,
                     },
                 },
                 y: {
                     type: "linear",
                     grid: {
-                        color: "#808080",
+                        color: gridColor.value,
                         tickColor: "rgba(0,0,0,0)",
                     },
                     border: {
                         width: 0,
+                    },
+                    ticks: {
+                        maxTicksLimit: 8,
+                        crossAlign: "far",
+                        callback(value) {
+                            if (!openAccount.value) return "";
+                            const cents = typeof value === "string" ? parseInt(value) : value;
+                            return formatCurrency(language.value, openAccount.value.currency, cents);
+                        },
                     },
                     beginAtZero: true,
                     suggestedMax: 10,
@@ -86,21 +120,13 @@ onMounted(() => {
                     displayColors: false,
                     titleMarginBottom: 0,
                     padding: 10,
-                    /*callbacks: {
-                        title: function(context) {
-                            return text?.date_ + ': ' + context[0].label;
+                    callbacks: {
+                        label(context) {
+                            const value = context.parsed.y;
+                            if (!openAccount.value || !value) return "";
+                            return formatCurrency(language.value, openAccount.value.currency, value);
                         },
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) label += ': ';
-                            if (context.parsed.y !== null) label += new Intl.NumberFormat(language.code,
-                                {
-                                    style: 'currency',
-                                    currency: currency.name
-                                }).format(context.parsed.y);
-                            return label;
-                        }
-                    }*/
+                    },
                 },
             },
         },
@@ -108,10 +134,17 @@ onMounted(() => {
 });
 
 watch(
-    data,
-    newData => {
+    [data, labels, gridColor, dataColor, sm, openAccount],
+    ([newData, newLabels, newGridColor, newDataColor, newSm]) => {
         if (!chart.value || import.meta.server) return;
 
+        chart.value.options.scales!.x!.grid!.tickColor = newGridColor;
+        chart.value.options.scales!.x!.ticks!.color = newGridColor;
+        chart.value.options.scales!.y!.ticks!.color = newGridColor;
+        chart.value.options.scales!.y!.ticks!.display = newSm;
+        chart.value.options.scales!.y!.grid!.color = newGridColor;
+        chart.value.data.datasets[0]!.borderColor = newDataColor;
+        chart.value.data.labels = newLabels;
         chart.value.data.datasets[0]!.data = newData;
         chart.value.update();
     },
@@ -121,7 +154,11 @@ watch(
 
 <template>
     <div class="rounded-xl bg-elevated p-6">
-        <canvas ref="canvasRef" />
+        <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
+            <canvas ref="canvasRef" />
+        </div>
+        <span class="mt-4 block">Account Balance AAA: {{ accountBalance }}</span>
+        <span class="block">Expected at end of month AAA: </span>
     </div>
 </template>
 

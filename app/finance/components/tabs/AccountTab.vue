@@ -10,7 +10,7 @@ const { transactions } = useTransactions();
 <template>
     <H2 class="mb-2">AAAAAAAAAAAAAAA</H2>
     <BalanceChart />
-    <H2 class="mt-8">{{ $t("finance.account.transactionHistory") }}</H2>
+    <H2 class="mt-10">{{ $t("finance.account.transactionHistory") }}</H2>
     <div class="mt-4 flex flex-col gap-4">
         <Transaction v-for="transaction in transactions" :key="transaction.id" :transaction />
     </div>
