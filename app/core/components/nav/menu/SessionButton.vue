@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useMenu from "~/core/composables/useMenu";
 import { authClient } from "~/core/constants/auth-client.constant";
+import { ICON_SIGN_IN, ICON_SIGN_OUT } from "~/core/constants/icons.constant";
 import { relativeFetch } from "~/core/utils/fetch";
 
 const { data } = await authClient.useSession(relativeFetch);
@@ -20,10 +21,7 @@ const { close } = useMenu();
                     .then(close)
             "
         >
-            <UIcon
-                name="heroicons:arrow-right-start-on-rectangle"
-                class="size-6 transition-colors group-hover:text-primary"
-            />
+            <UIcon :name="ICON_SIGN_OUT" class="size-6 transition-colors group-hover:text-primary" />
             {{ $t("ui.signOut") }}
         </button>
         <NuxtLink
@@ -33,10 +31,7 @@ const { close } = useMenu();
             data-test-id="session-button"
             @click="close"
         >
-            <UIcon
-                name="heroicons:arrow-right-end-on-rectangle"
-                class="size-6 transition-colors group-hover:text-primary"
-            />
+            <UIcon :name="ICON_SIGN_IN" class="size-6 transition-colors group-hover:text-primary" />
             {{ $t("ui.signIn") }}
         </NuxtLink>
     </div>

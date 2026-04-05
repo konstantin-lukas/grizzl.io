@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
+import { ICON_INBOX, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 
 const emit = defineEmits(["open"]);
 const { titleAs = "h1" } = defineProps<{ titleAs?: string }>();
 </script>
 
 <template>
-    <UEmpty variant="naked" icon="heroicons:inbox">
+    <UEmpty variant="naked" :icon="ICON_INBOX">
         <template #body>
             <component
                 :is="titleAs"
@@ -15,7 +16,7 @@ const { titleAs = "h1" } = defineProps<{ titleAs?: string }>();
             >
                 {{ $t("ui.noEntries") }}
             </component>
-            <Button icon="heroicons:plus-small" data-test-id="empty-create-button" @click="emit('open')">
+            <Button :icon="ICON_PLUS_CIRCLE" data-test-id="empty-create-button" @click="emit('open')">
                 {{ $t("ui.create") }}
             </Button>
         </template>

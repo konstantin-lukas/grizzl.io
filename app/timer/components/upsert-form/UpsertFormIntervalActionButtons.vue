@@ -4,6 +4,7 @@ import { nanoid } from "#shared/core/utils/id.util";
 import { LIST_MAX, LIST_MIN } from "#shared/core/validators/core.validator";
 import type { PutTimer } from "#shared/timer/validators/timer.validator";
 import Button from "~/core/components/button/Button.vue";
+import { ICON_ARROW_DOWN, ICON_ARROW_UP, ICON_COPY, ICON_DELETE } from "~/core/constants/icons.constant";
 
 const intervals = defineModel<PutTimer["intervals"]>("intervals");
 const { index, open } = defineProps<{ index: number; open: boolean }>();
@@ -16,7 +17,7 @@ const { index, open } = defineProps<{ index: number; open: boolean }>();
     >
         <Button
             :content="{ side: 'top', sideOffset: 13 }"
-            icon="heroicons:document-duplicate"
+            :icon="ICON_COPY"
             variant="subtle"
             :aria-label="$t('ui.duplicate')"
             data-test-id="interval-duplicate-button"
@@ -35,7 +36,7 @@ const { index, open } = defineProps<{ index: number; open: boolean }>();
         />
         <Button
             :content="{ side: 'top', sideOffset: 13 }"
-            icon="heroicons:arrow-small-up"
+            :icon="ICON_ARROW_UP"
             variant="subtle"
             :aria-label="$t('ui.moveUp')"
             data-test-id="interval-move-up-button"
@@ -48,7 +49,7 @@ const { index, open } = defineProps<{ index: number; open: boolean }>();
         />
         <Button
             :content="{ side: 'top', sideOffset: 13 }"
-            icon="heroicons:arrow-small-down"
+            :icon="ICON_ARROW_DOWN"
             variant="subtle"
             data-test-id="interval-move-down-button"
             :aria-label="$t('ui.moveDown')"
@@ -61,7 +62,7 @@ const { index, open } = defineProps<{ index: number; open: boolean }>();
         />
         <Button
             :content="{ side: 'top', sideOffset: 13 }"
-            icon="heroicons:trash"
+            :icon="ICON_DELETE"
             color="error"
             variant="subtle"
             data-test-id="interval-delete-button"

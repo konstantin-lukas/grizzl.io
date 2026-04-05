@@ -5,6 +5,7 @@ import Button from "~/core/components/button/Button.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import H2 from "~/core/components/typo/H2.vue";
 import useComputedOnLocaleChange from "~/core/composables/useComputedOnLocaleChange";
+import { ICON_EDIT, ICON_PLAY, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import OverviewDeleteButton from "~/timer/components/overview/OverviewDeleteButton.vue";
 import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
 
@@ -56,14 +57,14 @@ watch(open, () => {
             <div class="flex justify-start gap-4 hover-none:gap-5">
                 <Button
                     :aria-label="$t('ui.start')"
-                    icon="heroicons:play-solid"
+                    :icon="ICON_PLAY"
                     data-test-id="timer-list-item-play-button"
                     @click="emit('start', timer)"
                 />
                 <Button
                     :aria-label="$t('ui.edit')"
                     variant="subtle"
-                    icon="heroicons:pencil-square"
+                    :icon="ICON_EDIT"
                     data-test-id="timer-list-item-edit-button"
                     @click="open = true"
                 />
@@ -78,7 +79,7 @@ watch(open, () => {
         <Transition name="fade">
             <div v-if="props.isLast" class="center absolute w-full">
                 <Button
-                    icon="heroicons:plus"
+                    :icon="ICON_PLUS_CIRCLE"
                     color="neutral"
                     data-test-id="timer-create-button"
                     @click="emit('create')"

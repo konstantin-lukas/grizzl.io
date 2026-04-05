@@ -1,4 +1,5 @@
 import { useToast } from "#ui/composables";
+import { ICON_RETURN } from "~/core/constants/icons.constant";
 import { createToastError } from "~/core/utils/toast";
 
 export default function useSoftDelete(
@@ -27,7 +28,7 @@ export default function useSoftDelete(
                         {
                             ...{ "data-test-id": "undo-soft-delete-button" },
                             label: t("ui.undo"),
-                            icon: "heroicons:arrow-turn-down-left",
+                            icon: ICON_RETURN,
                             color: "neutral",
                             variant: "outline",
                             onClick: () => {

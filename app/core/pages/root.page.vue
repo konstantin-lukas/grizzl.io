@@ -5,6 +5,7 @@ import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
 import H1 from "~/core/components/typo/H1.vue";
 import useMenu from "~/core/composables/useMenu";
 import { authClient } from "~/core/constants/auth-client.constant";
+import { ICON_DOWNLOAD, ICON_SIGN_IN, ICON_SIGN_OUT } from "~/core/constants/icons.constant";
 import { APP_NAV } from "~/core/constants/nav.constant";
 import { relativeFetch } from "~/core/utils/fetch";
 
@@ -32,7 +33,7 @@ const { close } = useMenu();
                     <Button
                         v-if="data"
                         size="xl"
-                        icon="heroicons:arrow-right-end-on-rectangle"
+                        :icon="ICON_SIGN_OUT"
                         data-test-id="home-sign-out-button"
                         @click="
                             authClient
@@ -43,18 +44,12 @@ const { close } = useMenu();
                     >
                         {{ $t("ui.signOut") }}
                     </Button>
-                    <Button
-                        v-else
-                        to="/signin"
-                        size="xl"
-                        icon="heroicons:arrow-right-end-on-rectangle"
-                        data-test-id="home-sign-in-button"
-                    >
+                    <Button v-else to="/signin" size="xl" :icon="ICON_SIGN_IN" data-test-id="home-sign-in-button">
                         {{ $t("ui.signIn") }}
                     </Button>
                     <Transition name="fade">
                         <div v-if="$pwa?.showInstallPrompt" @click="$pwa.install">
-                            <Button variant="subtle" size="xl" icon="heroicons:arrow-down-tray">
+                            <Button variant="subtle" size="xl" :icon="ICON_DOWNLOAD">
                                 {{ $t("ui.install") }}
                             </Button>
                         </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ButtonProps } from "#ui/components/Button.vue";
 import { authClient } from "~/core/constants/auth-client.constant";
+import { ICON_DISCORD, ICON_GITHUB, ICON_REDDIT, ICON_TWITCH, ICON_USER } from "~/core/constants/icons.constant";
 
 const { query } = useRoute();
 const callbackURL =
@@ -18,12 +19,12 @@ const config = useRuntimeConfig();
 const providerMetaInformation =
     config.public.appEnv === "production"
         ? ([
-              ["Discord", "ri:discord-line"],
-              ["GitHub", "ri:github-line"],
-              ["Reddit", "ri:reddit-line"],
-              ["Twitch", "ri:twitch-line"],
+              ["Discord", ICON_DISCORD],
+              ["GitHub", ICON_GITHUB],
+              ["Reddit", ICON_REDDIT],
+              ["Twitch", ICON_TWITCH],
           ] as const)
-        : ([["Keycloak", "simple-icons:keycloak"]] as const);
+        : ([["Keycloak", ICON_GITHUB]] as const);
 
 const providers = providerMetaInformation.map<ButtonProps>(([label, icon]) => ({
     label,
@@ -39,7 +40,7 @@ const providers = providerMetaInformation.map<ButtonProps>(([label, icon]) => ({
 <template>
     <div class="flex min-h-main-height items-center justify-center px-8 py-main-padding">
         <UPageCard>
-            <UAuthForm :description="$t('ui.pickProvider')" icon="heroicons:user" :providers>
+            <UAuthForm :description="$t('ui.pickProvider')" :icon="ICON_USER" :providers>
                 <template #title>
                     <span role="heading" aria-level="1">{{ $t("ui.signIn") }}</span>
                 </template>

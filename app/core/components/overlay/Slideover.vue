@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
+import { ICON_RETURN } from "~/core/constants/icons.constant";
 
 const emit = defineEmits(["close"]);
 const route = useRoute();
@@ -33,7 +34,7 @@ watchEffect(() => {
             <div class="relative m-0 h-dvh w-dvw overflow-auto" data-test-id="slideover">
                 <div class="fixed top-4 left-4 size-10 hover-none:size-12">
                     <Button
-                        icon="heroicons:arrow-uturn-left-16-solid"
+                        :icon="ICON_RETURN"
                         variant="ghost"
                         color="neutral"
                         class="flex size-10 justify-center hover-none:size-12"

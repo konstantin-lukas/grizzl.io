@@ -7,6 +7,7 @@ import Button from "~/core/components/button/Button.vue";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import H1 from "~/core/components/typo/H1.vue";
 import useOnSubmit from "~/core/composables/useOnSubmit";
+import { ICON_COLLAPSE_ALL, ICON_EXPAND_ALL } from "~/core/constants/icons.constant";
 import UpsertFormInterval from "~/timer/components/upsert-form/UpsertFormInterval.vue";
 import UpsertFormVoiceSelect from "~/timer/components/upsert-form/UpsertFormVoiceSelect.vue";
 
@@ -125,14 +126,14 @@ function onEnd() {
         <template #before-submit>
             <Button
                 variant="subtle"
-                icon="mdi:collapse-all"
+                :icon="ICON_COLLAPSE_ALL"
                 :aria-label="$t('ui.collapseAll')"
                 data-test-id="timer-upsert-collapse-button"
                 @click="forcedAccordionState = 'close'"
             />
             <Button
                 variant="subtle"
-                icon="mdi:expand-all"
+                :icon="ICON_EXPAND_ALL"
                 :aria-label="$t('ui.expandAll')"
                 data-test-id="timer-upsert-expand-button"
                 @click="forcedAccordionState = 'open'"
