@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Beat } from "#shared/timer/enums/beat.enum";
-import { BeatSymbol } from "#shared/timer/maps/beat.map";
 import { BEAT_PATTERN_MAX } from "#shared/timer/validators/timer.validator";
 import { useFormField } from "#ui/composables/useFormField";
 import accentedAudio from "~/core/assets/sound/accented-beat.wav";
@@ -14,6 +13,7 @@ import {
     ICON_PAUSE,
     ICON_PLAY,
 } from "~/core/constants/icons.constant";
+import { BeatSymbol } from "~/timer/maps/beat-icon.map";
 
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
