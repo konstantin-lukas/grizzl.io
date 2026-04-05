@@ -1,9 +1,10 @@
 import type {
+    BaseTransactionFilters,
     GetTransactionFilters,
     PostTransactionInternal,
     PutTransactionInternal,
 } from "#shared/finance/validators/transaction.validator";
-import { and, desc, eq, exists, gte, ilike, isNull, lte } from "drizzle-orm";
+import { and, desc, eq, exists, gte, ilike, isNull, lte, sum } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -93,8 +94,8 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
         { from, to, reference, categoryId }: GetTransactionFilters = {},
     ) {
         const filters = and(
-            to ? lte(this.schema.createdAt, to) : undefined,
-            from ? gte(this.schema.createdAt, from) : undefined,
+            to && lte(this.schema.createdAt, to),
+            from && gte(this.schema.createdAt, from),
             reference
                 ? ilike(this.schema.reference, `%${reference.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`)
                 : undefined,
@@ -126,5 +127,35 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 ),
             )
             .orderBy(desc(this.schema.createdAt));
+    }
+
+    public async getAccountBalanceUntil(
+        userId: string,
+        accountId: string,
+        { to, reference, categoryId }: BaseTransactionFilters,
+    ) {
+        const filters = and(
+            lte(this.schema.createdAt, to),
+            reference
+                ? ilike(this.schema.reference, `%${reference.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`)
+                : undefined,
+            categoryId ? eq(this.schema.categoryId, categoryId) : undefined,
+        );
+
+        const [result] = await this.db
+            .select({ sum: sum(this.schema.amount).mapWith(Number) })
+            .from(this.schema)
+            .innerJoin(dbSchema.financeAccount, eq(this.schema.accountId, dbSchema.financeAccount.id))
+            .where(
+                and(
+                    eq(this.schema.accountId, accountId),
+                    eq(dbSchema.financeAccount.userId, userId),
+                    isNull(this.schema.deletedAt),
+                    isNull(dbSchema.financeAccount.deletedAt),
+                    filters,
+                ),
+            );
+
+        return result?.sum ?? 0;
     }
 }

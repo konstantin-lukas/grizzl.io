@@ -29,7 +29,7 @@ const { locale } = useI18n();
 const language = computed(() => LOCALES.find(({ code }) => code === locale.value)?.language ?? "en-US");
 const dateAndReference = computed(() => {
     let date = intlFormat(props.transaction.createdAt, { locale: language.value });
-    if (props.transaction.reference) date += ` (${props.transaction.reference})`;
+    if (props.transaction.reference) date += ` | ${props.transaction.reference}`;
     return date;
 });
 const isSpending = computed(() => props.transaction.amount < 0);

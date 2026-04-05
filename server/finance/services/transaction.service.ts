@@ -1,6 +1,7 @@
 import AccountService from "#server/finance/services/account.service";
 import CategoryService from "#server/finance/services/category.service";
 import type {
+    BaseTransactionFilters,
     GetTransactionFilters,
     PostTransaction,
     PutTransaction,
@@ -38,6 +39,10 @@ export default class TransactionService {
     }
 
     /* c8 ignore start */
+    public async getBalance(userId: string, accountId: string, filters: BaseTransactionFilters) {
+        return await this.transactionRepository.getAccountBalanceUntil(userId, accountId, filters);
+    }
+
     public async getList(userId: string, accountId: string, filters?: GetTransactionFilters) {
         return this.transactionRepository.findByUserAndAccountId(userId, accountId, filters);
     }

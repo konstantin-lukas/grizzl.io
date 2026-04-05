@@ -2,9 +2,10 @@
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { Chart } from "chart.js";
 import { eachDayOfInterval, format, isSameDay } from "date-fns";
+import { COLOR_PRIMARY_DARK_MODE, COLOR_PRIMARY_LIGHT_MODE } from "~/core/constants/colors";
 import useTransactions from "~/finance/composables/useTransactions";
 
-const { from, to, transactions } = useTransactions();
+const { from, to, transactions, startBalance } = useTransactions();
 const { locale } = useI18n();
 const colorMode = useColorMode();
 
@@ -19,14 +20,19 @@ const labels = computed(() => {
 });
 
 const data = computed(() => {
-    return dates.value.map(date => {
+    const balance = { value: startBalance.value };
+
+    const getBalanceOnDate = (date: Date) => {
         const transactionsOnCurrentDay = transactions.value.filter(transaction =>
             isSameDay(transaction.createdAt, date),
         );
 
-        // TODO Show actual account balance
-        return transactionsOnCurrentDay.reduce((acc, transaction) => acc + transaction.amount, 0);
-    });
+        const amountOnCurrentDay = transactionsOnCurrentDay.reduce((acc, transaction) => acc + transaction.amount, 0);
+        balance.value += amountOnCurrentDay;
+        return balance.value;
+    };
+
+    return dates.value.map(getBalanceOnDate);
 });
 
 const canvasRef = ref();
@@ -39,7 +45,7 @@ onMounted(() => {
             labels: labels.value,
             datasets: [
                 {
-                    borderColor: colorMode.value === "dark" ? "oklch(69.6% 0.17 162.48)" : "oklch(50.8% 0.118 165.612)",
+                    borderColor: colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE,
                     data: data.value,
                 },
             ],
