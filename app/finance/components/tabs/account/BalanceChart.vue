@@ -3,6 +3,8 @@ import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
 import { useScreenSize } from "~/core/composables/useScreenSize";
 import {
+    COLOR_ERROR_DARK_MODE,
+    COLOR_ERROR_LIGHT_MODE,
     COLOR_FRONT_DARK_MODE,
     COLOR_FRONT_LIGHT_MODE,
     COLOR_PRIMARY_DARK_MODE,
@@ -21,6 +23,7 @@ const colorMode = useColorMode();
 
 const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
+const errorColor = computed(() => (colorMode.value === "dark" ? COLOR_ERROR_DARK_MODE : COLOR_ERROR_LIGHT_MODE));
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
@@ -34,9 +37,16 @@ onMounted(() => {
                 {
                     borderColor: dataColor.value,
                     data: data.value,
+                    pointStyle: false,
                     borderWidth: 5,
                     borderJoinStyle: "round",
                     borderCapStyle: "round",
+                    segment: {
+                        borderColor: ctx => {
+                            const y1 = ctx.p1.parsed.y;
+                            return y1 !== null && y1 < 0 ? errorColor.value : dataColor.value;
+                        },
+                    },
                 },
             ],
         },
@@ -46,12 +56,6 @@ onMounted(() => {
             interaction: {
                 mode: "index",
                 intersect: false,
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                    hoverRadius: 10,
-                },
             },
             scales: {
                 x: {
@@ -108,8 +112,8 @@ onMounted(() => {
 });
 
 watch(
-    [data, labels, gridColor, dataColor, sm, openAccount],
-    ([newData, newLabels, newGridColor, newDataColor, newSm]) => {
+    [data, labels, gridColor, sm, openAccount],
+    ([newData, newLabels, newGridColor, newSm]) => {
         if (!chart.value || import.meta.server) return;
 
         chart.value.options.scales!.x!.grid!.tickColor = newGridColor;
@@ -117,7 +121,6 @@ watch(
         chart.value.options.scales!.y!.ticks!.color = newGridColor;
         chart.value.options.scales!.y!.ticks!.display = newSm;
         chart.value.options.scales!.y!.grid!.color = newGridColor;
-        chart.value.data.datasets[0]!.borderColor = newDataColor;
         chart.value.data.labels = newLabels;
         chart.value.data.datasets[0]!.data = newData;
         chart.value.update();
