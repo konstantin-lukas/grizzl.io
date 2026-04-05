@@ -11,6 +11,9 @@
         },
         "account": {
             "transactionHistory": "Transaktionsverlauf",
+            "balance": "Kontostand",
+            "currentBalance": "Aktueller Kontostand",
+            "expectedBalance": "Erwarteter Kontostand zum Monatsende",
             "form": {
                 "title": "Kontoname",
                 "currency": "Währung"

@@ -11,6 +11,9 @@
         },
         "account": {
             "transactionHistory": "Transaction History",
+            "balance": "Account Balance",
+            "currentBalance": "Current account balance",
+            "expectedBalance": "Expected Month-End Balance",
             "form": {
                 "title": "Account title",
                 "currency": "Currency"

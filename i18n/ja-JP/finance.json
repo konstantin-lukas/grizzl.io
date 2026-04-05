@@ -11,6 +11,9 @@
         },
         "account": {
             "transactionHistory": "取引履歴",
+            "balance": "口座残高",
+            "currentBalance": "現在の口座残高",
+            "expectedBalance": "月末時点の予想残高",
             "form": {
                 "title": "口座名",
                 "currency": "通貨"

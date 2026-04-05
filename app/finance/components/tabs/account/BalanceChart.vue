@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Chart } from "chart.js";
-import { eachDayOfInterval, format, isSameDay } from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDate, isSameDay } from "date-fns";
 import useLocale from "~/core/composables/useLocale";
 import { useScreenSize } from "~/core/composables/useScreenSize";
 import {
@@ -55,9 +55,21 @@ const accountBalance = computed(() =>
 const expectedBalance = computed(() => {
     if (!openAccount.value || !autoTransactions.value) return "";
     const { balance } = openAccount.value;
-    const upcomingAutoTransactions = autoTransactions.value.filter(({ execOn }) => {
+    const upcomingAutoTransactions = autoTransactions.value.filter(({ execOn, lastExec, execInterval }) => {
+        // This code assumes that all auto transactions in the past have already been executed and are part of the account balance
         const now = new Date();
-        return execOn > now.getDate();
+        const today = now.getDate();
+        const lastDay = getDate(endOfMonth(now));
+        const lastExecution = new Date(lastExec);
+        const nextExecution = addMonths(lastExecution, execInterval);
+        const nextExecutionYear = nextExecution.getFullYear();
+        const nextExecutionMonth = nextExecution.getMonth();
+
+        const isUpcoming = execOn > today;
+        const todayIsLastDayOfMonth = today === lastDay;
+        const isExecutionMonth = nextExecutionYear === now.getFullYear() && nextExecutionMonth === now.getMonth();
+
+        return isUpcoming && !todayIsLastDayOfMonth && isExecutionMonth;
     });
     const upcomingBalanceChange = upcomingAutoTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
 
@@ -77,7 +89,9 @@ onMounted(() => {
                 {
                     borderColor: dataColor.value,
                     data: data.value,
-                    borderWidth: 2,
+                    borderWidth: 5,
+                    borderJoinStyle: "round",
+                    borderCapStyle: "round",
                 },
             ],
         },
@@ -90,14 +104,14 @@ onMounted(() => {
             },
             elements: {
                 point: {
-                    radius: Math.min(200 / (data.value.length || 1), 10),
+                    radius: 0,
+                    hoverRadius: 10,
                 },
             },
             scales: {
                 x: {
                     type: "category",
                     grid: {
-                        tickColor: gridColor.value,
                         color: "rgba(255,255,255,0)",
                         lineWidth: 1,
                     },
@@ -115,7 +129,7 @@ onMounted(() => {
                         width: 0,
                     },
                     ticks: {
-                        maxTicksLimit: 8,
+                        maxTicksLimit: 12,
                         crossAlign: "far",
                         callback(value) {
                             if (!openAccount.value) return "";
@@ -172,8 +186,8 @@ watch(
         <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
             <canvas ref="canvasRef" />
         </div>
-        <span class="mt-4 block">Account Balance AAA: {{ accountBalance }}</span>
-        <span class="block text-muted">Expected at end of month AAA: {{ expectedBalance }}</span>
+        <span class="mt-4 block">{{ $t("finance.account.currentBalance") }}: {{ accountBalance }}</span>
+        <span class="block text-muted">{{ $t("finance.account.expectedBalance") }}: {{ expectedBalance }}</span>
     </div>
 </template>
 

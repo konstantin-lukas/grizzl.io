@@ -8,7 +8,7 @@ const { transactions } = useTransactions();
 </script>
 
 <template>
-    <H2 class="mb-2">AAAAAAAAAAAAAAA</H2>
+    <H2 class="mb-2">{{ $t("finance.account.balance") }}</H2>
     <BalanceChart />
     <H2 class="mt-10">{{ $t("finance.account.transactionHistory") }}</H2>
     <div class="mt-4 flex flex-col gap-4">
