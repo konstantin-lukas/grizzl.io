@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "参照",
+        "category": "カテゴリー",
+        "dateRange": "日付範囲",
         "meta": {
             "title": "ファイナンス",
             "description": "複数のアカウントを作成し、毎月の支出を管理できます。"

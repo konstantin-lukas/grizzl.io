@@ -13,7 +13,7 @@ const { transactions } = useTransactions();
 <template>
     <div class="flex items-end justify-between">
         <H2 class="mb-2">{{ $t("finance.account.balance") }}</H2>
-        <div class="shrink-0 -translate-y-2">
+        <div class="flex shrink-0 -translate-y-2 gap-1">
             <Button
                 :icon="ICON_PLUS_CIRCLE"
                 square

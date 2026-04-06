@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "Reference",
+        "category": "Category",
+        "dateRange": "Date Range",
         "meta": {
             "title": "Finance",
             "description": "Create different accounts and keep track of your monthly expenses."

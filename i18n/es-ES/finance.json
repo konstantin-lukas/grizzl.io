@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "Referencia",
+        "category": "Categoría",
+        "dateRange": "Rango de fechas",
         "meta": {
             "title": "Finanzas",
             "description": "Crea diferentes cuentas y controla tus gastos mensuales."
