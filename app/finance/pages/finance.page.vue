@@ -6,7 +6,9 @@ import AccountH1 from "~/finance/components/AccountH1.vue";
 import AccountTabs from "~/finance/components/AccountTabs.vue";
 import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
+import useUpdateTransactions from "~/finance/composables/useUpdateTransactions";
 
+useUpdateTransactions();
 const { accounts, openAccountId } = useAccounts();
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
 const upsertFormOpen = ref(false);
