@@ -43,10 +43,14 @@ const transactionService = new TransactionService(
 beforeEach(() => {
     vi.resetAllMocks();
     accountRepositoryMock.updateBalance.mockReturnValue(1);
+    accountRepositoryMock.updateBalance.mockReturnValue(true);
+    accountRepositoryMock.hasSubResource.mockReturnValue(true);
     accountServiceMock.updateBalance.mockReturnValue(1);
     accountServiceMock.getUserAccount.mockReturnValue({ balance: 0 });
     transactionRepositoryMock.create.mockReturnValue(id);
     transactionRepositoryMock.update.mockReturnValue(1);
+    transactionRepositoryMock.undelete.mockReturnValue(1);
+    transactionRepositoryMock.delete.mockReturnValue(1);
     transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValue(123);
 });
 
@@ -69,35 +73,41 @@ describe("create", () => {
 });
 
 describe("setDeletedStatus", () => {
-    test("calls the transaction repository's delete method when deleted is true", async () => {
-        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
+    test("returns a NotFoundError when the requested resource does not belong to the specififed account", async () => {
+        accountRepositoryMock.hasSubResource.mockReturnValue(false);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toThrow(NotFoundError);
+    });
+
+    test("returns a NotFoundError when the undelete operation fails", async () => {
+        transactionRepositoryMock.undelete.mockReturnValue(0);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, false)).rejects.toThrow(NotFoundError);
+    });
+
+    test("returns a NotFoundError when the undelete operation fails", async () => {
+        transactionRepositoryMock.undelete.mockReturnValue(0);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, false)).rejects.toThrow(NotFoundError);
+    });
+
+    test("returns a NotFoundError when the amount can't be retrieved", async () => {
+        transactionRepositoryMock.getAmountByIdAndUserAndAccount.mockReturnValue(null);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toThrow(NotFoundError);
+    });
+
+    test("returns an InvalidAccountBalanceError when resulting amount is not valid", async () => {
+        accountServiceMock.getUserAccount.mockReturnValue({ balance: Number.MIN_SAFE_INTEGER });
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toThrow(
+            InvalidAccountBalanceError,
+        );
+    });
+
+    test("throws an UnknownError when the update of the account balance fails", async () => {
+        accountRepositoryMock.updateBalance.mockReturnValue(0);
+        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toThrow(UnknownError);
+    });
+
+    test("calls the delete method if everything is in order", async () => {
         await transactionService.setDeletedStatus(id, userId, accountId, true);
-        expect(transactionRepositoryMock.delete).toHaveBeenCalledExactlyOnceWith({ id, userId });
-        expect(transactionRepositoryMock.undelete).not.toHaveBeenCalled();
-    });
-
-    test("calls the transaction repository's undelete method when deleted is false", async () => {
-        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
-        await transactionService.setDeletedStatus(id, userId, accountId, false);
-        expect(transactionRepositoryMock.undelete).toHaveBeenCalledExactlyOnceWith({ id, userId });
-        expect(transactionRepositoryMock.delete).not.toHaveBeenCalled();
-    });
-
-    test("returns an error when the sub-resource doesn't exist", async () => {
-        accountRepositoryMock.hasSubResource.mockReturnValueOnce(false);
-
-        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
-            NotFoundError,
-        );
-    });
-
-    test("returns an error when the repository returns 0 affected rows", async () => {
-        accountRepositoryMock.hasSubResource.mockReturnValueOnce(true);
-        transactionRepositoryMock.delete.mockReturnValueOnce(0);
-
-        await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toBeInstanceOf(
-            NotFoundError,
-        );
+        expect(transactionRepositoryMock.delete).toHaveBeenCalledExactlyOnceWith({ id, userId }, undefined);
     });
 });
 

@@ -30,7 +30,7 @@ export default class BaseRepository<T extends Schema> {
     /**
      * @returns null if operation was not successful or number of changed rows otherwise.
      */
-    public async delete(options: { id: string; userId: string }) {
+    public async delete(options: { id: string; userId: string }, ctx: ExecutionContext = this.db) {
         const { id, userId } = options;
 
         const whereBase = eq(this.schema.id, id);
@@ -41,11 +41,11 @@ export default class BaseRepository<T extends Schema> {
 
         const { rowCount } =
             "deletedAt" in this.schema
-                ? await this.db
+                ? await ctx
                       .update(this.schema)
                       .set({ deletedAt: new Date() } as never)
                       .where(where)
-                : await this.db.delete(this.schema).where(where);
+                : await ctx.delete(this.schema).where(where);
 
         return rowCount;
     }
@@ -54,7 +54,7 @@ export default class BaseRepository<T extends Schema> {
      * @returns undefined if entity is not soft deletable, null if operation was not successful or number of changed
      * rows otherwise.
      */
-    public async undelete(options: { id: string; userId: string }) {
+    public async undelete(options: { id: string; userId: string }, ctx: ExecutionContext = this.db) {
         if (!this.isSoftDeletable) return;
 
         const { id, userId } = options;
@@ -65,7 +65,7 @@ export default class BaseRepository<T extends Schema> {
 
         const where = and(whereBase, whereUser);
 
-        const { rowCount } = await this.db
+        const { rowCount } = await ctx
             .update(this.schema)
             .set({ deletedAt: null } as never)
             .where(where);

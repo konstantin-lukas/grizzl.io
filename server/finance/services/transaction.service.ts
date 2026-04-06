@@ -1,3 +1,4 @@
+import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import AccountService from "#server/finance/services/account.service";
 import CategoryService from "#server/finance/services/category.service";
 import type {
@@ -22,20 +23,56 @@ export default class TransactionService {
         private readonly accountService: AccountService,
     ) {}
 
-    public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
-        const operation = isDeleted ? "delete" : "undelete";
-
-        const exists = await this.accountRepository.hasSubResource(id, userId, accountId, "financeTransaction");
-        if (!exists) {
-            const logMessage = `Transaction with id ${id} does not exist on account with id ${accountId} of user ${userId}.`;
-            throw new NotFoundError("The requested account does not exist.", logMessage);
-        }
-
-        const rowCount = await this.transactionRepository[operation]({ id, userId });
-        if (rowCount === 0) {
+    private async updateDeletedStatus(
+        id: string,
+        userId: string,
+        operation: "delete" | "undelete",
+        tx: DatabaseTransaction,
+    ) {
+        const rowCount = await this.transactionRepository[operation]({ id, userId }, tx);
+        if (!rowCount) {
             const logMessage = `Unable to ${operation} transaction with id ${id} and user id ${userId}.`;
             throw new NotFoundError("The requested account does not exist.", logMessage);
         }
+    }
+
+    public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
+        return this.transactionRepository.transaction(async tx => {
+            const operation = isDeleted ? "delete" : "undelete";
+
+            const exists = await this.accountRepository.hasSubResource(id, userId, accountId, "financeTransaction", tx);
+            if (!exists) {
+                const logMessage = `Transaction with id ${id} does not exist on account with id ${accountId} of user ${userId}.`;
+                throw new NotFoundError("The requested account does not exist.", logMessage);
+            }
+
+            if (operation === "undelete") await this.updateDeletedStatus(id, userId, "undelete", tx);
+
+            const [account, amount] = await Promise.all([
+                this.accountService.getUserAccount(userId, accountId, tx),
+                this.transactionRepository.getAmountByIdAndUserAndAccount(id, userId, accountId, tx),
+            ]);
+
+            if (typeof amount !== "number") {
+                const logMessage = `Unable to retrieve amount from transaction with ${id} on account with id ${accountId} for user with id ${userId}.`;
+                throw new NotFoundError("The requested transaction does not exist.", logMessage);
+            }
+
+            const newBalance = account.balance + (operation === "delete" ? -amount : amount);
+
+            if (!Number.isSafeInteger(newBalance)) {
+                const logMessage = `Unable to undelete transaction with amount ${amount} on account with id ${accountId} and balance ${account.balance} for user with id ${userId} because resulting balance is invalid.`;
+                throw new InvalidAccountBalanceError("The resulting account balance is invalid.", logMessage);
+            }
+
+            const affectedRows = await this.accountRepository.updateBalance(account.id, newBalance, tx);
+            if (!affectedRows) {
+                const logMessage = `The account with the id ${account.id} was not updated (during ${operation}) with new balance ${newBalance} for user with id ${userId}.`;
+                throw new UnknownError("Unable to update account balance.", logMessage);
+            }
+
+            if (operation === "delete") await this.updateDeletedStatus(id, userId, "delete", tx);
+        });
     }
 
     /* c8 ignore start */
