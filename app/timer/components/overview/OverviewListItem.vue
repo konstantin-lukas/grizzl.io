@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Timer } from "#shared/timer/validators/timer.validator";
-import { formatDuration } from "date-fns";
 import Button from "~/core/components/button/Button.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import H2 from "~/core/components/typo/H2.vue";
 import useComputedOnLocaleChange from "~/core/composables/useComputedOnLocaleChange";
+import useLocale from "~/core/composables/useLocale";
 import { ICON_EDIT, ICON_PLAY, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import OverviewDeleteButton from "~/timer/components/overview/OverviewDeleteButton.vue";
 import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
@@ -12,16 +12,19 @@ import UpsertForm from "~/timer/components/upsert-form/UpsertForm.vue";
 const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void }>();
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
 
+const { language } = useLocale();
 const open = ref(false);
 const duration = useComputedOnLocaleChange(
     () => {
         const timeInSeconds = Math.floor(
             props.timer.intervals.reduce((prev, curr) => prev + curr.duration * curr.repeatCount, 0) / 1000,
         );
-        return formatDuration({
+        const d = {
             minutes: Math.floor(timeInSeconds / 60),
             seconds: timeInSeconds % 60,
-        });
+        };
+
+        return new Intl.DurationFormat(language.value, { style: "short" }).format(d);
     },
     () => props.timer.intervals,
 );
