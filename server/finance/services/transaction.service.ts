@@ -32,7 +32,7 @@ export default class TransactionService {
         const rowCount = await this.transactionRepository[operation]({ id, userId }, tx);
         if (!rowCount) {
             const logMessage = `Unable to ${operation} transaction with id ${id} and user id ${userId}.`;
-            throw new NotFoundError("The requested account does not exist.", logMessage);
+            throw new NotFoundError("The requested transaction does not exist.", logMessage);
         }
     }
 
