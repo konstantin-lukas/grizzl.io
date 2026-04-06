@@ -16,8 +16,9 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         userId: string,
         accountId: string,
         subResourceName: "financeTransaction" | "financeAutoTransaction",
+        ctx: ExecutionContext = this.db,
     ) {
-        const [result] = await this.db
+        const [result] = await ctx
             .select({ value: count() })
             .from(dbSchema[subResourceName])
             .innerJoin(this.schema, eq(dbSchema[subResourceName].accountId, this.schema.id))
