@@ -19,13 +19,7 @@ watch(modelValue, newValue => {
 </script>
 
 <template>
-    <UInputDate
-        ref="inputDate"
-        v-model="modelValue"
-        range
-        :separator-icon="ICON_MINUS"
-        @update:model-value="value => console.log(value)"
-    >
+    <UInputDate ref="inputDate" v-model="modelValue" range :separator-icon="ICON_MINUS">
         <template #trailing>
             <UPopover :reference="inputDate?.inputsRef[0]?.$el">
                 <UButton

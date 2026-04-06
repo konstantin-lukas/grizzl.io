@@ -19,7 +19,8 @@ const { progress, preparationTimeProgress, isInPreparationTime, elapsedIntervalT
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
-    const d = (max - elapsed) / 1000;
+    const diff = max - elapsed;
+    const d = diff < 0 ? 0 : diff / 1000;
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
     const minutes = zeroPad(Math.floor(d / 60));
     const seconds = zeroPad(Math.floor(d % 60));
