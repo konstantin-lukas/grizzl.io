@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
 import DateRangePicker from "~/core/components/form/DateRangePicker.vue";
+import useDeferredValue from "~/core/composables/useDeferredValue";
 import { ICON_FILTER } from "~/core/constants/icons.constant";
 import useCategories from "~/finance/composables/useCategories";
 import useTransactions from "~/finance/composables/useTransactions";
 
-const { categoryId } = useTransactions();
+const { categoryId, reference } = useTransactions();
+
+const deferredReference = useDeferredValue(reference);
 
 const categories = useCategories();
 const categoryItems = computed(
@@ -19,7 +22,10 @@ const categoryItems = computed(
         <template #content>
             <div class="flex max-w-[calc(100dvw-1rem)] flex-col gap-4 p-4">
                 <UFormField :label="$t('finance.reference')">
-                    <UInput class="w-full" />
+                    <UInput
+                        class="w-full"
+                        @update:model-value="value => (deferredReference = value?.toString() || undefined)"
+                    />
                 </UFormField>
                 <UFormField :label="$t('finance.category')">
                     <USelectMenu
