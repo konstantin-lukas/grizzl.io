@@ -61,7 +61,7 @@ export default class TransactionService {
             const newBalance = account.balance + (operation === "delete" ? -amount : amount);
 
             if (!Number.isSafeInteger(newBalance)) {
-                const logMessage = `Unable to undelete transaction with amount ${amount} on account with id ${accountId} and balance ${account.balance} for user with id ${userId} because resulting balance is invalid.`;
+                const logMessage = `Unable to ${operation} transaction with amount ${amount} on account with id ${accountId} and balance ${account.balance} for user with id ${userId} because resulting balance is invalid.`;
                 throw new InvalidAccountBalanceError("The resulting account balance is invalid.", logMessage);
             }
 

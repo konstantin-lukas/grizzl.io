@@ -19,14 +19,18 @@ testBuilder
 test("automatically adjusts the account balance when a positive transaction is deleted", async ({ db, request }) => {
     const [account] = await db.financeAccount.insert(1);
     const [category] = await db.financeCategory.insert(1, { accountId: account.id });
-    const [transaction] = await db.financeTransaction.insert(1, { accountId: account.id, categoryId: category.id });
+    const [transaction] = await db.financeTransaction.insert(1, {
+        accountId: account.id,
+        categoryId: category.id,
+        amount: 10,
+    });
 
     await request.patch(`/api/finance/accounts/${account.id}/transactions/${transaction.id}`, {
         data: { deleted: true },
     });
 
     const [patchedAccount] = await db.financeAccount.select(account.id);
-    expect(patchedAccount!.balance).toBe(-transaction.amount);
+    expect(patchedAccount!.balance).toBe(-10);
 });
 
 test("automatically adjusts the account balance when a negative transaction is deleted", async ({ db, request }) => {
@@ -53,6 +57,7 @@ test("automatically adjusts the account balance when a positive transaction is u
         accountId: account.id,
         categoryId: category.id,
         deletedAt: new Date(),
+        amount: 10,
     });
 
     await request.patch(`/api/finance/accounts/${account.id}/transactions/${transaction.id}`, {
@@ -60,7 +65,7 @@ test("automatically adjusts the account balance when a positive transaction is u
     });
 
     const [patchedAccount] = await db.financeAccount.select(account.id);
-    expect(patchedAccount!.balance).toBe(transaction.amount);
+    expect(patchedAccount!.balance).toBe(10);
 });
 
 test("automatically adjusts the account balance when a negative transaction is undeleted", async ({ db, request }) => {

@@ -43,7 +43,6 @@ const transactionService = new TransactionService(
 beforeEach(() => {
     vi.resetAllMocks();
     accountRepositoryMock.updateBalance.mockReturnValue(1);
-    accountRepositoryMock.updateBalance.mockReturnValue(true);
     accountRepositoryMock.hasSubResource.mockReturnValue(true);
     accountServiceMock.updateBalance.mockReturnValue(1);
     accountServiceMock.getUserAccount.mockReturnValue({ balance: 0 });
@@ -73,14 +72,9 @@ describe("create", () => {
 });
 
 describe("setDeletedStatus", () => {
-    test("returns a NotFoundError when the requested resource does not belong to the specififed account", async () => {
+    test("returns a NotFoundError when the requested resource does not belong to the specified account", async () => {
         accountRepositoryMock.hasSubResource.mockReturnValue(false);
         await expect(transactionService.setDeletedStatus(id, userId, accountId, true)).rejects.toThrow(NotFoundError);
-    });
-
-    test("returns a NotFoundError when the undelete operation fails", async () => {
-        transactionRepositoryMock.undelete.mockReturnValue(0);
-        await expect(transactionService.setDeletedStatus(id, userId, accountId, false)).rejects.toThrow(NotFoundError);
     });
 
     test("returns a NotFoundError when the undelete operation fails", async () => {
