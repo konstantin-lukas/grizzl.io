@@ -5,10 +5,9 @@ export default function useLocale() {
     const selected = computed(() => LOCALES.find(({ code }) => code === locale.value)!);
 
     const code = computed(() => selected.value.code);
-    const fnsLocale = computed(() => selected.value.fnsLocale);
     const language = computed(() => selected.value.language);
     const zodLocale = computed(() => selected.value.zodLocale);
     const uiLocale = computed(() => selected.value.uiLocale);
 
-    return { code, fnsLocale, language, zodLocale, uiLocale };
+    return { code, language, zodLocale, uiLocale };
 }
