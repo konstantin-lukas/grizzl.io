@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "Verweis",
+        "category": "Kategorie",
+        "dateRange": "Datumsbereich",
         "meta": {
             "title": "Finanzen",
             "description": "Erstelle verschiedene Konten und behalte deine monatlichen Ausgaben im Blick."
@@ -14,6 +17,8 @@
             "balance": "Kontostand",
             "currentBalance": "Aktueller Kontostand",
             "expectedBalance": "Erwarteter Kontostand zum Monatsende",
+            "addTransaction": "Transaktion hinzufügen",
+            "manageAutoTransactions": "Automatische Transaktionen verwalten",
             "form": {
                 "title": "Kontoname",
                 "currency": "Währung"

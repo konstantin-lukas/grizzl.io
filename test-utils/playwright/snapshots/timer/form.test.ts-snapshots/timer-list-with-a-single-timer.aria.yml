@@ -4,7 +4,7 @@
     - list:
       - listitem:
         - heading "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudini." [level=1]
-        - text: 1 round (3 seconds)
+        - text: 1 round (3 sec)
         - button "Start"
         - button "Edit"
         - button "Delete"

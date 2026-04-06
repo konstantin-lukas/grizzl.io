@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import type { DropdownMenuItem } from "@nuxt/ui";
-import { intlFormat } from "date-fns";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_DELETE, ICON_EDIT, ICON_MORE_VERT } from "~/core/constants/icons.constant";
+import { formatDate } from "~/core/utils/date";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import type { Transaction } from "~/finance/composables/useTransactions";
@@ -29,7 +29,7 @@ const props = defineProps<{ transaction: Transaction }>();
 const { locale } = useI18n();
 const language = computed(() => LOCALES.find(({ code }) => code === locale.value)?.language ?? "en-US");
 const dateAndReference = computed(() => {
-    let date = intlFormat(props.transaction.createdAt, { locale: language.value });
+    let date = formatDate(props.transaction.createdAt, language.value);
     if (props.transaction.reference) date += ` | ${props.transaction.reference}`;
     return date;
 });

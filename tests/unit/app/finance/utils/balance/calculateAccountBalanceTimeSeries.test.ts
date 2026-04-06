@@ -1,5 +1,8 @@
+import { CalendarDate } from "@internationalized/date";
 import { expect, test } from "vitest";
 import { calculateAccountBalanceTimeSeries } from "~/finance/utils/balance";
+
+const date = (year: number, month: number, day: number) => new CalendarDate(year, month, day);
 
 test("returns an empty array when no dates are provided", () => {
     const result = calculateAccountBalanceTimeSeries(
@@ -12,7 +15,7 @@ test("returns an empty array when no dates are provided", () => {
 });
 
 test("returns the start balance for each date when there are no transactions", () => {
-    const dates = [new Date("2025-06-01T00:00:00.000Z"), new Date("2025-06-02T00:00:00.000Z")];
+    const dates = [date(2025, 6, 1), date(2025, 6, 2)];
 
     const result = calculateAccountBalanceTimeSeries(1000, [], dates);
 
@@ -20,11 +23,7 @@ test("returns the start balance for each date when there are no transactions", (
 });
 
 test("adds all transactions that occur on the same day and carries balance forward", () => {
-    const dates = [
-        new Date("2025-06-01T00:00:00.000Z"),
-        new Date("2025-06-02T00:00:00.000Z"),
-        new Date("2025-06-03T00:00:00.000Z"),
-    ];
+    const dates = [date(2025, 6, 1), date(2025, 6, 2), date(2025, 6, 3)];
 
     const transactions = [
         { amount: 200, createdAt: "2025-06-01T08:00:00.000Z" },
@@ -38,7 +37,7 @@ test("adds all transactions that occur on the same day and carries balance forwa
 });
 
 test("ignores transactions whose dates are not included in the requested dates", () => {
-    const dates = [new Date("2025-06-02T00:00:00.000Z"), new Date("2025-06-03T00:00:00.000Z")];
+    const dates = [date(2025, 6, 2), date(2025, 6, 3)];
 
     const transactions = [
         { amount: 999, createdAt: "2025-06-01T10:00:00.000Z" },
@@ -52,7 +51,7 @@ test("ignores transactions whose dates are not included in the requested dates",
 });
 
 test("respects the order of the provided dates when computing the running balance", () => {
-    const dates = [new Date("2025-06-03T00:00:00.000Z"), new Date("2025-06-01T00:00:00.000Z")];
+    const dates = [date(2025, 6, 3), date(2025, 6, 1)];
 
     const transactions = [
         { amount: 10, createdAt: "2025-06-01T10:00:00.000Z" },

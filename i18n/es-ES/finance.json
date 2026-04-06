@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "Referencia",
+        "category": "Categoría",
+        "dateRange": "Rango de fechas",
         "meta": {
             "title": "Finanzas",
             "description": "Crea diferentes cuentas y controla tus gastos mensuales."
@@ -14,6 +17,8 @@
             "balance": "Saldo de la cuenta",
             "currentBalance": "Saldo actual de la cuenta",
             "expectedBalance": "Saldo previsto a fin de mes",
+            "addTransaction": "Agregar transacción",
+            "manageAutoTransactions": "Gestionar transacciones automáticas",
             "form": {
                 "title": "Nombre de la cuenta",
                 "currency": "Moneda"

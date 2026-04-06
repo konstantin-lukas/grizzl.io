@@ -1,5 +1,8 @@
 {
     "finance": {
+        "reference": "Reference",
+        "category": "Category",
+        "dateRange": "Date Range",
         "meta": {
             "title": "Finance",
             "description": "Create different accounts and keep track of your monthly expenses."
@@ -14,6 +17,8 @@
             "balance": "Account Balance",
             "currentBalance": "Current account balance",
             "expectedBalance": "Expected Month-End Balance",
+            "addTransaction": "Add transaction",
+            "manageAutoTransactions": "Manage automatic transactions",
             "form": {
                 "title": "Account title",
                 "currency": "Currency"

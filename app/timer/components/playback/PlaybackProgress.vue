@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Beat } from "#shared/timer/enums/beat.enum";
 import type { Timer } from "#shared/timer/validators/timer.validator";
-import { intervalToDuration } from "date-fns";
+import { tw } from "~/core/utils/template";
 import PlaybackBouncyLetter from "~/timer/components/playback/PlaybackBouncyLetter.vue";
 import useAnimateTimer from "~/timer/composables/useAnimateTimer";
 import useTimer from "~/timer/composables/useTimer";
-import { tw } from "~/core/utils/template";
 
 const emit = defineEmits(["finish"]);
 const props = defineProps<{
@@ -20,9 +19,12 @@ const { progress, preparationTimeProgress, isInPreparationTime, elapsedIntervalT
 
 const formatDuration = (elapsed: number, max?: number) => {
     if (!max) return "––:––";
-    const d = intervalToDuration({ start: 0, end: max - elapsed });
+    const diff = max - elapsed;
+    const d = diff < 0 ? 0 : diff / 1000;
     const zeroPad = (n?: number) => String(n ?? 0).padStart(2, "0");
-    return `${zeroPad(d.minutes)}:${zeroPad(d.seconds)}`;
+    const minutes = zeroPad(Math.floor(d / 60));
+    const seconds = zeroPad(Math.floor(d % 60));
+    return `${minutes}:${seconds}`;
 };
 
 const remainingTimeInInterval = computed(() => formatDuration(elapsedIntervalTime.value, interval.value?.duration));

@@ -32,7 +32,6 @@ test("returns the selected locale metadata", () => {
     const english = LOCALES.find(({ code }) => code === "en")!;
 
     expect(locale.code.value).toBe(english.code);
-    expect(locale.fnsLocale.value).toBe(english.fnsLocale);
     expect(locale.language.value).toBe(english.language);
     expect(locale.zodLocale.value).toBe(english.zodLocale);
     expect(locale.uiLocale.value).toBe(english.uiLocale);
@@ -46,7 +45,6 @@ test("updates when locale changes", async () => {
     await nextTick();
 
     expect(locale.code.value).toBe(german.code);
-    expect(locale.fnsLocale.value).toBe(german.fnsLocale);
     expect(locale.language.value).toBe(german.language);
     expect(locale.zodLocale.value).toBe(german.zodLocale);
     expect(locale.uiLocale.value).toBe(german.uiLocale);

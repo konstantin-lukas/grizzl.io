@@ -1,5 +1,5 @@
-import { eachDayOfInterval, format } from "date-fns";
 import useLocale from "~/core/composables/useLocale";
+import { eachDayOfInterval, formatDate } from "~/core/utils/date";
 import useAccounts from "~/finance/composables/useAccounts";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import useTransactions from "~/finance/composables/useTransactions";
@@ -10,15 +10,15 @@ export default function useAccountBalanceChartData() {
     const { openAccount } = useAccounts();
     const { from, to, transactions, startBalance } = useTransactions();
     const autoTransactions = useAutoTransactions();
-    const { fnsLocale, language } = useLocale();
+    const { language } = useLocale();
 
     const dates = computed(() => {
         if (!from.value || !to.value) return [];
-        return eachDayOfInterval({ start: from.value, end: to.value });
+        return eachDayOfInterval(from.value, to.value);
     });
 
     const labels = computed(() => {
-        return dates.value.map(date => format(date, "P", { locale: fnsLocale.value }));
+        return dates.value.map(date => formatDate(date, language.value));
     });
 
     const data = computed(() => {

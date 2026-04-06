@@ -1,6 +1,5 @@
-import { useToast } from "#ui/composables";
-import { subMilliseconds, subMonths } from "date-fns";
-import { onResponseError } from "~/core/utils/toast";
+import type { CalendarDate } from "@internationalized/date";
+import { getLocalTimeZone, today } from "@internationalized/date";
 import useAccounts from "~/finance/composables/useAccounts";
 
 export type Transaction = Awaited<
@@ -9,51 +8,29 @@ export type Transaction = Awaited<
 
 export default function useTransactions() {
     const { openAccountId } = useAccounts();
-    const toast = useToast();
-    const { t } = useI18n();
-    const categoryId = useState<string | undefined>(() => undefined);
-    const from = useState<Date>(() => {
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
-        return subMonths(now, 1);
+    const categoryId = useState<string | undefined>("transaction-category", () => undefined);
+    const from = useState<CalendarDate | undefined>("transaction-from", () => undefined);
+    const to = useState<CalendarDate | undefined>("transaction-to", () => undefined);
+    const reference = useState<string | undefined>("transaction-reference", () => undefined);
+
+    const transactions = useState<Transaction[]>("transactions", () => []);
+    const startBalance = useState<number>("account-start-balance", () => 0);
+
+    const resetDateRange = () => {
+        const tz = getLocalTimeZone();
+        const end = today(tz);
+
+        from.value = end.subtract({ months: 1 });
+        to.value = end;
+    };
+
+    watch(openAccountId, () => {
+        categoryId.value = undefined;
+        reference.value = undefined;
+        resetDateRange();
     });
-    const to = useState<Date>(() => {
-        const now = new Date();
-        now.setHours(23, 59, 59, 999);
-        return now;
-    });
-    const reference = useState<string | undefined>(() => undefined);
 
-    const transactions = useState<Transaction[]>();
-    const startBalance = useState<number>();
-
-    watchEffect(async () => {
-        if (!openAccountId.value || import.meta.server) {
-            transactions.value = [];
-            return;
-        }
-
-        const transactionsPromise = $fetch<Transaction[]>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
-            onResponseError: onResponseError(toast, t),
-            query: {
-                categoryId: categoryId.value,
-                from: from.value.toISOString(),
-                to: to.value.toISOString(),
-                reference: reference.value,
-            },
-        });
-
-        const balancePromise = $fetch<number>(`/api/finance/accounts/${openAccountId.value}/balance`, {
-            onResponseError: onResponseError(toast, t),
-            query: {
-                categoryId: categoryId.value,
-                to: subMilliseconds(from.value, 1).toISOString(),
-                reference: reference.value,
-            },
-        });
-
-        [transactions.value, startBalance.value] = await Promise.all([transactionsPromise, balancePromise]);
-    });
+    onMounted(resetDateRange);
 
     return { transactions, categoryId, from, to, reference, startBalance };
 }

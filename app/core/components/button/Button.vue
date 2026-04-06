@@ -33,7 +33,7 @@ async function handler(event: MouseEvent) {
 }
 
 const ui = {
-    base: "hover-none:px-3 hover-none:py-2 hover-none:text-base gap-1",
+    base: `hover-none:py-2 hover-none:text-base gap-1${props.square ? " hover-none:px-2" : " hover-none:px-3"}`,
     leadingIcon: "hover-none:size-6",
     leadingAvatarSize: "hover-none:xs",
     trailingIcon: "hover-none:size-6",

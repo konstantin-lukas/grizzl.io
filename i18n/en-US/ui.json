@@ -36,6 +36,8 @@
         "collapseAll": "Collapse all",
         "okay": "Got it!",
         "add": "Add",
+        "filters": "Filters",
+        "selectDateRange": "Select a date range",
         "toast": {
             "unableToFetchTitle": "Unable To Fetch Data From The Server",
             "unableToFetchDescription": "We are currently unable to retrieve your data from the server."

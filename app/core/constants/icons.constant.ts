@@ -44,3 +44,7 @@ export const ICON_BILL = "material-symbols:contract-outline-rounded";
 export const ICON_SUN = "material-symbols:light-mode-outline-rounded";
 export const ICON_MOON = "material-symbols:dark-mode-outline-rounded";
 export const ICON_MORE_VERT = "material-symbols:more-vert";
+export const ICON_FILTER = "mdi:filter";
+export const ICON_EVENT_REPEAT = "material-symbols:event-repeat-outline-rounded";
+export const ICON_CALENDAR = "material-symbols:calendar-today-outline-rounded";
+export const ICON_MINUS = "mdi:minus";

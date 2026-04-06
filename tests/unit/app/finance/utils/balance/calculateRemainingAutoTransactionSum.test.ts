@@ -18,13 +18,13 @@ test("sums only upcoming auto transactions whose next execution is in the curren
     const result = calculateRemainingAutoTransactionSum([
         {
             execOn: 20,
-            lastExec: "2025-05-20T00:00:00.000Z",
+            lastExec: "2025-05-20",
             execInterval: 1,
             amount: 1000,
         },
         {
             execOn: 16,
-            lastExec: "2025-04-16T00:00:00.000Z",
+            lastExec: "2025-04-16",
             execInterval: 2,
             amount: -250,
         },
@@ -37,13 +37,13 @@ test("excludes transactions scheduled for today or in the past", () => {
     const result = calculateRemainingAutoTransactionSum([
         {
             execOn: 15,
-            lastExec: "2025-05-15T00:00:00.000Z",
+            lastExec: "2025-05-15",
             execInterval: 1,
             amount: 1000,
         },
         {
             execOn: 14,
-            lastExec: "2025-05-14T00:00:00.000Z",
+            lastExec: "2025-05-14",
             execInterval: 1,
             amount: 500,
         },
@@ -56,13 +56,13 @@ test("excludes transactions whose next execution is not in the current month", (
     const result = calculateRemainingAutoTransactionSum([
         {
             execOn: 20,
-            lastExec: "2025-06-20T00:00:00.000Z",
+            lastExec: "2025-06-20",
             execInterval: 1,
             amount: 1000,
         },
         {
             execOn: 20,
-            lastExec: "2025-04-20T00:00:00.000Z",
+            lastExec: "2025-04-20",
             execInterval: 1,
             amount: 500,
         },
@@ -72,12 +72,12 @@ test("excludes transactions whose next execution is not in the current month", (
 });
 
 test("returns 0 on the last day of the month", () => {
-    vi.setSystemTime(new Date("2025-04-30T12:00:00.000Z"));
+    vi.setSystemTime(new Date("2025-04-30"));
 
     const result = calculateRemainingAutoTransactionSum([
         {
             execOn: 31,
-            lastExec: "2025-03-31T00:00:00.000Z",
+            lastExec: "2025-03-31",
             execInterval: 1,
             amount: 1000,
         },

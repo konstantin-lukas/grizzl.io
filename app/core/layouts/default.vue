@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { LOCALES } from "#shared/core/constants/i18n.constant";
-import { setDefaultOptions } from "date-fns";
 import { z } from "zod";
 import CookieBanner from "~/core/components/data/CookieBanner.vue";
 import Offline from "~/core/components/data/Offline.vue";
@@ -53,7 +52,6 @@ watch(
                 }
             },
         });
-        setDefaultOptions({ locale: localeInformation.fnsLocale });
     },
     { immediate: true },
 );
