@@ -36,6 +36,7 @@
         "collapseAll": "Collapse all",
         "okay": "Got it!",
         "add": "Add",
+        "filters": "Filters",
         "toast": {
             "unableToFetchTitle": "Unable To Fetch Data From The Server",
             "unableToFetchDescription": "We are currently unable to retrieve your data from the server."

@@ -20,7 +20,7 @@ const items = ref<TabsItem[]>([
 </script>
 
 <template>
-    <UTabs :items :ui="{ content: 'mt-6' }">
+    <UTabs :items :ui="{ content: 'mt-8' }">
         <template #default="{ item }">
             {{ $t(`finance.tabs.${item.label}`) }}
         </template>

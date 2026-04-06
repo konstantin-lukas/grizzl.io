@@ -36,6 +36,7 @@
         "collapseAll": "Alle einklappen",
         "okay": "Alles klar!",
         "add": "Hinzufügen",
+        "filters": "Filter",
         "toast": {
             "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
             "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."

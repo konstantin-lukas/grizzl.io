@@ -14,6 +14,8 @@
             "balance": "口座残高",
             "currentBalance": "現在の口座残高",
             "expectedBalance": "月末時点の予想残高",
+            "addTransaction": "取引の追加",
+            "manageAutoTransactions": "自動取引の管理",
             "form": {
                 "title": "口座名",
                 "currency": "通貨"
