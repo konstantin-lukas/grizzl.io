@@ -3,10 +3,14 @@ import Button from "~/core/components/button/Button.vue";
 import DateRangePicker from "~/core/components/form/DateRangePicker.vue";
 import { ICON_FILTER } from "~/core/constants/icons.constant";
 import useCategories from "~/finance/composables/useCategories";
+import useTransactions from "~/finance/composables/useTransactions";
+
+const { categoryId } = useTransactions();
 
 const categories = useCategories();
-const categoryItems = computed(() => categories.value?.map(category => category.displayName) ?? []);
-const value = ref();
+const categoryItems = computed(
+    () => categories.value?.map(category => ({ id: category.id, label: category.displayName })) ?? [],
+);
 </script>
 
 <template>
@@ -18,7 +22,13 @@ const value = ref();
                     <UInput class="w-full" />
                 </UFormField>
                 <UFormField :label="$t('finance.category')">
-                    <USelectMenu v-model="value" :items="categoryItems" class="w-full" />
+                    <USelectMenu
+                        :items="categoryItems"
+                        class="w-full"
+                        value-key="id"
+                        clear
+                        @update:model-value="value => (categoryId = value || undefined)"
+                    />
                 </UFormField>
                 <UFormField :label="$t('finance.dateRange')">
                     <DateRangePicker class="max-w-full" />
