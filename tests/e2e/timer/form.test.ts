@@ -26,7 +26,7 @@ test("allows creating a new timer when no timers exist", { tag: SCREENSHOT }, as
     await page.createTimer({ title });
 
     await page.expect("listItemTitles").toHaveText(title);
-    await page.expect("listItemLengths").toHaveText("1 round (3 seconds)");
+    await page.expect("listItemLengths").toHaveText("1 round (3 sec)");
     await page.expect("root").toMatchAriaSnapshot({ name: "timer-list-with-a-single-timer" });
 
     const [timer] = await db.timer.select();
@@ -106,7 +106,7 @@ test("allows creating timers with multiple intervals", async ({ timerPage: page,
     expect(createdIntervals[1]!.repeatCount).toBe(intervals[1].repeatCount);
     expect(createdIntervals[1]!.beatPattern).toEqual(["high", "low", "low", "low"]);
 
-    await page.expect("listItemLengths").toHaveText("4 rounds (3 minutes 15 seconds)");
+    await page.expect("listItemLengths").toHaveText("4 rounds (3 min, 15 sec)");
 });
 
 test("allows changing interval order and deleting intervals", async ({ timerPage: page }) => {
