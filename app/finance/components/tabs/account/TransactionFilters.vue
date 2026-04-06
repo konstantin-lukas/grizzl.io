@@ -6,7 +6,7 @@ import { ICON_FILTER } from "~/core/constants/icons.constant";
 import useCategories from "~/finance/composables/useCategories";
 import useTransactions from "~/finance/composables/useTransactions";
 
-const { categoryId, reference } = useTransactions();
+const { categoryId, reference, from, to } = useTransactions();
 
 const deferredReference = useDeferredValue(reference);
 
@@ -37,7 +37,17 @@ const categoryItems = computed(
                     />
                 </UFormField>
                 <UFormField :label="$t('finance.dateRange')">
-                    <DateRangePicker class="max-w-full" />
+                    <DateRangePicker
+                        class="max-w-full"
+                        :start="from"
+                        :end="to"
+                        @update="
+                            value => {
+                                from = value.start;
+                                to = value.end;
+                            }
+                        "
+                    />
                 </UFormField>
             </div>
         </template>

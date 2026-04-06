@@ -1,17 +1,31 @@
 <script setup lang="ts">
-import { CalendarDate } from "@internationalized/date";
+import type { CalendarDate } from "@internationalized/date";
 import { ICON_CALENDAR, ICON_MINUS } from "~/core/constants/icons.constant";
 
 const inputDate = useTemplateRef("inputDate");
 
+const props = defineProps<{ start: CalendarDate | undefined; end: CalendarDate | undefined }>();
+const emit = defineEmits<{ update: [{ start: CalendarDate; end: CalendarDate }] }>();
+
 const modelValue = shallowRef({
-    start: new CalendarDate(2022, 1, 10),
-    end: new CalendarDate(2022, 1, 20),
+    start: props.start,
+    end: props.end,
+});
+
+watch(modelValue, newValue => {
+    if (!newValue.start || !newValue.end) return;
+    emit("update", newValue as { start: CalendarDate; end: CalendarDate });
 });
 </script>
 
 <template>
-    <UInputDate ref="inputDate" v-model="modelValue" range :separator-icon="ICON_MINUS">
+    <UInputDate
+        ref="inputDate"
+        v-model="modelValue"
+        range
+        :separator-icon="ICON_MINUS"
+        @update:model-value="value => console.log(value)"
+    >
         <template #trailing>
             <UPopover :reference="inputDate?.inputsRef[0]?.$el">
                 <UButton
@@ -24,7 +38,7 @@ const modelValue = shallowRef({
                 />
 
                 <template #content>
-                    <UCalendar v-model="modelValue" class="p-2" :number-of-months="2" range />
+                    <UCalendar v-model="modelValue" class="p-2" range />
                 </template>
             </UPopover>
         </template>
