@@ -1,15 +1,44 @@
 <script setup lang="ts">
-import { LOCALES } from "#shared/core/constants/i18n.constant";
 import type { DropdownMenuItem } from "@nuxt/ui";
 import Button from "~/core/components/button/Button.vue";
+import useLocale from "~/core/composables/useLocale";
+import useSoftDelete from "~/core/composables/useSoftDelete";
 import { ICON_DELETE, ICON_EDIT, ICON_MORE_VERT } from "~/core/constants/icons.constant";
 import { formatDate } from "~/core/utils/date";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import useAccounts from "~/finance/composables/useAccounts";
+import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import type { Transaction } from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
-const { openAccount } = useAccounts();
+const { openAccount, openAccountId } = useAccounts();
+const refresh = useRefreshTransactions();
+
+const props = defineProps<{ transaction: Transaction }>();
+const { language } = useLocale();
+const dateAndReference = computed(() => {
+    let date = formatDate(props.transaction.createdAt, language.value);
+    if (props.transaction.reference) date += ` | ${props.transaction.reference}`;
+    return date;
+});
+const isSpending = computed(() => props.transaction.amount < 0);
+const amount = computed(() => {
+    if (!openAccount.value) return "";
+    return formatCurrency(language.value, openAccount.value.currency, props.transaction.amount);
+});
+
+const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}/transactions/${props.transaction.id}`);
+const interpolations = computed(() => ({
+    title: formatCurrency(language.value, openAccount.value!.currency, props.transaction.amount),
+}));
+
+const execute = useSoftDelete(apiRoute, {
+    refresh,
+    successTitle: "finance.account.toast.deletedTitle",
+    successDescription: "finance.account.toast.deletedDescription",
+    interpolations,
+});
+
 const items = ref<DropdownMenuItem[]>([
     {
         label: "edit",
@@ -21,23 +50,9 @@ const items = ref<DropdownMenuItem[]>([
         label: "delete",
         icon: ICON_DELETE,
         color: "error",
-        // onSelect: () => console.log(1),
+        onSelect: execute,
     },
 ]);
-
-const props = defineProps<{ transaction: Transaction }>();
-const { locale } = useI18n();
-const language = computed(() => LOCALES.find(({ code }) => code === locale.value)?.language ?? "en-US");
-const dateAndReference = computed(() => {
-    let date = formatDate(props.transaction.createdAt, language.value);
-    if (props.transaction.reference) date += ` | ${props.transaction.reference}`;
-    return date;
-});
-const isSpending = computed(() => props.transaction.amount < 0);
-const amount = computed(() => {
-    if (!openAccount.value) return "";
-    return formatCurrency(language.value, openAccount.value.currency, props.transaction.amount);
-});
 </script>
 
 <template>
