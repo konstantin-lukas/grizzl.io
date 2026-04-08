@@ -8,7 +8,7 @@ const { openAccount, openAccountId } = useAccounts();
 <template>
     <div class="inline-block text-center">
         <Transition name="fade" mode="out-in">
-            <H1 :key="openAccountId" aria-live="polite" class="min-h-12">{{ openAccount?.title }}</H1>
+            <H1 :key="openAccountId ?? undefined" aria-live="polite" class="min-h-12">{{ openAccount?.title }}</H1>
         </Transition>
     </div>
 </template>

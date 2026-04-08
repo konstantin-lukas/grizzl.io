@@ -10,7 +10,19 @@ export default function useUpdateTransactions() {
     const toast = useToast();
     const { t } = useI18n();
 
-    watchEffect(async () => {
+    const lastParams = ref<string | null>(null);
+
+    watch([openAccountId, categoryId, from, to, reference], async () => {
+        const params = JSON.stringify({
+            openAccountId: openAccountId.value ?? null,
+            categoryId: categoryId.value ?? null,
+            from: from.value?.toString() ?? null,
+            to: to.value?.toString() ?? null,
+            reference: reference.value ?? null,
+        });
+        if (lastParams.value === params) return;
+        lastParams.value = params;
+
         if (!from.value || !to.value || !openAccountId.value || import.meta.server) {
             transactions.value = [];
             return;
