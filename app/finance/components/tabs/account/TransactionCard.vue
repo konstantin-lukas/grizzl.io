@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from "@nuxt/ui";
 import Button from "~/core/components/button/Button.vue";
 import useLocale from "~/core/composables/useLocale";
 import useSoftDelete from "~/core/composables/useSoftDelete";
-import { ICON_DELETE, ICON_EDIT, ICON_MORE_VERT } from "~/core/constants/icons.constant";
+import { ICON_DELETE, ICON_EDIT } from "~/core/constants/icons.constant";
 import { formatDate } from "~/core/utils/date";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import useAccounts from "~/finance/composables/useAccounts";
@@ -29,62 +28,55 @@ const amount = computed(() => {
 
 const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}/transactions/${props.transaction.id}`);
 const interpolations = computed(() => ({
-    title: formatCurrency(language.value, openAccount.value!.currency, props.transaction.amount),
+    amount: formatCurrency(language.value, openAccount.value!.currency, props.transaction.amount),
 }));
 
 const execute = useSoftDelete(apiRoute, {
     refresh,
-    successTitle: "finance.account.toast.deletedTitle",
-    successDescription: "finance.account.toast.deletedDescription",
+    successTitle: "finance.account.toast.deletedTransactionTitle",
+    successDescription: "finance.account.toast.deletedTransactionDescription",
     interpolations,
 });
-
-const items = ref<DropdownMenuItem[]>([
-    {
-        label: "edit",
-        icon: ICON_EDIT,
-        color: "primary",
-        // onSelect: () => console.log(1),
-    },
-    {
-        label: "delete",
-        icon: ICON_DELETE,
-        color: "error",
-        onSelect: execute,
-    },
-]);
 </script>
 
 <template>
-    <div class="flex justify-between rounded-xl bg-elevated p-4">
-        <div class="flex items-center overflow-hidden">
-            <div class="center aspect-square size-12 rounded-full bg-primary">
-                <CategoryIcon class="size-8 bg-back" :name="props.transaction.category.icon" />
+    <li class="relative w-full pt-4">
+        <div class="flex w-full justify-between rounded-xl bg-elevated p-4">
+            <div class="flex items-center overflow-hidden">
+                <div class="center aspect-square size-12 rounded-full bg-primary">
+                    <CategoryIcon class="size-8 bg-back" :name="props.transaction.category.icon" />
+                </div>
+                <div class="mx-4 flex flex-col gap-1 overflow-hidden">
+                    <span :title="props.transaction.category.name" class="overflow-hidden text-nowrap text-ellipsis">
+                        {{ props.transaction.category.name }}
+                    </span>
+                    <span class="overflow-hidden text-nowrap text-ellipsis text-muted">
+                        {{ dateAndReference }}
+                    </span>
+                </div>
             </div>
-            <div class="mx-4 flex flex-col gap-1 overflow-hidden">
-                <span :title="props.transaction.category.name" class="overflow-hidden text-nowrap text-ellipsis">
-                    {{ props.transaction.category.name }}
-                </span>
-                <span class="overflow-hidden text-nowrap text-ellipsis text-muted">
-                    {{ dateAndReference }}
-                </span>
-            </div>
-        </div>
-        <div class="flex shrink-0 items-center justify-end gap-3">
-            <UBadge :color="isSpending ? 'error' : 'primary'" class="text-back">
-                {{ amount }}
-            </UBadge>
-            <UDropdownMenu :items="items">
+            <div class="flex shrink-0 items-center justify-end">
+                <UBadge :color="isSpending ? 'error' : 'primary'" class="mr-3 text-back">
+                    {{ amount }}
+                </UBadge>
                 <Button
-                    :icon="ICON_MORE_VERT"
                     square
                     variant="ghost"
-                    color="neutral"
-                    :aria-label="$t('ui.moreActions')"
                     class="hover:bg-accented focus-visible:bg-accented"
+                    :icon="ICON_EDIT"
+                    color="neutral"
+                    :aria-label="$t('ui.edit')"
                 />
-                <template #item-label="{ item }"> {{ $t(`ui.${item.label}`) }}</template>
-            </UDropdownMenu>
+                <Button
+                    square
+                    variant="ghost"
+                    class="hover:bg-accented focus-visible:bg-accented"
+                    :icon="ICON_DELETE"
+                    color="error"
+                    :on-async-click="execute"
+                    :aria-label="$t('ui.delete')"
+                />
+            </div>
         </div>
-    </div>
+    </li>
 </template>

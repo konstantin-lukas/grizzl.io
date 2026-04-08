@@ -37,7 +37,13 @@
                 "updatedTitle": "Savings Account Updated",
                 "updatedDescription": "The account titled “{title}” was updated.",
                 "deletedTitle": "Savings Account Deleted",
-                "deletedDescription": "The account titled “{title}” was deleted."
+                "deletedDescription": "The account titled “{title}” was deleted.",
+                "createdTransactionTitle": "Transaction Created",
+                "createdTransactionDescription": "A new transaction with amount “{amount}” was created.",
+                "updatedTransactionTitle": "Transaction Updated",
+                "updatedTransactionDescription": "The transaction with amount “{amount}” was updated.",
+                "deletedTransactionTitle": "Transaction Deleted",
+                "deletedTransactionDescription": "The transaction with amount “{amount}” was deleted."
             }
         }
     }

@@ -37,7 +37,13 @@
                 "updatedTitle": "貯蓄口座を更新しました",
                 "updatedDescription": "「{title}」という名前の口座を更新しました。",
                 "deletedTitle": "貯蓄口座を削除しました",
-                "deletedDescription": "「{title}」という名前の口座を削除しました。"
+                "deletedDescription": "「{title}」という名前の口座を削除しました。",
+                "createdTransactionTitle": "取引を作成しました",
+                "createdTransactionDescription": "金額「{amount}」の新しい取引が作成されました。",
+                "updatedTransactionTitle": "取引を更新しました",
+                "updatedTransactionDescription": "金額「{amount}」の取引が更新されました。",
+                "deletedTransactionTitle": "取引を削除しました",
+                "deletedTransactionDescription": "金額「{amount}」の取引が削除されました。"
             }
         }
     }

@@ -37,7 +37,13 @@
                 "updatedTitle": "Cuenta de ahorros actualizada",
                 "updatedDescription": "La cuenta con el nombre «{title}» fue actualizada.",
                 "deletedTitle": "Cuenta de ahorros eliminada",
-                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
+                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada.",
+                "createdTransactionTitle": "Transacción creada",
+                "createdTransactionDescription": "Se ha creado una nueva transacción con el importe «{amount}».",
+                "updatedTransactionTitle": "Transacción actualizada",
+                "updatedTransactionDescription": "La transacción con el importe «{amount}» ha sido actualizada.",
+                "deletedTransactionTitle": "Transacción eliminada",
+                "deletedTransactionDescription": "La transacción con el importe «{amount}» ha sido eliminada."
             }
         }
     }
