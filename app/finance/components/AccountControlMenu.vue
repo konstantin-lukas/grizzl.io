@@ -13,11 +13,11 @@ const selectOptions = computed(() =>
 );
 const initialState = ref<Account | undefined>(undefined);
 const selectOpen = ref(false);
-const selectedOption = ref(selectOptions.value?.find(o => o.id === openAccountId.value)?.id ?? null);
+const selectedOption = ref(selectOptions.value?.find(o => o.id === openAccountId.value)?.id);
 watch(
     openAccountId,
     () => {
-        selectedOption.value = openAccountId.value;
+        selectedOption.value = openAccountId.value ?? undefined;
     },
     { immediate: true },
 );

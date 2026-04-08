@@ -10,7 +10,7 @@ import useMenu from "~/core/composables/useMenu";
 import { useScreenSize } from "~/core/composables/useScreenSize";
 
 const { sm } = useScreenSize();
-const toaster = computed(() => ({
+const toaster = computed<{ duration: number; expand: boolean; position: "bottom-right" | "top-center" }>(() => ({
     duration: 15000,
     expand: false,
     position: sm.value ? "bottom-right" : "top-center",

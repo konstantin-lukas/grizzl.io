@@ -11,9 +11,9 @@ const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}`);
 const interpolations = computed(() => ({ title: ellipsize(openAccount.value?.title ?? "", 15) }));
 
 const execute = useSoftDelete(apiRoute, {
-    refresh: () => {
+    refresh: async () => {
         openAccountId.value = null;
-        r();
+        await r();
     },
     successTitle: "finance.account.toast.deletedTitle",
     successDescription: "finance.account.toast.deletedDescription",
