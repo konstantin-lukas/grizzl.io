@@ -13,12 +13,13 @@ export default function useUpdateTransactions() {
     const lastParams = ref<string | null>(null);
 
     watch([openAccountId, categoryId, from, to, reference], async () => {
-        const params =
-            (openAccountId.value ?? "") +
-            (categoryId.value ?? "") +
-            from.value?.toString() +
-            to.value?.toString() +
-            reference.value;
+        const params = JSON.stringify({
+            openAccountId: openAccountId.value ?? null,
+            categoryId: categoryId.value ?? null,
+            from: from.value?.toString() ?? null,
+            to: to.value?.toString() ?? null,
+            reference: reference.value ?? null,
+        });
         if (lastParams.value === params) return;
         lastParams.value = params;
 
