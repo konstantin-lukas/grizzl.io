@@ -8,6 +8,7 @@ export default function useLocalStorage(key: string) {
     watch(
         state,
         newValue => {
+            if (import.meta.server) return;
             if (newValue === null) {
                 localStorage.removeItem(key);
                 return;
