@@ -5,13 +5,16 @@ import useSoftDelete from "~/core/composables/useSoftDelete";
 import { ICON_DELETE } from "~/core/constants/icons.constant";
 import useAccounts from "~/finance/composables/useAccounts";
 
-const { openAccount, openAccountId, refresh } = useAccounts();
+const { openAccount, openAccountId, refresh: r } = useAccounts();
 
 const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}`);
 const interpolations = computed(() => ({ title: ellipsize(openAccount.value?.title ?? "", 15) }));
 
 const execute = useSoftDelete(apiRoute, {
-    refresh,
+    refresh: () => {
+        openAccountId.value = null;
+        r();
+    },
     successTitle: "finance.account.toast.deletedTitle",
     successDescription: "finance.account.toast.deletedDescription",
     interpolations,

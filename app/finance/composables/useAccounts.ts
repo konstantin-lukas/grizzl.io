@@ -9,11 +9,11 @@ export default function useAccounts() {
         onResponseError: onResponseError(toast, t),
     });
 
-    const openAccountId = useLocalStorage<string>("openFinanceAccountId", "");
+    const openAccountId = useLocalStorage("open-finance-account-id");
 
     watchEffect(() => {
         if (openAccountId.value && accounts.value?.every(account => account.id !== openAccountId.value)) {
-            openAccountId.value = "";
+            openAccountId.value = null;
             return;
         }
 
@@ -30,7 +30,7 @@ export default function useAccounts() {
         const accountsList = accounts.value;
         const accountCountAfterRefresh = accountsList.length ?? 0;
         if (!accountCountAfterRefresh) {
-            openAccountId.value = "";
+            openAccountId.value = null;
             return;
         }
         if (accountCountAfterRefresh > accountCountBeforeRefresh) {
