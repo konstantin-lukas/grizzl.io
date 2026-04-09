@@ -6,8 +6,8 @@ import useIconSuggestion from "~/finance/composables/useIconSuggestion";
 
 const emptyIcon = "question-mark-rounded";
 const icons = Object.keys(CategoryIconsMap);
-const props = defineProps<{ categoryName: string; defaultIcon?: string }>();
-const icon = ref(props.defaultIcon ?? emptyIcon);
+const model = defineModel<string>({ default: emptyIcon });
+const props = defineProps<{ categoryName: string }>();
 const open = ref(false);
 
 const suggest = useIconSuggestion();
@@ -16,10 +16,10 @@ watch(
     () => props.categoryName,
     async newName => {
         if (!newName) {
-            icon.value = emptyIcon;
+            model.value = emptyIcon;
             return;
         }
-        icon.value = (await suggest(newName)) ?? "";
+        model.value = (await suggest(newName)) ?? "";
     },
 );
 </script>
@@ -31,7 +31,7 @@ watch(
             type="button"
             :aria-label="$t('finance.aria.selectCategoryIcon')"
         >
-            <CategoryIcon :category-name="icon" />
+            <CategoryIcon :category-name="model" />
             <span
                 class="center absolute top-0 left-0 size-full bg-theme-black/60 opacity-0 transition-opacity group-hover/category-icon:opacity-100"
             >
@@ -48,7 +48,7 @@ watch(
                         variant="ghost"
                         color="neutral"
                         @click="
-                            icon = ico;
+                            model = ico;
                             open = false;
                         "
                     />

@@ -95,12 +95,7 @@ const onSubmit = useOnSubmit({
                         />
                     </UFormField>
                     <div class="ml-4 translate-y-4">
-                        <CategoryIconSelect
-                            v-model="state.category.icon"
-                            :default-icon="state.category.icon"
-                            :category-name="state.category.name"
-                            :aria-label="$t('finance.categoryIcon')"
-                        />
+                        <CategoryIconSelect v-model="state.category.icon" :category-name="state.category.name" />
                     </div>
                 </div>
             </template>
