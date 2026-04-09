@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getLocalTimeZone, today } from "@internationalized/date";
 import Button from "~/core/components/button/Button.vue";
 import DateRangePicker from "~/core/components/form/DateRangePicker.vue";
 import useDeferredValue from "~/core/composables/useDeferredValue";
@@ -14,6 +15,12 @@ const categories = useCategories();
 const categoryItems = computed(
     () => categories.value?.map(category => ({ id: category.id, label: category.displayName })) ?? [],
 );
+
+const maxDate = ref();
+
+onMounted(() => {
+    maxDate.value = today(getLocalTimeZone());
+});
 </script>
 
 <template>
@@ -24,6 +31,7 @@ const categoryItems = computed(
                 <UFormField :label="$t('finance.reference')">
                     <UInput
                         class="w-full"
+                        :model-value="deferredReference"
                         @update:model-value="value => (deferredReference = value?.toString() || undefined)"
                     />
                 </UFormField>
@@ -33,6 +41,7 @@ const categoryItems = computed(
                         class="w-full"
                         value-key="id"
                         clear
+                        :model-value="categoryId"
                         @update:model-value="value => (categoryId = value || undefined)"
                     />
                 </UFormField>
@@ -41,6 +50,7 @@ const categoryItems = computed(
                         class="max-w-full"
                         :start="from"
                         :end="to"
+                        :max="maxDate"
                         @update="
                             value => {
                                 from = value.start;

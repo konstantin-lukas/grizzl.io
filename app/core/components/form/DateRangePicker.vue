@@ -4,7 +4,11 @@ import { ICON_CALENDAR, ICON_MINUS } from "~/core/constants/icons.constant";
 
 const inputDate = useTemplateRef("inputDate");
 
-const props = defineProps<{ start: CalendarDate | undefined; end: CalendarDate | undefined }>();
+const props = defineProps<{
+    start: CalendarDate | undefined;
+    end: CalendarDate | undefined;
+    max?: CalendarDate;
+}>();
 const emit = defineEmits<{ update: [{ start: CalendarDate; end: CalendarDate }] }>();
 
 const modelValue = shallowRef({
@@ -12,14 +16,19 @@ const modelValue = shallowRef({
     end: props.end,
 });
 
+watch(props, newProps => {
+    modelValue.value.start = newProps.start;
+    modelValue.value.end = newProps.end;
+});
+
 watch(modelValue, newValue => {
-    if (!newValue.start || !newValue.end) return;
+    if (!newValue.start || !newValue.end || (props.max && props.max.compare(newValue.end) < 0)) return;
     emit("update", newValue as { start: CalendarDate; end: CalendarDate });
 });
 </script>
 
 <template>
-    <UInputDate ref="inputDate" v-model="modelValue" range :separator-icon="ICON_MINUS">
+    <UInputDate ref="inputDate" v-model="modelValue" range :separator-icon="ICON_MINUS" :max-value="props.max">
         <template #trailing>
             <UPopover :reference="inputDate?.inputsRef[0]?.$el">
                 <UButton
@@ -32,7 +41,7 @@ watch(modelValue, newValue => {
                 />
 
                 <template #content>
-                    <UCalendar v-model="modelValue" class="p-2" range />
+                    <UCalendar v-model="modelValue" class="p-2" range :max-value="props.max" />
                 </template>
             </UPopover>
         </template>
