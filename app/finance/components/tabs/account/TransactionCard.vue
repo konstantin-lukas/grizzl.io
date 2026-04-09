@@ -43,9 +43,7 @@ const execute = useSoftDelete(apiRoute, {
     <li class="relative w-full pt-4">
         <div class="flex w-full justify-between rounded-xl bg-elevated p-4">
             <div class="flex items-center overflow-hidden">
-                <div class="center aspect-square size-12 rounded-full bg-primary">
-                    <CategoryIcon class="size-8 bg-back" :name="props.transaction.category.icon" />
-                </div>
+                <CategoryIcon :category-name="props.transaction.category.icon" />
                 <div class="mx-4 flex flex-col gap-1 overflow-hidden">
                     <span :title="props.transaction.category.name" class="overflow-hidden text-nowrap text-ellipsis">
                         {{ props.transaction.category.name }}

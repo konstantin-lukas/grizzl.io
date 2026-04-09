@@ -2,6 +2,7 @@
     "finance": {
         "reference": "参照",
         "category": "カテゴリー",
+        "categoryIcon": "カテゴリーアイコン",
         "amount": "金額",
         "dateRange": "日付範囲",
         "meta": {
@@ -29,10 +30,7 @@
                 "drawer": {
                     "edit": "口座の編集",
                     "create": "口座の作成",
-                    "description": "通貨を固定した貯蓄口座を設定して、資産を管理できます",
-                    "editTransaction": "取引を編集",
-                    "createTransaction": "取引を作成",
-                    "descriptionTransaction": "取引を管理して、アカウント残高を調整します"
+                    "description": "通貨を固定した貯蓄口座を設定して、資産を管理できます"
                 }
             },
             "toast": {
@@ -52,6 +50,14 @@
                 "updatedDescription": "金額「{amount}」の取引が更新されました。",
                 "deletedTitle": "取引を削除しました",
                 "deletedDescription": "金額「{amount}」の取引が削除されました。"
+            },
+            "aria": {
+                "selectCategoryIcon": "カテゴリーアイコンを選択",
+                "drawer": {
+                    "edit": "取引を編集",
+                    "create": "取引を作成",
+                    "description": "取引を管理して、アカウント残高を調整します"
+                }
             }
         }
     }

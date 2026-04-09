@@ -2,6 +2,7 @@
     "finance": {
         "reference": "Reference",
         "category": "Category",
+        "categoryIcon": "Category Icon",
         "amount": "Amount",
         "dateRange": "Date Range",
         "meta": {
@@ -29,10 +30,7 @@
                 "drawer": {
                     "edit": "Edit Account",
                     "create": "Create Account",
-                    "description": "Set up a savings account with a fixed currency to manage your finances",
-                    "editTransaction": "Edit Transaction",
-                    "createTransaction": "Create Transaction",
-                    "descriptionTransaction": "Manage transactions adjust the balance of your account"
+                    "description": "Set up a savings account with a fixed currency to manage your finances"
                 }
             },
             "toast": {
@@ -52,6 +50,14 @@
                 "updatedDescription": "The transaction with amount “{amount}” was updated.",
                 "deletedTitle": "Transaction Deleted",
                 "deletedDescription": "The transaction with amount “{amount}” was deleted."
+            },
+            "aria": {
+                "selectCategoryIcon": "Select category icon",
+                "drawer": {
+                    "edit": "Edit Transaction",
+                    "create": "Create Transaction",
+                    "description": "Manage transactions adjust the balance of your account"
+                }
             }
         }
     }

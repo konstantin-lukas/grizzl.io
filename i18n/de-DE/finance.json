@@ -2,6 +2,7 @@
     "finance": {
         "reference": "Verweis",
         "category": "Kategorie",
+        "categoryIcon": "Kategorie-Icon",
         "amount": "Betrag",
         "dateRange": "Datumsbereich",
         "meta": {
@@ -29,10 +30,7 @@
                 "drawer": {
                     "edit": "Konto bearbeiten",
                     "create": "Konto erstellen",
-                    "description": "Richte ein Sparkonto mit einer festen Währung ein, um deine Finanzen zu verwalten",
-                    "editTransaction": "Transaktion bearbeiten",
-                    "createTransaction": "Transaktion erstellen",
-                    "descriptionTransaction": "Verwalte deine Transaktionen und passe den Kontostand an"
+                    "description": "Richte ein Sparkonto mit einer festen Währung ein, um deine Finanzen zu verwalten"
                 }
             },
             "toast": {
@@ -52,6 +50,14 @@
                 "updatedDescription": "Die Transaktion mit dem Betrag „{amount}“ wurde aktualisiert.",
                 "deletedTitle": "Transaktion gelöscht",
                 "deletedDescription": "Die Transaktion mit dem Betrag „{amount}“ wurde gelöscht."
+            },
+            "aria": {
+                "selectCategoryIcon": "Wähle ein Kategorie-Icon",
+                "drawer": {
+                    "edit": "Transaktion bearbeiten",
+                    "create": "Transaktion erstellen",
+                    "description": "Verwalte deine Transaktionen und passe den Kontostand an"
+                }
             }
         }
     }

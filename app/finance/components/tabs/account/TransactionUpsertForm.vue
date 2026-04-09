@@ -7,6 +7,7 @@ import H1 from "~/core/components/typo/H1.vue";
 import useLocale from "~/core/composables/useLocale";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import CurrencyInput from "~/finance/components/CurrencyInput.vue";
+import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSelect.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
@@ -63,7 +64,7 @@ const onSubmit = useOnSubmit({
             @submit.prevent="onSubmit"
         >
             <template #heading>
-                <H1>{{ $t(`finance.account.aria.drawer.${isInsert ? "create" : "edit"}Transaction`) }}</H1>
+                <H1>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</H1>
             </template>
             <template #default>
                 <UFormField :label="$t('finance.reference')" name="reference" class="w-full" required>
@@ -83,18 +84,28 @@ const onSubmit = useOnSubmit({
                         data-test-id="transaction-upsert-amount-input"
                     />
                 </UFormField>
-                <UFormField :label="$t('finance.category')" name="category.name" class="w-full" required>
-                    <UInputMenu
-                        v-model="state.category.name"
-                        autocomplete
-                        :items="categoryNames"
-                        class="w-full"
-                        :maxlength="TITLE_MAX"
-                    />
-                </UFormField>
+                <div class="flex w-full">
+                    <UFormField :label="$t('finance.category')" name="category.name" class="w-full" required>
+                        <UInputMenu
+                            v-model="state.category.name"
+                            autocomplete
+                            :items="categoryNames"
+                            class="w-full"
+                            :maxlength="TITLE_MAX"
+                        />
+                    </UFormField>
+                    <div class="ml-4 translate-y-4">
+                        <CategoryIconSelect
+                            v-model="state.category.icon"
+                            :default-icon="state.category.icon"
+                            :category-name="state.category.name"
+                            :aria-label="$t('finance.categoryIcon')"
+                        />
+                    </div>
+                </div>
             </template>
         </BaseUpsertForm>
-        <template #title>{{ $t(`finance.account.aria.drawer.${isInsert ? "create" : "edit"}Transaction`) }}</template>
-        <template #description>{{ $t("finance.account.aria.drawer.descriptionTransaction") }}</template>
+        <template #title>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</template>
+        <template #description>{{ $t("finance.transaction.aria.drawer.description") }}</template>
     </Drawer>
 </template>

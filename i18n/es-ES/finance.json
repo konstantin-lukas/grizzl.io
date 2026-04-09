@@ -2,6 +2,7 @@
     "finance": {
         "reference": "Referencia",
         "category": "Categoría",
+        "categoryIcon": "Icono de categoría",
         "amount": "Importe",
         "dateRange": "Rango de fechas",
         "meta": {
@@ -29,10 +30,7 @@
                 "drawer": {
                     "edit": "Editar cuenta",
                     "create": "Crear cuenta",
-                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas",
-                    "editTransaction": "Editar transacción",
-                    "createTransaction": "Crear transacción",
-                    "descriptionTransaction": "Gestiona tus transacciones y ajusta el saldo de tu cuenta"
+                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas"
                 }
             },
             "toast": {
@@ -52,6 +50,14 @@
                 "updatedDescription": "La transacción con el importe «{amount}» ha sido actualizada.",
                 "deletedTitle": "Transacción eliminada",
                 "deletedDescription": "La transacción con el importe «{amount}» ha sido eliminada."
+            },
+            "aria": {
+                "selectCategoryIcon": "Selecciona un icono de categoría",
+                "drawer": {
+                    "edit": "Editar transacción",
+                    "create": "Crear transacción",
+                    "description": "Gestiona tus transacciones y ajusta el saldo de tu cuenta"
+                }
             }
         }
     }
