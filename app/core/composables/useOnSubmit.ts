@@ -1,5 +1,4 @@
 import { deepCopy } from "#shared/core/utils/object.util";
-import { ellipsize } from "#shared/core/utils/string.util";
 import { useToast } from "#ui/composables";
 import { createToastError, createToastSuccess } from "~/core/utils/toast";
 
@@ -10,7 +9,7 @@ export default function useOnSubmit<T extends object>({
     emit,
     translationKey,
     transform,
-    resourceName,
+    interpolations,
     refresh,
 }: {
     url: () => string;
@@ -19,7 +18,7 @@ export default function useOnSubmit<T extends object>({
     transform?: (v: T) => T;
     emit: (e: "success") => void;
     translationKey: string;
-    resourceName: (v: T) => string;
+    interpolations: (v: T) => Record<string, string>;
     refresh?: () => void;
 }) {
     const toast = useToast();
@@ -46,9 +45,7 @@ export default function useOnSubmit<T extends object>({
                             isPost
                                 ? `${translationKey}.toast.${action}Description`
                                 : `${translationKey}.toast.${action}Description`,
-                            {
-                                title: ellipsize(resourceName(submissionState), 15),
-                            },
+                            interpolations(submissionState),
                         ),
                     ),
                 );

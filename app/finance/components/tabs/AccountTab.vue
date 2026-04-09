@@ -47,7 +47,9 @@ watch(upsertFormOpen, isOpen => {
         <TransitionGroup name="list">
             <TransactionCard v-for="transaction in transactions" :key="transaction.id" :transaction />
         </TransitionGroup>
+        <Transition name="list">
+            <EmptyTransactions v-if="transactions.length === 0" />
+        </Transition>
     </ul>
-    <EmptyTransactions v-if="transactions.length === 0" />
     <TransactionUpsertForm v-model:open="upsertFormOpen" @success="upsertFormOpen = false" />
 </template>

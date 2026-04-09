@@ -50,8 +50,8 @@ const onSubmit = useOnSubmit({
     state,
     emit,
     refresh,
-    translationKey: "finance.account",
-    resourceName: d => formatCurrency(language.value, openAccount.value!.currency, d.amount),
+    translationKey: "finance.transaction",
+    interpolations: d => ({ amount: formatCurrency(language.value, openAccount.value!.currency, d.amount) }),
 });
 </script>
 

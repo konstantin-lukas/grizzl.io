@@ -66,7 +66,7 @@ const onSubmit = useOnSubmit({
     state,
     emit,
     translationKey: "timer",
-    resourceName: d => d.title,
+    interpolations: d => ({ title: d.title }),
     transform: data => {
         for (const interval of data.intervals) {
             if (interval.id?.length !== ID_LENGTH) delete interval.id;

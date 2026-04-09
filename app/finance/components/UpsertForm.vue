@@ -41,7 +41,7 @@ const onSubmit = useOnSubmit({
     emit,
     refresh,
     translationKey: "finance.account",
-    resourceName: d => d.title,
+    interpolations: d => ({ title: d.title }),
 });
 </script>
 
