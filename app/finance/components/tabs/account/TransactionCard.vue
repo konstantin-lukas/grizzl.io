@@ -12,6 +12,7 @@ import { formatCurrency } from "~/finance/utils/currency";
 
 const { openAccount, openAccountId } = useAccounts();
 const refresh = useRefreshTransactions();
+const emit = defineEmits(["edit"]);
 
 const props = defineProps<{ transaction: Transaction }>();
 const { language } = useLocale();
@@ -64,6 +65,7 @@ const execute = useSoftDelete(apiRoute, {
                     :icon="ICON_EDIT"
                     color="neutral"
                     :aria-label="$t('ui.edit')"
+                    @click="emit('edit')"
                 />
                 <Button
                     square

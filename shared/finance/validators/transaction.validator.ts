@@ -23,7 +23,6 @@ export const PostTransactionSchema = z.object({
     amount: z.int(),
     reference: z
         .string()
-        .min(TITLE_MIN)
         .max(TITLE_MAX)
         .nullable()
         .transform(value => (value === "" ? null : value)),
@@ -36,7 +35,6 @@ export type GetTransactionFilters = z.infer<typeof GetTransactionFiltersSchema>;
 export type BaseTransactionFilters = z.infer<typeof BaseTransactionFiltersSchema>;
 export type PostTransaction = z.infer<typeof PostTransactionSchema>;
 export type PutTransaction = z.infer<typeof PutTransactionSchema>;
-export type Transaction = z.input<typeof PostTransactionSchema> & { id?: string };
 
 export type PostTransactionInternal = Omit<PostTransaction, "category"> & { categoryId: string };
 export type PutTransactionInternal = Omit<PutTransaction, "category"> & { categoryId: string };

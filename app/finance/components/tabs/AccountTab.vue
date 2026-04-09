@@ -8,11 +8,11 @@ import TransactionCard from "~/finance/components/tabs/account/TransactionCard.v
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
 import useCategories from "~/finance/composables/useCategories";
-import useTransactions from "~/finance/composables/useTransactions";
+import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
 
 const { transactions } = useTransactions();
 const { refresh } = useCategories();
-
+const initialState = ref<Transaction>();
 const upsertFormOpen = ref(false);
 watch(upsertFormOpen, isOpen => {
     if (isOpen) refresh();
@@ -29,7 +29,10 @@ watch(upsertFormOpen, isOpen => {
                 variant="ghost"
                 color="neutral"
                 :aria-label="$t('finance.account.addTransaction')"
-                @click="upsertFormOpen = true"
+                @click="
+                    initialState = undefined;
+                    upsertFormOpen = true;
+                "
             />
             <Button
                 :icon="ICON_EVENT_REPEAT"
@@ -45,11 +48,23 @@ watch(upsertFormOpen, isOpen => {
     <H2 class="mt-12">{{ $t("finance.account.transactionHistory") }}</H2>
     <ul class="relative">
         <TransitionGroup name="list">
-            <TransactionCard v-for="transaction in transactions" :key="transaction.id" :transaction />
+            <TransactionCard
+                v-for="transaction in transactions"
+                :key="transaction.id"
+                :transaction
+                @edit="
+                    initialState = transaction;
+                    upsertFormOpen = true;
+                "
+            />
         </TransitionGroup>
         <Transition name="list">
             <EmptyTransactions v-if="transactions.length === 0" />
         </Transition>
     </ul>
-    <TransactionUpsertForm v-model:open="upsertFormOpen" @success="upsertFormOpen = false" />
+    <TransactionUpsertForm
+        v-model:open="upsertFormOpen"
+        :initial-state="initialState"
+        @success="upsertFormOpen = false"
+    />
 </template>

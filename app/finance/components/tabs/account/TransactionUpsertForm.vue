@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
-import { PostTransactionSchema, type Transaction } from "#shared/finance/validators/transaction.validator";
+import { PostTransactionSchema } from "#shared/finance/validators/transaction.validator";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import H1 from "~/core/components/typo/H1.vue";
@@ -11,6 +11,7 @@ import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSe
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
+import type { Transaction } from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
 const { initialState = null } = defineProps<{ initialState?: Transaction }>();
@@ -67,14 +68,6 @@ const onSubmit = useOnSubmit({
                 <H1>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</H1>
             </template>
             <template #default>
-                <UFormField :label="$t('finance.reference')" name="reference" class="w-full" required>
-                    <UInput
-                        v-model="state.reference"
-                        class="w-full"
-                        :maxlength="TITLE_MAX"
-                        data-test-id="transaction-upsert-reference-input"
-                    />
-                </UFormField>
                 <UFormField :label="$t('finance.amount')" name="amount" class="w-full" required>
                     <CurrencyInput
                         v-model="state.amount"
@@ -98,6 +91,14 @@ const onSubmit = useOnSubmit({
                         <CategoryIconSelect v-model="state.category.icon" :category-name="state.category.name" />
                     </div>
                 </div>
+                <UFormField :label="$t('finance.reference')" name="reference" class="w-full">
+                    <UInput
+                        v-model="state.reference"
+                        class="w-full"
+                        :maxlength="TITLE_MAX"
+                        data-test-id="transaction-upsert-reference-input"
+                    />
+                </UFormField>
             </template>
         </BaseUpsertForm>
         <template #title>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</template>
