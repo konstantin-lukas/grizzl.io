@@ -17,7 +17,7 @@ const emit = defineEmits(["success"]);
 const isInsert = computed(() => initialState === null);
 
 const { openAccountId, openAccount } = useAccounts();
-const categories = useCategories();
+const { categories } = useCategories();
 const categoryNames = computed(() => categories.value.map(({ displayName }) => displayName));
 const refresh = useRefreshTransactions();
 

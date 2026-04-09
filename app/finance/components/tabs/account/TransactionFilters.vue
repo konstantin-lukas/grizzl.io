@@ -11,7 +11,7 @@ const { categoryId, reference, from, to } = useTransactions();
 
 const deferredReference = useDeferredValue(reference);
 
-const categories = useCategories();
+const { categories } = useCategories();
 const categoryItems = computed(
     () => categories.value?.map(category => ({ id: category.id, label: category.displayName })) ?? [],
 );

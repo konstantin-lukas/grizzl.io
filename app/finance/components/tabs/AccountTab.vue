@@ -7,11 +7,16 @@ import EmptyTransactions from "~/finance/components/tabs/account/EmptyTransactio
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
+import useCategories from "~/finance/composables/useCategories";
 import useTransactions from "~/finance/composables/useTransactions";
 
 const { transactions } = useTransactions();
+const { refresh } = useCategories();
 
 const upsertFormOpen = ref(false);
+watch(upsertFormOpen, isOpen => {
+    if (isOpen) refresh();
+});
 </script>
 
 <template>
