@@ -2,6 +2,7 @@
     "finance": {
         "reference": "Referencia",
         "category": "Categoría",
+        "amount": "Importe",
         "dateRange": "Rango de fechas",
         "meta": {
             "title": "Finanzas",
@@ -28,7 +29,10 @@
                 "drawer": {
                     "edit": "Editar cuenta",
                     "create": "Crear cuenta",
-                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas"
+                    "description": "Configura una cuenta de ahorros con una moneda fija para gestionar tus finanzas",
+                    "editTransaction": "Editar transacción",
+                    "createTransaction": "Crear transacción",
+                    "descriptionTransaction": "Gestiona tus transacciones y ajusta el saldo de tu cuenta"
                 }
             },
             "toast": {
@@ -37,13 +41,17 @@
                 "updatedTitle": "Cuenta de ahorros actualizada",
                 "updatedDescription": "La cuenta con el nombre «{title}» fue actualizada.",
                 "deletedTitle": "Cuenta de ahorros eliminada",
-                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada.",
-                "createdTransactionTitle": "Transacción creada",
-                "createdTransactionDescription": "Se ha creado una nueva transacción con el importe «{amount}».",
-                "updatedTransactionTitle": "Transacción actualizada",
-                "updatedTransactionDescription": "La transacción con el importe «{amount}» ha sido actualizada.",
-                "deletedTransactionTitle": "Transacción eliminada",
-                "deletedTransactionDescription": "La transacción con el importe «{amount}» ha sido eliminada."
+                "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
+            }
+        },
+        "transaction": {
+            "toast": {
+                "createdTitle": "Transacción creada",
+                "createdDescription": "Se ha creado una nueva transacción con el importe «{amount}».",
+                "updatedTitle": "Transacción actualizada",
+                "updatedDescription": "La transacción con el importe «{amount}» ha sido actualizada.",
+                "deletedTitle": "Transacción eliminada",
+                "deletedDescription": "La transacción con el importe «{amount}» ha sido eliminada."
             }
         }
     }

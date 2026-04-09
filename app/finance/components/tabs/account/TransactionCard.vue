@@ -33,8 +33,8 @@ const interpolations = computed(() => ({
 
 const execute = useSoftDelete(apiRoute, {
     refresh,
-    successTitle: "finance.account.toast.deletedTransactionTitle",
-    successDescription: "finance.account.toast.deletedTransactionDescription",
+    successTitle: "finance.transaction.toast.deletedTitle",
+    successDescription: "finance.transaction.toast.deletedDescription",
     interpolations,
 });
 </script>

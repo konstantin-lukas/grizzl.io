@@ -6,9 +6,12 @@ import BalanceChart from "~/finance/components/tabs/account/BalanceChart.vue";
 import EmptyTransactions from "~/finance/components/tabs/account/EmptyTransactions.vue";
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
+import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
 import useTransactions from "~/finance/composables/useTransactions";
 
 const { transactions } = useTransactions();
+
+const upsertFormOpen = ref(false);
 </script>
 
 <template>
@@ -21,6 +24,7 @@ const { transactions } = useTransactions();
                 variant="ghost"
                 color="neutral"
                 :aria-label="$t('finance.account.addTransaction')"
+                @click="upsertFormOpen = true"
             />
             <Button
                 :icon="ICON_EVENT_REPEAT"
@@ -40,4 +44,5 @@ const { transactions } = useTransactions();
         </TransitionGroup>
     </ul>
     <EmptyTransactions v-if="transactions.length === 0" />
+    <TransactionUpsertForm v-model:open="upsertFormOpen" @success="upsertFormOpen = false" />
 </template>
