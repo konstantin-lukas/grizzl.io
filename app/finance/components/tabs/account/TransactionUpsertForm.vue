@@ -26,23 +26,35 @@ const refresh = useRefreshTransactions();
 const open = defineModel<boolean>("open");
 const { language } = useLocale();
 
-const emptyState = {
-    reference: "",
-    category: { name: "", icon: "question-mark-rounded" },
-    amount: 0,
-} as const;
-
 const state = reactive({
-    ...emptyState,
+    ...{
+        reference: "",
+        category: { name: "", icon: "question-mark-rounded" },
+        amount: 0,
+    },
     ...{ ...initialState, reference: initialState?.reference || "" },
 });
 
 watch(open, newOpen => {
     if (!newOpen) return;
-    Object.assign(state, {
-        ...(initialState ?? emptyState),
-        reference: initialState?.reference || "",
-    });
+
+    if (initialState) {
+        state.reference = initialState.reference ?? "";
+        state.amount = initialState.amount;
+        state.category.name = initialState.category.name;
+        state.category.icon = initialState.category.icon;
+        return;
+    }
+    const emptyState = {
+        reference: "",
+        category: { name: "", icon: "question-mark-rounded" },
+        amount: 0,
+    };
+
+    state.reference = emptyState.reference;
+    state.amount = emptyState.amount;
+    state.category.name = "";
+    state.category.icon = emptyState.category.icon;
 });
 
 const onSubmit = useOnSubmit({

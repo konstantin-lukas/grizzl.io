@@ -9,7 +9,7 @@ const open = ref(false);
 const { queryKey, queryValue = null } = defineProps<{ queryKey: string; queryValue?: string }>();
 
 watch(
-    () => [queryKey, queryValue],
+    () => [queryKey, queryValue, route.path],
     () => {
         if (queryValue) {
             open.value = true;

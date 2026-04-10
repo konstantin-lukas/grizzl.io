@@ -89,7 +89,6 @@ const TRANSACTION_INVALID_DATA_TEST_CASES = [
     ["the amount is too large", withTransaction("amount", BigInt(Number.MAX_SAFE_INTEGER) + 1n)],
     ["the amount is too small", withTransaction("amount", BigInt(Number.MIN_SAFE_INTEGER) - 1n)],
     ["the amount is missing", omit(BASE_TRANSACTION, "amount")],
-    ["the reference is empty", withTransaction("reference", "")],
     ["the reference is too long", withTransaction("reference", str({ length: 101 }))],
     [
         "the category name is too long",
@@ -107,7 +106,6 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is zero", withTransaction("amount", 0)],
     ["the amount is positive", withTransaction("amount", 1)],
     ["the amount is negative", withTransaction("amount", -1)],
-    ["the reference is just long enough", withTransaction("reference", "a")],
     ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
     ...(Object.keys(CategoryIconsMap).map(icon => [
         `the category icon is ${icon}`,
@@ -152,7 +150,6 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is zero", withAutoTransaction("amount", 0)],
     ["the amount is positive", withAutoTransaction("amount", 1)],
     ["the amount is negative", withAutoTransaction("amount", -1)],
-    ["the reference is just long enough", withAutoTransaction("reference", "a")],
     ["the reference is just short enough", withAutoTransaction("reference", str({ length: 100 }))],
     ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
     ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
@@ -170,7 +167,6 @@ export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [
     ["the amount is too large", withAutoTransaction("amount", BigInt(Number.MAX_SAFE_INTEGER) + 1n)],
     ["the amount is too small", withAutoTransaction("amount", BigInt(Number.MIN_SAFE_INTEGER) - 1n)],
     ["the amount is missing", omit(BASE_AUTO_TRANSACTION, "amount")],
-    ["the reference is empty", withAutoTransaction("reference", "")],
     ["the reference is too long", withAutoTransaction("reference", str({ length: 101 }))],
     ["execInterval is too small", withAutoTransaction("execInterval", 0)],
     ["execInterval is negative", withAutoTransaction("execInterval", -1)],

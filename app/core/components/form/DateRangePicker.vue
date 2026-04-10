@@ -17,8 +17,7 @@ const modelValue = shallowRef({
 });
 
 watch(props, newProps => {
-    modelValue.value.start = newProps.start;
-    modelValue.value.end = newProps.end;
+    modelValue.value = { start: newProps.start, end: newProps.end };
 });
 
 watch(modelValue, newValue => {
