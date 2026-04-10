@@ -16,16 +16,21 @@ export default function useTransactions() {
     const transactions = useState<Transaction[]>("transactions", () => []);
     const startBalance = useState<number>("account-start-balance", () => 0);
 
-    watch(openAccountId, () => {
-        categoryId.value = undefined;
-        reference.value = undefined;
+    watch(
+        openAccountId,
+        () => {
+            if (import.meta.server) return;
+            categoryId.value = undefined;
+            reference.value = undefined;
 
-        const tz = getLocalTimeZone();
-        const end = today(tz);
+            const tz = getLocalTimeZone();
+            const end = today(tz);
 
-        from.value = end.subtract({ months: 1 });
-        to.value = end;
-    });
+            from.value = end.subtract({ months: 1 });
+            to.value = end;
+        },
+        { immediate: true },
+    );
 
     return { transactions, categoryId, from, to, reference, startBalance };
 }
