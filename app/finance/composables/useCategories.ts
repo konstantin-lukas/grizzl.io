@@ -5,7 +5,7 @@ export default function useCategories() {
     const { openAccountId } = useAccounts();
     const toast = useToast();
     const { t } = useI18n();
-    const { data, execute } = useFetch(() => `/api/finance/accounts/${openAccountId.value}/categories`, {
+    const { data, refresh } = useFetch(() => `/api/finance/accounts/${openAccountId.value}/categories`, {
         onResponseError: onResponseError(toast, t),
         immediate: false,
         watch: false,
@@ -19,10 +19,10 @@ export default function useCategories() {
                 data.value = [];
                 return;
             }
-            await execute();
+            await refresh();
         },
         { immediate: true },
     );
 
-    return data;
+    return { categories: data, refresh };
 }

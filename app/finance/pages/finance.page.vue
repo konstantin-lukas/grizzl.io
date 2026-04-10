@@ -20,9 +20,14 @@ const upsertFormOpen = ref(false);
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="relative mb-16 flex h-full w-full grow flex-col">
                 <AccountH1 />
-                <AccountTabs v-if="openAccountId" class="mt-10" />
                 <Transition name="fade">
-                    <div v-if="showEmptyView" class="center absolute h-full w-full grow">
+                    <AccountTabs v-if="openAccountId" class="mt-10" />
+                </Transition>
+                <Transition name="fade">
+                    <div
+                        v-if="showEmptyView"
+                        class="center absolute top-0 left-0 h-main-height-no-padding w-full grow -translate-y-4"
+                    >
                         <Empty @open="upsertFormOpen = true" />
                     </div>
                 </Transition>

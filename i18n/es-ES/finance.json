@@ -2,6 +2,8 @@
     "finance": {
         "reference": "Referencia",
         "category": "Categoría",
+        "categoryIcon": "Icono de categoría",
+        "amount": "Importe",
         "dateRange": "Rango de fechas",
         "meta": {
             "title": "Finanzas",
@@ -38,6 +40,25 @@
                 "updatedDescription": "La cuenta con el nombre «{title}» fue actualizada.",
                 "deletedTitle": "Cuenta de ahorros eliminada",
                 "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
+            }
+        },
+        "transaction": {
+            "empty": "No existen transacciones que coincidan con los filtros seleccionados.",
+            "toast": {
+                "createdTitle": "Transacción creada",
+                "createdDescription": "Se ha creado una nueva transacción con el importe «{amount}».",
+                "updatedTitle": "Transacción actualizada",
+                "updatedDescription": "La transacción con el importe «{amount}» ha sido actualizada.",
+                "deletedTitle": "Transacción eliminada",
+                "deletedDescription": "La transacción con el importe «{amount}» ha sido eliminada."
+            },
+            "aria": {
+                "selectCategoryIcon": "Selecciona un icono de categoría",
+                "drawer": {
+                    "edit": "Editar transacción",
+                    "create": "Crear transacción",
+                    "description": "Gestiona tus transacciones y ajusta el saldo de tu cuenta"
+                }
             }
         }
     }

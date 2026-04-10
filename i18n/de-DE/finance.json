@@ -2,6 +2,8 @@
     "finance": {
         "reference": "Verweis",
         "category": "Kategorie",
+        "categoryIcon": "Kategorie-Icon",
+        "amount": "Betrag",
         "dateRange": "Datumsbereich",
         "meta": {
             "title": "Finanzen",
@@ -38,6 +40,25 @@
                 "updatedDescription": "Das Konto mit dem Namen „{title}“ wurde aktualisiert.",
                 "deletedTitle": "Sparkonto gelöscht",
                 "deletedDescription": "Das Konto mit dem Namen „{title}“ wurde gelöscht."
+            }
+        },
+        "transaction": {
+            "empty": "Es gibt keine Transaktionen, die den ausgewählten Filtern entsprechen.",
+            "toast": {
+                "createdTitle": "Transaktion erstellt",
+                "createdDescription": "Eine neue Transaktion mit dem Betrag „{amount}“ wurde erstellt.",
+                "updatedTitle": "Transaktion aktualisiert",
+                "updatedDescription": "Die Transaktion mit dem Betrag „{amount}“ wurde aktualisiert.",
+                "deletedTitle": "Transaktion gelöscht",
+                "deletedDescription": "Die Transaktion mit dem Betrag „{amount}“ wurde gelöscht."
+            },
+            "aria": {
+                "selectCategoryIcon": "Wähle ein Kategorie-Icon",
+                "drawer": {
+                    "edit": "Transaktion bearbeiten",
+                    "create": "Transaktion erstellen",
+                    "description": "Verwalte deine Transaktionen und passe den Kontostand an"
+                }
             }
         }
     }

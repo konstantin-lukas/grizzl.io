@@ -8,15 +8,19 @@ const router = useRouter();
 const open = ref(false);
 const { queryKey, queryValue = null } = defineProps<{ queryKey: string; queryValue?: string }>();
 
-watchEffect(() => {
-    if (queryValue) {
-        open.value = true;
-        router.push(`${route.path}?${queryKey}=${queryValue}`);
-    } else {
-        open.value = false;
-        router.push(route.path);
-    }
-});
+watch(
+    () => [queryKey, queryValue, route.path],
+    () => {
+        if (queryValue) {
+            open.value = true;
+            router.push(`${route.path}?${queryKey}=${queryValue}`);
+        } else {
+            open.value = false;
+            router.push(route.path);
+        }
+    },
+    { immediate: true },
+);
 </script>
 
 <template>

@@ -140,20 +140,19 @@
     .draggable-list-move,
     .draggable-list-enter-active,
     .draggable-list-leave-active {
-        transition: transform 0.5s ease;
         z-index: 5;
     }
 
     .draggable-list-enter-active {
         transition:
             opacity 0.5s ease,
-            transform 0.5s ease;
+            filter 0.5s ease;
     }
 
     .draggable-list-enter-from,
     .draggable-list-leave-to {
         opacity: 0;
-        transform: translateX(3rem);
+        filter: blur(1rem);
     }
 
     .draggable-list-leave-active {
@@ -163,13 +162,12 @@
     .fade-enter-active,
     .fade-leave-active {
         transition: all 0.25s ease;
-        transform-origin: top;
     }
 
     .fade-enter-from,
     .fade-leave-to {
         opacity: 0;
-        transform: scale(90%);
+        filter: blur(1rem);
     }
 
     .swipe-enter-active,
@@ -207,6 +205,7 @@
 
     .fade-pure-enter-from,
     .fade-pure-leave-to {
+        filter: blur(1rem);
         opacity: 0;
     }
 
@@ -223,14 +222,7 @@
     .list-enter-from,
     .list-leave-to {
         opacity: 0;
-        transform: translateX(3rem);
-    }
-
-    @media screen and (max-width: 1024px) {
-        .list-enter-from,
-        .list-leave-to {
-            transform: translateX(2rem);
-        }
+        filter: blur(1rem);
     }
 
     /* ensure leaving items are taken out of layout flow so that moving

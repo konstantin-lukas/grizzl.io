@@ -2,6 +2,8 @@
     "finance": {
         "reference": "参照",
         "category": "カテゴリー",
+        "categoryIcon": "カテゴリーアイコン",
+        "amount": "金額",
         "dateRange": "日付範囲",
         "meta": {
             "title": "ファイナンス",
@@ -38,6 +40,25 @@
                 "updatedDescription": "「{title}」という名前の口座を更新しました。",
                 "deletedTitle": "貯蓄口座を削除しました",
                 "deletedDescription": "「{title}」という名前の口座を削除しました。"
+            }
+        },
+        "transaction": {
+            "empty": "選択したフィルターに一致する取引はありません。",
+            "toast": {
+                "createdTitle": "取引を作成しました",
+                "createdDescription": "金額「{amount}」の新しい取引が作成されました。",
+                "updatedTitle": "取引を更新しました",
+                "updatedDescription": "金額「{amount}」の取引が更新されました。",
+                "deletedTitle": "取引を削除しました",
+                "deletedDescription": "金額「{amount}」の取引が削除されました。"
+            },
+            "aria": {
+                "selectCategoryIcon": "カテゴリーアイコンを選択",
+                "drawer": {
+                    "edit": "取引を編集",
+                    "create": "取引を作成",
+                    "description": "取引を管理して、アカウント残高を調整します"
+                }
             }
         }
     }

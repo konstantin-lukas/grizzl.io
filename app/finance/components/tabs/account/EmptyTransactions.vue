@@ -1,8 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ICON_FILTER } from "~/core/constants/icons.constant";
+</script>
 
 <template>
-    <div class="flex flex-col items-center justify-center rounded-xl bg-elevated p-8">
-        <NuxtImg src="/images/undraw_page-eaten.svg" class="w-full max-w-48 select-none" alt="" draggable="false" />
-        <span class="mt-6 block text-center">{{ $t("ui.noEntries") }}</span>
-    </div>
+    <li class="absolute top-0 left-0 w-full pt-4">
+        <div class="flex w-full flex-col items-center justify-center rounded-xl bg-elevated">
+            <UEmpty
+                variant="naked"
+                :icon="ICON_FILTER"
+                :title="$t('ui.noEntries')"
+                :description="$t('finance.transaction.empty')"
+                :ui="{ avatar: 'bg-default' }"
+            />
+        </div>
+    </li>
 </template>

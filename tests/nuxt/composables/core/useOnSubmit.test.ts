@@ -79,7 +79,9 @@ function setup(overrides = {}) {
         state: baseState,
         emit,
         translationKey: "test",
-        resourceName: v => v.name,
+        interpolations: v => ({
+            name: v.name,
+        }),
         refresh,
         ...overrides,
     });
@@ -190,16 +192,18 @@ test("uses dynamic url and method", async () => {
     });
 });
 
-test("passes resourceName result to description", async () => {
-    const resourceName = vi.fn(() => "My Resource");
+test("passes interpolations result to description", async () => {
+    const interpolations = vi.fn(() => ({
+        name: "My Resource",
+    }));
 
-    const onSubmit = setup({ resourceName });
+    const onSubmit = setup({ interpolations });
 
     fetchMock.mockResolvedValueOnce({});
 
     await onSubmit();
 
-    expect(resourceName).toHaveBeenCalled();
+    expect(interpolations).toHaveBeenCalled();
 });
 
 test("does not emit success on error", async () => {

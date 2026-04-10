@@ -47,6 +47,7 @@ export default defineNuxtConfig({
                 { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
             ],
         },
+        pageTransition: { name: "fade-pure", mode: "out-in" },
     },
     modules: [
         "@nuxt/eslint",

@@ -21,7 +21,11 @@ export const GetTransactionFiltersSchema = z.object({
 
 export const PostTransactionSchema = z.object({
     amount: z.int(),
-    reference: z.string().min(TITLE_MIN).max(TITLE_MAX).nullable(),
+    reference: z
+        .string()
+        .max(TITLE_MAX)
+        .nullable()
+        .transform(value => (value === "" ? null : value)),
     category: CategorySchema,
 });
 

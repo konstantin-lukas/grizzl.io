@@ -2,6 +2,8 @@
     "finance": {
         "reference": "Reference",
         "category": "Category",
+        "categoryIcon": "Category Icon",
+        "amount": "Amount",
         "dateRange": "Date Range",
         "meta": {
             "title": "Finance",
@@ -38,6 +40,25 @@
                 "updatedDescription": "The account titled “{title}” was updated.",
                 "deletedTitle": "Savings Account Deleted",
                 "deletedDescription": "The account titled “{title}” was deleted."
+            }
+        },
+        "transaction": {
+            "empty": "No transactions exist that match the selected filters.",
+            "toast": {
+                "createdTitle": "Transaction Created",
+                "createdDescription": "A new transaction with amount “{amount}” was created.",
+                "updatedTitle": "Transaction Updated",
+                "updatedDescription": "The transaction with amount “{amount}” was updated.",
+                "deletedTitle": "Transaction Deleted",
+                "deletedDescription": "The transaction with amount “{amount}” was deleted."
+            },
+            "aria": {
+                "selectCategoryIcon": "Select category icon",
+                "drawer": {
+                    "edit": "Edit Transaction",
+                    "create": "Create Transaction",
+                    "description": "Manage transactions and adjust the balance of your account"
+                }
             }
         }
     }
