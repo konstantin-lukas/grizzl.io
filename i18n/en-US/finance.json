@@ -57,7 +57,7 @@
                 "drawer": {
                     "edit": "Edit Transaction",
                     "create": "Create Transaction",
-                    "description": "Manage transactions adjust the balance of your account"
+                    "description": "Manage transactions and adjust the balance of your account"
                 }
             }
         }

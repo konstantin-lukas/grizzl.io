@@ -39,7 +39,10 @@ const state = reactive({
 
 watch(open, newOpen => {
     if (!newOpen) return;
-    Object.assign(state, initialState ?? emptyState);
+    Object.assign(state, {
+        ...(initialState ?? emptyState),
+        reference: initialState?.reference || "",
+    });
 });
 
 const onSubmit = useOnSubmit({

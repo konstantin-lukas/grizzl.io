@@ -19,7 +19,8 @@ watch(
             model.value = emptyIcon;
             return;
         }
-        model.value = (await suggest(newName)) ?? "";
+        const suggestion = await suggest(newName);
+        if (suggestion) model.value = suggestion;
     },
 );
 </script>
@@ -29,7 +30,7 @@ watch(
         <button
             class="group/category-icon relative overflow-hidden rounded-full"
             type="button"
-            :aria-label="$t('finance.aria.selectCategoryIcon')"
+            :aria-label="$t('finance.transaction.aria.selectCategoryIcon')"
         >
             <CategoryIcon :category-name="model" />
             <span
