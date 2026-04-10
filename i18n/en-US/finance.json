@@ -43,6 +43,7 @@
             }
         },
         "transaction": {
+            "empty": "No transactions exist that match the selected filters.",
             "toast": {
                 "createdTitle": "Transaction Created",
                 "createdDescription": "A new transaction with amount “{amount}” was created.",

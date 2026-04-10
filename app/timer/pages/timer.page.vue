@@ -60,7 +60,10 @@ watch(open, () => {
                 </Drawer>
                 <OverviewList :timers="data" @create="open = true" @start="timer => (activeTimer = timer)" />
                 <Transition name="fade">
-                    <div v-if="data && data.length === 0" class="center absolute h-full w-full grow">
+                    <div
+                        v-if="data && data.length === 0"
+                        class="center absolute h-main-height-no-padding w-full grow -translate-y-4"
+                    >
                         <Empty @open="() => (open = true)" />
                     </div>
                 </Transition>

@@ -46,7 +46,7 @@ watch(upsertFormOpen, isOpen => {
     </div>
     <BalanceChart />
     <H2 class="mt-12">{{ $t("finance.account.transactionHistory") }}</H2>
-    <ul class="relative">
+    <ul class="relative min-h-32">
         <TransitionGroup name="list">
             <TransactionCard
                 v-for="transaction in transactions"

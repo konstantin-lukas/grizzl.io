@@ -43,6 +43,7 @@
             }
         },
         "transaction": {
+            "empty": "選択したフィルターに一致する取引はありません。",
             "toast": {
                 "createdTitle": "取引を作成しました",
                 "createdDescription": "金額「{amount}」の新しい取引が作成されました。",

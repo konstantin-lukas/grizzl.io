@@ -43,6 +43,7 @@
             }
         },
         "transaction": {
+            "empty": "No existen transacciones que coincidan con los filtros seleccionados.",
             "toast": {
                 "createdTitle": "Transacción creada",
                 "createdDescription": "Se ha creado una nueva transacción con el importe «{amount}».",
