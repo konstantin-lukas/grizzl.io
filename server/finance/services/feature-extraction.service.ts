@@ -52,6 +52,7 @@ export class FeatureExtractionService {
     }
 
     static async getClosestMatch(input: string) {
+        await this.initialize();
         if (!this.iconEmbeddings || !this.instance) return null;
         const inputEmbedding = await this.getEmbedding(input);
         const similarities = await Promise.all(
