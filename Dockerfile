@@ -1,7 +1,6 @@
 FROM node:24.8-bookworm-slim AS base
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /home/grizzl
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
@@ -47,6 +46,7 @@ FROM base AS runner
 WORKDIR /home/grizzl
 
 COPY --from=builder /home/grizzl/.output ./.output
+COPY --from=builder /home/grizzl/models ./models
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

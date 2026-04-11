@@ -11,6 +11,7 @@ export default withNuxt([
         },
         rules: {
             ...a11yRules,
+            "@typescript-eslint/ban-ts-comment": "off",
             "array-callback-return": "error",
             "default-param-last": "error",
             "eqeqeq": "error",

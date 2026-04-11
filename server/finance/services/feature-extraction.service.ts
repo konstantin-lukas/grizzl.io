@@ -20,6 +20,7 @@ export class FeatureExtractionService {
             env.localModelPath = "./models";
             env.allowRemoteModels = false;
 
+            // @ts-ignore Expression produces a union type that is too complex to represent
             this.instance = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2", {
                 dtype: "uint8",
             });

@@ -14,17 +14,12 @@ export default function useIconSuggestion() {
     onMounted(async () => {
         if (!import.meta.client) return;
 
-        const { pipeline, env } = await import("@huggingface/transformers");
+        const { env } = await import("@huggingface/transformers");
 
         env.allowRemoteModels = false;
         env.allowLocalModels = true;
         env.useBrowserCache = true;
         env.backends.onnx.wasm!.wasmPaths = "/wasm/";
-
-        // @ts-expect-error Expression produces a union type that is too complex to represent
-        embeddingModel.value = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2", {
-            dtype: "uint8",
-        });
 
         icons.value = await Promise.all(
             Object.entries(CategoryIconsMap).map(async ([icon, tags]) => [icon, await getEmbedding(tags)] as const),
