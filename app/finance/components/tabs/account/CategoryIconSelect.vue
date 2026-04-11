@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
+import useCategories from "~/finance/composables/useCategories";
 
+const { categories } = useCategories();
 const emptyIcon = "question-mark-rounded";
 const icons = Object.keys(CategoryIconsMap);
 const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string }>();
+
 const open = ref(false);
 
 const categoryName = toRef(props, "categoryName");
@@ -20,7 +24,8 @@ const { data: suggestion, pending } = useFetch(`/api/finance/category-icon`, {
 });
 
 watch(suggestion, async newSuggestion => {
-    model.value = newSuggestion.icon;
+    const icon = categories.value.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
+    model.value = icon ?? newSuggestion.icon;
 });
 </script>
 
