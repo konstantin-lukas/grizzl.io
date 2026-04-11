@@ -1,4 +1,4 @@
-import { FeatureExtractionService } from "#server/finance/services/feature-extraction";
+import { FeatureExtractionService } from "#server/finance/services/feature-extraction.service";
 
 export default defineNitroPlugin(async () => {
     await FeatureExtractionService.initialize();

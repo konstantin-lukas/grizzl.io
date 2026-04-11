@@ -1,4 +1,4 @@
-import { FeatureExtractionService } from "#server/finance/services/feature-extraction";
+import { FeatureExtractionService } from "#server/finance/services/feature-extraction.service";
 
 export default defineEventHandler(async () => {
     const response = await FeatureExtractionService.getClosestMatch("Groceries");

@@ -1,6 +1,6 @@
 import { LoggerService } from "#server/core/services/logger.service";
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
-import { type FeatureExtractionPipeline, pipeline } from "@huggingface/transformers";
+import { type FeatureExtractionPipeline, env, pipeline } from "@huggingface/transformers";
 import { cosineSimilarity } from "~/finance/utils/tensor";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
@@ -17,10 +17,12 @@ export class FeatureExtractionService {
     static async initialize() {
         const logger = new LoggerService();
         if (this.instance === null) {
-            // NOTE: Uncomment this to change the cache directory
-            // env.cacheDir = './.cache';
+            env.localModelPath = "./models";
+            env.allowRemoteModels = false;
 
-            this.instance = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2");
+            this.instance = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2", {
+                dtype: "uint8",
+            });
             logger.info("Extraction pipeline ready!");
         }
 
