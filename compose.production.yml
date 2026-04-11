@@ -62,7 +62,7 @@ services:
             - grizzl_net
 
     migrations:
-        image: node:24-alpine
+        image: node:24.8-bookworm-slim
         container_name: grizzl-migrations
         depends_on:
             postgres:
