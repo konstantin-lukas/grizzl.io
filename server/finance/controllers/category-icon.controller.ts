@@ -9,9 +9,8 @@ export default class CategoryIconController extends BaseController {
 
     public async getIconSuggestion(event: H3Event) {
         const { categoryName } = CategoryIconSuggestionSchema.parse(getQuery(event));
-        const prefix = "material-symbols:";
         const fallbackIcon = "question-mark-rounded";
-        const fallbackReturnValue = { icon: prefix + fallbackIcon };
+        const fallbackReturnValue = { icon: fallbackIcon };
 
         if (categoryName === "") return fallbackReturnValue;
 
@@ -19,7 +18,7 @@ export default class CategoryIconController extends BaseController {
 
         if (!result?.icon || result.similarity < 0.3) return fallbackReturnValue;
 
-        return { icon: prefix + result.icon };
+        return { icon: result.icon };
     }
 }
 /* c8 ignore stop */

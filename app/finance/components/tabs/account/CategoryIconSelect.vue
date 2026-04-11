@@ -2,7 +2,6 @@
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { ICON_EDIT } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
-import useIconSuggestion from "~/finance/composables/useIconSuggestion";
 
 const emptyIcon = "question-mark-rounded";
 const icons = Object.keys(CategoryIconsMap);
@@ -10,19 +9,14 @@ const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string }>();
 const open = ref(false);
 
-const suggest = useIconSuggestion();
+const { data: suggestion } = useFetch(`/api/finance/category-icon`, {
+    query: props,
+    default: () => ({ icon: emptyIcon }),
+});
 
-watch(
-    () => props.categoryName,
-    async newName => {
-        if (!newName) {
-            model.value = emptyIcon;
-            return;
-        }
-        const suggestion = await suggest(newName);
-        if (suggestion) model.value = suggestion;
-    },
-);
+watch(suggestion, async newSuggestion => {
+    model.value = newSuggestion.icon;
+});
 </script>
 
 <template>
