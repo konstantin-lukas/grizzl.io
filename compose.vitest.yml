@@ -22,7 +22,7 @@ services:
             retries: 10
 
     migrations:
-        image: node:24-alpine
+        image: node:24.8-bookworm-slim
         depends_on:
             postgres:
                 condition: service_healthy
@@ -39,7 +39,7 @@ services:
 
     node:
         container_name: grizzl-node-dev
-        image: node:24.8-alpine3.22
+        image: node:24.8-bookworm-slim
         restart: unless-stopped
         volumes:
             - .:/home/grizzl

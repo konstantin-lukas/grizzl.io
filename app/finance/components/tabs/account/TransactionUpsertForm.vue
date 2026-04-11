@@ -103,7 +103,11 @@ const onSubmit = useOnSubmit({
                         />
                     </UFormField>
                     <div class="ml-4 translate-y-4">
-                        <CategoryIconSelect v-model="state.category.icon" :category-name="state.category.name" />
+                        <CategoryIconSelect
+                            v-model="state.category.icon"
+                            :category-name="state.category.name"
+                            :categories
+                        />
                     </div>
                 </div>
                 <UFormField :label="$t('finance.reference')" name="reference" class="w-full">

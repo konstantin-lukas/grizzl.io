@@ -12,6 +12,7 @@ export const ICON_PLUS_CIRCLE = "heroicons:plus-circle-16-solid";
 export const ICON_PLAY = "heroicons:play-solid";
 export const ICON_PAUSE = "heroicons:pause-solid";
 export const ICON_EDIT = "material-symbols:edit-outline-rounded";
+export const ICON_LOAD = "material-symbols:progress-activity";
 export const ICON_MUTED = "material-symbols:volume-off-outline-rounded";
 export const ICON_UNMUTED = "material-symbols:volume-up-outline-rounded";
 export const ICON_RESTART = "heroicons:arrow-path-16-solid";
