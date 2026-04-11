@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
-import { ICON_EDIT } from "~/core/constants/icons.constant";
+import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
@@ -14,7 +14,7 @@ const categoryName = toRef(props, "categoryName");
 const deferredCategoryName = useDeferredSourceValue(categoryName);
 const query = computed(() => ({ categoryName: deferredCategoryName.value }));
 
-const { data: suggestion } = useFetch(`/api/finance/category-icon`, {
+const { data: suggestion, pending } = useFetch(`/api/finance/category-icon`, {
     query,
     default: () => ({ icon: emptyIcon }),
 });
@@ -30,10 +30,15 @@ watch(suggestion, async newSuggestion => {
             class="group/category-icon relative overflow-hidden rounded-full"
             type="button"
             :aria-label="$t('finance.transaction.aria.selectCategoryIcon')"
+            :disabled="pending"
         >
             <CategoryIcon :category-name="model" />
+            <span v-if="pending" class="center absolute top-0 left-0 size-full bg-theme-black/60 transition-opacity">
+                <UIcon :name="ICON_LOAD" class="size-6 animate-spin text-theme-white" />
+            </span>
             <span
-                class="center absolute top-0 left-0 size-full bg-theme-black/60 opacity-0 transition-opacity group-hover/category-icon:opacity-100"
+                v-else
+                class="center absolute top-0 left-0 size-full bg-theme-black/60 opacity-0 transition-opacity group-hover/category-icon:opacity-100 group-focus-visible/category-icon:opacity-100"
             >
                 <UIcon :name="ICON_EDIT" class="size-6 text-theme-white" />
             </span>
