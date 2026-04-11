@@ -16,5 +16,9 @@ export const CategorySchema = z
         ...rest,
     }));
 
+export const CategoryIconSuggestionSchema = z.object({
+    categoryName: z.string().max(TITLE_MAX),
+});
+
 export type CategoryInternal = z.output<typeof CategorySchema>;
 export type CategoryExternal = z.input<typeof CategorySchema>;

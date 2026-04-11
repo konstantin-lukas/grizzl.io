@@ -1,6 +1,6 @@
-import { FeatureExtractionService } from "#server/finance/services/feature-extraction.service";
+import CategoryIconController from "#server/finance/controllers/category-icon.controller";
 
-export default defineEventHandler(async () => {
-    const response = await FeatureExtractionService.getClosestMatch("Groceries");
-    return { data: response };
+export default defineEventHandler(async event => {
+    const categoryIconController = createContainer().resolve(CategoryIconController, event);
+    return categoryIconController.getIconSuggestion(event);
 });

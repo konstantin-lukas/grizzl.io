@@ -5,7 +5,6 @@ import {
     PutTransactionSchema,
 } from "#shared/finance/validators/transaction.validator";
 import type { H3Event } from "h3";
-import { z } from "zod";
 import BaseController from "~~/server/core/controllers/base.controller";
 import TransactionService from "~~/server/finance/services/transaction.service";
 
@@ -26,7 +25,7 @@ export default class TransactionController extends BaseController {
 
     public async getList(event: H3Event) {
         const accountId = BaseController.parseIdParameter(event, "accountId");
-        const filters = z.parse(GetTransactionFiltersSchema, getQuery(event));
+        const filters = GetTransactionFiltersSchema.parse(getQuery(event));
         return this.transactionService.getList(event.context.user.id, accountId, filters);
     }
 

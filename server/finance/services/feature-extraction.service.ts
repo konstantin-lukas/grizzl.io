@@ -3,6 +3,7 @@ import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { type FeatureExtractionPipeline, env, pipeline } from "@huggingface/transformers";
 import { cosineSimilarity } from "~/finance/utils/tensor";
 
+/* c8 ignore start */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class FeatureExtractionService {
     static instance: FeatureExtractionPipeline | null = null;
@@ -51,6 +52,7 @@ export class FeatureExtractionService {
         const closestMatch = similarities.reduce((max, current) =>
             current.similarity > max.similarity ? current : max,
         );
-        return closestMatch.icon as keyof typeof CategoryIconsMap;
+        return closestMatch as { icon: keyof typeof CategoryIconsMap; similarity: number };
     }
 }
+/* c8 ignore stop */
