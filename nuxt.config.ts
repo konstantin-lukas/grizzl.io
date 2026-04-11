@@ -22,8 +22,8 @@ export default defineNuxtConfig({
         // This is necessary because HMR seems to break @huggingface/transformers module
         // https://github.com/huggingface/transformers.js/issues/651
         hooks: {
-            "dev:reload": () => {
-                import("onnxruntime-node");
+            "dev:reload": async () => {
+                await import("onnxruntime-node");
             },
         },
     },

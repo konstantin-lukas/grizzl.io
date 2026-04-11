@@ -9,19 +9,19 @@ test("returns the fallback icon when the category name is empty", async ({ reque
     const response = await request.get("/api/finance/category-icon?categoryName");
     expect(response.status()).toBe(200);
     const receivedData = await response.json();
-    expect(receivedData).toStrictEqual({ icon: "material-symbols:question-mark-rounded" });
+    expect(receivedData).toStrictEqual({ icon: "question-mark-rounded" });
 });
 
 test("returns the fallback icon when no fitting icon is found", async ({ request }) => {
     const response = await request.get("/api/finance/category-icon?categoryName=Germany");
     expect(response.status()).toBe(200);
     const receivedData = await response.json();
-    expect(receivedData).toStrictEqual({ icon: "material-symbols:question-mark-rounded" });
+    expect(receivedData).toStrictEqual({ icon: "question-mark-rounded" });
 });
 
 test("returns a fitting icon suggestion", async ({ request }) => {
     const response = await request.get("/api/finance/category-icon?categoryName=Dog%20Food");
     expect(response.status()).toBe(200);
     const receivedData = await response.json();
-    expect(receivedData).toStrictEqual({ icon: "material-symbols:pet-supplies-outline" });
+    expect(receivedData).toStrictEqual({ icon: "pet-supplies-outline" });
 });
