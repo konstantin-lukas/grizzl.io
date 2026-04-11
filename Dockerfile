@@ -1,4 +1,4 @@
-FROM node:24.8-alpine3.22 AS base
+FROM node:24.8-bookworm-slim AS base
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat

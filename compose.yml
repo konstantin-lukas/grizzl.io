@@ -1,6 +1,6 @@
 services:
     setup:
-        image: node:24.8-alpine3.22
+        image: node:24.8-bookworm-slim
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
@@ -44,7 +44,7 @@ services:
 
     webserver:
         container_name: grizzl-web-server-dev
-        image: node:24.8-alpine3.22
+        image: node:24.8-bookworm-slim
         restart: unless-stopped
         volumes:
             - .:/home/grizzl
