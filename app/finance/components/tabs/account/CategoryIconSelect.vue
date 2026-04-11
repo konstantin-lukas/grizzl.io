@@ -4,13 +4,11 @@ import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
-import useCategories from "~/finance/composables/useCategories";
 
-const { categories } = useCategories();
 const emptyIcon = "question-mark-rounded";
 const icons = Object.keys(CategoryIconsMap);
 const model = defineModel<string>({ default: emptyIcon });
-const props = defineProps<{ categoryName: string }>();
+const props = defineProps<{ categoryName: string; categories: { normalizedName: string; icon: string }[] }>();
 
 const open = ref(false);
 
@@ -24,7 +22,7 @@ const { data: suggestion, pending } = useFetch(`/api/finance/category-icon`, {
 });
 
 watch(suggestion, async newSuggestion => {
-    const icon = categories.value.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
+    const icon = props.categories.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
     model.value = icon ?? newSuggestion.icon;
 });
 </script>
