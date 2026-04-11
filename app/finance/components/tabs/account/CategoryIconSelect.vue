@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 
@@ -9,8 +10,12 @@ const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string }>();
 const open = ref(false);
 
+const categoryName = toRef(props, "categoryName");
+const deferredCategoryName = useDeferredSourceValue(categoryName);
+const query = computed(() => ({ categoryName: deferredCategoryName.value }));
+
 const { data: suggestion } = useFetch(`/api/finance/category-icon`, {
-    query: props,
+    query,
     default: () => ({ icon: emptyIcon }),
 });
 
