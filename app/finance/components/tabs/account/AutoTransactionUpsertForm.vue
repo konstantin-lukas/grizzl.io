@@ -48,9 +48,11 @@ watch(
     state,
     newState => {
         if (!isInsert.value) return;
-        const date = today(getLocalTimeZone())
-            .subtract({ months: newState.execInterval })
-            .set({ day: newState.execOn });
+        const now = today(getLocalTimeZone());
+        let date = now.set({ day: newState.execOn });
+        if (date.compare(now) >= 0) {
+            date = now.subtract({ months: newState.execInterval }).set({ day: newState.execOn });
+        }
         state.lastExec = date.toString();
     },
     { immediate: true },
