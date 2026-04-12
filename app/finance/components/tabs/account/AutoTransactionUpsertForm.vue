@@ -94,7 +94,7 @@ const onSubmit = useOnSubmit({
     state,
     emit,
     refresh,
-    translationKey: "finance.transaction",
+    translationKey: "finance.autoTransaction",
     interpolations: d => ({ amount: formatCurrency(language.value, openAccount.value!.currency, d.amount) }),
 });
 </script>
@@ -108,7 +108,7 @@ const onSubmit = useOnSubmit({
             @submit.prevent="onSubmit"
         >
             <template #heading>
-                <H1>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</H1>
+                <H1>{{ $t(`finance.autoTransaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</H1>
             </template>
             <template #default>
                 <UFormField :label="$t('finance.amount')" name="amount" class="w-full" required>
@@ -146,8 +146,12 @@ const onSubmit = useOnSubmit({
                         data-test-id="auto-transaction-upsert-reference-input"
                     />
                 </UFormField>
-                <div class="flex w-full gap-4">
-                    <UFormField label="Execution Interval" name="execInterval" class="w-full">
+                <div class="flex w-full gap-4 not-xs:flex-col">
+                    <UFormField
+                        :label="$t('finance.autoTransaction.form.execInterval')"
+                        name="execInterval"
+                        class="w-full"
+                    >
                         <UInputNumber
                             v-model="state.execInterval"
                             class="w-full"
@@ -157,7 +161,7 @@ const onSubmit = useOnSubmit({
                             data-test-id="auto-transaction-upsert-exec-interval-input"
                         />
                     </UFormField>
-                    <UFormField label="Execution Day" name="execOn" class="w-full">
+                    <UFormField :label="$t('finance.autoTransaction.form.execOn')" name="execOn" class="w-full">
                         <UInputNumber
                             v-model="state.execOn"
                             class="w-full"
@@ -169,7 +173,7 @@ const onSubmit = useOnSubmit({
                 </div>
             </template>
         </BaseUpsertForm>
-        <template #title>{{ $t(`finance.transaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</template>
-        <template #description>{{ $t("finance.transaction.aria.drawer.description") }}</template>
+        <template #title>{{ $t(`finance.autoTransaction.aria.drawer.${isInsert ? "create" : "edit"}`) }}</template>
+        <template #description>{{ $t("finance.autoTransaction.aria.drawer.description") }}</template>
     </Drawer>
 </template>

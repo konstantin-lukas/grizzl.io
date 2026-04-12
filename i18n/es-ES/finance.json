@@ -62,6 +62,10 @@
             }
         },
         "autoTransaction": {
+            "form": {
+                "execInterval": "Intervalo de ejecución",
+                "execOn": "Día de ejecución"
+            },
             "toast": {
                 "createdTitle": "Transacción automática creada",
                 "createdDescription": "Se ha creado una nueva transacción automática con el importe «{amount}».",
@@ -69,6 +73,13 @@
                 "updatedDescription": "La transacción automática con el importe «{amount}» ha sido actualizada.",
                 "deletedTitle": "Transacción automática eliminada",
                 "deletedDescription": "La transacción automática con el importe «{amount}» ha sido eliminada."
+            },
+            "aria": {
+                "drawer": {
+                    "edit": "Reprogramar transacción",
+                    "create": "Programar transacción",
+                    "description": "Gestiona las transacciones automáticas que se ejecutan regularmente"
+                }
             }
         }
     }

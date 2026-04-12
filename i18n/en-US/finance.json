@@ -62,6 +62,10 @@
             }
         },
         "autoTransaction": {
+            "form": {
+                "execInterval": "Execution Interval",
+                "execOn": "Execution Day"
+            },
             "toast": {
                 "createdTitle": "Automatic Transaction Created",
                 "createdDescription": "A new automatic transaction with amount “{amount}” was created.",
@@ -69,6 +73,13 @@
                 "updatedDescription": "The automatic transaction with amount “{amount}” was updated.",
                 "deletedTitle": "Automatic Transaction Deleted",
                 "deletedDescription": "The automatic transaction with amount “{amount}” was deleted."
+            },
+            "aria": {
+                "drawer": {
+                    "edit": "Reschedule Transaction",
+                    "create": "Schedule Transaction",
+                    "description": "Manage automatic transactions that are executed regularly"
+                }
             }
         }
     }
