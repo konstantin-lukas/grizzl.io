@@ -7,6 +7,7 @@ const inputDate = useTemplateRef("inputDate");
 const props = defineProps<{
     start: CalendarDate | undefined;
     end: CalendarDate | undefined;
+    min?: CalendarDate;
     max?: CalendarDate;
 }>();
 const emit = defineEmits<{ update: [{ start: CalendarDate; end: CalendarDate }] }>();
@@ -21,13 +22,28 @@ watch(props, newProps => {
 });
 
 watch(modelValue, newValue => {
-    if (!newValue.start || !newValue.end || (props.max && props.max.compare(newValue.end) < 0)) return;
+    if (
+        !newValue.start ||
+        !newValue.end ||
+        (props.max && props.max.compare(newValue.start) < 0) ||
+        (props.min && props.min.compare(newValue.start) >= 0) ||
+        (props.max && props.max.compare(newValue.end) < 0) ||
+        (props.min && props.min.compare(newValue.end) >= 0)
+    )
+        return;
     emit("update", newValue as { start: CalendarDate; end: CalendarDate });
 });
 </script>
 
 <template>
-    <UInputDate ref="inputDate" v-model="modelValue" range :separator-icon="ICON_MINUS" :max-value="props.max">
+    <UInputDate
+        ref="inputDate"
+        v-model="modelValue"
+        range
+        :separator-icon="ICON_MINUS"
+        :max-value="props.max"
+        :min-value="props.min"
+    >
         <template #trailing>
             <UPopover :reference="inputDate?.inputsRef[0]?.$el">
                 <UButton
@@ -40,7 +56,7 @@ watch(modelValue, newValue => {
                 />
 
                 <template #content>
-                    <UCalendar v-model="modelValue" class="p-2" range :max-value="props.max" />
+                    <UCalendar v-model="modelValue" class="p-2" range :max-value="props.max" :min-value="props.min" />
                 </template>
             </UPopover>
         </template>
