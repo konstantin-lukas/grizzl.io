@@ -48,7 +48,7 @@ const handleOpen = (isOpen: boolean) => {
                         <li
                             v-for="autoTransaction in autoTransactions"
                             :key="autoTransaction.id"
-                            class="relative flex items-center justify-between px-3 py-1"
+                            class="relative flex w-full items-center justify-between px-3 py-1"
                             :class="{ 'transition-none!': !isPopoverOpen }"
                         >
                             <div class="flex max-w-[calc(100%-4rem)] items-center">
