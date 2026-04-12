@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.9.0...v1.9.1) (2026-04-12)
+
+
+### Bug Fixes
+
+* increase node memory size ([6734dc1](https://github.com/konstantin-lukas/grizzl.io/commit/6734dc12f634583d3cf9c74406c19f3f634b4f9f))
+
 ## [1.9.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.8.0...v1.9.0) (2026-04-12)
 
 
