@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.9.1...v1.10.0) (2026-04-12)
+
+
+### Features
+
+* add auto transaction execution logic ([#382](https://github.com/konstantin-lukas/grizzl.io/issues/382)) ([1176cb4](https://github.com/konstantin-lukas/grizzl.io/commit/1176cb47f3c349a5d312e56798d6983db4207b8f))
+
 ## [1.9.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.9.0...v1.9.1) (2026-04-12)
 
 
