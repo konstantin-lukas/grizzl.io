@@ -4,6 +4,7 @@ import Button from "~/core/components/button/Button.vue";
 import { ICON_EDIT, ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import AutoTransactionDeleteButton from "~/finance/components/tabs/account/AutoTransactionDeleteButton.vue";
+import AutoTransactionUpsertForm from "~/finance/components/tabs/account/AutoTransactionUpsertForm.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -12,6 +13,7 @@ const { autoTransactions, refresh } = useAutoTransactions();
 const props = defineProps<{ locale: Language; currency: string }>();
 const emit = defineEmits(["open-insert-transaction-form"]);
 const isPopoverOpen = ref(false);
+const isUpsertFormOpen = ref(false);
 
 const handleOpen = (isOpen: boolean) => {
     setTimeout(() => (isPopoverOpen.value = isOpen), 0);
@@ -40,7 +42,12 @@ const handleOpen = (isOpen: boolean) => {
             <template #content>
                 <ul class="relative max-h-64 max-w-[calc(100dvw-1rem)] overflow-auto py-2">
                     <li class="mx-4 my-2">
-                        <Button :icon="ICON_PLUS_CIRCLE" class="flex w-full justify-center" variant="subtle">
+                        <Button
+                            :icon="ICON_PLUS_CIRCLE"
+                            class="flex w-full justify-center"
+                            variant="subtle"
+                            @click="isUpsertFormOpen = true"
+                        >
                             {{ $t("ui.create") }}
                         </Button>
                     </li>
@@ -78,5 +85,12 @@ const handleOpen = (isOpen: boolean) => {
             </template>
         </UPopover>
         <TransactionFilters />
+        <AutoTransactionUpsertForm
+            v-model:open="isUpsertFormOpen"
+            @success="
+                isUpsertFormOpen = false;
+                refresh();
+            "
+        />
     </div>
 </template>

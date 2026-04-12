@@ -20,3 +20,5 @@ export type PutAutoTransaction = z.infer<typeof PutAutoTransactionSchema>;
 
 export type PostAutoTransactionInternal = Omit<PostAutoTransaction, "category"> & { categoryId: string };
 export type PutAutoTransactionInternal = Omit<PutAutoTransaction, "category"> & { categoryId: string };
+
+export type AutoTransaction = z.input<typeof PostAutoTransactionSchema> & { id: string };
