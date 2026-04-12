@@ -1,8 +1,6 @@
-import type { LOCALES } from "#shared/core/constants/i18n.constant";
+import type { Language } from "#shared/core/constants/i18n.constant";
 
-type Locale = (typeof LOCALES)[number]["language"];
-
-export function getCurrencies(locale: Locale) {
+export function getCurrencies(locale: Language) {
     const availableCurrencies = Intl.supportedValuesOf("currency");
     const displayNames = new Intl.DisplayNames(locale, { type: "currency" });
     const currenciesWithNames = availableCurrencies.map(id => {
@@ -17,7 +15,7 @@ export function getCurrencies(locale: Locale) {
     return currenciesWithNames.filter((currency): currency is { id: string; label: string } => currency !== null);
 }
 
-export function formatCurrency(locale: Locale, currency: string, amount: number) {
+export function formatCurrency(locale: Language, currency: string, amount: number) {
     const currencyFormat = new Intl.NumberFormat(locale, {
         style: "currency",
         currency,

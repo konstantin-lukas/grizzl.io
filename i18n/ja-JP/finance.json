@@ -60,6 +60,27 @@
                     "description": "取引を管理して、アカウント残高を調整します"
                 }
             }
+        },
+        "autoTransaction": {
+            "form": {
+                "execInterval": "実行間隔",
+                "execOn": "実行日"
+            },
+            "toast": {
+                "createdTitle": "自動取引を作成しました",
+                "createdDescription": "金額「{amount}」の新しい自動取引が作成されました。",
+                "updatedTitle": "自動取引を更新しました",
+                "updatedDescription": "金額「{amount}」の自動取引が更新されました。",
+                "deletedTitle": "自動取引を削除しました",
+                "deletedDescription": "金額「{amount}」の自動取引が削除されました。"
+            },
+            "aria": {
+                "drawer": {
+                    "edit": "取引を再スケジュール",
+                    "create": "取引をスケジュール",
+                    "description": "定期的に実行される自動取引を管理します"
+                }
+            }
         }
     }
 }
