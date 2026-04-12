@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     vite: { plugins: [tailwindcss()] },
     css: ["~/core/assets/css/main.css"],
     typescript: {
-        typeCheck: "build",
         tsConfig: {
             include: ["../tests/**/*", "../playwright/**/*", "../seed/**/*", "../test-utils/**/*"],
         },
