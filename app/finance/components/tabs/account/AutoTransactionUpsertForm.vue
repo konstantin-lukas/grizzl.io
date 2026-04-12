@@ -5,8 +5,8 @@ import {
     FINANCE_EXEC_INTERVAL_MIN,
     FINANCE_EXEC_ON_MAX,
     FINANCE_EXEC_ON_MIN,
+    PostAutoTransactionSchema,
 } from "#shared/finance/validators/auto-transaction.validator";
-import { PostTransactionSchema } from "#shared/finance/validators/transaction.validator";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
@@ -102,7 +102,7 @@ const onSubmit = useOnSubmit({
 <template>
     <Drawer v-model:open="open">
         <BaseUpsertForm
-            :schema="PostTransactionSchema"
+            :schema="PostAutoTransactionSchema"
             :state="state"
             :mode="isInsert ? 'insert' : 'update'"
             @submit.prevent="onSubmit"

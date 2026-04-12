@@ -132,7 +132,9 @@
     .menu-exit-active {
         opacity: 0;
         transform: scale(125%);
-        transition: opacity 200ms, transform 200ms;
+        transition:
+            opacity 200ms,
+            transform 200ms;
     }
 
     .draggable-list-move,
@@ -142,7 +144,9 @@
     }
 
     .draggable-list-enter-active {
-        transition: opacity 0.5s ease, filter 0.5s ease;
+        transition:
+            opacity 0.5s ease,
+            filter 0.5s ease;
     }
 
     .draggable-list-enter-from,
