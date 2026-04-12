@@ -7,6 +7,7 @@ const items = ref<TabsItem[]>([
     {
         label: "account",
         icon: ICON_BANK,
+        slot: "account",
     },
     {
         label: "budgets",
@@ -20,12 +21,12 @@ const items = ref<TabsItem[]>([
 </script>
 
 <template>
-    <UTabs :items :ui="{ content: 'mt-8' }">
+    <UTabs :items :ui="{ content: 'mt-8' }" :unmount-on-hide="false">
         <template #default="{ item }">
             {{ $t(`finance.tabs.${item.label}`) }}
         </template>
-        <template #content="{ item }">
-            <AccountTab v-if="item.label === 'account'" />
+        <template #account>
+            <AccountTab />
         </template>
     </UTabs>
 </template>
