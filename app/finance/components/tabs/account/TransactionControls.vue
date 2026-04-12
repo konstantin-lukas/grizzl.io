@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import type { Language } from "#shared/core/constants/i18n.constant";
-import { ellipsize } from "#shared/core/utils/string.util";
 import Button from "~/core/components/button/Button.vue";
-import { ICON_DELETE, ICON_EDIT, ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
+import { ICON_EDIT, ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
+import AutoTransactionDeleteButton from "~/finance/components/tabs/account/AutoTransactionDeleteButton.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
-const autoTransactions = useAutoTransactions();
+const { autoTransactions, refresh } = useAutoTransactions();
 const props = defineProps<{ locale: Language; currency: string }>();
 const emit = defineEmits(["open-insert-transaction-form"]);
+const isPopoverOpen = ref(false);
+
+const handleOpen = (isOpen: boolean) => {
+    setTimeout(() => (isPopoverOpen.value = isOpen), 0);
+    if (autoTransactions.value.length === 0) refresh();
+};
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const emit = defineEmits(["open-insert-transaction-form"]);
             :aria-label="$t('finance.account.addTransaction')"
             @click="emit('open-insert-transaction-form')"
         />
-        <UPopover>
+        <UPopover @update:open="handleOpen">
             <Button
                 :icon="ICON_EVENT_REPEAT"
                 square
@@ -32,50 +38,45 @@ const emit = defineEmits(["open-insert-transaction-form"]);
                 :aria-label="$t('finance.account.manageAutoTransactions')"
             />
             <template #content>
-                <ul class="max-h-64 max-w-[calc(100dvw-1rem)] overflow-auto py-2">
+                <ul class="relative max-h-64 max-w-[calc(100dvw-1rem)] overflow-auto py-2">
                     <li class="mx-4 my-2">
                         <Button :icon="ICON_PLUS_CIRCLE" class="flex w-full justify-center" variant="subtle">
                             {{ $t("ui.create") }}
                         </Button>
                     </li>
-                    <li
-                        v-for="autoTransaction in autoTransactions"
-                        :key="autoTransaction.id"
-                        class="flex items-center justify-between px-3 py-1"
-                    >
-                        <div class="flex items-center">
-                            <CategoryIcon :category-name="autoTransaction.category.icon" class="scale-75" />
-                            <div class="mx-2 flex flex-col">
-                                <span :title="autoTransaction.category.name">
-                                    {{ ellipsize(autoTransaction.category.name, 12) }}
-                                </span>
-                                <span class="text-muted">{{
-                                    formatCurrency(props.locale, props.currency, autoTransaction.amount)
-                                }}</span>
+                    <TransitionGroup name="list">
+                        <li
+                            v-for="autoTransaction in autoTransactions"
+                            :key="autoTransaction.id"
+                            class="relative flex items-center justify-between px-3 py-1"
+                            :class="{ 'transition-none!': !isPopoverOpen }"
+                        >
+                            <div class="flex max-w-[calc(100%-4rem)] items-center">
+                                <CategoryIcon :category-name="autoTransaction.category.icon" class="scale-75" />
+                                <div class="mx-2 flex flex-col overflow-hidden">
+                                    <span class="overflow-hidden text-nowrap text-ellipsis">
+                                        {{ autoTransaction.category.name }}
+                                    </span>
+                                    <span class="overflow-hidden text-nowrap text-ellipsis text-muted">
+                                        {{ formatCurrency(props.locale, props.currency, autoTransaction.amount) }}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <Button
-                                :icon="ICON_EDIT"
-                                square
-                                variant="ghost"
-                                color="neutral"
-                                :aria-label="$t('ui.edit')"
-                            />
-                            <Button
-                                :icon="ICON_DELETE"
-                                square
-                                variant="ghost"
-                                color="error"
-                                :aria-label="$t('ui.delete')"
-                            />
-                        </div>
-                    </li>
+                            <div class="shrink-0">
+                                <Button
+                                    :icon="ICON_EDIT"
+                                    square
+                                    variant="ghost"
+                                    color="neutral"
+                                    :aria-label="$t('ui.edit')"
+                                />
+                                <AutoTransactionDeleteButton :auto-transaction="autoTransaction" />
+                            </div>
+                        </li>
+                    </TransitionGroup>
                 </ul>
             </template>
         </UPopover>
         <TransactionFilters />
     </div>
 </template>
-
-<style scoped></style>

@@ -26,7 +26,7 @@ watch(upsertFormOpen, isOpen => {
         <H2 class="mb-4">{{ $t("finance.account.balance") }}</H2>
         <TransactionControls
             :locale="language"
-            :currency="openAccount!.currency"
+            :currency="openAccount?.currency ?? 'USD'"
             @open-insert-transaction-form="
                 initialState = undefined;
                 upsertFormOpen = true;

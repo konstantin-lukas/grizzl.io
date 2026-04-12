@@ -9,7 +9,7 @@ import { formatCurrency } from "~/finance/utils/currency";
 export default function useAccountBalanceChartData() {
     const { openAccount } = useAccounts();
     const { from, to, transactions, startBalance } = useTransactions();
-    const autoTransactions = useAutoTransactions();
+    const { autoTransactions } = useAutoTransactions();
     const { language } = useLocale();
 
     const dates = computed(() => {
