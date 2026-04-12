@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import type { Language } from "#shared/core/constants/i18n.constant";
 import { ellipsize } from "#shared/core/utils/string.util";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_DELETE, ICON_EDIT, ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
+import { formatCurrency } from "~/finance/utils/currency";
 
 const autoTransactions = useAutoTransactions();
+const props = defineProps<{ locale: Language; currency: string }>();
 const emit = defineEmits(["open-insert-transaction-form"]);
 </script>
 
@@ -46,12 +49,26 @@ const emit = defineEmits(["open-insert-transaction-form"]);
                                 <span :title="autoTransaction.category.name">
                                     {{ ellipsize(autoTransaction.category.name, 12) }}
                                 </span>
-                                <span class="text-muted">{{ autoTransaction.category.name }}</span>
+                                <span class="text-muted">{{
+                                    formatCurrency(props.locale, props.currency, autoTransaction.amount)
+                                }}</span>
                             </div>
                         </div>
                         <div>
-                            <Button :icon="ICON_EDIT" square variant="ghost" color="neutral" />
-                            <Button :icon="ICON_DELETE" square variant="ghost" color="error" />
+                            <Button
+                                :icon="ICON_EDIT"
+                                square
+                                variant="ghost"
+                                color="neutral"
+                                :aria-label="$t('ui.edit')"
+                            />
+                            <Button
+                                :icon="ICON_DELETE"
+                                square
+                                variant="ghost"
+                                color="error"
+                                :aria-label="$t('ui.delete')"
+                            />
                         </div>
                     </li>
                 </ul>
