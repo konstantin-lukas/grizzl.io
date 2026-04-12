@@ -1,5 +1,6 @@
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import AccountService from "#server/finance/services/account.service";
+import AutoTransactionService from "#server/finance/services/auto-transaction.service";
 import CategoryService from "#server/finance/services/category.service";
 import type {
     BaseTransactionFilters,
@@ -14,13 +15,20 @@ import AccountRepository from "~~/server/finance/repositories/account.repository
 import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
 
 export default class TransactionService {
-    static readonly deps = [TransactionRepository, AccountRepository, CategoryService, AccountService];
+    static readonly deps = [
+        TransactionRepository,
+        AccountRepository,
+        CategoryService,
+        AccountService,
+        AutoTransactionService,
+    ];
 
     constructor(
         private readonly transactionRepository: TransactionRepository,
         private readonly accountRepository: AccountRepository,
         private readonly categoryService: CategoryService,
         private readonly accountService: AccountService,
+        private readonly autoTransactionService: AutoTransactionService,
     ) {}
 
     private async updateDeletedStatus(
@@ -81,7 +89,8 @@ export default class TransactionService {
         return await this.transactionRepository.getAccountBalanceUntil(userId, accountId, filters);
     }
 
-    public async getList(userId: string, accountId: string, filters?: GetTransactionFilters) {
+    public async getList(userId: string, accountId: string, tz: string, filters?: GetTransactionFilters) {
+        await this.autoTransactionService.execute(userId, accountId, tz);
         return this.transactionRepository.findByUserAndAccountId(userId, accountId, filters);
     }
     /* c8 ignore stop */

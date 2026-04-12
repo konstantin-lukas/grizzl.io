@@ -11,7 +11,7 @@ import { formatCurrency } from "~/finance/utils/currency";
 
 const { autoTransactions, refresh } = useAutoTransactions();
 const props = defineProps<{ locale: Language; currency: string }>();
-const emit = defineEmits(["open-insert-transaction-form"]);
+const emit = defineEmits(["open-insert-transaction-form", "update-auto-transactions"]);
 const isPopoverOpen = ref(false);
 const isUpsertFormOpen = ref(false);
 
@@ -99,6 +99,7 @@ const handleOpen = (isOpen: boolean) => {
             :initial-state="initialState"
             @success="
                 isUpsertFormOpen = false;
+                emit('update-auto-transactions');
                 refresh();
             "
         />

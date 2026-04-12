@@ -31,6 +31,7 @@ watch(upsertFormOpen, isOpen => {
                 initialState = undefined;
                 upsertFormOpen = true;
             "
+            @update-auto-transactions="refresh"
         />
     </div>
     <BalanceChart />

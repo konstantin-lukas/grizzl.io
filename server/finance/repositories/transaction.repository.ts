@@ -32,12 +32,12 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
 
     public async create(
         accountId: string,
-        { amount, reference, categoryId }: PostTransactionInternal,
+        { amount, reference, categoryId, createdAt }: PostTransactionInternal & { createdAt?: Date },
         ctx: ExecutionContext = this.db,
     ) {
         const [transaction] = await ctx
             .insert(this.schema)
-            .values({ accountId, amount, reference, categoryId })
+            .values({ accountId, amount, reference, categoryId, createdAt })
             .returning({ id: this.schema.id });
 
         return transaction!.id;
