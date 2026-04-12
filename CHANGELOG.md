@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.9.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.8.0...v1.9.0) (2026-04-12)
+
+
+### Features
+
+* add api endpoints for finance accounts ([#291](https://github.com/konstantin-lukas/grizzl.io/issues/291)) ([161e743](https://github.com/konstantin-lukas/grizzl.io/commit/161e743811720032ca15733161dbc08d2b288dd4))
+* add api route for finance auto transaction ([#314](https://github.com/konstantin-lukas/grizzl.io/issues/314)) ([06fe04f](https://github.com/konstantin-lukas/grizzl.io/commit/06fe04fbe37aa26f94826ed95cdc05650578d243))
+* add api routes for finance transactions ([#306](https://github.com/konstantin-lukas/grizzl.io/issues/306)) ([1359b96](https://github.com/konstantin-lukas/grizzl.io/commit/1359b9650cad3276e8aaa7986c82ae162dbb0e32))
+* add category checks to transactions ([421daba](https://github.com/konstantin-lukas/grizzl.io/commit/421dabaf4f8f6bbf3a6b07dc9d08b788cbb73439))
+* add category checks to transactions ([468a36d](https://github.com/konstantin-lukas/grizzl.io/commit/468a36dc607e4d64ad1b1ee71808d59e49731961))
+* add empty view for finance transactions ([#373](https://github.com/konstantin-lukas/grizzl.io/issues/373)) ([766c6cb](https://github.com/konstantin-lukas/grizzl.io/commit/766c6cbf7afce52a662cbe652ac5a022562f707f))
+* add finance empty view and upsert form ([#318](https://github.com/konstantin-lukas/grizzl.io/issues/318)) ([cb9c651](https://github.com/konstantin-lukas/grizzl.io/commit/cb9c65105d703d9ed94a260225d7e2d38b943679))
+* add first version of icon tag mapping for categories ([21ca8d2](https://github.com/konstantin-lukas/grizzl.io/commit/21ca8d27879b1357642eee2bdf86f9ebe1bccde1))
+* add non interactive finance account UI elements ([#361](https://github.com/konstantin-lukas/grizzl.io/issues/361)) ([eeef6ce](https://github.com/konstantin-lukas/grizzl.io/commit/eeef6cec390ba47a91c59f54ca64e8793c960d51))
+* add optimized composable for icon suggestions ([215eb0f](https://github.com/konstantin-lukas/grizzl.io/commit/215eb0f398893fdfc1923fac8f287c4f83818a31))
+* add tabs to finance section ([#353](https://github.com/konstantin-lukas/grizzl.io/issues/353)) ([9a6424b](https://github.com/konstantin-lukas/grizzl.io/commit/9a6424b0e5a9dbb171477100bde837b2a1b7b941))
+* add upsert form for auto transactions ([#380](https://github.com/konstantin-lukas/grizzl.io/issues/380)) ([fb57633](https://github.com/konstantin-lukas/grizzl.io/commit/fb57633e3a4ce6b0336b565c944b6dc3d421eb62))
+* adjust account balance when a transaction is (un)deleted ([#363](https://github.com/konstantin-lukas/grizzl.io/issues/363)) ([1a1ae8e](https://github.com/konstantin-lukas/grizzl.io/commit/1a1ae8e444f3e992eb58fc5aca063dca82baa49d))
+* create finance category api routes ([#342](https://github.com/konstantin-lukas/grizzl.io/issues/342)) ([7168dfe](https://github.com/konstantin-lukas/grizzl.io/commit/7168dfe3f16feabb28b3133b2c2704bfb8b7c1cc))
+* implement filters for transactions ([#367](https://github.com/konstantin-lukas/grizzl.io/issues/367)) ([08f816c](https://github.com/konstantin-lukas/grizzl.io/commit/08f816c93fd8422118852c4be06363d2a5dbed6a))
+* make categories user definable ([b12b4f3](https://github.com/konstantin-lukas/grizzl.io/commit/b12b4f3dff18082f889a90936e2be988ad1ca113))
+* make individual transactions deletable and editable ([#377](https://github.com/konstantin-lukas/grizzl.io/issues/377)) ([08c9cf8](https://github.com/konstantin-lukas/grizzl.io/commit/08c9cf8486077fc504e47f3f8fdd48615ac98ffd))
+* tie sub-resource to parent resources on all requests ([#315](https://github.com/konstantin-lukas/grizzl.io/issues/315)) ([9c94d1e](https://github.com/konstantin-lukas/grizzl.io/commit/9c94d1e0684923893798a4d9353dd78d605d3c79))
+
+
+### Bug Fixes
+
+* change unique constraint to include account id and fix some tests ([29f3b53](https://github.com/konstantin-lukas/grizzl.io/commit/29f3b5379bfd766c4ba20cf5a3f9e78819ee4759))
+* make sign in button on landing page show correct status by default ([#350](https://github.com/konstantin-lukas/grizzl.io/issues/350)) ([a6225a9](https://github.com/konstantin-lukas/grizzl.io/commit/a6225a97d42364a17f2618bc3d3d88844a0317df))
+* remove type issues ([b09e33a](https://github.com/konstantin-lukas/grizzl.io/commit/b09e33aae7bdf5fc00812d5200b3d024b6c11e17))
+
 ## [1.8.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.7.2...v1.8.0) (2026-03-07)
 
 
