@@ -60,6 +60,16 @@
                     "description": "Manage transactions and adjust the balance of your account"
                 }
             }
+        },
+        "autoTransaction": {
+            "toast": {
+                "createdTitle": "Automatic Transaction Created",
+                "createdDescription": "A new automatic transaction with amount “{amount}” was created.",
+                "updatedTitle": "Automatic Transaction Updated",
+                "updatedDescription": "The automatic transaction with amount “{amount}” was updated.",
+                "deletedTitle": "Automatic Transaction Deleted",
+                "deletedDescription": "The automatic transaction with amount “{amount}” was deleted."
+            }
         }
     }
 }

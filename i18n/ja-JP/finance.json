@@ -60,6 +60,16 @@
                     "description": "取引を管理して、アカウント残高を調整します"
                 }
             }
+        },
+        "autoTransaction": {
+            "toast": {
+                "createdTitle": "自動取引を作成しました",
+                "createdDescription": "金額「{amount}」の新しい自動取引が作成されました。",
+                "updatedTitle": "自動取引を更新しました",
+                "updatedDescription": "金額「{amount}」の自動取引が更新されました。",
+                "deletedTitle": "自動取引を削除しました",
+                "deletedDescription": "金額「{amount}」の自動取引が削除されました。"
+            }
         }
     }
 }

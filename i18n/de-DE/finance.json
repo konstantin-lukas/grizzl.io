@@ -60,6 +60,16 @@
                     "description": "Verwalte deine Transaktionen und passe den Kontostand an"
                 }
             }
+        },
+        "autoTransaction": {
+            "toast": {
+                "createdTitle": "Automatische Transaktion erstellt",
+                "createdDescription": "Eine neue automatische Transaktion mit dem Betrag „{amount}“ wurde erstellt.",
+                "updatedTitle": "Automatische Transaktion aktualisiert",
+                "updatedDescription": "Die automatische Transaktion mit dem Betrag „{amount}“ wurde aktualisiert.",
+                "deletedTitle": "Automatische Transaktion gelöscht",
+                "deletedDescription": "Die automatische Transaktion mit dem Betrag „{amount}“ wurde gelöscht."
+            }
         }
     }
 }
