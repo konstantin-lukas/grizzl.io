@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import Button from "~/core/components/button/Button.vue";
 import H2 from "~/core/components/typo/H2.vue";
-import { ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
 import BalanceChart from "~/finance/components/tabs/account/BalanceChart.vue";
 import EmptyTransactions from "~/finance/components/tabs/account/EmptyTransactions.vue";
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
-import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
+import TransactionControls from "~/finance/components/tabs/account/TransactionControls.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
 import useCategories from "~/finance/composables/useCategories";
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
@@ -22,27 +20,12 @@ watch(upsertFormOpen, isOpen => {
 <template>
     <div class="flex items-end justify-between">
         <H2 class="mb-4">{{ $t("finance.account.balance") }}</H2>
-        <div class="flex shrink-0 -translate-y-3 gap-1">
-            <Button
-                :icon="ICON_PLUS_CIRCLE"
-                square
-                variant="ghost"
-                color="neutral"
-                :aria-label="$t('finance.account.addTransaction')"
-                @click="
-                    initialState = undefined;
-                    upsertFormOpen = true;
-                "
-            />
-            <Button
-                :icon="ICON_EVENT_REPEAT"
-                square
-                variant="ghost"
-                color="neutral"
-                :aria-label="$t('finance.account.manageAutoTransactions')"
-            />
-            <TransactionFilters />
-        </div>
+        <TransactionControls
+            @open-insert-transaction-form="
+                initialState = undefined;
+                upsertFormOpen = true;
+            "
+        />
     </div>
     <BalanceChart />
     <H2 class="mt-12">{{ $t("finance.account.transactionHistory") }}</H2>
