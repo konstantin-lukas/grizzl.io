@@ -1,4 +1,3 @@
-import type { LoggerService } from "#server/core/services/logger.service";
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import TransactionRepository from "#server/finance/repositories/transaction.repository";
 import AccountService from "#server/finance/services/account.service";
@@ -24,7 +23,6 @@ export default class AutoTransactionService {
         private readonly categoryService: CategoryService,
         private readonly accountService: AccountService,
         private readonly transactionRepository: TransactionRepository,
-        private readonly logger: LoggerService,
     ) {}
 
     public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
@@ -95,13 +93,11 @@ export default class AutoTransactionService {
                 const now = today(tz);
                 const promises = [];
                 for (const autoTransaction of autoTransactions) {
-                    const [year, month, day] = autoTransaction.lastExec.split("-").map(Number);
-                    if (!year || !month || !day) {
-                        this.logger.warn(
-                            `Unable to parse lastExec (${autoTransaction.lastExec}) of autoTransaction with ID ${autoTransaction.id}.`,
-                        );
-                        continue;
-                    }
+                    const [year, month, day] = autoTransaction.lastExec.split("-").map(Number) as [
+                        number,
+                        number,
+                        number,
+                    ];
 
                     let prevExec = new CalendarDate(year, month, day);
 
