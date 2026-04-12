@@ -28,3 +28,5 @@ export default function useAutoTransactions() {
 
     return { autoTransactions: data, refresh };
 }
+
+export type AutoTransaction = ReturnType<typeof useAutoTransactions>["autoTransactions"]["value"][number];

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 import {
-    type AutoTransaction,
     FINANCE_EXEC_INTERVAL_MAX,
     FINANCE_EXEC_INTERVAL_MIN,
     FINANCE_EXEC_ON_MAX,
@@ -17,6 +16,7 @@ import useOnSubmit from "~/core/composables/useOnSubmit";
 import CurrencyInput from "~/finance/components/CurrencyInput.vue";
 import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSelect.vue";
 import useAccounts from "~/finance/composables/useAccounts";
+import type { AutoTransaction } from "~/finance/composables/useAutoTransactions";
 import useCategories from "~/finance/composables/useCategories";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -47,6 +47,7 @@ const state = reactive({
 watch(
     state,
     newState => {
+        if (!isInsert.value) return;
         const date = today(getLocalTimeZone())
             .subtract({ months: newState.execInterval })
             .set({ day: newState.execOn });
@@ -63,6 +64,9 @@ watch(open, newOpen => {
         state.amount = initialState.amount;
         state.category.name = initialState.category.name;
         state.category.icon = initialState.category.icon;
+        state.execInterval = initialState.execInterval;
+        state.execOn = initialState.execOn;
+        state.lastExec = initialState.lastExec;
         return;
     }
     const emptyState = {
@@ -77,6 +81,8 @@ watch(open, newOpen => {
     state.amount = emptyState.amount;
     state.category.name = "";
     state.category.icon = emptyState.category.icon;
+    state.execInterval = 1;
+    state.execOn = 1;
 });
 
 const onSubmit = useOnSubmit({

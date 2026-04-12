@@ -6,7 +6,7 @@ import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import AutoTransactionDeleteButton from "~/finance/components/tabs/account/AutoTransactionDeleteButton.vue";
 import AutoTransactionUpsertForm from "~/finance/components/tabs/account/AutoTransactionUpsertForm.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";
-import useAutoTransactions from "~/finance/composables/useAutoTransactions";
+import useAutoTransactions, { type AutoTransaction } from "~/finance/composables/useAutoTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
 const { autoTransactions, refresh } = useAutoTransactions();
@@ -14,6 +14,8 @@ const props = defineProps<{ locale: Language; currency: string }>();
 const emit = defineEmits(["open-insert-transaction-form"]);
 const isPopoverOpen = ref(false);
 const isUpsertFormOpen = ref(false);
+
+const initialState = ref<AutoTransaction>();
 
 const handleOpen = (isOpen: boolean) => {
     setTimeout(() => (isPopoverOpen.value = isOpen), 0);
@@ -46,7 +48,10 @@ const handleOpen = (isOpen: boolean) => {
                             :icon="ICON_PLUS_CIRCLE"
                             class="flex w-full justify-center"
                             variant="subtle"
-                            @click="isUpsertFormOpen = true"
+                            @click="
+                                initialState = undefined;
+                                isUpsertFormOpen = true;
+                            "
                         >
                             {{ $t("ui.create") }}
                         </Button>
@@ -76,6 +81,10 @@ const handleOpen = (isOpen: boolean) => {
                                     variant="ghost"
                                     color="neutral"
                                     :aria-label="$t('ui.edit')"
+                                    @click="
+                                        initialState = autoTransaction;
+                                        isUpsertFormOpen = true;
+                                    "
                                 />
                                 <AutoTransactionDeleteButton :auto-transaction="autoTransaction" />
                             </div>
@@ -87,6 +96,7 @@ const handleOpen = (isOpen: boolean) => {
         <TransactionFilters />
         <AutoTransactionUpsertForm
             v-model:open="isUpsertFormOpen"
+            :initial-state="initialState"
             @success="
                 isUpsertFormOpen = false;
                 refresh();
