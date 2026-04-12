@@ -29,7 +29,7 @@ const transactionRepositoryMock = {
     transaction: (fn: () => Promise<unknown>) => fn(),
 };
 
-const autoTransactionsServiveMock = {
+const autoTransactionServiceMock = {
     expect: vi.fn(),
 };
 
@@ -42,7 +42,7 @@ const transactionService = new TransactionService(
     accountRepositoryMock as never,
     categoryServiceMock as never,
     accountServiceMock as never,
-    autoTransactionsServiveMock as never,
+    autoTransactionServiceMock as never,
 );
 
 beforeEach(() => {

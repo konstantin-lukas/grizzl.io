@@ -1,3 +1,4 @@
+import { getLocalTimeZone, today } from "@internationalized/date";
 import useAccounts from "~/finance/composables/useAccounts";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import useTransactions from "~/finance/composables/useTransactions";
@@ -9,6 +10,24 @@ export default function useUpdateTransactions() {
     const refresh = useRefreshTransactions();
 
     const lastParams = ref<string | null>(null);
+
+    const resetFilters = () => {
+        categoryId.value = undefined;
+        reference.value = undefined;
+
+        const tz = getLocalTimeZone();
+        const end = today(tz);
+
+        from.value = end.subtract({ months: 1 });
+        to.value = end;
+    };
+
+    watch(openAccountId, () => {
+        if (import.meta.server) return;
+        resetFilters();
+    });
+
+    onMounted(resetFilters);
 
     watch([openAccountId, categoryId, from, to, reference], async () => {
         const params = JSON.stringify({

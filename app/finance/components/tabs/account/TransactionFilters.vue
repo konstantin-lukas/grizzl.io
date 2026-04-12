@@ -21,7 +21,7 @@ const minDate = ref();
 
 onMounted(() => {
     maxDate.value = today(getLocalTimeZone());
-    minDate.value = new CalendarDate(2026, 1, 1);
+    minDate.value = new CalendarDate(2025, 1, 1);
 });
 </script>
 

@@ -93,7 +93,7 @@ test("inserts transactions when lastExec is more than one month ago", async ({ d
     expect(transactions).toHaveLength(1);
 });
 
-test("does not insert transactions when lastExec is less than one month ago", async ({ db, user }) => {
+test("does not insert transactions even when lastExec day doesn't match", async ({ db, user }) => {
     const { service, account, category } = await setup(db, user);
     await db.financeAutoTransaction.insert(1, {
         accountId: account.id,
@@ -214,4 +214,31 @@ test("executes auto transactions when there are multiple", async ({ db, user }) 
         categoryId: at2.categoryId,
         createdAt: new Date("2026-04-15T00:00:00.000Z"),
     });
+});
+
+test("creates one transaction on the last of the month if exec on is 31", async ({ db, user }) => {
+    const { service, account, category } = await setup(db, user);
+    await db.financeAutoTransaction.insert(1, {
+        accountId: account.id,
+        categoryId: category.id,
+        lastExec: "2025-11-30",
+        execInterval: 1,
+        execOn: 31,
+    });
+
+    await service.execute(user.id, account.id, "UTC");
+    const transactions = await db.financeTransaction.select();
+
+    const expectedDates = [
+        "2025-12-31T00:00:00.000Z",
+        "2026-01-31T00:00:00.000Z",
+        "2026-02-28T00:00:00.000Z",
+        "2026-03-31T00:00:00.000Z",
+    ];
+
+    expect(transactions).toHaveLength(4);
+
+    for (const [index, transaction] of transactions.entries()) {
+        expect(transaction?.createdAt).toEqual(new Date(expectedDates[index]!));
+    }
 });

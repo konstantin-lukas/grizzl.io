@@ -26,9 +26,9 @@ watch(modelValue, newValue => {
         !newValue.start ||
         !newValue.end ||
         (props.max && props.max.compare(newValue.start) < 0) ||
-        (props.min && props.min.compare(newValue.start) >= 0) ||
+        (props.min && props.min.compare(newValue.start) > 0) ||
         (props.max && props.max.compare(newValue.end) < 0) ||
-        (props.min && props.min.compare(newValue.end) >= 0)
+        (props.min && props.min.compare(newValue.end) > 0)
     )
         return;
     emit("update", newValue as { start: CalendarDate; end: CalendarDate });
