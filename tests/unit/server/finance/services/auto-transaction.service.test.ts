@@ -23,11 +23,21 @@ const accountServiceMock = {
     getUserAccount: vi.fn(),
 };
 
+const transactionRepositoryMock = {
+    create: vi.fn(),
+};
+
+const loggerServiceMock = {
+    warn: vi.fn(),
+};
+
 const autoTransactionService = new AutoTransactionService(
     autoTransactionRepositoryMock as never,
     accountRepositoryMock as never,
     categoryServiceMock as never,
     accountServiceMock as never,
+    transactionRepositoryMock as never,
+    loggerServiceMock as never,
 );
 
 const id = "9j3q9ohodjj3aa";

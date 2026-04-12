@@ -19,6 +19,7 @@ test("correctly calculates the account balance when multiple updates happens sim
         accountRepository,
         categoryService,
         accountService,
+        {} as never,
     );
 
     const [account] = await db.financeAccount.insert(1, { userId: user.id });
