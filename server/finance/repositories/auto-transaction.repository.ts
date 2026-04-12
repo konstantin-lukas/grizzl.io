@@ -64,8 +64,8 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
         return transaction!.id;
     }
 
-    public async findByUserAndAccountId(userId: string, accountId: string) {
-        return this.db
+    public async findByUserAndAccountId(userId: string, accountId: string, db: ExecutionContext = this.db) {
+        return db
             .select({
                 id: this.schema.id,
                 createdAt: this.schema.createdAt,

@@ -95,3 +95,20 @@ test("allows searching for substrings without wildcard operators", async ({ requ
     const receivedData = await response.json();
     expect(receivedData).toHaveLength(2);
 });
+
+test("executes auto transactions before returning result", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    const [autoTransaction] = await db.financeAutoTransaction.insert(1, {
+        accountId: account.id,
+        categoryId: category.id,
+    });
+    const response = await request.get(route(account.id));
+    const data = await response.json();
+    expect(data).toHaveLength(1);
+    expect(data[0]).toMatchObject({
+        reference: autoTransaction.reference,
+        category: { id: autoTransaction.categoryId },
+        amount: autoTransaction.amount,
+    });
+});

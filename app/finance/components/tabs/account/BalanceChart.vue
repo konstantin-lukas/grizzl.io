@@ -79,6 +79,7 @@ onMounted(() => {
                     },
                     ticks: {
                         maxTicksLimit: 12,
+                        color: gridColor.value,
                         crossAlign: "far",
                         callback(value) {
                             if (!openAccount.value) return "";

@@ -29,6 +29,10 @@ const transactionRepositoryMock = {
     transaction: (fn: () => Promise<unknown>) => fn(),
 };
 
+const autoTransactionServiceMock = {
+    expect: vi.fn(),
+};
+
 const id = "9j3q9ohodjj3aa";
 const userId = "awdk9t3j8sojfo";
 const accountId = "12349ohodjj3aa";
@@ -38,6 +42,7 @@ const transactionService = new TransactionService(
     accountRepositoryMock as never,
     categoryServiceMock as never,
     accountServiceMock as never,
+    autoTransactionServiceMock as never,
 );
 
 beforeEach(() => {

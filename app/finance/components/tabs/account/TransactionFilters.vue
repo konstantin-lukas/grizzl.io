@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getLocalTimeZone, today } from "@internationalized/date";
+import { CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
 import Button from "~/core/components/button/Button.vue";
 import DateRangePicker from "~/core/components/form/DateRangePicker.vue";
 import useDeferredValue from "~/core/composables/useDeferredValue";
@@ -17,9 +17,11 @@ const categoryItems = computed(
 );
 
 const maxDate = ref();
+const minDate = ref();
 
 onMounted(() => {
     maxDate.value = today(getLocalTimeZone());
+    minDate.value = new CalendarDate(2025, 1, 1);
 });
 </script>
 
@@ -51,6 +53,7 @@ onMounted(() => {
                         :start="from"
                         :end="to"
                         :max="maxDate"
+                        :min="minDate"
                         @update="
                             value => {
                                 from = value.start;

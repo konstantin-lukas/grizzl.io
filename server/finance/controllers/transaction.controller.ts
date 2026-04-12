@@ -26,7 +26,9 @@ export default class TransactionController extends BaseController {
     public async getList(event: H3Event) {
         const accountId = BaseController.parseIdParameter(event, "accountId");
         const filters = GetTransactionFiltersSchema.parse(getQuery(event));
-        return this.transactionService.getList(event.context.user.id, accountId, filters);
+        const cookies = parseCookies(event);
+        const userTimezone = cookies.tz ?? "UTC";
+        return this.transactionService.getList(event.context.user.id, accountId, userTimezone, filters);
     }
 
     public async update(event: H3Event) {

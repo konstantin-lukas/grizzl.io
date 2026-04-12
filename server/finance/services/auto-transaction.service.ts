@@ -1,18 +1,27 @@
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
+import TransactionRepository from "#server/finance/repositories/transaction.repository";
 import AccountService from "#server/finance/services/account.service";
 import CategoryService from "#server/finance/services/category.service";
 import type { PostAutoTransaction, PutAutoTransaction } from "#shared/finance/validators/auto-transaction.validator";
+import { CalendarDate, today } from "@internationalized/date";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 
 export default class AutoTransactionService {
-    static readonly deps = [AutoTransactionRepository, AccountRepository, CategoryService, AccountService];
+    static readonly deps = [
+        AutoTransactionRepository,
+        AccountRepository,
+        CategoryService,
+        AccountService,
+        TransactionRepository,
+    ];
 
     constructor(
         private readonly autoTransactionRepository: AutoTransactionRepository,
         private readonly accountRepository: AccountRepository,
         private readonly categoryService: CategoryService,
         private readonly accountService: AccountService,
+        private readonly transactionRepository: TransactionRepository,
     ) {}
 
     public async setDeletedStatus(id: string, userId: string, accountId: string, isDeleted: boolean) {
@@ -69,6 +78,55 @@ export default class AutoTransactionService {
             const { category, ...newAutoTransaction } = autoTransaction;
             const categoryId = await this.categoryService.upsert(userId, accountId, category, tx);
             return await this.autoTransactionRepository.create(accountId, { ...newAutoTransaction, categoryId }, tx);
+        });
+    }
+
+    public async execute(userId: string, accountId: string, tz: string) {
+        return this.autoTransactionRepository.transaction(async tx => {
+            const autoTransactions = await this.autoTransactionRepository.findByUserAndAccountId(userId, accountId, tx);
+            const now = today(tz);
+            const promises = [];
+            for (const autoTransaction of autoTransactions) {
+                const [year, month, day] = autoTransaction.lastExec.split("-").map(Number) as [number, number, number];
+
+                let prevExec = new CalendarDate(year, month, day);
+
+                while (true) {
+                    const nextExec = prevExec
+                        .add({
+                            months: autoTransaction.execInterval,
+                        })
+                        .set({ day: autoTransaction.execOn });
+
+                    if (now.compare(nextExec) < 0) {
+                        if (autoTransaction.lastExec !== prevExec.toString()) {
+                            promises.push(
+                                this.autoTransactionRepository.update(
+                                    autoTransaction.id,
+                                    userId,
+                                    accountId,
+                                    {
+                                        ...autoTransaction,
+                                        categoryId: autoTransaction.category.id,
+                                        lastExec: prevExec.toString(),
+                                    },
+                                    tx,
+                                ),
+                            );
+                        }
+                        break;
+                    }
+                    const transaction = {
+                        createdAt: nextExec.toDate(tz),
+                        amount: autoTransaction.amount,
+                        reference: autoTransaction.reference,
+                        categoryId: autoTransaction.category.id,
+                    };
+                    prevExec = nextExec;
+                    promises.push(this.transactionRepository.create(accountId, transaction, tx));
+                }
+            }
+            await Promise.all(promises);
         });
     }
 }
