@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.0...v1.10.1) (2026-04-13)
+
+
+### Bug Fixes
+
+* fetch models with git lfs ([088602c](https://github.com/konstantin-lukas/grizzl.io/commit/088602c21b7dedc10284bd330a6e0ba648834446))
+
 ## [1.10.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.9.1...v1.10.0) (2026-04-12)
 
 
