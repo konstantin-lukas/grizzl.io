@@ -17,6 +17,7 @@ const fractionDigits = computed(() => {
 });
 
 const denominator = computed(() => 10 ** fractionDigits.value);
+const stepSize = computed(() => 1 / denominator.value);
 
 const displayValue = computed<number | null>({
     get() {
@@ -38,5 +39,6 @@ const displayValue = computed<number | null>({
         }"
         :increment="false"
         :decrement="false"
+        :step="stepSize"
     />
 </template>
