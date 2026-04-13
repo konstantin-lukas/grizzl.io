@@ -16,7 +16,7 @@
         "vitest": "vitest run --coverage"
     },
     "dependencies": {
-        "@huggingface/transformers": "3.8.1",
+        "@huggingface/transformers": "4.0.0",
         "@nuxt/eslint": "1.15.2",
         "@nuxt/image": "2.0.0",
         "@nuxt/ui": "4.6.0",
