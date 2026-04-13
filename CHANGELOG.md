@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.1...v1.10.2) (2026-04-13)
+
+
+### Bug Fixes
+
+* adjust step size on currency input ([8d49c74](https://github.com/konstantin-lukas/grizzl.io/commit/8d49c74bb015c0a49ecae883c511656bcc61df96))
+
 ## [1.10.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.0...v1.10.1) (2026-04-13)
 
 
