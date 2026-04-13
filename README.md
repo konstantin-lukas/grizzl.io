@@ -28,7 +28,7 @@
 </div>
 
 # Development (Linux)
-Requirements: git, docker, (git lfs if you want to edit one of the models)
+Requirements: git, git lfs, docker
 
 1. You only need to do this step if your user:group IDs aren't 1000:1000. Add these lines to your `~/.bashrc` or `~/.zshrc` depending on the shell you're using:
    ```
@@ -37,9 +37,10 @@ Requirements: git, docker, (git lfs if you want to edit one of the models)
    ```
    The above is just for convenience when starting the containers. You can also set these values manually.
 2. Clone the repository and start a new shell inside of it.
-3. Make sure localhost:80 and localhost:5432 are free and run `bin/start`.
-4. The project should now be running on `http://grizzl.localhost`.
-5. To shut down the project, simply run `bin/stop`.
+3. Fetch the large files: `git lfs install && git lfs pull`.
+4. Make sure localhost:80 and localhost:5432 are free and run `bin/start`.
+5. The project should now be running on `http://grizzl.localhost`.
+6. To shut down the project, simply run `bin/stop`.
 
 If you are wondering, why the project uses the TLD `.localhost` and not something like `.test` or `.dev`, read 
 [RFC 2606 section 2](https://www.rfc-editor.org/rfc/rfc2606#section-2) and 
