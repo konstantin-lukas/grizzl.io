@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from "~/core/components/button/Button.vue";
 import useLocale from "~/core/composables/useLocale";
 import useSoftDelete from "~/core/composables/useSoftDelete";
 import { ICON_DELETE, ICON_EDIT } from "~/core/constants/icons.constant";
@@ -41,7 +42,7 @@ const execute = useSoftDelete(apiRoute, {
 
 <template>
     <li class="relative w-full pt-4">
-        <div class="flex w-full justify-between rounded-xl bg-elevated py-2 pr-2 pl-3 sm:p-4">
+        <div class="flex w-full justify-between rounded-xl bg-elevated py-1 pr-1.5 pl-3 sm:p-4">
             <div class="flex items-center overflow-hidden">
                 <CategoryIcon :category-name="props.transaction.category.icon" class="not-sm:scale-90" />
                 <div class="mx-3 flex flex-col gap-1 overflow-hidden sm:mx-4">
@@ -57,20 +58,20 @@ const execute = useSoftDelete(apiRoute, {
                 <UBadge :color="isSpending ? 'error' : 'primary'" class="mr-2 text-back sm:mr-3">
                     {{ amount }}
                 </UBadge>
-                <div class="flex not-sm:flex-col">
-                    <UButton
+                <div class="flex not-sm:flex-col hover-none:scale-90">
+                    <Button
                         square
                         variant="ghost"
-                        class="hover:bg-accented focus-visible:bg-accented"
+                        class="hover-none hover:bg-accented focus-visible:bg-accented"
                         :icon="ICON_EDIT"
                         color="neutral"
                         :aria-label="$t('ui.edit')"
                         @click="emit('edit')"
                     />
-                    <UButton
+                    <Button
                         square
                         variant="ghost"
-                        class="hover:bg-accented focus-visible:bg-accented"
+                        class="hover-none hover:bg-accented focus-visible:bg-accented"
                         :icon="ICON_DELETE"
                         color="error"
                         :on-async-click="execute"
