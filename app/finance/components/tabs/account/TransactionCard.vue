@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Button from "~/core/components/button/Button.vue";
 import useLocale from "~/core/composables/useLocale";
 import useSoftDelete from "~/core/composables/useSoftDelete";
 import { ICON_DELETE, ICON_EDIT } from "~/core/constants/icons.constant";
@@ -42,10 +41,10 @@ const execute = useSoftDelete(apiRoute, {
 
 <template>
     <li class="relative w-full pt-4">
-        <div class="flex w-full justify-between rounded-xl bg-elevated p-4">
+        <div class="flex w-full justify-between rounded-xl bg-elevated py-2 pr-2 pl-3 sm:p-4">
             <div class="flex items-center overflow-hidden">
-                <CategoryIcon :category-name="props.transaction.category.icon" />
-                <div class="mx-4 flex flex-col gap-1 overflow-hidden">
+                <CategoryIcon :category-name="props.transaction.category.icon" class="not-sm:scale-90" />
+                <div class="mx-3 flex flex-col gap-1 overflow-hidden sm:mx-4">
                     <span :title="props.transaction.category.name" class="overflow-hidden text-nowrap text-ellipsis">
                         {{ props.transaction.category.name }}
                     </span>
@@ -55,27 +54,29 @@ const execute = useSoftDelete(apiRoute, {
                 </div>
             </div>
             <div class="flex shrink-0 items-center justify-end">
-                <UBadge :color="isSpending ? 'error' : 'primary'" class="mr-3 text-back">
+                <UBadge :color="isSpending ? 'error' : 'primary'" class="mr-2 text-back sm:mr-3">
                     {{ amount }}
                 </UBadge>
-                <Button
-                    square
-                    variant="ghost"
-                    class="hover:bg-accented focus-visible:bg-accented"
-                    :icon="ICON_EDIT"
-                    color="neutral"
-                    :aria-label="$t('ui.edit')"
-                    @click="emit('edit')"
-                />
-                <Button
-                    square
-                    variant="ghost"
-                    class="hover:bg-accented focus-visible:bg-accented"
-                    :icon="ICON_DELETE"
-                    color="error"
-                    :on-async-click="execute"
-                    :aria-label="$t('ui.delete')"
-                />
+                <div class="flex not-sm:flex-col">
+                    <UButton
+                        square
+                        variant="ghost"
+                        class="hover:bg-accented focus-visible:bg-accented"
+                        :icon="ICON_EDIT"
+                        color="neutral"
+                        :aria-label="$t('ui.edit')"
+                        @click="emit('edit')"
+                    />
+                    <UButton
+                        square
+                        variant="ghost"
+                        class="hover:bg-accented focus-visible:bg-accented"
+                        :icon="ICON_DELETE"
+                        color="error"
+                        :on-async-click="execute"
+                        :aria-label="$t('ui.delete')"
+                    />
+                </div>
             </div>
         </div>
     </li>
