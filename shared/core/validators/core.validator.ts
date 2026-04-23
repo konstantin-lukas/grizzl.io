@@ -1,3 +1,4 @@
+import type { ZodType } from "better-auth";
 import { z } from "zod";
 
 export const ID_LENGTH = 16;
@@ -17,3 +18,7 @@ export const DatabaseIdSchema = z.string().regex(/^[23456789ABCDEFGHJKLMNPQRSTUV
 export const DatabaseDeletedSchema = z.object({
     deleted: z.boolean(),
 });
+
+export function preTrim<T extends ZodType>(schema: T) {
+    return z.preprocess(data => (typeof data === "string" ? data.trim() : data), schema);
+}
