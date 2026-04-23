@@ -1,4 +1,4 @@
-import { TITLE_MAX, TITLE_MIN } from "#shared/core/validators/core.validator";
+import { TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.validator";
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { normalize } from "#shared/finance/utils/string";
 import { z } from "zod";
@@ -7,7 +7,7 @@ const VALID_ICONS = Object.keys(CategoryIconsMap) as (keyof typeof CategoryIcons
 
 export const CategorySchema = z
     .object({
-        name: z.string().min(TITLE_MIN).max(TITLE_MAX),
+        name: preTrim(z.string().min(TITLE_MIN).max(TITLE_MAX)),
         icon: z.enum(VALID_ICONS),
     })
     .transform(({ name, ...rest }) => ({
@@ -17,7 +17,7 @@ export const CategorySchema = z
     }));
 
 export const CategoryIconSuggestionSchema = z.object({
-    categoryName: z.string().max(TITLE_MAX),
+    categoryName: preTrim(z.string().max(TITLE_MAX)),
 });
 
 export type CategoryInternal = z.output<typeof CategorySchema>;

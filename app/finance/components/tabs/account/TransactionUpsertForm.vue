@@ -10,6 +10,7 @@ import CurrencyInput from "~/finance/components/CurrencyInput.vue";
 import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSelect.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
+import useReferences from "~/finance/composables/useReferences";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import type { Transaction } from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -20,8 +21,10 @@ const isInsert = computed(() => initialState === null);
 
 const { openAccountId, openAccount } = useAccounts();
 const { categories } = useCategories();
-const categoryNames = computed(() => categories.value.map(({ displayName }) => displayName));
+const referenceItems = useReferences();
 const refresh = useRefreshTransactions();
+
+const categoryNames = computed(() => categories.value.map(({ displayName }) => displayName));
 
 const open = defineModel<boolean>("open");
 const { language } = useLocale();
@@ -111,8 +114,10 @@ const onSubmit = useOnSubmit({
                     </div>
                 </div>
                 <UFormField :label="$t('finance.reference')" name="reference" class="w-full">
-                    <UInput
+                    <UInputMenu
                         v-model="state.reference"
+                        :items="referenceItems"
+                        autocomplete
                         class="w-full"
                         :maxlength="TITLE_MAX"
                         data-test-id="transaction-upsert-reference-input"

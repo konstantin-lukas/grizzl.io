@@ -409,7 +409,7 @@ export class TestBuilder {
 
             const isPost = this.method === "post";
             const testCases = isPost ? this.validPost : this.validPut;
-            for (const [name, data] of testCases) {
+            for (const [name, data, transformedData] of testCases) {
                 test(`allows operations on resources when ${name}`, async ({ request, db }) => {
                     const {
                         basePath,
@@ -438,7 +438,7 @@ export class TestBuilder {
                     } = (await db[this.fixtureName].select()).find(r => (isPost ? r.id !== id : r.id === id)) as any;
 
                     const databaseOverrides = isPost ? postDatabaseOverrides : putDatabaseOverrides;
-                    const expectedData = removeUndefinedFields({ ...data, ...databaseOverrides });
+                    const expectedData = removeUndefinedFields({ ...(transformedData ?? data), ...databaseOverrides });
 
                     let completeResource = resource;
 
