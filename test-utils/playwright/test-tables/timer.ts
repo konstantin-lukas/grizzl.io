@@ -76,7 +76,11 @@ export const TIMER_BAD_REQUEST_TEST_CASES = [
 export const VALID_TIMER_LEVEL_CASES = [
     ["the title is just long enough", withTimer("title", "a")],
     ["the title is just short enough", withTimer("title", str({ length: 100 }))],
-    ["the title is just short enough after trimming", withTimer("title", ` ${str({ length: 100 })} `)],
+    [
+        "the title is just short enough after trimming",
+        withTimer("title", ` ${str({ length: 100 })} `),
+        withTimer("title", str({ length: 100 })),
+    ],
     ["the ttsVoices are just short enough", withTimer("ttsVoices", [HASH_40_CHARS + str({ length: 460 })])],
     ["the ttsVoices are just long enough", withTimer("ttsVoices", [`${HASH_40_CHARS}a`])],
     ["the ttsVoices array is just short enough", withTimer("ttsVoices", arr(BASE_TIMER.ttsVoices[0], { length: 100 }))],
@@ -87,7 +91,11 @@ export const VALID_TIMER_LEVEL_CASES = [
 export const VALID_INTERVAL_LEVEL_CASES = [
     ["the interval titles are just long enough", withInterval("title", "a")],
     ["the interval titles are just short enough", withInterval("title", str({ length: 100 }))],
-    ["the interval titles are just short enough after trimming", withInterval("title", ` ${str({ length: 100 })} `)],
+    [
+        "the interval titles are just short enough after trimming",
+        withInterval("title", ` ${str({ length: 100 })} `),
+        withInterval("title", str({ length: 100 })),
+    ],
     ["the interval durations are just large enough", withInterval("duration", 1000)],
     ["the interval durations are just small enough", withInterval("duration", 3600000)],
     ["an interval repeatCount is just large enough", withInterval("repeatCount", 1)],

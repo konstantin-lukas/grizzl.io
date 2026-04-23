@@ -41,7 +41,11 @@ export const ACCOUNT_BAD_TITLE_TEST_CASES = [
 export const ACCOUNT_VALID_TITLE_TEST_CASES = [
     ["the title is just long enough", withAccount("title", "a")],
     ["the title is just short enough", withAccount("title", str({ length: 100 }))],
-    ["the title is just short enough after trimming", withAccount("title", ` ${str({ length: 100 })} `)],
+    [
+        "the title is just short enough after trimming",
+        withAccount("title", ` ${str({ length: 100 })} `),
+        withAccount("title", str({ length: 100 })),
+    ],
 ] as const;
 
 const ACCOUNT_VALID_CURRENCY_TEST_CASES = [
@@ -109,7 +113,11 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["the amount is positive", withTransaction("amount", 1)],
     ["the amount is negative", withTransaction("amount", -1)],
     ["the reference is just short enough", withTransaction("reference", str({ length: 100 }))],
-    ["the reference is just short enough after trimming", withTransaction("reference", ` ${str({ length: 100 })} `)],
+    [
+        "the reference is just short enough after trimming",
+        withTransaction("reference", ` ${str({ length: 100 })} `),
+        withTransaction("reference", str({ length: 100 })),
+    ],
     ...(Object.keys(CategoryIconsMap).map(icon => [
         `the category icon is ${icon}`,
         withTransaction("category", { ...BASE_TRANSACTION.category, icon }),
@@ -157,6 +165,7 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     [
         "the reference is just short enough after trimming",
         withAutoTransaction("reference", ` ${str({ length: 100 })} `),
+        withAutoTransaction("reference", str({ length: 100 })),
     ],
     ["execInterval is just large enough", withAutoTransaction("execInterval", 1)],
     ["execInterval is just small enough", withAutoTransaction("execInterval", 12)],
