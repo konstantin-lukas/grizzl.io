@@ -18,6 +18,7 @@ import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSe
 import useAccounts from "~/finance/composables/useAccounts";
 import type { AutoTransaction } from "~/finance/composables/useAutoTransactions";
 import useCategories from "~/finance/composables/useCategories";
+import useReferences from "~/finance/composables/useReferences";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
@@ -26,6 +27,7 @@ const emit = defineEmits(["success"]);
 const isInsert = computed(() => initialState === null);
 
 const { openAccountId, openAccount } = useAccounts();
+const referenceItems = useReferences();
 const { categories } = useCategories();
 const categoryNames = computed(() => categories.value.map(({ displayName }) => displayName));
 const refresh = useRefreshTransactions();
@@ -141,9 +143,11 @@ const onSubmit = useOnSubmit({
                     </div>
                 </div>
                 <UFormField :label="$t('finance.reference')" name="reference" class="w-full">
-                    <UInput
+                    <UInputMenu
                         v-model="state.reference"
                         class="w-full"
+                        autocomplete
+                        :items="referenceItems"
                         :maxlength="TITLE_MAX"
                         data-test-id="auto-transaction-upsert-reference-input"
                     />
