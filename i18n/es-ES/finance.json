@@ -43,7 +43,8 @@
             }
         },
         "bills": {
-            "upcoming": "Próximas facturas para {month}"
+            "upcoming": "Próximas facturas para {month}",
+            "remaining": "Facturas restantes: {amount}"
         },
         "transaction": {
             "empty": "No existen transacciones que coincidan con los filtros seleccionados.",

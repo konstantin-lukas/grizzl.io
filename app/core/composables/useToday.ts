@@ -1,18 +1,22 @@
-import { getLocalTimeZone, today } from "@internationalized/date";
+import { type CalendarDate, getLocalTimeZone, today as now } from "@internationalized/date";
 import useLocale from "~/core/composables/useLocale";
 
 export default function useToday() {
-    const month = ref();
+    const monthName = ref<string | null>(null);
+    const timeZone = ref<string | null>(null);
+    const today = ref<CalendarDate | null>(null);
     const { language } = useLocale();
 
     const setToday = () => {
-        const timeZone = getLocalTimeZone();
-        const now = today(timeZone);
-        month.value = new Intl.DateTimeFormat(language.value, { month: "long", timeZone }).format(now.toDate(timeZone));
+        timeZone.value = getLocalTimeZone();
+        today.value = now(timeZone.value);
+        monthName.value = new Intl.DateTimeFormat(language.value, { month: "long", timeZone: timeZone.value }).format(
+            today.value.toDate(timeZone.value),
+        );
     };
 
     onMounted(setToday);
     watch(language, setToday);
 
-    return { month };
+    return { monthName, today, timeZone };
 }

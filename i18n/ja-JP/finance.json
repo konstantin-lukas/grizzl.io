@@ -43,7 +43,8 @@
             }
         },
         "bills": {
-            "upcoming": "{month}の今後の請求"
+            "upcoming": "{month}の今後の請求",
+            "remaining": "残りの請求: {amount}"
         },
         "transaction": {
             "empty": "選択したフィルターに一致する取引はありません。",
