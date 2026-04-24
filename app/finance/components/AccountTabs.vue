@@ -2,6 +2,7 @@
 import type { TabsItem } from "@nuxt/ui";
 import { ICON_BANK, ICON_BILL, ICON_WALLET } from "~/core/constants/icons.constant";
 import AccountTab from "~/finance/components/tabs/AccountTab.vue";
+import BillsTab from "~/finance/components/tabs/BillsTab.vue";
 
 const items = ref<TabsItem[]>([
     {
@@ -16,6 +17,7 @@ const items = ref<TabsItem[]>([
     {
         label: "bills",
         icon: ICON_BILL,
+        slot: "bills",
     },
 ]);
 </script>
@@ -27,6 +29,9 @@ const items = ref<TabsItem[]>([
         </template>
         <template #account>
             <AccountTab />
+        </template>
+        <template #bills>
+            <BillsTab />
         </template>
     </UTabs>
 </template>

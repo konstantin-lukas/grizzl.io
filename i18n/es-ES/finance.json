@@ -42,6 +42,9 @@
                 "deletedDescription": "La cuenta con el nombre «{title}» fue eliminada."
             }
         },
+        "bills": {
+            "upcoming": "Próximas facturas para {month}"
+        },
         "transaction": {
             "empty": "No existen transacciones que coincidan con los filtros seleccionados.",
             "toast": {

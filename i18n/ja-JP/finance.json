@@ -42,6 +42,9 @@
                 "deletedDescription": "「{title}」という名前の口座を削除しました。"
             }
         },
+        "bills": {
+            "upcoming": "{month}の今後の請求"
+        },
         "transaction": {
             "empty": "選択したフィルターに一致する取引はありません。",
             "toast": {
