@@ -42,6 +42,10 @@
                 "deletedDescription": "The account titled “{title}” was deleted."
             }
         },
+        "bills": {
+            "upcoming": "Upcoming Bills For {month}",
+            "remaining": "Remaining bills: {amount}"
+        },
         "transaction": {
             "empty": "No transactions exist that match the selected filters.",
             "toast": {

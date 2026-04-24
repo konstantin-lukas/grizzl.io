@@ -42,6 +42,10 @@
                 "deletedDescription": "Das Konto mit dem Namen „{title}“ wurde gelöscht."
             }
         },
+        "bills": {
+            "upcoming": "Anstehende Rechnungen für {month}",
+            "remaining": "Ausstehende Rechnungen: {amount}"
+        },
         "transaction": {
             "empty": "Es gibt keine Transaktionen, die den ausgewählten Filtern entsprechen.",
             "toast": {
