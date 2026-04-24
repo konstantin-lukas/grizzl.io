@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import useLocale from "~/core/composables/useLocale";
-import useAccounts from "~/finance/composables/useAccounts";
 import { formatCurrency } from "~/finance/utils/currency";
 
-const props = defineProps<{ remaining: number; paid: number }>();
+const props = defineProps<{ remaining: number; paid: number; currency: string }>();
 const { language } = useLocale();
-const { openAccount } = useAccounts();
 
 const total = computed(() => props.paid + props.remaining);
-const percentage = computed(() => `${((props.paid / total.value) * 100).toFixed(0)}%`);
+const percentage = computed(() => (total.value === 0 ? "0%" : `${(props.paid / total.value) * 100}%`));
 const progressLabel = computed(() => {
-    const formattedTotal = openAccount.value?.currency
-        ? formatCurrency(language.value, openAccount.value.currency, total.value)
-        : "";
-    const formattedPaid = openAccount.value?.currency
-        ? formatCurrency(language.value, openAccount.value.currency, props.paid)
-        : "";
+    const formattedTotal = props.currency ? formatCurrency(language.value, props.currency, total.value) : "";
+    const formattedPaid = props.currency ? formatCurrency(language.value, props.currency, props.paid) : "";
     return `${formattedPaid} / ${formattedTotal}`;
 });
 
 const remaining = computed(() =>
-    openAccount.value?.currency ? formatCurrency(language.value, openAccount.value.currency, props.remaining) : "",
+    props.currency ? formatCurrency(language.value, props.currency, props.remaining) : "",
 );
 </script>
 

@@ -3,8 +3,7 @@ import Button from "~/core/components/button/Button.vue";
 import useLocale from "~/core/composables/useLocale";
 import useSoftDelete from "~/core/composables/useSoftDelete";
 import { ICON_DELETE, ICON_EDIT } from "~/core/constants/icons.constant";
-import { formatDate } from "~/core/utils/date";
-import CategoryIcon from "~/finance/components/CategoryIcon.vue";
+import BaseTransactionCard from "~/finance/components/tabs/account/BaseTransactionCard.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import type { Transaction } from "~/finance/composables/useTransactions";
@@ -14,18 +13,8 @@ const { openAccount, openAccountId } = useAccounts();
 const refresh = useRefreshTransactions();
 const emit = defineEmits(["edit"]);
 
-const props = defineProps<{ transaction: Transaction }>();
+const props = defineProps<{ transaction: Transaction; hideControls?: boolean }>();
 const { language } = useLocale();
-const dateAndReference = computed(() => {
-    let date = formatDate(props.transaction.createdAt, language.value);
-    if (props.transaction.reference) date += ` | ${props.transaction.reference}`;
-    return date;
-});
-const isSpending = computed(() => props.transaction.amount < 0);
-const amount = computed(() => {
-    if (!openAccount.value) return "";
-    return formatCurrency(language.value, openAccount.value.currency, props.transaction.amount);
-});
 
 const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}/transactions/${props.transaction.id}`);
 const interpolations = computed(() => ({
@@ -41,44 +30,28 @@ const execute = useSoftDelete(apiRoute, {
 </script>
 
 <template>
-    <li class="relative w-full pt-4">
-        <div class="flex w-full justify-between rounded-xl bg-elevated py-1 pr-1.5 pl-3 sm:p-4">
-            <div class="flex items-center overflow-hidden">
-                <CategoryIcon :category-name="props.transaction.category.icon" class="not-sm:scale-90" />
-                <div class="mx-3 flex flex-col gap-1 overflow-hidden sm:mx-4">
-                    <span :title="props.transaction.category.name" class="overflow-hidden text-nowrap text-ellipsis">
-                        {{ props.transaction.category.name }}
-                    </span>
-                    <span class="overflow-hidden text-nowrap text-ellipsis text-muted">
-                        {{ dateAndReference }}
-                    </span>
-                </div>
+    <BaseTransactionCard :transaction :currency="openAccount?.currency ?? 'USD'">
+        <template #controls>
+            <div v-if="!props.hideControls" class="flex not-sm:flex-col hover-none:scale-90">
+                <Button
+                    square
+                    variant="ghost"
+                    class="hover:bg-accented focus-visible:bg-accented"
+                    :icon="ICON_EDIT"
+                    color="neutral"
+                    :aria-label="$t('ui.edit')"
+                    @click="emit('edit')"
+                />
+                <Button
+                    square
+                    variant="ghost"
+                    class="hover:bg-accented focus-visible:bg-accented"
+                    :icon="ICON_DELETE"
+                    color="error"
+                    :on-async-click="execute"
+                    :aria-label="$t('ui.delete')"
+                />
             </div>
-            <div class="flex shrink-0 items-center justify-end">
-                <UBadge :color="isSpending ? 'error' : 'primary'" class="mr-2 text-back sm:mr-3">
-                    {{ amount }}
-                </UBadge>
-                <div class="flex not-sm:flex-col hover-none:scale-90">
-                    <Button
-                        square
-                        variant="ghost"
-                        class="hover:bg-accented focus-visible:bg-accented"
-                        :icon="ICON_EDIT"
-                        color="neutral"
-                        :aria-label="$t('ui.edit')"
-                        @click="emit('edit')"
-                    />
-                    <Button
-                        square
-                        variant="ghost"
-                        class="hover:bg-accented focus-visible:bg-accented"
-                        :icon="ICON_DELETE"
-                        color="error"
-                        :on-async-click="execute"
-                        :aria-label="$t('ui.delete')"
-                    />
-                </div>
-            </div>
-        </div>
-    </li>
+        </template>
+    </BaseTransactionCard>
 </template>
