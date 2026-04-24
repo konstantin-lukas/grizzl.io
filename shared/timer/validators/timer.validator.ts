@@ -9,6 +9,7 @@ import {
     TITLE_MAX,
     TITLE_MIN,
     ZERO,
+    preTrim,
 } from "#shared/core/validators/core.validator";
 import { Beat } from "#shared/timer/enums/beat.enum";
 import { z } from "zod";
@@ -19,7 +20,13 @@ export const TIMER_DURATION_MIN = 1000;
 export const TIMER_DURATION_MAX = 3600000; // 60 * 60 * 1000
 
 const PostIntervalSchema = z.object({
-    title: z.nullable(z.string().max(TITLE_MAX)).transform(value => (value === "" ? null : value)),
+    title: preTrim(
+        z
+            .string()
+            .max(TITLE_MAX)
+            .nullable()
+            .transform(value => (value === "" ? null : value)),
+    ),
     repeatCount: z.int().min(COUNT_MIN).max(COUNT_MAX),
     duration: z.int().min(TIMER_DURATION_MIN).max(TIMER_DURATION_MAX),
     preparationTime: z.int().min(ZERO).max(TIMER_DURATION_MAX),
@@ -27,7 +34,7 @@ const PostIntervalSchema = z.object({
 });
 
 export const PostTimerSchema = z.object({
-    title: z.string().min(TITLE_MIN).max(TITLE_MAX),
+    title: preTrim(z.string().min(TITLE_MIN).max(TITLE_MAX)),
     ttsVoices: z
         .array(
             z
