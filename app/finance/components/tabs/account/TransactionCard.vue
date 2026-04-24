@@ -13,7 +13,7 @@ const { openAccount, openAccountId } = useAccounts();
 const refresh = useRefreshTransactions();
 const emit = defineEmits(["edit"]);
 
-const props = defineProps<{ transaction: Transaction; hideControls?: boolean }>();
+const props = defineProps<{ transaction: Transaction }>();
 const { language } = useLocale();
 
 const apiRoute = computed(() => `/api/finance/accounts/${openAccountId.value}/transactions/${props.transaction.id}`);
@@ -32,7 +32,7 @@ const execute = useSoftDelete(apiRoute, {
 <template>
     <BaseTransactionCard :transaction :currency="openAccount?.currency ?? 'USD'">
         <template #controls>
-            <div v-if="!props.hideControls" class="flex not-sm:flex-col hover-none:scale-90">
+            <div class="flex not-sm:flex-col hover-none:scale-90">
                 <Button
                     square
                     variant="ghost"
