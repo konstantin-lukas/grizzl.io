@@ -4,12 +4,7 @@ import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
 import { useScreenSize } from "~/core/composables/useScreenSize";
 import useToday from "~/core/composables/useToday";
-import {
-    COLOR_FRONT_DARK_MODE,
-    COLOR_FRONT_LIGHT_MODE,
-    COLOR_PRIMARY_DARK_MODE,
-    COLOR_PRIMARY_LIGHT_MODE,
-} from "~/core/constants/colors.constant";
+import { CHART_COLORS, COLOR_FRONT_DARK_MODE, COLOR_FRONT_LIGHT_MODE } from "~/core/constants/colors.constant";
 import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -31,7 +26,7 @@ const getMonthName = (month: number, variant: "short" | "long" = "short") => {
 const canvasRef = ref();
 const chart = shallowRef<Chart>();
 const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
-const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
+const backgroundColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const monthNumbers = computed(() =>
     Array.from({ length: 12 }).map((_, i) => {
         const offset = today.value?.month ?? 0;
@@ -43,22 +38,27 @@ const monthNumbers = computed(() =>
 const monthNames = computed(() => {
     return monthNumbers.value.map(i => getMonthName(i));
 });
-const longMonthNames = computed(() => {
-    return monthNumbers.value.map(i => getMonthName(i, "long"));
-});
 const datasets = computed(() => {
     const allExpenses = props.expenses.flat();
     const categoryIds = [...new Set(allExpenses.map(({ category }) => category))];
-    return categoryIds.map(categoryId => {
+    return categoryIds.map((categoryId, i) => {
         const categoryName = categories.value.find(({ id }) => id === categoryId)?.displayName;
         const categoryExpenses = props.expenses.map(expense => expense.find(item => item.category === categoryId));
         const categoryData = categoryExpenses.map(expense => expense?.spent ?? 0);
+        const color = CHART_COLORS[i % CHART_COLORS.length];
 
         return {
             label: categoryName,
             data: categoryData,
-            backgroundColor: dataColor.value,
-            borderRadius: 10,
+            backgroundColor: color,
+            hoverBackgroundColor: backgroundColor.value,
+            borderRadius: {
+                topLeft: 8,
+                topRight: 8,
+                bottomLeft: 8,
+                bottomRight: 8,
+            },
+            borderSkipped: false,
         };
     });
 });
@@ -84,6 +84,7 @@ onMounted(() => {
                     ticks: {
                         display: sm.value,
                         color: gridColor.value,
+                        padding: 10,
                     },
                 },
                 y: {
@@ -95,6 +96,7 @@ onMounted(() => {
                     ticks: {
                         display: !sm.value,
                         color: gridColor.value,
+                        padding: 10,
                     },
                     border: {
                         width: 0,
@@ -112,8 +114,7 @@ onMounted(() => {
                             return formatCurrency(language.value, props.currency, value);
                         },
                         title(context) {
-                            const month = context[0]?.dataIndex ?? 0;
-                            return longMonthNames.value[month];
+                            return context[0]?.dataset.label;
                         },
                     },
                 },
@@ -139,6 +140,7 @@ watch([datasets, monthNames, gridColor, sm], ([newDatasets, newMonthNames, newGr
         ticks: {
             display: newSm,
             color: newGridColor,
+            padding: 10,
         },
     };
 
@@ -151,6 +153,7 @@ watch([datasets, monthNames, gridColor, sm], ([newDatasets, newMonthNames, newGr
         ticks: {
             display: !newSm,
             color: newGridColor,
+            padding: 10,
         },
         border: {
             width: 0,
@@ -163,7 +166,7 @@ watch([datasets, monthNames, gridColor, sm], ([newDatasets, newMonthNames, newGr
 
 <template>
     <div class="mt-4 rounded-xl bg-elevated p-6">
-        <div class="h-[60dvh] sm:max-h-80 portrait:h-[40dvh]">
+        <div class="h-[60dvh] sm:max-h-80 portrait:h-[75dvh]">
             <canvas ref="canvasRef" />
         </div>
     </div>

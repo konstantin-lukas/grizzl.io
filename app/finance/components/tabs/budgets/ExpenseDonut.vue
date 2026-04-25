@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
-import { useScreenSize } from "~/core/composables/useScreenSize";
 import {
+    CHART_COLORS,
     COLOR_ELEVATED_DARK_MODE,
     COLOR_ELEVATED_LIGHT_MODE,
-    COLOR_PRIMARY_DARK_MODE,
-    COLOR_PRIMARY_LIGHT_MODE,
+    COLOR_FRONT_DARK_MODE,
+    COLOR_FRONT_LIGHT_MODE,
 } from "~/core/constants/colors.constant";
 import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
@@ -14,7 +14,6 @@ import { formatCurrency } from "~/finance/utils/currency";
 
 const { categories } = useCategories();
 const { language } = useLocale();
-const { sm } = useScreenSize();
 const { t } = useI18n();
 const colorMode = useColorMode();
 const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
@@ -35,9 +34,8 @@ const labels = computed(() =>
     }),
 );
 const data = computed(() => props.expenses.map(({ spent }) => spent));
-const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
 const borderColor = computed(() => (colorMode.value === "dark" ? COLOR_ELEVATED_DARK_MODE : COLOR_ELEVATED_LIGHT_MODE));
-const borderWidth = computed(() => (sm.value ? 10 : 5));
+const backgroundColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 
 onMounted(() => {
     chart.value = new Chart(canvasRef.value, {
@@ -46,10 +44,10 @@ onMounted(() => {
             labels: labels.value,
             datasets: [
                 {
-                    backgroundColor: dataColor.value,
+                    backgroundColor: CHART_COLORS,
                     borderColor: borderColor.value,
-                    hoverBorderColor: borderColor.value,
-                    borderWidth: borderWidth.value,
+                    hoverBackgroundColor: backgroundColor.value,
+                    borderWidth: 0,
                     data: data.value,
                 },
             ],
@@ -73,19 +71,14 @@ onMounted(() => {
     });
 });
 
-watch(
-    [data, labels, dataColor, borderColor, borderWidth],
-    ([newData, newLabels, newDataColor, newBorderColor, newBorderWidth]) => {
-        if (!chart.value || import.meta.server) return;
-        chart.value.data.labels = newLabels;
-        chart.value.data.datasets[0]!.data = newData;
-        chart.value.data.datasets[0]!.backgroundColor = newDataColor;
-        chart.value.data.datasets[0]!.borderColor = newBorderColor;
-        chart.value.data.datasets[0]!.hoverBorderColor = newBorderColor;
-        chart.value.data.datasets[0]!.borderWidth = newBorderWidth;
-        chart.value.update();
-    },
-);
+watch([data, labels, borderColor, backgroundColor], ([newData, newLabels, newBorderColor, newBackgroundColor]) => {
+    if (!chart.value || import.meta.server) return;
+    chart.value.data.labels = newLabels;
+    chart.value.data.datasets[0]!.data = newData;
+    chart.value.data.datasets[0]!.borderColor = newBorderColor;
+    chart.value.data.datasets[0]!.hoverBackgroundColor = newBackgroundColor;
+    chart.value.update();
+});
 </script>
 
 <template>
