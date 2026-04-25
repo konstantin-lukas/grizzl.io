@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.11.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.2...v1.11.0) (2026-04-25)
+
+
+### Features
+
+* add bills UI ([#406](https://github.com/konstantin-lukas/grizzl.io/issues/406)) ([33ab0ac](https://github.com/konstantin-lukas/grizzl.io/commit/33ab0ac762c0eb09581fc8bbf51cdc85b06acd23))
+* **finance:** add budgets UI ([#407](https://github.com/konstantin-lukas/grizzl.io/issues/407)) ([a4d19f6](https://github.com/konstantin-lukas/grizzl.io/commit/a4d19f6a079d2582d2879736a7ed3f63493677b4))
+* trim inputs before validation and add auto complete to references ([#404](https://github.com/konstantin-lukas/grizzl.io/issues/404)) ([3b7f228](https://github.com/konstantin-lukas/grizzl.io/commit/3b7f2285e007b56e3fb02108f35be907f8060f0f))
+
 ## [1.10.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.1...v1.10.2) (2026-04-13)
 
 
