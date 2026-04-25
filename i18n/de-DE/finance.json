@@ -43,7 +43,7 @@
             }
         },
         "bills": {
-            "upcoming": "Anstehende Rechnungen für {month}",
+            "upcoming": "Rechnungen für {month}",
             "remaining": "Ausstehende Rechnungen: {amount}",
             "empty": "Du hast diesen Monat keine fälligen Rechnungen."
         },

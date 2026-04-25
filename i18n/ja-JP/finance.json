@@ -43,7 +43,7 @@
             }
         },
         "bills": {
-            "upcoming": "{month}の今後の請求",
+            "upcoming": "{month}の請求",
             "remaining": "残りの請求: {amount}",
             "empty": "今月は支払期限の請求はありません。"
         },

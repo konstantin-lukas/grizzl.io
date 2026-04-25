@@ -43,7 +43,7 @@
             }
         },
         "bills": {
-            "upcoming": "Próximas facturas para {month}",
+            "upcoming": "Facturas para {month}",
             "remaining": "Facturas restantes: {amount}",
             "empty": "No tienes facturas pendientes este mes."
         },

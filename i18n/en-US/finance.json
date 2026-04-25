@@ -43,7 +43,7 @@
             }
         },
         "bills": {
-            "upcoming": "Upcoming Bills For {month}",
+            "upcoming": "Bills For {month}",
             "remaining": "Remaining bills: {amount}",
             "empty": "You don't have any bills due this month."
         },
