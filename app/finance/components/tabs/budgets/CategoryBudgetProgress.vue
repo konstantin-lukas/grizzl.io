@@ -6,16 +6,21 @@ import { formatCurrency } from "~/finance/utils/currency";
 
 const { categories } = useCategories();
 const { language } = useLocale();
-const props = defineProps<{ expense: PerMonthCategoryStatistics; currency: string }>();
-const category = computed(() => categories.value.find(category => category.id === props.expense.category));
 
-const transform = computed(() => `rotate(${0.4}turn)`);
-const spentLess = computed(() => (props.expense?.change ?? -1) < 0);
-const change = computed(() => `${(spentLess.value ? "" : "+") + props.expense.change}%`);
-const fullySpent = computed(() => false);
+const props = defineProps<{ expense: PerMonthCategoryStatistics & { budget: number }; currency: string }>();
+const category = computed(() => categories.value.find(category => category.id === props.expense.category));
+const budget = computed(() => {
+    return formatCurrency(language.value, props.currency, props.expense.budget);
+});
+const progress = computed(() => (props.expense.budget === 0 ? 1 : props.expense.spent / props.expense.budget));
+const transform = computed(() => `rotate(${progress.value}turn)`);
+const spentLess = computed(() => (props.expense?.change ?? -1) <= 0);
+const change = computed(() => `${spentLess.value ? "" : "+"}${props.expense.change}%`);
+const fullySpent = computed(() => progress.value >= 1);
 const backgroundColor = computed(() => (fullySpent.value ? "bg-error" : "bg-primary"));
 const backgroundImage = computed(
-    () => `conic-gradient(var(--ui-${fullySpent.value ? "error" : "primary"}) ${0.4}turn, var(--ui-border) 0)`,
+    () =>
+        `conic-gradient(var(--ui-${fullySpent.value ? "error" : "primary"}) ${progress.value}turn, var(--ui-border) 0)`,
 );
 const spentAmount = computed(() => formatCurrency(language.value, props.currency, props.expense.spent));
 </script>
@@ -26,8 +31,8 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
             class="relative aspect-square w-full overflow-hidden rounded-full"
             role="progressbar"
             :aria-valuemin="0"
-            :aria-valuemax="100000"
-            :aria-valuenow="40000"
+            :aria-valuemax="props.expense.budget"
+            :aria-valuenow="props.expense.spent"
             :aria-labelledby="props.expense.category"
         >
             <div class="center aspect-square w-full scale-110" :style="{ backgroundImage }" :class="backgroundColor">
@@ -58,7 +63,7 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
                 {{ category?.displayName }}
             </b>
             <br />
-            {{ $t("finance.budgets.usedAmount", { amount: spentAmount, max: 53 }) }}
+            {{ $t("finance.budgets.usedAmount", { amount: spentAmount, max: budget }) }}
         </span>
     </div>
 </template>
