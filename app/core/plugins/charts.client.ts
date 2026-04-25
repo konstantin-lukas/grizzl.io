@@ -1,5 +1,7 @@
 import {
     ArcElement,
+    BarController,
+    BarElement,
     CategoryScale,
     Chart,
     DoughnutController,
@@ -20,6 +22,8 @@ export default defineNuxtPlugin(() => {
         PointElement,
         LineElement,
         Tooltip,
+        BarController,
+        BarElement,
         DoughnutController,
         ArcElement,
     );

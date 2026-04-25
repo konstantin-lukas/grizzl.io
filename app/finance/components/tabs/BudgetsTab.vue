@@ -3,6 +3,7 @@ import H2 from "~/core/components/typo/H2.vue";
 import useToday from "~/core/composables/useToday";
 import CategoryBudgets from "~/finance/components/tabs/budgets/CategoryBudgets.vue";
 import ExpenseDonut from "~/finance/components/tabs/budgets/ExpenseDonut.vue";
+import StackedExpenses from "~/finance/components/tabs/budgets/StackedExpenses.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import usePerMonthTransactions from "~/finance/composables/usePerMonthTransactions";
 
@@ -23,4 +24,5 @@ watchEffect(refresh);
     <H2 class="mt-12">{{ $t("finance.budgets.categoryBudgetsHeading", { month: monthName }) }}</H2>
     <CategoryBudgets :expenses="thisMonthsExpenses" :currency />
     <H2 class="mt-12">{{ $t("finance.budgets.previousExpensesHeading") }}</H2>
+    <StackedExpenses :expenses="perMonthPerCategory" :currency />
 </template>
