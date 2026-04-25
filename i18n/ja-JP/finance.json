@@ -50,7 +50,8 @@
             "currentExpensesHeading": "{month}の支出",
             "categoryBudgetsHeading": "{month}のカテゴリ内訳",
             "previousExpensesHeading": "過去の月の支出",
-            "usedAmount": "{amount} / {max} 使用"
+            "usedAmount": "{amount} / {max} 使用",
+            "noExpenses": "今月はまだ支出がありません。"
         },
         "transaction": {
             "empty": "選択したフィルターに一致する取引はありません。",

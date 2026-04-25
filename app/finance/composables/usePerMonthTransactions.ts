@@ -68,7 +68,5 @@ export default function usePerMonthTransactions() {
         perMonthPerCategory.value = perCategoryArray;
     };
 
-    watchEffect(refresh);
-
     return { transactions: perMonthTransactions, perMonthPerCategory, refresh };
 }

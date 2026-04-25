@@ -15,6 +15,7 @@ import { formatCurrency } from "~/finance/utils/currency";
 const { categories } = useCategories();
 const { language } = useLocale();
 const { sm } = useScreenSize();
+const { t } = useI18n();
 const colorMode = useColorMode();
 const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
 const canvasRef = ref();
@@ -22,6 +23,9 @@ const chart = shallowRef<Chart>();
 
 const spentOverall = computed(() => {
     const amount = props.expenses.reduce((sum, { spent }) => sum + spent, 0);
+    if (amount === 0) {
+        return t("finance.budgets.noExpenses");
+    }
     return formatCurrency(language.value, props.currency, amount);
 });
 
