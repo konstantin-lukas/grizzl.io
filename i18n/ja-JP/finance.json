@@ -44,7 +44,8 @@
         },
         "bills": {
             "upcoming": "{month}の今後の請求",
-            "remaining": "残りの請求: {amount}"
+            "remaining": "残りの請求: {amount}",
+            "empty": "今月は支払期限の請求はありません。"
         },
         "budgets": {
             "currentExpensesHeading": "{month}の支出",
