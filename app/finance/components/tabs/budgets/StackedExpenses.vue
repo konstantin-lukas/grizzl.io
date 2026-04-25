@@ -2,8 +2,14 @@
 import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
+import { useScreenSize } from "~/core/composables/useScreenSize";
 import useToday from "~/core/composables/useToday";
-import { COLOR_PRIMARY_DARK_MODE, COLOR_PRIMARY_LIGHT_MODE } from "~/core/constants/colors.constant";
+import {
+    COLOR_FRONT_DARK_MODE,
+    COLOR_FRONT_LIGHT_MODE,
+    COLOR_PRIMARY_DARK_MODE,
+    COLOR_PRIMARY_LIGHT_MODE,
+} from "~/core/constants/colors.constant";
 import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -14,6 +20,7 @@ const colorMode = useColorMode();
 const { language } = useLocale();
 const { categories } = useCategories();
 const { today } = useToday();
+const { sm } = useScreenSize();
 
 const getMonthName = (month: number, variant: "short" | "long" = "short") => {
     const timeZone = getLocalTimeZone();
@@ -23,13 +30,14 @@ const getMonthName = (month: number, variant: "short" | "long" = "short") => {
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>();
+const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const dataColor = computed(() => (colorMode.value === "dark" ? COLOR_PRIMARY_DARK_MODE : COLOR_PRIMARY_LIGHT_MODE));
 const monthNumbers = computed(() =>
     Array.from({ length: 12 }).map((_, i) => {
         const offset = today.value?.month ?? 0;
-        const month = i + 1;
-        const effectiveMonth = month + offset;
-        return effectiveMonth % 12;
+        const effectiveMonth = i + offset;
+        const moduloMonth = effectiveMonth % 12;
+        return moduloMonth + 1;
     }),
 );
 const monthNames = computed(() => {
@@ -63,16 +71,33 @@ onMounted(() => {
             datasets: datasets.value,
         },
         options: {
+            indexAxis: sm.value ? "x" : "y",
             responsive: true,
             maintainAspectRatio: false,
             scales: {
                 x: {
+                    type: sm.value ? "category" : "linear",
                     stacked: true,
+                    grid: {
+                        color: "rgba(255,255,255,0)",
+                    },
+                    ticks: {
+                        display: sm.value,
+                        color: gridColor.value,
+                    },
                 },
                 y: {
+                    type: sm.value ? "linear" : "category",
                     stacked: true,
+                    grid: {
+                        color: gridColor.value,
+                    },
                     ticks: {
-                        display: false,
+                        display: !sm.value,
+                        color: gridColor.value,
+                    },
+                    border: {
+                        width: 0,
                     },
                 },
             },
@@ -83,7 +108,7 @@ onMounted(() => {
                     padding: 10,
                     callbacks: {
                         label(context) {
-                            const value = context.parsed.y;
+                            const value = context.parsed[sm.value ? "y" : "x"] ?? 0;
                             return formatCurrency(language.value, props.currency, value);
                         },
                         title(context) {
@@ -96,11 +121,49 @@ onMounted(() => {
         },
     });
 });
+
+watch([datasets, monthNames, gridColor, sm], ([newDatasets, newMonthNames, newGridColor, newSm]) => {
+    if (!chart.value || import.meta.server) return;
+
+    chart.value.data.datasets = newDatasets;
+    chart.value.data.labels = newMonthNames;
+
+    chart.value.options.indexAxis = newSm ? "x" : "y";
+
+    chart.value.options.scales!.x = {
+        type: newSm ? "category" : "linear",
+        stacked: true,
+        grid: {
+            color: "rgba(255,255,255,0)",
+        },
+        ticks: {
+            display: newSm,
+            color: newGridColor,
+        },
+    };
+
+    chart.value.options.scales!.y = {
+        type: newSm ? "linear" : "category",
+        stacked: true,
+        grid: {
+            color: newGridColor,
+        },
+        ticks: {
+            display: !newSm,
+            color: newGridColor,
+        },
+        border: {
+            width: 0,
+        },
+    };
+
+    chart.value.update();
+});
 </script>
 
 <template>
     <div class="mt-4 rounded-xl bg-elevated p-6">
-        <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
+        <div class="h-[60dvh] sm:max-h-80 portrait:h-[40dvh]">
             <canvas ref="canvasRef" />
         </div>
     </div>
