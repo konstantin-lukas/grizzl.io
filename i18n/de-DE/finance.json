@@ -43,8 +43,16 @@
             }
         },
         "bills": {
-            "upcoming": "Anstehende Rechnungen für {month}",
-            "remaining": "Ausstehende Rechnungen: {amount}"
+            "upcoming": "Rechnungen für {month}",
+            "remaining": "Ausstehende Rechnungen: {amount}",
+            "empty": "Du hast diesen Monat keine fälligen Rechnungen."
+        },
+        "budgets": {
+            "currentExpensesHeading": "Ausgaben im {month}",
+            "categoryBudgetsHeading": "Kategorie-Budgets für {month}",
+            "previousExpensesHeading": "Ausgaben in vorherigen Monaten",
+            "usedAmount": "{amount} / {max} ausgegeben",
+            "noExpenses": "Du hast diesen Monat noch kein Geld ausgegeben."
         },
         "transaction": {
             "empty": "Es gibt keine Transaktionen, die den ausgewählten Filtern entsprechen.",

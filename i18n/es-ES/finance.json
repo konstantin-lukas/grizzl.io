@@ -43,8 +43,16 @@
             }
         },
         "bills": {
-            "upcoming": "Próximas facturas para {month}",
-            "remaining": "Facturas restantes: {amount}"
+            "upcoming": "Facturas para {month}",
+            "remaining": "Facturas restantes: {amount}",
+            "empty": "No tienes facturas pendientes este mes."
+        },
+        "budgets": {
+            "currentExpensesHeading": "Gastos en {month}",
+            "categoryBudgetsHeading": "Presupuestos por categoría para {month}",
+            "previousExpensesHeading": "Gastos en meses anteriores",
+            "usedAmount": "{amount} / {max} gastados",
+            "noExpenses": "Aún no has gastado dinero este mes."
         },
         "transaction": {
             "empty": "No existen transacciones que coincidan con los filtros seleccionados.",

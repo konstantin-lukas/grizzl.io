@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import H2 from "~/core/components/typo/H2.vue";
+import useToday from "~/core/composables/useToday";
+import CategoryBudgets from "~/finance/components/tabs/budgets/CategoryBudgets.vue";
+import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
+import ExpenseDonut from "~/finance/components/tabs/budgets/ExpenseDonut.vue";
+import StackedExpenses from "~/finance/components/tabs/budgets/StackedExpenses.vue";
+import useAccounts from "~/finance/composables/useAccounts";
+import usePerMonthTransactions from "~/finance/composables/usePerMonthTransactions";
+
+const { monthName } = useToday();
+const { perMonthPerCategory, refresh } = usePerMonthTransactions();
+const { openAccount } = useAccounts();
+const currency = computed(() => openAccount.value?.currency ?? "USD");
+const thisMonthsExpenses = computed(() => perMonthPerCategory.value[perMonthPerCategory.value.length - 1] ?? []);
+
+watchEffect(refresh);
+</script>
+
+<template>
+    <H2>{{ $t("finance.budgets.currentExpensesHeading", { month: monthName }) }}</H2>
+    <EmptyBudgets v-if="thisMonthsExpenses.length === 0" class="mt-4" />
+    <ExpenseDonut v-if="thisMonthsExpenses.length > 0" :expenses="thisMonthsExpenses" :currency />
+    <H2 v-if="thisMonthsExpenses.length > 0" class="mt-12">
+        {{ $t("finance.budgets.categoryBudgetsHeading", { month: monthName }) }}
+    </H2>
+    <CategoryBudgets v-if="thisMonthsExpenses.length > 0" :expenses="thisMonthsExpenses" :currency />
+    <H2 class="mt-12">{{ $t("finance.budgets.previousExpensesHeading") }}</H2>
+    <StackedExpenses :expenses="perMonthPerCategory" :currency />
+</template>
