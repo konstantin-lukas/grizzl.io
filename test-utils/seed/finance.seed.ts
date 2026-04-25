@@ -167,9 +167,9 @@ seed("insert finance test data", async ({ db }) => {
     }));
 
     for (const [i, account] of accounts.entries()) {
-        const categories = await db.financeCategory.insert(5, seed => {
+        const categoryCount = int({ min: 5, max: 15, seed: i });
+        const categories = await db.financeCategory.insert(categoryCount as 5, index => {
             const cat = Object.entries(categoryTitles);
-            const index = int({ min: 0, max: cat.length - 1, seed });
             const [icon, displayName] = cat[index]!;
             const normalizedName = normalize(displayName);
             return { accountId: account.id, displayName, icon, normalizedName };
@@ -177,13 +177,13 @@ seed("insert finance test data", async ({ db }) => {
 
         if (account.title === "Investment Account") continue;
         const transactions = await db.financeTransaction.insert(50, j => {
-            const seed = 50 * i + j;
+            const seed = 1000 * i + j;
             const category = categories[int({ min: 0, max: categories.length - 1, seed })]!;
             return {
                 accountId: account.id,
-                createdAt: date({ refDate: new Date(), seed, days: 45 }),
+                createdAt: date({ refDate: new Date(), seed, days: 365 }),
                 categoryId: category.id,
-                amount: int({ min: account.title === "Travel Account" ? -300_00 : -200_00, max: 300_00, seed }),
+                amount: int({ min: account.title === "Travel Account" ? -200_00 : -300_00, max: 300_00, seed }),
                 reference: maybe(() => categoryReferences[category.icon as keyof typeof categoryReferences], { seed }),
             };
         });
@@ -199,7 +199,10 @@ seed("insert finance test data", async ({ db }) => {
                 accountId: account.id,
                 categoryId: category.id,
                 reference: maybe(() => categoryReferences[category.icon as keyof typeof categoryReferences], { seed }),
+                amount: int({ min: -3_000_00, max: 3_000_00, seed }),
                 lastExec: date({ seed, refDate: new Date() }).toISOString().split("T")[0],
+                execInterval: 1,
+                execOn: int({ min: 1, max: 31, seed }),
             };
         });
     }

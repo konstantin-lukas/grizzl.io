@@ -48,10 +48,15 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
                 </span>
             </div>
             <span
+                v-if="progress > 0"
                 class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full xs:size-6 md:size-10"
                 :class="backgroundColor"
             />
-            <div class="pointer-events-none absolute top-0 left-0 aspect-square w-full" :style="{ transform }">
+            <div
+                v-if="progress > 0"
+                class="pointer-events-none absolute top-0 left-0 aspect-square w-full"
+                :style="{ transform }"
+            >
                 <span
                     class="absolute top-0 left-1/2 block size-4 -translate-x-1/2 rounded-full xs:size-6 md:size-10"
                     :class="backgroundColor"
