@@ -3,13 +3,19 @@ import { onResponseError } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
 import type { Transaction } from "~/finance/composables/useTransactions";
 
+export interface PerMonthCategoryStatistics {
+    spent: number;
+    category: string;
+    change: number | null;
+}
+
 export default function usePerMonthTransactions() {
     const { timeZone, today } = useToday();
     const { openAccountId } = useAccounts();
     const toast = useToast();
     const { t } = useI18n();
     const perMonthTransactions = useState<Transaction[][]>("per-month-transactions", () => []);
-    const perMonthPerCategory = useState<{ spent: number; category: string }[][]>(
+    const perMonthPerCategory = useState<PerMonthCategoryStatistics[][]>(
         "per-month-per-category-transaction-data",
         () => [],
     );
@@ -64,5 +70,5 @@ export default function usePerMonthTransactions() {
 
     watchEffect(refresh);
 
-    return { transactions: perMonthTransactions, refresh };
+    return { transactions: perMonthTransactions, perMonthPerCategory, refresh };
 }

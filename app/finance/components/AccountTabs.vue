@@ -3,7 +3,7 @@ import type { TabsItem } from "@nuxt/ui";
 import { ICON_BANK, ICON_BILL, ICON_WALLET } from "~/core/constants/icons.constant";
 import AccountTab from "~/finance/components/tabs/AccountTab.vue";
 import BillsTab from "~/finance/components/tabs/BillsTab.vue";
-import BudgetsTab from "~/finance/components/tabs/bills/BudgetsTab.vue";
+import BudgetsTab from "~/finance/components/tabs/BudgetsTab.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 
 const items = ref<TabsItem[]>([
