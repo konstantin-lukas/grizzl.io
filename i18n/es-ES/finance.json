@@ -50,8 +50,7 @@
             "currentExpensesHeading": "Gastos en {month}",
             "categoryBudgetsHeading": "Presupuestos por categoría para {month}",
             "previousExpensesHeading": "Gastos en meses anteriores",
-            "usedAmount": "{amount} / {max} gastados",
-            "spentSum": "{amount} gastados en {month}"
+            "usedAmount": "{amount} / {max} gastados"
         },
         "transaction": {
             "empty": "No existen transacciones que coincidan con los filtros seleccionados.",

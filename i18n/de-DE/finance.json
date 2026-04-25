@@ -50,8 +50,7 @@
             "currentExpensesHeading": "Ausgaben im {month}",
             "categoryBudgetsHeading": "Kategorie-Budgets für {month}",
             "previousExpensesHeading": "Ausgaben in vorherigen Monaten",
-            "usedAmount": "{amount} / {max} ausgegeben",
-            "spentSum": "{amount} in {month} ausgegeben"
+            "usedAmount": "{amount} / {max} ausgegeben"
         },
         "transaction": {
             "empty": "Es gibt keine Transaktionen, die den ausgewählten Filtern entsprechen.",

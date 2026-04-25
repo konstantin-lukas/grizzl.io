@@ -13,8 +13,14 @@ const thisMonthsExpenses = computed(() => perMonthPerCategory.value[perMonthPerC
 </script>
 
 <template>
-    <H2>{{ $t("finance.budgets.currentExpensesHeading", { month: monthName }) }}</H2>
-    <ExpenseDonut :expenses="thisMonthsExpenses" :currency />
+    <Transition name="fade">
+        <H2 v-if="thisMonthsExpenses.length > 0">
+            {{ $t("finance.budgets.currentExpensesHeading", { month: monthName }) }}
+        </H2>
+    </Transition>
+    <Transition name="fade">
+        <ExpenseDonut v-if="thisMonthsExpenses.length > 0" :expenses="thisMonthsExpenses" :currency />
+    </Transition>
     <H2>{{ $t("finance.budgets.categoryBudgetsHeading", { month: monthName }) }}</H2>
     <H2>{{ $t("finance.budgets.previousExpensesHeading") }}</H2>
 </template>
