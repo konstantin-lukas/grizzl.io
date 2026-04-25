@@ -46,6 +46,13 @@
             "upcoming": "{month}の今後の請求",
             "remaining": "残りの請求: {amount}"
         },
+        "budgets": {
+            "currentExpensesHeading": "{month}の支出",
+            "categoryBudgetsHeading": "{month}のカテゴリ内訳",
+            "previousExpensesHeading": "過去の月の支出",
+            "usedAmount": "{amount} / {max} 使用",
+            "spentSum": "{month}の支出: {amount}"
+        },
         "transaction": {
             "empty": "選択したフィルターに一致する取引はありません。",
             "toast": {

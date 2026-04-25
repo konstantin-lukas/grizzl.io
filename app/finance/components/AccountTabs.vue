@@ -3,6 +3,7 @@ import type { TabsItem } from "@nuxt/ui";
 import { ICON_BANK, ICON_BILL, ICON_WALLET } from "~/core/constants/icons.constant";
 import AccountTab from "~/finance/components/tabs/AccountTab.vue";
 import BillsTab from "~/finance/components/tabs/BillsTab.vue";
+import BudgetsTab from "~/finance/components/tabs/bills/BudgetsTab.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 
 const items = ref<TabsItem[]>([
@@ -14,6 +15,7 @@ const items = ref<TabsItem[]>([
     {
         label: "budgets",
         icon: ICON_WALLET,
+        slot: "budgets",
     },
     {
         label: "bills",
@@ -35,6 +37,9 @@ const { refresh } = useAutoTransactions();
         </template>
         <template #bills>
             <BillsTab />
+        </template>
+        <template #budgets>
+            <BudgetsTab />
         </template>
     </UTabs>
 </template>

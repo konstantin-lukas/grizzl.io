@@ -46,6 +46,13 @@
             "upcoming": "Upcoming Bills For {month}",
             "remaining": "Remaining bills: {amount}"
         },
+        "budgets": {
+            "currentExpensesHeading": "Expenses In {month}",
+            "categoryBudgetsHeading": "Category Budgets For {month}",
+            "previousExpensesHeading": "Expenses In Previous Months",
+            "usedAmount": "{amount} / {max} spent",
+            "spentSum": "{amount} spent in {month}"
+        },
         "transaction": {
             "empty": "No transactions exist that match the selected filters.",
             "toast": {
