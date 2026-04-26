@@ -56,12 +56,13 @@ onMounted(() => {
 
                             const yScale = scales.y;
                             const yZero = yScale?.getPixelForValue(0) ?? 0;
+                            const lineOffset = y0 === 0 || y1 === 0 ? 3 : 0;
 
                             const gradient = canvasCtx.createLinearGradient(
                                 0,
-                                chartArea.top + (y0 === 0 || y1 === 0 ? 3 : 0),
+                                chartArea.top + lineOffset,
                                 0,
-                                chartArea.bottom + (y0 === 0 || y1 === 0 ? 3 : 0),
+                                chartArea.bottom + lineOffset,
                             );
 
                             const offset = (yZero - chartArea.top) / (chartArea.bottom - chartArea.top);
