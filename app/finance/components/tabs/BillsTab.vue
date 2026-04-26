@@ -16,19 +16,20 @@ const currency = computed(() => openAccount.value?.currency ?? "USD");
 const bills = computed(() =>
     Object.groupBy(autoTransactions.value, at => {
         if (at.amount >= 0) return "irrelevant";
-        const lastExecDate = new CalendarDate(...(at.lastExec.split("-").map(Number) as [number, number, number]));
 
+        const lastExecDate = new CalendarDate(...(at.lastExec.split("-").map(Number) as [number, number, number]));
         if (lastExecDate.year === today.value?.year && lastExecDate.month === today.value?.month) {
+            at.createdAt = lastExecDate.toString();
             return "paid";
         }
 
         const nextExecDate = lastExecDate.add({ months: at.execInterval }).set({ day: at.execOn });
-        if (nextExecDate.year !== today.value?.year || nextExecDate.month !== today.value?.month) {
-            return "irrelevant";
+        if (nextExecDate.year === today.value?.year && nextExecDate.month === today.value?.month) {
+            at.createdAt = nextExecDate.toString();
+            return "remaining";
         }
 
-        at.createdAt = nextExecDate.toString();
-        return "remaining";
+        return "irrelevant";
     }),
 );
 
@@ -43,5 +44,9 @@ const noBills = computed(() => remaining.value === 0 && paid.value === 0);
     <BillsProgress v-if="!noBills" :remaining :paid :currency />
     <ul>
         <BaseTransactionCard v-for="bill in bills.remaining" :key="bill.id" :transaction="bill" :currency="currency" />
+    </ul>
+    <USeparator v-if="!noBills" class="mt-4" />
+    <ul class="opacity-50">
+        <BaseTransactionCard v-for="bill in bills.paid" :key="bill.id" :transaction="bill" :currency="currency" />
     </ul>
 </template>
