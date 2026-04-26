@@ -19,6 +19,7 @@ const bills = computed(() =>
         const lastExecDate = new CalendarDate(...(at.lastExec.split("-").map(Number) as [number, number, number]));
 
         if (lastExecDate.year === today.value?.year && lastExecDate.month === today.value?.month) {
+            at.createdAt = lastExecDate.toString();
             return "paid";
         }
 
@@ -28,6 +29,7 @@ const bills = computed(() =>
         }
 
         at.createdAt = nextExecDate.toString();
+
         return "remaining";
     }),
 );
@@ -43,5 +45,9 @@ const noBills = computed(() => remaining.value === 0 && paid.value === 0);
     <BillsProgress v-if="!noBills" :remaining :paid :currency />
     <ul>
         <BaseTransactionCard v-for="bill in bills.remaining" :key="bill.id" :transaction="bill" :currency="currency" />
+    </ul>
+    <USeparator v-if="!noBills" class="mt-4" />
+    <ul class="opacity-50">
+        <BaseTransactionCard v-for="bill in bills.paid" :key="bill.id" :transaction="bill" :currency="currency" />
     </ul>
 </template>
