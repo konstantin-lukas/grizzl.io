@@ -129,8 +129,17 @@ onMounted(() => {
                     callbacks: {
                         label(context) {
                             const value = context.parsed.y;
+                            const prev = context.dataset.data[context.dataIndex - 1];
+
                             if (!openAccount.value || value === null) return "";
-                            return formatCurrency(language.value, openAccount.value.currency, value);
+
+                            const formatted = formatCurrency(language.value, openAccount.value.currency, value);
+
+                            if (typeof prev !== "number") return formatted;
+
+                            const delta = value - prev;
+
+                            return `${formatted} (${delta >= 0 ? "+" : ""}${formatCurrency(language.value, openAccount.value.currency, delta)})`;
                         },
                     },
                 },
