@@ -24,13 +24,12 @@ const bills = computed(() =>
         }
 
         const nextExecDate = lastExecDate.add({ months: at.execInterval }).set({ day: at.execOn });
-        if (nextExecDate.year !== today.value?.year || nextExecDate.month !== today.value?.month) {
-            return "irrelevant";
+        if (nextExecDate.year === today.value?.year && nextExecDate.month === today.value?.month) {
+            at.createdAt = nextExecDate.toString();
+            return "remaining";
         }
 
-        at.createdAt = nextExecDate.toString();
-
-        return "remaining";
+        return "irrelevant";
     }),
 );
 
