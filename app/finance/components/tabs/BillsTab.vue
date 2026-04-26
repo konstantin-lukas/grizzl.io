@@ -16,8 +16,8 @@ const currency = computed(() => openAccount.value?.currency ?? "USD");
 const bills = computed(() =>
     Object.groupBy(autoTransactions.value, at => {
         if (at.amount >= 0) return "irrelevant";
-        const lastExecDate = new CalendarDate(...(at.lastExec.split("-").map(Number) as [number, number, number]));
 
+        const lastExecDate = new CalendarDate(...(at.lastExec.split("-").map(Number) as [number, number, number]));
         if (lastExecDate.year === today.value?.year && lastExecDate.month === today.value?.month) {
             at.createdAt = lastExecDate.toString();
             return "paid";
