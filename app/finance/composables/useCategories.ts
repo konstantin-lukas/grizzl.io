@@ -7,9 +7,8 @@ export default function useCategories() {
     const { t } = useI18n();
     const { data, refresh } = useFetch(() => `/api/finance/accounts/${openAccountId.value}/categories`, {
         onResponseError: onResponseError(toast, t),
-        immediate: false,
+        immediate: true,
         watch: [openAccountId],
-        default: () => [],
     });
 
     return { categories: data, refresh };
