@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.11.0...v1.12.0) (2026-04-26)
+
+
+### Features
+
+* add paid bills underneath upcoming bills ([#411](https://github.com/konstantin-lukas/grizzl.io/issues/411)) ([588c888](https://github.com/konstantin-lukas/grizzl.io/commit/588c88810f49e4be84cd71711e1ed882679146fe))
+
+
+### Bug Fixes
+
+* fetch categories immediately ([#413](https://github.com/konstantin-lukas/grizzl.io/issues/413)) ([cf74e1e](https://github.com/konstantin-lukas/grizzl.io/commit/cf74e1ef2d55009f294a8d9c89518c55dde84b37))
+
 ## [1.11.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.2...v1.11.0) (2026-04-25)
 
 
