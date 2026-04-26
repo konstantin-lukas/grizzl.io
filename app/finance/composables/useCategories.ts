@@ -9,6 +9,7 @@ export default function useCategories() {
         onResponseError: onResponseError(toast, t),
         immediate: true,
         watch: [openAccountId],
+        default: () => [],
     });
 
     return { categories: data, refresh };
