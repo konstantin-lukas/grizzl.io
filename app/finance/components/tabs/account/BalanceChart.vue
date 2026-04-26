@@ -27,6 +27,7 @@ const errorColor = computed(() => (colorMode.value === "dark" ? COLOR_ERROR_DARK
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
+
 onMounted(() => {
     if (!canvasRef.value || import.meta.server) return;
     chart.value = new Chart(canvasRef.value, {
@@ -43,8 +44,34 @@ onMounted(() => {
                     borderCapStyle: "round",
                     segment: {
                         borderColor: ctx => {
+                            const y0 = ctx.p0.parsed.y;
                             const y1 = ctx.p1.parsed.y;
-                            return y1 !== null && y1 < 0 ? errorColor.value : dataColor.value;
+                            if (!chart.value || y0 === null || y1 === null || (y0 >= 0 && y1 >= 0)) {
+                                return dataColor.value;
+                            }
+
+                            const { ctx: canvasCtx, chartArea, scales } = chart.value;
+
+                            if (!chartArea) return dataColor.value;
+
+                            const yScale = scales.y;
+                            const yZero = yScale?.getPixelForValue(0) ?? 0;
+
+                            const gradient = canvasCtx.createLinearGradient(
+                                0,
+                                chartArea.top + (y0 === 0 || y1 === 0 ? 3 : 0),
+                                0,
+                                chartArea.bottom + (y0 === 0 || y1 === 0 ? 3 : 0),
+                            );
+
+                            const offset = (yZero - chartArea.top) / (chartArea.bottom - chartArea.top);
+
+                            gradient.addColorStop(0, dataColor.value);
+                            gradient.addColorStop(offset, dataColor.value);
+                            gradient.addColorStop(offset, errorColor.value);
+                            gradient.addColorStop(1, errorColor.value);
+
+                            return gradient;
                         },
                     },
                 },
@@ -141,5 +168,3 @@ watch(
         <span class="block text-muted">{{ $t("finance.account.expectedBalance") }}: {{ expectedBalance }}</span>
     </div>
 </template>
-
-<style scoped></style>
