@@ -41,7 +41,7 @@ watch(upsertFormOpen, isOpen => {
         <div v-if="isFetching">
             <TransactionCardSkeleton v-for="n in 10" :key="n" />
         </div>
-        <ul v-if="!isFetching" class="relative min-h-32">
+        <ul v-else class="relative min-h-32">
             <TransitionGroup name="list">
                 <TransactionCard
                     v-for="transaction in transactions"
