@@ -52,7 +52,8 @@
             "categoryBudgetsHeading": "Category Budgets For {month}",
             "previousExpensesHeading": "Expenses In Previous Months",
             "usedAmount": "{amount} / {max} spent",
-            "noExpenses": "You haven't spent any money yet this month."
+            "noExpenses": "You haven't spent any money yet this month.",
+            "sumTotal": "Sum Total"
         },
         "transaction": {
             "empty": "No transactions exist that match the selected filters.",

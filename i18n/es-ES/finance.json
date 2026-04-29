@@ -52,7 +52,8 @@
             "categoryBudgetsHeading": "Presupuestos por categoría para {month}",
             "previousExpensesHeading": "Gastos en meses anteriores",
             "usedAmount": "{amount} / {max} gastados",
-            "noExpenses": "Aún no has gastado dinero este mes."
+            "noExpenses": "Aún no has gastado dinero este mes.",
+            "sumTotal": "Total"
         },
         "transaction": {
             "empty": "No existen transacciones que coincidan con los filtros seleccionados.",
