@@ -112,3 +112,15 @@ test("executes auto transactions before returning result", async ({ request, db 
         amount: autoTransaction.amount,
     });
 });
+
+test("only applies each auto transaction execution once", async ({ request, db }) => {
+    const [account] = await db.financeAccount.insert(1);
+    const [category] = await db.financeCategory.insert(1, { accountId: account.id });
+    await db.financeAutoTransaction.insert(1, {
+        accountId: account.id,
+        categoryId: category.id,
+    });
+    await Promise.all(Array.from({ length: 10 }).map(() => request.get(route(account.id))));
+    const transactions = await db.financeTransaction.select();
+    expect(transactions).toHaveLength(1);
+});
