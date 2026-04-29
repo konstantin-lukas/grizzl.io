@@ -7,9 +7,9 @@ import { calculateAccountBalanceTimeSeries, calculateRemainingAutoTransactionSum
 import { formatCurrency } from "~/finance/utils/currency";
 
 export default function useAccountBalanceChartData() {
-    const { openAccount } = useAccounts();
+    const { openAccount, isFetching: accountsFetching } = useAccounts();
     const { from, to, transactions, startBalance } = useTransactions();
-    const { autoTransactions } = useAutoTransactions();
+    const { autoTransactions, isFetching: autoTransactionsFetching } = useAutoTransactions();
     const { language } = useLocale();
 
     const dates = computed(() => {
@@ -25,12 +25,15 @@ export default function useAccountBalanceChartData() {
         return calculateAccountBalanceTimeSeries(startBalance.value, transactions.value, dates.value);
     });
 
-    const accountBalance = computed(() =>
-        openAccount.value ? formatCurrency(language.value, openAccount.value.currency, openAccount.value.balance) : "",
-    );
+    const accountBalance = computed(() => {
+        if (accountsFetching.value) return "";
+        return openAccount.value
+            ? formatCurrency(language.value, openAccount.value.currency, openAccount.value.balance)
+            : "";
+    });
 
     const expectedBalance = computed(() => {
-        if (!openAccount.value || !autoTransactions.value) return "";
+        if (autoTransactionsFetching.value || !openAccount.value || !autoTransactions.value) return "";
         const { balance } = openAccount.value;
         const changesByEndOfMonth = calculateRemainingAutoTransactionSum(autoTransactions.value);
         const endOfMonthBalance = balance + changesByEndOfMonth;

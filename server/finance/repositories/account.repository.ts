@@ -34,8 +34,8 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
         return !!result?.value;
     }
 
-    public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
-        return ctx
+    public async findByUserId(userId: string, ctx: ExecutionContext = this.db, lock = false) {
+        const query = ctx
             .select({
                 id: this.schema.id,
                 title: this.schema.title,
@@ -46,6 +46,9 @@ export default class AccountRepository extends BaseRepository<typeof schema> {
             .from(this.schema)
             .where(and(eq(this.schema.userId, userId), isNull(this.schema.deletedAt)))
             .orderBy(desc(this.schema.createdAt));
+
+        if (lock) return query.for("update");
+        return query;
     }
 
     public async create(userId: string, { title, currency }: PostAccount) {

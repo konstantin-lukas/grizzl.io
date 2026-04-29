@@ -165,7 +165,7 @@ watch([datasets, monthNames, gridColor, sm], ([newDatasets, newMonthNames, newGr
 </script>
 
 <template>
-    <div class="mt-4 rounded-xl bg-elevated p-6">
+    <div class="mt-4 rounded-xl bg-elevated p-8 pb-4">
         <div class="h-[60dvh] sm:max-h-80 portrait:h-[75dvh]">
             <canvas ref="canvasRef" />
         </div>

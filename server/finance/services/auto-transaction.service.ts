@@ -83,7 +83,12 @@ export default class AutoTransactionService {
 
     public async execute(userId: string, accountId: string, tz: string) {
         return this.autoTransactionRepository.transaction(async tx => {
-            const autoTransactions = await this.autoTransactionRepository.findByUserAndAccountId(userId, accountId, tx);
+            const autoTransactions = await this.autoTransactionRepository.findByUserAndAccountId(
+                userId,
+                accountId,
+                tx,
+                true,
+            );
             const now = today(tz);
             const promises = [];
             for (const autoTransaction of autoTransactions) {

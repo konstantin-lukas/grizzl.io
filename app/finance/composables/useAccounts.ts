@@ -5,7 +5,11 @@ import { onResponseError } from "~/core/utils/toast";
 export default function useAccounts() {
     const toast = useToast();
     const { t } = useI18n();
-    const { data: accounts, refresh: refreshAccounts } = useFetch("/api/finance/accounts", {
+    const {
+        data: accounts,
+        refresh: refreshAccounts,
+        pending,
+    } = useFetch("/api/finance/accounts", {
         onResponseError: onResponseError(toast, t),
     });
 
@@ -49,5 +53,5 @@ export default function useAccounts() {
         }
     };
 
-    return { accounts, refresh, openAccount, openAccountId };
+    return { accounts, refresh, openAccount, openAccountId, isFetching: pending };
 }

@@ -9,9 +9,10 @@ export default function useTransactions() {
     const from = useState<CalendarDate | undefined>("transaction-from", () => undefined);
     const to = useState<CalendarDate | undefined>("transaction-to", () => undefined);
     const reference = useState<string | undefined>("transaction-reference", () => undefined);
+    const isFetching = useState<boolean>("transactions-fetching", () => false);
 
     const transactions = useState<Transaction[]>("transactions", () => []);
     const startBalance = useState<number>("account-start-balance", () => 0);
 
-    return { transactions, categoryId, from, to, reference, startBalance };
+    return { transactions, categoryId, from, to, reference, startBalance, isFetching };
 }
