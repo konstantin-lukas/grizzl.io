@@ -19,12 +19,14 @@ export default function usePerMonthTransactions() {
         "per-month-per-category-transaction-data",
         () => [],
     );
+    const isFetching = useState("is-fetching-per-month-transactions", () => false);
 
     const refresh = async () => {
         if (!today.value || !timeZone.value || import.meta.server) return;
 
         const start = today.value.subtract({ months: 11 }).set({ day: 1 });
 
+        isFetching.value = true;
         const transactions = (
             await $fetch<Transaction[]>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
                 onResponseError: onResponseError(toast, t),
@@ -66,7 +68,8 @@ export default function usePerMonthTransactions() {
 
         perMonthTransactions.value = perMonthArray;
         perMonthPerCategory.value = perCategoryArray;
+        isFetching.value = false;
     };
 
-    return { transactions: perMonthTransactions, perMonthPerCategory, refresh };
+    return { transactions: perMonthTransactions, perMonthPerCategory, refresh, isFetching };
 }

@@ -16,7 +16,7 @@ const { categories } = useCategories();
 const { language } = useLocale();
 const { t } = useI18n();
 const colorMode = useColorMode();
-const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
+const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string; isFetching: boolean }>();
 const canvasRef = ref();
 const chart = shallowRef<Chart>();
 
@@ -89,7 +89,8 @@ watch([data, labels, borderColor, backgroundColor], ([newData, newLabels, newBor
             <ul class="flex w-full flex-wrap gap-4 not-md:mt-6 md:ml-10 md:flex-col">
                 <li class="flex w-full items-center gap-2 border-b border-b-accented pb-3">
                     <b>{{ $t("finance.budgets.sumTotal") }}: </b>
-                    <UBadge color="neutral">
+                    <USkeleton v-if="props.isFetching" class="h-6 w-20 bg-front" />
+                    <UBadge v-else color="neutral">
                         {{ spentOverall }}
                     </UBadge>
                 </li>
@@ -98,10 +99,13 @@ watch([data, labels, borderColor, backgroundColor], ([newData, newLabels, newBor
                         :style="{ backgroundColor: CHART_COLORS[index] }"
                         class="inline-block size-4 shrink-0 rounded-full"
                     />
-                    <span>
-                        {{ labels[index] }}:
-                        <UBadge color="neutral">{{ formatCurrency(language, props.currency, datum) }}</UBadge>
+                    <span class="flex items-center">
+                        <USkeleton v-if="props.isFetching || !labels[index]" class="h-6 w-20 bg-front" />
+                        <span v-else>{{ labels[index] }}</span>
+                        <span>:</span>
                     </span>
+                    <USkeleton v-if="props.isFetching" class="h-6 w-20 bg-front" />
+                    <UBadge v-else color="neutral">{{ formatCurrency(language, props.currency, datum) }}</UBadge>
                 </li>
             </ul>
         </div>

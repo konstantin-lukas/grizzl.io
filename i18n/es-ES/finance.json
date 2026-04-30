@@ -44,7 +44,8 @@
         },
         "bills": {
             "upcoming": "Facturas para {month}",
-            "remaining": "Facturas restantes: {amount}",
+            "remaining": "Facturas restantes",
+            "paid": "Facturas pagadas",
             "empty": "No tienes facturas pendientes este mes."
         },
         "budgets": {

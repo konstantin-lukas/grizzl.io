@@ -2,13 +2,14 @@
 import { CalendarDate } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
 import CategoryBudgetProgress from "~/finance/components/tabs/budgets/CategoryBudgetProgress.vue";
+import CategoryBudgetProgressSkeleton from "~/finance/components/tabs/budgets/CategoryBudgetProgressSkeleton.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 
-const { autoTransactions } = useAutoTransactions();
+const { autoTransactions, isFetching: isFetchingAutoTransactions } = useAutoTransactions();
 const { today } = useToday();
 
-const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
+const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string; isFetching: boolean }>();
 
 const expandedExpenses = computed(() => {
     const copy = [...props.expenses.map(item => ({ ...item, budget: 0 }))];
@@ -49,11 +50,9 @@ const expandedExpenses = computed(() => {
 
 <template>
     <div class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
-        <CategoryBudgetProgress
-            v-for="expense in expandedExpenses"
-            :key="expense.category"
-            :expense="expense"
-            :currency="props.currency"
-        />
+        <div v-for="expense in expandedExpenses" :key="expense.category">
+            <CategoryBudgetProgressSkeleton v-if="isFetchingAutoTransactions || props.isFetching" />
+            <CategoryBudgetProgress v-else :expense="expense" :currency="props.currency" />
+        </div>
     </div>
 </template>

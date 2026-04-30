@@ -44,7 +44,8 @@
         },
         "bills": {
             "upcoming": "{month}の請求",
-            "remaining": "残りの請求: {amount}",
+            "remaining": "未払いの請求",
+            "paid": "支払い済みの請求",
             "empty": "今月は支払期限の請求はありません。"
         },
         "budgets": {

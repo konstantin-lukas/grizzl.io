@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import H2 from "~/core/components/typo/H2.vue";
 import useLocale from "~/core/composables/useLocale";
+import TransactionCardSkeleton from "~/finance/components/TransactionCardSkeleton.vue";
 import BalanceChart from "~/finance/components/tabs/account/BalanceChart.vue";
 import EmptyTransactions from "~/finance/components/tabs/account/EmptyTransactions.vue";
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
-import TransactionCardSkeleton from "~/finance/components/tabs/account/TransactionCardSkeleton.vue";
 import TransactionControls from "~/finance/components/tabs/account/TransactionControls.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
