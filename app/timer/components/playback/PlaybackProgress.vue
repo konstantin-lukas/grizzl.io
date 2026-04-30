@@ -70,7 +70,7 @@ const baseClass = tw`absolute text-xl text-neutral-600 sm:text-2xl dark:text-neu
         :aria-valuenow="elapsedIntervalTime"
         aria-labelledby="interval-title"
     >
-        <div class="center aspect-square w-full bg-primary" :style="{ backgroundImage }">
+        <div class="center aspect-square w-full" :style="{ backgroundImage }">
             <span
                 class="center relative aspect-square w-[calc(100%-2.5rem)] rounded-full bg-back text-4xl xs:w-[calc(100%-3rem)] xs:text-5xl sm:text-6xl"
             >

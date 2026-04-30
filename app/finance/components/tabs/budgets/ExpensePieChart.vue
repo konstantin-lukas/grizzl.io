@@ -47,8 +47,9 @@ onMounted(() => {
                     backgroundColor: CHART_COLORS,
                     borderColor: borderColor.value,
                     hoverBackgroundColor: backgroundColor.value,
-                    borderWidth: 0,
+                    borderWidth: 3,
                     data: data.value,
+                    hoverOffset: 5,
                 },
             ],
         },
@@ -81,7 +82,7 @@ watch([data, labels, borderColor, backgroundColor], ([newData, newLabels, newBor
 </script>
 
 <template>
-    <div class="my-4 flex items-center rounded-xl bg-elevated px-8 py-6 not-md:flex-col md:px-12 md:py-8">
+    <div class="my-4 flex items-center rounded-xl bg-elevated px-6 py-4 not-md:flex-col md:px-12 md:py-8">
         <div class="relative z-1 aspect-square w-full max-w-96">
             <canvas ref="canvasRef" />
         </div>

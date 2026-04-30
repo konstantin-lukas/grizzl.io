@@ -35,7 +35,7 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
             :aria-valuenow="props.expense.spent"
             :aria-labelledby="props.expense.category"
         >
-            <div class="center aspect-square w-full" :style="{ backgroundImage }" :class="backgroundColor">
+            <div class="center aspect-square w-full" :style="{ backgroundImage }">
                 <span
                     :id="props.expense.category"
                     class="center relative aspect-square w-[calc(100%-2rem)] gap-2 rounded-full bg-back xs:w-[calc(100%-3rem)] md:w-[calc(100%-5rem)]"
