@@ -1,0 +1,33 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "New Account" [level=1]
+    - tablist:
+      - tab "Account" [selected]
+      - tab "Budgets"
+      - tab "Bills"
+    - tabpanel "Account":
+      - heading "Account Balance" [level=2]
+      - button "Add transaction"
+      - button "Manage automatic transactions"
+      - button "Filters"
+      - text: "/Current account balance: €\\d+\\.\\d+ Expected Month-End Balance: €\\d+\\.\\d+/"
+      - heading "Transaction History" [level=2]
+      - list:
+        - listitem:
+          - heading "No entries found" [level=2]
+          - text: No transactions exist that match the selected filters.
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - alert: Notification [ "Savings Account Created", "A new account titled “New Account” was created." ]
+  - region "Notifications (F8)":
+    - list:
+      - listitem:
+        - text: Savings Account Created A new account titled “New Account” was created.
+        - button "Close"
+        - progressbar /\d+%/

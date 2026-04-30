@@ -39,6 +39,7 @@ watch(upsertFormOpen, () => {
             value-key="id"
             :items="selectOptions"
             :aria-label="$t('finance.account.aria.controls')"
+            data-test-id="finance-account-control-menu"
             :ui="{
                 base: 'size-10 hover-none:size-12 p-0 flex items-center justify-center',
                 leading: 'p-0 relative',
@@ -78,6 +79,9 @@ watch(upsertFormOpen, () => {
                         <AccountDeleteButton />
                     </div>
                 </div>
+            </template>
+            <template #item-label="{ item }">
+                <span data-test-id="finance-account-menu-option">{{ item.label }}</span>
             </template>
         </USelectMenu>
         <template #content>

@@ -12,7 +12,9 @@ import useUpdateTransactions from "~/finance/composables/useUpdateTransactions";
 useUpdateTransactions();
 const { accounts, openAccountId } = useAccounts();
 const { refresh } = useCategories();
-onMounted(refresh);
+onMounted(() => {
+    if (openAccountId.value) refresh();
+});
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
 const upsertFormOpen = ref(false);
 </script>
@@ -22,7 +24,7 @@ const upsertFormOpen = ref(false);
         <AccountSelectMenu class="fixed top-4 right-4 z-10" />
         <div class="flex min-h-main-height-no-padding w-full flex-col">
             <div class="relative mb-16 flex h-full w-full grow flex-col">
-                <AccountH1 />
+                <AccountH1 v-if="!showEmptyView" />
                 <Transition name="fade">
                     <AccountTabs v-if="openAccountId" class="mt-10" />
                 </Transition>
