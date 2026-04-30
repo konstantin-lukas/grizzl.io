@@ -7,9 +7,12 @@ const LOCATORS = {
     currencySelect: "finance-upsert-currency-select",
     currencyOptions: "finance-upsert-currency-select-option",
 
-    // MISCELLANEOUS
+    // ACCOUNT MENU
     accountMenu: "finance-account-control-menu",
     accountMenuOption: "finance-account-menu-option",
+    editAccountButton: "finance-account-edit-account-button",
+    createAccountButton: "finance-account-create-account-button",
+    deleteAccountButton: "finance-account-delete-account-button",
 };
 
 export default class TimerPage extends BasePage<typeof LOCATORS> {

@@ -30,6 +30,7 @@ const BASE_LOCATORS = {
     cookieBannerButton: "hide-cookie-banner-button",
     formErrors: "form-error-digest",
     upsertSubmit: "upsert-form-submit-button",
+    closeToastButton: "toast-close-button",
 };
 
 type LocatorKey<T extends Record<string, string>> = keyof T | keyof typeof BASE_LOCATORS;
@@ -139,6 +140,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
 
         if (blur) {
+            await this.page.click("body", { position: { x: 0, y: 0 } });
             await this.page.click("body", { position: { x: 0, y: 0 } });
         }
 

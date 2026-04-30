@@ -24,10 +24,5 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
-  - alert: Notification [ "Savings Account Created", "A new account titled “New Account” was created." ]
   - region "Notifications (F8)":
-    - list:
-      - listitem:
-        - text: Savings Account Created A new account titled “New Account” was created.
-        - button "Close"
-        - progressbar /\d+%/
+    - list

@@ -32,6 +32,9 @@ export function createToastSuccess(title: string, description?: string) {
         title,
         description,
         color: "success",
+        close: {
+            "data-test-id": "toast-close-button",
+        } as never,
     } as const;
 }
 

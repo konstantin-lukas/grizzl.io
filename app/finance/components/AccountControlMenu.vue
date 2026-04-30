@@ -57,6 +57,7 @@ watch(upsertFormOpen, () => {
                     <Button
                         class="flex w-full justify-center"
                         :icon="ICON_PLUS_CIRCLE"
+                        data-test-id="finance-account-create-account-button"
                         @click="
                             initialState = undefined;
                             upsertFormOpen = true;
@@ -69,6 +70,7 @@ watch(upsertFormOpen, () => {
                             variant="subtle"
                             class="flex w-full justify-center"
                             :icon="ICON_EDIT"
+                            data-test-id="finance-account-edit-account-button"
                             @click="
                                 initialState = openAccount;
                                 upsertFormOpen = true;
