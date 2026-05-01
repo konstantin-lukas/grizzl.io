@@ -21,4 +21,7 @@ test("automatically updates the account tab content when add or deleting a trans
 
     await page.expect("transactionCards").toHaveCount(1);
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-after-inserting-one-transaction" });
+
+    await page.click("transactionDeleteButtons", { nth: 0 });
+    await page.expect("transactionCards").toHaveCount(0);
 });
