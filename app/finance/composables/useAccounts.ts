@@ -38,7 +38,7 @@ export default function useAccounts() {
             openAccountId.value = null;
             return;
         }
-        if (accountCountAfterRefresh > accountCountBeforeRefresh) {
+        if (accountCountBeforeRefresh !== 0 && accountCountAfterRefresh > accountCountBeforeRefresh) {
             const latest = accountsList.reduce((latest, current) => {
                 return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
             });

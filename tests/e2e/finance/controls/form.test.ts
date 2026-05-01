@@ -46,3 +46,31 @@ test("allows creating a new account and deleting it", { tag: SCREENSHOT }, async
         await page.expect("drawer").toMatchAriaSnapshot({ name: "empty-account-upsert-form" });
     });
 });
+
+test("allows editing an accounts title but not it's currency", async ({ db, financePage: page }) => {
+    await db.financeAccount.insert(1);
+    await page.goto();
+
+    await page.click("accountMenu");
+    await page.click("editAccountButton");
+
+    await page.fill("titleInput", "Bananas");
+    await page.expect("currencySelect").toBeDisabled();
+
+    await page.click("upsertSubmit");
+    await page.expect("root").toMatchAriaSnapshot({ name: "account-with-updated-title" });
+});
+
+test("allows switching accounts and remembers which account was open last", async ({ db, financePage: page }) => {
+    await db.financeAccount.insert(2, i => ({ currency: i === 0 ? "EUR" : "JPY" }));
+    await page.goto();
+
+    await page.expect("root").toMatchAriaSnapshot({ name: "first-account" });
+    await page.click("accountMenu");
+    await page.click("accountMenuOption", { nth: 1 });
+
+    await page.doubleClickEmptyArea();
+    await page.expect("root").toMatchAriaSnapshot({ name: "second-account" });
+    await page.page.reload();
+    await page.expect("root").toMatchAriaSnapshot({ name: "second-account" });
+});

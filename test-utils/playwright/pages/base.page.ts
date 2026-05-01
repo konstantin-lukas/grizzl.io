@@ -140,8 +140,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         }
 
         if (blur) {
-            await this.page.click("body", { position: { x: 0, y: 0 } });
-            await this.page.click("body", { position: { x: 0, y: 0 } });
+            await this.doubleClickEmptyArea();
         }
 
         if (name)
@@ -295,5 +294,10 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await this.page.keyboard.press("Escape");
             await this.page.click("body", { position: { x: 0, y: 0 } });
         }
+    }
+
+    async doubleClickEmptyArea() {
+        await this.page.click("body", { position: { x: 0, y: 0 } });
+        await this.page.click("body", { position: { x: 0, y: 0 } });
     }
 }
