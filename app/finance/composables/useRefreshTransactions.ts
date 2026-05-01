@@ -7,7 +7,7 @@ import useTransactions, { type Transaction } from "~/finance/composables/useTran
 export default function useRefreshTransactions() {
     const { openAccountId } = useAccounts();
 
-    const { transactions, categoryId, from, to, reference, startBalance, isFetching } = useTransactions();
+    const { transactions, categoryId, from, to, reference, startBalance } = useTransactions();
     const { refresh: refreshPerMonthTransactions } = usePerMonthTransactions();
     const toast = useToast();
     const { t } = useI18n();
@@ -24,7 +24,6 @@ export default function useRefreshTransactions() {
         const start = toCalendarDateTime(from.value, new Time(0, 0, 0, 0));
         const end = toCalendarDateTime(to.value, new Time(23, 59, 59, 999));
 
-        isFetching.value = true;
         const transactionsPromise = $fetch<Transaction[]>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
             onResponseError: onResponseError(toast, t),
             query: {
@@ -51,6 +50,5 @@ export default function useRefreshTransactions() {
             balancePromise,
             perMonthPromise,
         ]);
-        isFetching.value = false;
     };
 }
