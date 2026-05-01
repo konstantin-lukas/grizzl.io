@@ -54,6 +54,7 @@
             "previousExpensesHeading": "過去の月の支出",
             "usedAmount": "{amount} / {max} 使用",
             "noExpenses": "今月はまだ支出がありません。",
+            "noBudgets": "今月は予算がありません。",
             "sumTotal": "総額"
         },
         "transaction": {

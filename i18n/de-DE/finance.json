@@ -54,6 +54,7 @@
             "previousExpensesHeading": "Ausgaben in vorherigen Monaten",
             "usedAmount": "{amount} / {max} ausgegeben",
             "noExpenses": "Du hast diesen Monat noch kein Geld ausgegeben.",
+            "noBudgets": "Du hast diesen Monat keine Budgets.",
             "sumTotal": "Gesamtsumme"
         },
         "transaction": {

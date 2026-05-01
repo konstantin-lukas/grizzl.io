@@ -19,12 +19,16 @@ watchEffect(refresh);
 
 <template>
     <H2>{{ $t("finance.budgets.currentExpensesHeading", { month: monthName }) }}</H2>
-    <EmptyBudgets v-if="thisMonthsExpenses.length === 0" class="mt-4" />
+    <EmptyBudgets
+        v-if="thisMonthsExpenses.length === 0"
+        class="mt-4"
+        description-translation-key="finance.budgets.noExpenses"
+    />
     <ExpensePieChart v-else :expenses="thisMonthsExpenses" :currency :is-fetching />
-    <H2 v-if="thisMonthsExpenses.length > 0" class="mt-12">
+    <H2 class="mt-12">
         {{ $t("finance.budgets.categoryBudgetsHeading", { month: monthName }) }}
     </H2>
-    <CategoryBudgets v-if="thisMonthsExpenses.length > 0" :expenses="thisMonthsExpenses" :currency :is-fetching />
+    <CategoryBudgets :expenses="thisMonthsExpenses" :currency :is-fetching />
     <H2 class="mt-12">{{ $t("finance.budgets.previousExpensesHeading") }}</H2>
     <StackedExpenses :expenses="perMonthPerCategory" :currency />
 </template>
