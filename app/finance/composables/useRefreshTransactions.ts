@@ -5,7 +5,7 @@ import usePerMonthTransactions from "~/finance/composables/usePerMonthTransactio
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
 
 export default function useRefreshTransactions() {
-    const { openAccountId } = useAccounts();
+    const { openAccountId, refresh: refreshAccounts } = useAccounts();
 
     const { transactions, categoryId, from, to, reference, startBalance } = useTransactions();
     const { refresh: refreshPerMonthTransactions } = usePerMonthTransactions();
@@ -50,5 +50,6 @@ export default function useRefreshTransactions() {
             balancePromise,
             perMonthPromise,
         ]);
+        await refreshAccounts();
     };
 }
