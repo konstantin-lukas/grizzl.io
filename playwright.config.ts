@@ -72,7 +72,7 @@ export default defineConfig<ConfigOptions>({
         testIdAttribute: "data-test-id",
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
-        timezoneId: "Europe/Berlin",
+        timezoneId: "UTC",
         storageState: "./test-utils/playwright/storage.json",
         nuxt: {
             host: "http://grizzl.localhost",
