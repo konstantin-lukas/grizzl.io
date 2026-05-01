@@ -12,7 +12,7 @@
       - button "Add transaction"
       - button "Manage automatic transactions"
       - button "Filters"
-      - text: "/Current account balance: €\\d+\\.\\d+ Expected Month-End Balance: €\\d+\\.\\d+/"
+      - text: "Current account balance: €0.00 Expected Month-End Balance: €0.00"
       - heading "Transaction History" [level=2]
       - list:
         - listitem:

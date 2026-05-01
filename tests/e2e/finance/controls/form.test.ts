@@ -54,8 +54,8 @@ test("allows editing an accounts title but not it's currency", async ({ db, fina
     await page.click("accountMenu");
     await page.click("editAccountButton");
 
-    await page.fill("titleInput", "Bananas");
-    await page.expect("currencySelect").toBeDisabled();
+    await page.fill("accountTitleInput", "Bananas");
+    await page.expect("accountCurrencySelect").toBeDisabled();
 
     await page.click("upsertSubmit");
     await page.expect("root").toMatchAriaSnapshot({ name: "account-with-updated-title" });

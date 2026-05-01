@@ -71,4 +71,16 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
         await this.click("accountCurrencyOptions", { nth: 0 });
         await this.click("upsertSubmit");
     }
+
+    async completeTransactionUpsertForm({
+        amount = "100",
+        category = "Dog Food",
+        reference = "Target",
+        submit = true,
+    } = {}) {
+        await this.fill("transactionAmountInput", amount);
+        await this.fill("transactionCategoryInput", category);
+        await this.fill("transactionReferenceInput", reference);
+        if (submit) await this.click("upsertSubmit");
+    }
 }

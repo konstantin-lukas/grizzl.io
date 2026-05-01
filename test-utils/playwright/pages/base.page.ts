@@ -143,8 +143,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await this.doubleClickEmptyArea();
         }
 
-        if (name)
+        if (name) {
             return expect(target).toHaveScreenshot(name, { fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
+        }
         return expect(target).toHaveScreenshot({ fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
     }
 
