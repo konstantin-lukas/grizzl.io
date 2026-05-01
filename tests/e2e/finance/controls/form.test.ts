@@ -1,10 +1,6 @@
 import { expect, test } from "~~/test-utils/playwright";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
-test.beforeEach(async ({ page }) => {
-    await page.clock.install({ time: new Date("2026-04-15T12:00:00Z") });
-});
-
 test("should register a service worker when supported", async ({ financePage: page }) => {
     await page.goto();
     const ready = await page.swReady();
@@ -13,6 +9,7 @@ test("should register a service worker when supported", async ({ financePage: pa
 
 test("allows creating a new account and deleting it", { tag: SCREENSHOT }, async ({ financePage: page }) => {
     await page.goto();
+    await page.page.clock.install({ time: new Date("2026-04-15T12:00:00Z") });
 
     await test.step("check page state before creating an account", async () => {
         await page.expect().toBeValid({ name: "no-existing-account" });
