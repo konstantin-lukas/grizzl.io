@@ -83,4 +83,20 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
         await this.fill("transactionReferenceInput", reference);
         if (submit) await this.click("upsertSubmit");
     }
+
+    async completeAutoTransactionUpsertForm({
+        amount = "100",
+        category = "Dog Food",
+        reference = "Target",
+        execInterval = "1",
+        execOn = "1",
+        submit = true,
+    } = {}) {
+        await this.fill("autoTransactionAmountInput", amount);
+        await this.fill("autoTransactionCategoryInput", category);
+        await this.fill("autoTransactionReferenceInput", reference);
+        await this.fill("autoTransactionExecIntervalInput", execInterval);
+        await this.fill("autoTransactionExecOnInput", execOn);
+        if (submit) await this.click("upsertSubmit");
+    }
 }
