@@ -24,9 +24,9 @@ test("allows editing and deleting auto transactions", async ({ financePage: page
     await page.click("autoTransactionMenuButton");
     await page.click("autoTransactionEditButtons", { nth: 0 });
     await page.completeAutoTransactionUpsertForm();
+    await page.expect("closeToastButton").toHaveCount(1);
 
     const [updatedTransaction] = await db.financeAutoTransaction.select(transaction.id);
-    expect(transaction).not.toEqual(updatedTransaction);
     expect(updatedTransaction!.execOn).toBe(1);
     expect(updatedTransaction!.execInterval).toBe(1);
     expect(updatedTransaction!.amount).toBe(10000);

@@ -1,29 +1,31 @@
 import { date } from "~~/test-utils/helpers/data";
 import { expect, test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
-test("automatically updates the account tab content when add or deleting a transaction", async ({
-    financePage: page,
-    db,
-}) => {
-    await db.financeAccount.insert(1);
-    await page.goto();
+test(
+    "automatically updates the account tab content when add or deleting a transaction",
+    { tag: SCREENSHOT },
+    async ({ financePage: page, db }) => {
+        await db.financeAccount.insert(1);
+        await page.goto();
 
-    await page.expect("transactionCards").toHaveCount(0);
-    await page.click("transactionCreateButton");
-    await page.completeTransactionUpsertForm({ submit: false });
+        await page.expect("transactionCards").toHaveCount(0);
+        await page.click("transactionCreateButton");
+        await page.completeTransactionUpsertForm({ submit: false });
 
-    // FOR SOME REASON THE SCREENSHOT ASSERTION DOESN'T AUTO RETRY ON MOBILE CHROME
-    await page.page.waitForRequest("/api/finance/category-icon?categoryName=Dog+Food");
+        // FOR SOME REASON THE SCREENSHOT ASSERTION DOESN'T AUTO RETRY ON MOBILE CHROME
+        await page.page.waitForRequest("/api/finance/category-icon?categoryName=Dog+Food");
 
-    await page.expect("drawer").toHaveScreenshot({ name: "filled-transaction-upsert-form" });
-    await page.click("upsertSubmit");
+        await page.expect("drawer").toHaveScreenshot({ name: "filled-transaction-upsert-form" });
+        await page.click("upsertSubmit");
 
-    await page.expect("transactionCards").toHaveCount(1);
-    await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-after-inserting-one-transaction" });
+        await page.expect("transactionCards").toHaveCount(1);
+        await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-after-inserting-one-transaction" });
 
-    await page.click("transactionDeleteButtons", { nth: 0 });
-    await page.expect("transactionCards").toHaveCount(0);
-});
+        await page.click("transactionDeleteButtons", { nth: 0 });
+        await page.expect("transactionCards").toHaveCount(0);
+    },
+);
 
 test("allows overriding the suggested icon and changing the icon for the entire category", async ({
     financePage: page,
