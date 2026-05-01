@@ -9,7 +9,7 @@ import DomainError from "~~/server/core/errors/domain.error";
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
-import { LoggerService } from "~~/server/core/services/logger.service";
+import LoggerService from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
