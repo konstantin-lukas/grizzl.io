@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CalendarDate } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
+import { ICON_SAVINGS } from "~/core/constants/icons.constant";
 import CategoryBudgetProgress from "~/finance/components/tabs/budgets/CategoryBudgetProgress.vue";
 import CategoryBudgetProgressSkeleton from "~/finance/components/tabs/budgets/CategoryBudgetProgressSkeleton.vue";
 import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
@@ -54,6 +55,7 @@ const expandedExpenses = computed(() => {
         v-if="expandedExpenses.length === 0"
         class="mt-4"
         description-translation-key="finance.budgets.noBudgets"
+        :icon="ICON_SAVINGS"
     />
     <div v-else class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
         <div v-for="expense in expandedExpenses" :key="expense.category">

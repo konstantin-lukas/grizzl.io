@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import H2 from "~/core/components/typo/H2.vue";
 import useLocale from "~/core/composables/useLocale";
+import { ICON_FILTER } from "~/core/constants/icons.constant";
 import TransactionCardSkeleton from "~/finance/components/TransactionCardSkeleton.vue";
 import BalanceChart from "~/finance/components/tabs/account/BalanceChart.vue";
-import EmptyTransactions from "~/finance/components/tabs/account/EmptyTransactions.vue";
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
 import TransactionControls from "~/finance/components/tabs/account/TransactionControls.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
+import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
@@ -55,7 +56,13 @@ watch(upsertFormOpen, isOpen => {
                 />
             </TransitionGroup>
             <Transition name="list">
-                <EmptyTransactions v-if="transactions.length === 0" />
+                <li v-if="transactions.length === 0" class="absolute top-0 left-0 w-full pt-4">
+                    <EmptyBudgets
+                        :icon="ICON_FILTER"
+                        title-translation-key="ui.noEntries"
+                        description-translation-key="finance.transaction.empty"
+                    />
+                </li>
             </Transition>
         </ul>
     </div>

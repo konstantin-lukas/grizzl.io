@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import H2 from "~/core/components/typo/H2.vue";
 import useToday from "~/core/composables/useToday";
+import { ICON_FINANCE } from "~/core/constants/icons.constant";
 import CategoryBudgets from "~/finance/components/tabs/budgets/CategoryBudgets.vue";
 import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
 import ExpensePieChart from "~/finance/components/tabs/budgets/ExpensePieChart.vue";
@@ -23,6 +24,7 @@ watchEffect(refresh);
         v-if="thisMonthsExpenses.length === 0"
         class="mt-4"
         description-translation-key="finance.budgets.noExpenses"
+        :icon="ICON_FINANCE"
     />
     <ExpensePieChart v-else :expenses="thisMonthsExpenses" :currency :is-fetching />
     <H2 class="mt-12">

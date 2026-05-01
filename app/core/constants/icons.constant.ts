@@ -49,3 +49,4 @@ export const ICON_FILTER = "mdi:filter";
 export const ICON_EVENT_REPEAT = "material-symbols:event-repeat-outline-rounded";
 export const ICON_CALENDAR = "material-symbols:calendar-today-outline-rounded";
 export const ICON_MINUS = "mdi:minus";
+export const ICON_SAVINGS = "material-symbols:savings-outline-rounded";
