@@ -1,4 +1,4 @@
-export class LoggerService {
+export default class LoggerService {
     static readonly deps = [];
 
     /* c8 ignore start */
