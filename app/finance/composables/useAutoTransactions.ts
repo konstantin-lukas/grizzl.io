@@ -12,6 +12,7 @@ export default function useAutoTransactions() {
             key: `/api/finance/accounts/:accountId/auto-transactions`,
             immediate: false,
             watch: false,
+            server: false,
             default: () => [],
             onResponseError: onResponseError(toast, t),
         },

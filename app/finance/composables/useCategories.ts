@@ -10,6 +10,7 @@ export default function useCategories() {
         key: "categories",
         immediate: false,
         watch: false,
+        server: false,
         default: () => [],
     });
 
