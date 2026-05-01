@@ -2,10 +2,26 @@ import type { Page } from "@playwright/test";
 import BasePage from "~~/test-utils/playwright/pages/base.page";
 
 const LOCATORS = {
-    // UPSERT FORM
-    titleInput: "finance-upsert-title-input",
-    currencySelect: "finance-upsert-currency-select",
-    currencyOptions: "finance-upsert-currency-select-option",
+    // ACCOUNT UPSERT FORM
+    accountTitleInput: "finance-upsert-title-input",
+    accountCurrencySelect: "finance-upsert-currency-select",
+    accountCurrencyOptions: "finance-upsert-currency-select-option",
+
+    // TRANSACTION UPSERT FORM
+    transactionAmountInput: "finance-transaction-upsert-amount-input",
+    transactionCategoryInput: "finance-transaction-upsert-category-input",
+    transactionReferenceInput: "finance-transaction-upsert-reference-input",
+
+    // AUTO TRANSACTION UPSERT FORM
+    autoTransactionAmountInput: "finance-auto-transaction-upsert-amount-input",
+    autoTransactionCategoryInput: "finance-auto-transaction-upsert-category-input",
+    autoTransactionReferenceInput: "finance-auto-transaction-upsert-reference-input",
+    autoTransactionExecIntervalInput: "finance-auto-transaction-upsert-exec-interval-input",
+    autoTransactionExecOnInput: "finance-auto-transaction-upsert-exec-on-input",
+
+    // CATEGORY ICON
+    categorySelect: "finance-category-icon-select-button",
+    categoryOptions: "finance-category-icon-select-option",
 
     // CONTROL ELEMENTS
     accountMenu: "finance-account-control-menu",
@@ -49,10 +65,10 @@ export default class TimerPage extends BasePage<typeof LOCATORS> {
     }
 
     async completeAccountUpsertForm({ title = "New Account", currency = "Euro" } = {}) {
-        await this.fill("titleInput", title);
-        await this.click("currencySelect");
+        await this.fill("accountTitleInput", title);
+        await this.click("accountCurrencySelect");
         await this.page.keyboard.type(currency);
-        await this.click("currencyOptions", { nth: 0 });
+        await this.click("accountCurrencyOptions", { nth: 0 });
         await this.click("upsertSubmit");
     }
 }
