@@ -1,6 +1,5 @@
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
-import useAccounts from "~/finance/composables/useAccounts";
 import type { Transaction } from "~/finance/composables/useTransactions";
 
 export interface PerMonthCategoryStatistics {
@@ -11,7 +10,6 @@ export interface PerMonthCategoryStatistics {
 
 export default function usePerMonthTransactions() {
     const { timeZone, today } = useToday();
-    const { openAccountId } = useAccounts();
     const toast = useToast();
     const { t } = useI18n();
     const perMonthTransactions = useState<Transaction[][]>("per-month-transactions", () => []);
@@ -21,14 +19,13 @@ export default function usePerMonthTransactions() {
     );
     const isFetching = useState("is-fetching-per-month-transactions", () => false);
 
-    const refresh = async () => {
-        if (!today.value || !timeZone.value || import.meta.server) return;
+    const refresh = async (id: string) => {
+        if (!today.value || !timeZone.value || !id || import.meta.server) return;
 
         const start = today.value.subtract({ months: 11 }).set({ day: 1 });
 
-        isFetching.value = true;
         const transactions = (
-            await $fetch<Transaction[]>(`/api/finance/accounts/${openAccountId.value}/transactions`, {
+            await $fetch<Transaction[]>(`/api/finance/accounts/${id}/transactions`, {
                 onResponseError: onResponseError(toast, t),
                 query: {
                     from: start.toDate(timeZone.value).toISOString(),
@@ -68,7 +65,6 @@ export default function usePerMonthTransactions() {
 
         perMonthTransactions.value = perMonthArray;
         perMonthPerCategory.value = perCategoryArray;
-        isFetching.value = false;
     };
 
     return { transactions: perMonthTransactions, perMonthPerCategory, refresh, isFetching };

@@ -8,7 +8,7 @@ export default function useRefreshTransactions() {
     const { openAccountId, refresh: refreshAccounts } = useAccounts();
 
     const { transactions, categoryId, from, to, reference, startBalance } = useTransactions();
-    const { refresh: refreshPerMonthTransactions } = usePerMonthTransactions();
+    const { refresh: refreshPerMonthTransactions, isFetching } = usePerMonthTransactions();
     const toast = useToast();
     const { t } = useI18n();
 
@@ -18,7 +18,10 @@ export default function useRefreshTransactions() {
             return;
         }
 
-        const perMonthPromise = refreshPerMonthTransactions();
+        isFetching.value = true;
+        const perMonthPromise = refreshPerMonthTransactions(openAccountId.value).finally(
+            () => (isFetching.value = false),
+        );
 
         const tz = getLocalTimeZone();
         const start = toCalendarDateTime(from.value, new Time(0, 0, 0, 0));

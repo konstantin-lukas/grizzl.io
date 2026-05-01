@@ -15,7 +15,9 @@ const { openAccount } = useAccounts();
 const currency = computed(() => openAccount.value?.currency ?? "USD");
 const thisMonthsExpenses = computed(() => perMonthPerCategory.value[perMonthPerCategory.value.length - 1] ?? []);
 
-watchEffect(refresh);
+watchEffect(() => {
+    refresh(openAccount.value?.id ?? "");
+});
 </script>
 
 <template>
