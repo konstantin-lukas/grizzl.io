@@ -170,7 +170,7 @@ watch(
 </script>
 
 <template>
-    <div class="rounded-xl bg-elevated p-6">
+    <div class="rounded-xl bg-elevated p-6" data-test-id="finance-account-balance-chart">
         <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
             <canvas ref="canvasRef" />
         </div>

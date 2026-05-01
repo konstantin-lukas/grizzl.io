@@ -26,7 +26,7 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
 </script>
 
 <template>
-    <div class="flex flex-col items-center gap-4">
+    <div class="flex flex-col items-center gap-4" data-test-id="finance-category-budget-progress-card">
         <div
             class="relative aspect-square w-full overflow-hidden rounded-full"
             role="progressbar"

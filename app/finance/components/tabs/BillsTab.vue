@@ -50,7 +50,13 @@ const paid = computed(() => (bills.value.paid ?? []).reduce((sum, { amount }) =>
         <span v-else>{{ formatCurrency(language, currency, remaining) }}</span>
     </H3>
     <ul v-if="!isFetching">
-        <BaseTransactionCard v-for="bill in bills.remaining" :key="bill.id" :transaction="bill" :currency="currency" />
+        <BaseTransactionCard
+            v-for="bill in bills.remaining"
+            :key="bill.id"
+            :transaction="bill"
+            :currency="currency"
+            data-test-id="finance-remaining-bills-card"
+        />
     </ul>
     <div v-if="isFetching">
         <TransactionCardSkeleton v-for="n in bills.remaining?.length ?? 0" :key="n" />
@@ -62,7 +68,13 @@ const paid = computed(() => (bills.value.paid ?? []).reduce((sum, { amount }) =>
         <span v-else>{{ formatCurrency(language, currency, paid) }}</span>
     </H3>
     <ul v-if="!isFetching" class="opacity-50">
-        <BaseTransactionCard v-for="bill in bills.paid" :key="bill.id" :transaction="bill" :currency="currency" />
+        <BaseTransactionCard
+            v-for="bill in bills.paid"
+            :key="bill.id"
+            :transaction="bill"
+            :currency="currency"
+            data-test-id="finance-paid-bills-card"
+        />
     </ul>
     <div v-if="isFetching">
         <TransactionCardSkeleton v-for="n in bills.paid?.length ?? 0" :key="n" />

@@ -46,6 +46,7 @@ watch(upsertFormOpen, isOpen => {
                 <TransactionCard
                     v-for="transaction in transactions"
                     :key="transaction.id"
+                    data-test-id="finance-transaction-card"
                     :transaction
                     @edit="
                         initialState = transaction;
