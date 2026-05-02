@@ -41,7 +41,7 @@ import {
     ICON_SUN,
     ICON_UPLOAD,
     ICON_WARNING,
-} from "~/core/constants/icons.constant";
+} from "./core/constants/icons.constant";
 
 export default defineAppConfig({
     ui: {
