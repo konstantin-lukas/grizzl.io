@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.0...v1.13.1) (2026-05-02)
+
+
+### Bug Fixes
+
+* replace all default nuxt UI icons with icons from installed libraries ([#421](https://github.com/konstantin-lukas/grizzl.io/issues/421)) ([2265b14](https://github.com/konstantin-lukas/grizzl.io/commit/2265b144f0c7ba63d8481288197726c7774a680a))
+
 ## [1.13.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.12.0...v1.13.0) (2026-05-02)
 
 
