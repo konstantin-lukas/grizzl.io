@@ -49,6 +49,7 @@ const LOCATORS = {
     filterDateRangePicker: "finance-filter-date-range-picker",
 
     balanceChart: "finance-account-balance-chart",
+    balanceChartCanvas: "finance-account-balance-chart-canvas",
     transactionCards: "finance-transaction-card",
 
     // BUDGETS TAB

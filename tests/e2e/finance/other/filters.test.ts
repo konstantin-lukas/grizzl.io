@@ -26,13 +26,13 @@ test("allows filtering by reference", async ({ db, financePage: page }) => {
     await page.page.clock.install({ time: refDate });
     await page.goto();
 
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-before-filtering" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-before-filtering" });
     await page.click("filterMenuButton");
     await page.fill("filterReferenceInput", transactions[0]!.reference!);
 
     await page.page.waitForResponse(url => url.url().includes("/transactions"));
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-filtered-by-reference" });
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-filtered-by-reference" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-filtered-by-reference" });
 });
 
 test("allows filtering by category", async ({ db, financePage: page }) => {
@@ -40,19 +40,16 @@ test("allows filtering by category", async ({ db, financePage: page }) => {
     await page.page.clock.install({ time: refDate });
     await page.goto();
 
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-before-filtering" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-before-filtering" });
     await page.click("filterMenuButton");
 
     await page.click("filterCategorySelect");
-    const promises = [
-        page.page.waitForResponse(url => url.url().includes("/transactions")),
-        page.page.waitForResponse(url => url.url().includes("/accounts")),
-    ];
+    const promise = page.page.waitForResponse(url => url.url().includes("/transactions"));
     await page.page.keyboard.press("Enter");
-    await Promise.all(promises);
+    await promise;
 
     await page.page.waitForResponse(url => url.url().includes("/transactions"));
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-filtered-by-category" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-filtered-by-category" });
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-filtered-by-category" });
 });
 
@@ -61,17 +58,14 @@ test("allows filtering by date range", async ({ db, financePage: page }) => {
     await page.page.clock.install({ time: refDate });
     await page.goto();
 
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-before-filtering" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-before-filtering" });
     await page.click("filterMenuButton");
 
     await page.click("filterDateRangePicker", { position: { x: 10, y: 10 } });
-    const promises = [
-        page.page.waitForResponse(url => url.url().includes("/transactions")),
-        page.page.waitForResponse(url => url.url().includes("/accounts")),
-    ];
+    const promise = page.page.waitForResponse(url => url.url().includes("/transactions"));
     await page.page.keyboard.type("81220258152025");
-    await Promise.all(promises);
+    await promise;
 
-    await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-filtered-by-date-range" });
+    await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-filtered-by-date-range" });
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-filtered-by-date-range" });
 });

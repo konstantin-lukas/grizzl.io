@@ -172,7 +172,7 @@ watch(
 <template>
     <div class="rounded-xl bg-elevated p-6" data-test-id="finance-account-balance-chart">
         <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
-            <canvas ref="canvasRef" />
+            <canvas ref="canvasRef" data-test-id="finance-account-balance-chart-canvas" />
         </div>
         <span class="mt-4 flex items-center gap-1">
             <span>{{ $t("finance.account.currentBalance") }}: </span>
