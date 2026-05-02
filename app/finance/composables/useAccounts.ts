@@ -15,6 +15,8 @@ export default function useAccounts() {
     });
 
     const openAccountId = useLocalStorage("open-finance-account-id");
+    const hasMounted = ref(false);
+    onMounted(() => (hasMounted.value = true));
 
     watchEffect(() => {
         if (openAccountId.value && accounts.value?.every(account => account.id !== openAccountId.value)) {
@@ -23,7 +25,7 @@ export default function useAccounts() {
         }
 
         const firstAccount = accounts.value?.[0]?.id;
-        if (openAccountId.value || !firstAccount) return;
+        if (openAccountId.value || !firstAccount || !hasMounted.value) return;
         openAccountId.value = firstAccount;
     });
 

@@ -2,6 +2,8 @@ import type { Page } from "@playwright/test";
 import BasePage from "~~/test-utils/playwright/pages/base.page";
 
 const LOCATORS = {
+    h1: "finance-account-h1",
+
     // ACCOUNT UPSERT FORM
     accountTitleInput: "finance-upsert-title-input",
     accountCurrencySelect: "finance-upsert-currency-select",
