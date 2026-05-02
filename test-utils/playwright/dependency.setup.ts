@@ -1,7 +1,10 @@
 import { expect } from "@playwright/test";
 import { test } from "~~/test-utils/playwright/index";
 
-test("logs in the user", async ({ page }) => {
+test("logs in the user", async ({ page, db }) => {
+    await db.user.reset();
+    await db.user.insert(1);
+
     await page.goto("/signin");
     const context = page.context();
     await context.addInitScript(() => {
