@@ -1,0 +1,7 @@
+- list:
+  - listitem: "/Sum Total: €\\d+\\.\\d+/"
+  - listitem: "/Volutpat aliquam le\\. : €\\d+\\.\\d+/"
+  - listitem: "/Tortor volutpat ali\\. : €\\d+\\.\\d+/"
+  - listitem: "/Pellentesque tortor\\. : €\\d+\\.\\d+/"
+  - listitem: "/Lobortis pellentesq\\. : €\\d+\\.\\d+/"
+  - listitem: "/Vitae lobortis pell\\. : €\\d+\\.\\d+/"

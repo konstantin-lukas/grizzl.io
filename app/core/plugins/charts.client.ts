@@ -4,10 +4,10 @@ import {
     BarElement,
     CategoryScale,
     Chart,
-    DoughnutController,
     LineController,
     LineElement,
     LinearScale,
+    PieController,
     PointElement,
     Tooltip,
 } from "chart.js";
@@ -24,7 +24,12 @@ export default defineNuxtPlugin(() => {
         Tooltip,
         BarController,
         BarElement,
-        DoughnutController,
+        PieController,
         ArcElement,
     );
+
+    const runtimeConfig = useRuntimeConfig();
+    if (runtimeConfig.public.appEnv === "test") {
+        Chart.defaults.animation = false;
+    }
 });

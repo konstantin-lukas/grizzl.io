@@ -1,0 +1,45 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account" [selected]
+      - tab "Budgets"
+      - tab "Bills"
+    - tabpanel "Account":
+      - heading "Account Balance" [level=2]
+      - button "Add transaction"
+      - button "Manage automatic transactions"
+      - button "Filters"
+      - text: "/Current account balance: €\\d+\\.\\d+ Expected Month-End Balance: €\\d+\\.\\d+/"
+      - heading "Transaction History" [level=2]
+      - list:
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin\. Nisiio\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Pellentesque tortor volutpat aliquam lectus vivamus\. Voluptate quisque sollicitudin nisi aenean fau\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget\. In\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

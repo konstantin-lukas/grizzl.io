@@ -40,6 +40,7 @@ const execute = useSoftDelete(apiRoute, {
                     :icon="ICON_EDIT"
                     color="neutral"
                     :aria-label="$t('ui.edit')"
+                    data-test-id="finance-transaction-edit-button"
                     @click="emit('edit')"
                 />
                 <Button
@@ -49,6 +50,7 @@ const execute = useSoftDelete(apiRoute, {
                     :icon="ICON_DELETE"
                     color="error"
                     :on-async-click="execute"
+                    data-test-id="finance-transaction-delete-button"
                     :aria-label="$t('ui.delete')"
                 />
             </div>

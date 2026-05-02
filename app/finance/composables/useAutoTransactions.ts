@@ -6,13 +6,17 @@ export default function useAutoTransactions() {
     const toast = useToast();
     const { t } = useI18n();
 
-    const { data, refresh } = useFetch(() => `/api/finance/accounts/${openAccountId.value}/auto-transactions`, {
-        key: `/api/finance/accounts/:accountId/auto-transactions`,
-        immediate: false,
-        watch: false,
-        default: () => [],
-        onResponseError: onResponseError(toast, t),
-    });
+    const { data, refresh, pending } = useFetch(
+        () => `/api/finance/accounts/${openAccountId.value}/auto-transactions`,
+        {
+            key: `/api/finance/accounts/:accountId/auto-transactions`,
+            immediate: false,
+            watch: false,
+            server: false,
+            default: () => [],
+            onResponseError: onResponseError(toast, t),
+        },
+    );
 
     watch(
         openAccountId,
@@ -26,7 +30,7 @@ export default function useAutoTransactions() {
         { immediate: true },
     );
 
-    return { autoTransactions: data, refresh };
+    return { autoTransactions: data, refresh, isFetching: pending };
 }
 
 export type AutoTransaction = ReturnType<typeof useAutoTransactions>["autoTransactions"]["value"][number];

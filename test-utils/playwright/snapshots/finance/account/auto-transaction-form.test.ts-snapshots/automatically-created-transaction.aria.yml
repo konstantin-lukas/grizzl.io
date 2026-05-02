@@ -1,0 +1,4 @@
+- listitem:
+  - text: /Dog Food \d+\/\d+\/\d+ \| Target €100.00/
+  - button "Edit"
+  - button "Delete"

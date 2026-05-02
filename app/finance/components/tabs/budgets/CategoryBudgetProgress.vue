@@ -26,19 +26,12 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
 </script>
 
 <template>
-    <div class="flex flex-col items-center gap-4">
-        <div
-            class="relative aspect-square w-full overflow-hidden rounded-full"
-            role="progressbar"
-            :aria-valuemin="0"
-            :aria-valuemax="props.expense.budget"
-            :aria-valuenow="props.expense.spent"
-            :aria-labelledby="props.expense.category"
-        >
-            <div class="center aspect-square w-full scale-110" :style="{ backgroundImage }" :class="backgroundColor">
+    <div class="flex flex-col items-center gap-4" data-test-id="finance-category-budget-progress-card">
+        <div class="relative aspect-square w-full overflow-hidden rounded-full">
+            <div class="center aspect-square w-full" :style="{ backgroundImage }">
                 <span
                     :id="props.expense.category"
-                    class="center relative aspect-square w-[calc(100%-2rem)] scale-[calc(1/1.1)] gap-2 rounded-full bg-back xs:w-[calc(100%-3rem)] md:w-[calc(100%-5rem)]"
+                    class="center relative aspect-square w-[calc(100%-2rem)] gap-2 rounded-full bg-back xs:w-[calc(100%-3rem)] md:w-[calc(100%-5rem)]"
                 >
                     <UIcon
                         :name="'material-symbols:' + (category?.icon ?? 'question-mark-rounded')"

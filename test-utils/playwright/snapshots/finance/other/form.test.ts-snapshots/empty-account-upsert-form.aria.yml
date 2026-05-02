@@ -1,0 +1,7 @@
+- heading "Create Account" [level=1]
+- text: Account title*
+- textbox "Account title*"
+- text: Currency*
+- button "Show popup"
+- textbox
+- button "Create"

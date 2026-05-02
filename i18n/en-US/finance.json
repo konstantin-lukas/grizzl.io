@@ -44,7 +44,8 @@
         },
         "bills": {
             "upcoming": "Bills For {month}",
-            "remaining": "Remaining bills: {amount}",
+            "remaining": "Remaining Bills",
+            "paid": "Paid Bills",
             "empty": "You don't have any bills due this month."
         },
         "budgets": {
@@ -52,7 +53,9 @@
             "categoryBudgetsHeading": "Category Budgets For {month}",
             "previousExpensesHeading": "Expenses In Previous Months",
             "usedAmount": "{amount} / {max} spent",
-            "noExpenses": "You haven't spent any money yet this month."
+            "noExpenses": "You haven't spent any money yet this month.",
+            "noBudgets": "You don't have any budgets this month.",
+            "sumTotal": "Sum Total"
         },
         "transaction": {
             "empty": "No transactions exist that match the selected filters.",

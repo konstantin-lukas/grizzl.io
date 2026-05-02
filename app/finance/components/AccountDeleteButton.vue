@@ -28,6 +28,7 @@ const execute = useSoftDelete(apiRoute, {
         color="error"
         :icon="ICON_DELETE"
         :on-async-click="execute"
+        data-test-id="finance-account-delete-account-button"
     >
         {{ $t("ui.delete") }}
     </Button>

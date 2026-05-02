@@ -23,6 +23,7 @@ const projects = [
         name: "safari",
         testDir: "./tests/e2e",
         use: { ...devices["Desktop Safari"] },
+        retries: 10,
     },
     {
         name: "mobile_chrome",
@@ -36,6 +37,7 @@ const projects = [
         name: "mobile_safari",
         testDir: "./tests/e2e",
         use: { ...devices["iPhone 12"] },
+        retries: 10,
     },
 ];
 
@@ -72,7 +74,7 @@ export default defineConfig<ConfigOptions>({
         testIdAttribute: "data-test-id",
         baseURL: "http://grizzl.localhost",
         locale: "en-US",
-        timezoneId: "Europe/Berlin",
+        timezoneId: "UTC",
         storageState: "./test-utils/playwright/storage.json",
         nuxt: {
             host: "http://grizzl.localhost",

@@ -6,7 +6,7 @@ import useTransactions from "~/finance/composables/useTransactions";
 export default function useUpdateTransactions() {
     const { openAccountId } = useAccounts();
 
-    const { categoryId, from, to, reference } = useTransactions();
+    const { categoryId, from, to, reference, isFetching } = useTransactions();
     const refresh = useRefreshTransactions();
 
     const lastParams = ref<string | null>(null);
@@ -40,6 +40,7 @@ export default function useUpdateTransactions() {
         if (lastParams.value === params) return;
         lastParams.value = params;
 
-        await refresh();
+        isFetching.value = true;
+        await refresh().finally(() => (isFetching.value = false));
     });
 }

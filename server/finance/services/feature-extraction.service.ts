@@ -1,4 +1,4 @@
-import { LoggerService } from "#server/core/services/logger.service";
+import LoggerService from "#server/core/services/logger.service";
 import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { type FeatureExtractionPipeline, env, pipeline } from "@huggingface/transformers";
 

@@ -64,8 +64,13 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
         return transaction!.id;
     }
 
-    public async findByUserAndAccountId(userId: string, accountId: string, db: ExecutionContext = this.db) {
-        return db
+    public async findByUserAndAccountId(
+        userId: string,
+        accountId: string,
+        db: ExecutionContext = this.db,
+        lock: boolean = false,
+    ) {
+        const query = db
             .select({
                 id: this.schema.id,
                 createdAt: this.schema.createdAt,
@@ -92,5 +97,11 @@ export default class AutoTransactionRepository extends BaseRepository<typeof sch
                 ),
             )
             .orderBy(desc(this.schema.createdAt));
+
+        if (lock) {
+            return query.for("update");
+        }
+
+        return query;
     }
 }

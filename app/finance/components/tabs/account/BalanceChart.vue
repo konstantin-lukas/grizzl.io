@@ -170,11 +170,19 @@ watch(
 </script>
 
 <template>
-    <div class="rounded-xl bg-elevated p-6">
+    <div class="rounded-xl bg-elevated p-6" data-test-id="finance-account-balance-chart">
         <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
-            <canvas ref="canvasRef" />
+            <canvas ref="canvasRef" data-test-id="finance-account-balance-chart-canvas" />
         </div>
-        <span class="mt-4 block">{{ $t("finance.account.currentBalance") }}: {{ accountBalance }}</span>
-        <span class="block text-muted">{{ $t("finance.account.expectedBalance") }}: {{ expectedBalance }}</span>
+        <span class="mt-4 flex items-center gap-1">
+            <span>{{ $t("finance.account.currentBalance") }}: </span>
+            <USkeleton v-if="!accountBalance" class="inline-block h-5 w-20 bg-accented" />
+            <span v-else>{{ accountBalance }}</span>
+        </span>
+        <span class="flex items-center gap-1 text-muted">
+            <span>{{ $t("finance.account.expectedBalance") }}: </span>
+            <USkeleton v-if="!expectedBalance" class="inline-block h-5 w-20 bg-accented" />
+            <span v-else>{{ expectedBalance }}</span>
+        </span>
     </div>
 </template>

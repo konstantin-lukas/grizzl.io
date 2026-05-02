@@ -92,7 +92,7 @@ const onSubmit = useOnSubmit({
                         :currency="openAccount!.currency"
                         :locale="language"
                         class="w-full"
-                        data-test-id="transaction-upsert-amount-input"
+                        data-test-id="finance-transaction-upsert-amount-input"
                     />
                 </UFormField>
                 <div class="flex w-full">
@@ -103,6 +103,7 @@ const onSubmit = useOnSubmit({
                             :items="categoryNames"
                             class="w-full"
                             :maxlength="TITLE_MAX"
+                            data-test-id="finance-transaction-upsert-category-input"
                         />
                     </UFormField>
                     <div class="ml-4 translate-y-4">
@@ -120,7 +121,7 @@ const onSubmit = useOnSubmit({
                         autocomplete
                         class="w-full"
                         :maxlength="TITLE_MAX"
-                        data-test-id="transaction-upsert-reference-input"
+                        data-test-id="finance-transaction-upsert-reference-input"
                     />
                 </UFormField>
             </template>

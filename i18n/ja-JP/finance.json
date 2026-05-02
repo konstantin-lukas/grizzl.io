@@ -44,7 +44,8 @@
         },
         "bills": {
             "upcoming": "{month}の請求",
-            "remaining": "残りの請求: {amount}",
+            "remaining": "未払いの請求",
+            "paid": "支払い済みの請求",
             "empty": "今月は支払期限の請求はありません。"
         },
         "budgets": {
@@ -52,7 +53,9 @@
             "categoryBudgetsHeading": "{month}のカテゴリ内訳",
             "previousExpensesHeading": "過去の月の支出",
             "usedAmount": "{amount} / {max} 使用",
-            "noExpenses": "今月はまだ支出がありません。"
+            "noExpenses": "今月はまだ支出がありません。",
+            "noBudgets": "今月は予算がありません。",
+            "sumTotal": "総額"
         },
         "transaction": {
             "empty": "選択したフィルターに一致する取引はありません。",

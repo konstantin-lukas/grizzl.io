@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { CalendarDate } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
+import { ICON_SAVINGS } from "~/core/constants/icons.constant";
 import CategoryBudgetProgress from "~/finance/components/tabs/budgets/CategoryBudgetProgress.vue";
+import CategoryBudgetProgressSkeleton from "~/finance/components/tabs/budgets/CategoryBudgetProgressSkeleton.vue";
+import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 
-const { autoTransactions } = useAutoTransactions();
+const { autoTransactions, isFetching: isFetchingAutoTransactions } = useAutoTransactions();
 const { today } = useToday();
 
-const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
+const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string; isFetching: boolean }>();
 
 const expandedExpenses = computed(() => {
     const copy = [...props.expenses.map(item => ({ ...item, budget: 0 }))];
@@ -48,12 +51,11 @@ const expandedExpenses = computed(() => {
 </script>
 
 <template>
-    <div class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
-        <CategoryBudgetProgress
-            v-for="expense in expandedExpenses"
-            :key="expense.category"
-            :expense="expense"
-            :currency="props.currency"
-        />
-    </div>
+    <EmptyBudgets v-if="expandedExpenses.length === 0" class="mt-4" :icon="ICON_SAVINGS" />
+    <ul v-else class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
+        <li v-for="expense in expandedExpenses" :key="expense.category">
+            <CategoryBudgetProgressSkeleton v-if="isFetchingAutoTransactions || props.isFetching" />
+            <CategoryBudgetProgress v-else :expense="expense" :currency="props.currency" />
+        </li>
+    </ul>
 </template>

@@ -16,7 +16,7 @@ const { categories } = useCategories();
 const { language } = useLocale();
 const { t } = useI18n();
 const colorMode = useColorMode();
-const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string }>();
+const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string; isFetching: boolean }>();
 const canvasRef = ref();
 const chart = shallowRef<Chart>();
 
@@ -39,7 +39,7 @@ const backgroundColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT
 
 onMounted(() => {
     chart.value = new Chart(canvasRef.value, {
-        type: "doughnut",
+        type: "pie",
         data: {
             labels: labels.value,
             datasets: [
@@ -47,13 +47,13 @@ onMounted(() => {
                     backgroundColor: CHART_COLORS,
                     borderColor: borderColor.value,
                     hoverBackgroundColor: backgroundColor.value,
-                    borderWidth: 0,
+                    borderWidth: 3,
                     data: data.value,
+                    hoverOffset: 5,
                 },
             ],
         },
         options: {
-            cutout: "61.8%",
             responsive: true,
             plugins: {
                 tooltip: {
@@ -82,12 +82,36 @@ watch([data, labels, borderColor, backgroundColor], ([newData, newLabels, newBor
 </script>
 
 <template>
-    <div class="my-4 rounded-xl bg-elevated p-4 xs:p-6">
-        <div class="relative z-1 mx-auto aspect-square max-w-96">
+    <div
+        class="my-4 flex items-center rounded-xl bg-elevated px-6 py-4 not-md:flex-col md:px-12 md:py-8"
+        data-test-id="finance-expense-pie-chart"
+    >
+        <div class="relative z-1 aspect-square w-full max-w-96">
             <canvas ref="canvasRef" />
-            <UBadge class="absolute top-1/2 left-1/2 -z-1 -translate-1/2" color="neutral">
-                {{ spentOverall }}
-            </UBadge>
+        </div>
+        <div class="flex w-full justify-center">
+            <ul class="flex w-full flex-wrap gap-4 not-md:mt-6 md:ml-10 md:flex-col">
+                <li class="flex w-full items-center gap-2 border-b border-b-accented pb-3">
+                    <b>{{ $t("finance.budgets.sumTotal") }}: </b>
+                    <USkeleton v-if="props.isFetching" class="h-6 w-20 bg-front" />
+                    <UBadge v-else color="neutral">
+                        {{ spentOverall }}
+                    </UBadge>
+                </li>
+                <li v-for="(datum, index) in data" :key="index" class="flex items-center gap-2">
+                    <span
+                        :style="{ backgroundColor: CHART_COLORS[index] }"
+                        class="inline-block size-4 shrink-0 rounded-full"
+                    />
+                    <span class="flex items-center">
+                        <USkeleton v-if="props.isFetching || !labels[index]" class="h-6 w-20 bg-front" />
+                        <span v-else>{{ labels[index] }}</span>
+                        <span>:</span>
+                    </span>
+                    <USkeleton v-if="props.isFetching" class="h-6 w-20 bg-front" />
+                    <UBadge v-else color="neutral">{{ formatCurrency(language, props.currency, datum) }}</UBadge>
+                </li>
+            </ul>
         </div>
     </div>
 </template>

@@ -1,3 +1,5 @@
+import InvalidAccountBalanceError from "#server/core/errors/invalid-account-balance.error";
+import UnknownError from "#server/core/errors/unknown.error";
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import TransactionRepository from "#server/finance/repositories/transaction.repository";
 import AccountService from "#server/finance/services/account.service";
@@ -83,9 +85,16 @@ export default class AutoTransactionService {
 
     public async execute(userId: string, accountId: string, tz: string) {
         return this.autoTransactionRepository.transaction(async tx => {
-            const autoTransactions = await this.autoTransactionRepository.findByUserAndAccountId(userId, accountId, tx);
+            const account = await this.accountService.getUserAccount(userId, accountId, tx);
+            const autoTransactions = await this.autoTransactionRepository.findByUserAndAccountId(
+                userId,
+                accountId,
+                tx,
+                true,
+            );
             const now = today(tz);
             const promises = [];
+            let sum = 0;
             for (const autoTransaction of autoTransactions) {
                 const [year, month, day] = autoTransaction.lastExec.split("-").map(Number) as [number, number, number];
 
@@ -122,10 +131,25 @@ export default class AutoTransactionService {
                         reference: autoTransaction.reference,
                         categoryId: autoTransaction.category.id,
                     };
+                    sum += transaction.amount;
                     prevExec = nextExec;
                     promises.push(this.transactionRepository.create(accountId, transaction, tx));
                 }
             }
+
+            const newBalance = account.balance + sum;
+            if (!Number.isSafeInteger(newBalance)) {
+                const logMessage = `Unable to execute auto transaction on account with id ${accountId} and balance ${account.balance} for user with id ${userId}.`;
+                throw new InvalidAccountBalanceError("The resulting account balance is invalid.", logMessage);
+            }
+
+            const affectedRows = await this.accountRepository.updateBalance(account.id, newBalance, tx);
+            if (!affectedRows) {
+                const logMessage = `The account with the id ${account.id} was not updated with new balance ${newBalance} for user with id ${userId} during execution of auto transactions.`;
+                throw new UnknownError("Unable to update account balance.", logMessage);
+            }
+
+            promises.push(this.accountRepository.updateBalance(accountId, newBalance, tx));
             await Promise.all(promises);
         });
     }

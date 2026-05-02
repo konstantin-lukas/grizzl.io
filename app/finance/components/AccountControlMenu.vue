@@ -39,6 +39,7 @@ watch(upsertFormOpen, () => {
             value-key="id"
             :items="selectOptions"
             :aria-label="$t('finance.account.aria.controls')"
+            data-test-id="finance-account-control-menu"
             :ui="{
                 base: 'size-10 hover-none:size-12 p-0 flex items-center justify-center',
                 leading: 'p-0 relative',
@@ -56,6 +57,7 @@ watch(upsertFormOpen, () => {
                     <Button
                         class="flex w-full justify-center"
                         :icon="ICON_PLUS_CIRCLE"
+                        data-test-id="finance-account-create-account-button"
                         @click="
                             initialState = undefined;
                             upsertFormOpen = true;
@@ -68,6 +70,7 @@ watch(upsertFormOpen, () => {
                             variant="subtle"
                             class="flex w-full justify-center"
                             :icon="ICON_EDIT"
+                            data-test-id="finance-account-edit-account-button"
                             @click="
                                 initialState = openAccount;
                                 upsertFormOpen = true;
@@ -78,6 +81,9 @@ watch(upsertFormOpen, () => {
                         <AccountDeleteButton />
                     </div>
                 </div>
+            </template>
+            <template #item-label="{ item }">
+                <span data-test-id="finance-account-menu-option">{{ item.label }}</span>
             </template>
         </USelectMenu>
         <template #content>

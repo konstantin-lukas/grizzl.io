@@ -73,7 +73,11 @@ const onSubmit = useOnSubmit({
                         value-key="id"
                         :items="currencyOptions"
                         data-test-id="finance-upsert-currency-select"
-                    />
+                    >
+                        <template #item-label="{ item }">
+                            <span data-test-id="finance-upsert-currency-select-option">{{ item.label }}</span>
+                        </template>
+                    </USelectMenu>
                 </UFormField>
             </template>
         </BaseUpsertForm>

@@ -24,6 +24,9 @@ export default function useSoftDelete(
                     description: options?.successDescription && t(options.successDescription, interpolations),
                     orientation: "vertical",
                     color: "success",
+                    close: {
+                        "data-test-id": "toast-close-button",
+                    } as never,
                     actions: [
                         {
                             ...{ "data-test-id": "undo-soft-delete-button" },

@@ -37,5 +37,6 @@ const execute = useSoftDelete(apiRoute, {
         color="error"
         :aria-label="$t('ui.delete')"
         :on-async-click="execute"
+        data-test-id="finance-auto-transaction-delete-button"
     />
 </template>

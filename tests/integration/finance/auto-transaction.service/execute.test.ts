@@ -1,3 +1,5 @@
+import InvalidAccountBalanceError from "#server/core/errors/invalid-account-balance.error";
+import UnknownError from "#server/core/errors/unknown.error";
 import AccountRepository from "#server/finance/repositories/account.repository";
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import CategoryRepository from "#server/finance/repositories/category.repository";
@@ -241,4 +243,43 @@ test("creates one transaction on the last of the month if exec on is 31", async 
     for (const [index, transaction] of transactions.entries()) {
         expect(transaction?.createdAt).toEqual(new Date(expectedDates[index]!));
     }
+});
+
+test("throws an InvalidAccountBalanceError if the resulting account balance is invalid", async ({ db, user }) => {
+    const { service, account, category } = await setup(db, user);
+    await db.financeAutoTransaction.insert(2, {
+        accountId: account.id,
+        categoryId: category.id,
+        lastExec: "2026-03-15",
+        execInterval: 1,
+        execOn: 15,
+        amount: Number.MAX_SAFE_INTEGER,
+    });
+
+    expect(service.execute(user.id, account.id, "UTC")).rejects.toBeInstanceOf(InvalidAccountBalanceError);
+});
+
+test("throws an UnknownError if the account update fails", async ({ db, user }) => {
+    const autoTransactionRepository = new AutoTransactionRepository(db.client);
+    const accountRepository = new AccountRepository(db.client);
+    const categoryRepository = new CategoryRepository(db.client);
+    const categoryService = new CategoryService(categoryRepository);
+    const accountService = new AccountService(accountRepository);
+    const transactionRepository = new TransactionRepository(db.client);
+
+    const mockedService = new AutoTransactionService(
+        autoTransactionRepository,
+        {
+            async updateBalance() {
+                return null;
+            },
+        } as never,
+        categoryService,
+        accountService,
+        transactionRepository,
+    );
+
+    const [account] = await db.financeAccount.insert(1, { userId: user.id });
+
+    expect(mockedService.execute(user.id, account.id, "UTC")).rejects.toBeInstanceOf(UnknownError);
 });

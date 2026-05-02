@@ -2,6 +2,7 @@ import type { DatabaseTransaction } from "#server/core/repositories/base.reposit
 import AccountService from "#server/finance/services/account.service";
 import AutoTransactionService from "#server/finance/services/auto-transaction.service";
 import CategoryService from "#server/finance/services/category.service";
+import { tryCatch } from "#shared/core/utils/result.util";
 import type {
     BaseTransactionFilters,
     GetTransactionFilters,
@@ -11,6 +12,7 @@ import type {
 import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import UnknownError from "~~/server/core/errors/unknown.error";
+import LoggerService from "~~/server/core/services/logger.service";
 import AccountRepository from "~~/server/finance/repositories/account.repository";
 import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
 
@@ -21,6 +23,7 @@ export default class TransactionService {
         CategoryService,
         AccountService,
         AutoTransactionService,
+        LoggerService,
     ];
 
     constructor(
@@ -29,6 +32,7 @@ export default class TransactionService {
         private readonly categoryService: CategoryService,
         private readonly accountService: AccountService,
         private readonly autoTransactionService: AutoTransactionService,
+        private readonly logger: LoggerService,
     ) {}
 
     private async updateDeletedStatus(
@@ -90,7 +94,8 @@ export default class TransactionService {
     }
 
     public async getList(userId: string, accountId: string, tz: string, filters?: GetTransactionFilters) {
-        await this.autoTransactionService.execute(userId, accountId, tz);
+        const { error } = await tryCatch(this.autoTransactionService.execute(userId, accountId, tz));
+        if (error) this.logger.error(error.message);
         return this.transactionRepository.findByUserAndAccountId(userId, accountId, filters);
     }
     /* c8 ignore stop */

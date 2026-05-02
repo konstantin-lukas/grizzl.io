@@ -2,6 +2,8 @@ import { type DBFixtures, dbFixture } from "@@/test-utils/database/fixture";
 import { expect as baseExpect, test as baseTest } from "@nuxt/test-utils/playwright";
 import toBeDisattached from "~~/test-utils/playwright/expect/toBeDisattached";
 import toHaveCountGreaterThan from "~~/test-utils/playwright/expect/toHaveCountGreaterThan";
+import toHaveTextEndingWith from "~~/test-utils/playwright/expect/toHaveTextEndingWith";
+import FinancePage from "~~/test-utils/playwright/pages/finance.page";
 import HomePage from "~~/test-utils/playwright/pages/home.page";
 import TimerPage from "~~/test-utils/playwright/pages/timer.page";
 import globalBeforeAfterEach from "~~/test-utils/playwright/test/globalBeforeAfterEach.fixture";
@@ -15,13 +17,16 @@ export const test = seed.extend<{
     globalBeforeAfterEach: unknown;
     homePage: HomePage;
     timerPage: TimerPage;
+    financePage: FinancePage;
 }>({
     homePage: constructPageObject(HomePage),
     timerPage: constructPageObject(TimerPage),
+    financePage: constructPageObject(FinancePage),
     globalBeforeAfterEach: [globalBeforeAfterEach(), { auto: true }],
 });
 
 export const expect = baseExpect.extend({
     toHaveCountGreaterThan,
     toBeDisattached,
+    toHaveTextEndingWith,
 });

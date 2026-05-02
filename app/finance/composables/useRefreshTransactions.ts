@@ -5,10 +5,10 @@ import usePerMonthTransactions from "~/finance/composables/usePerMonthTransactio
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
 
 export default function useRefreshTransactions() {
-    const { openAccountId } = useAccounts();
+    const { openAccountId, refresh: refreshAccounts } = useAccounts();
 
     const { transactions, categoryId, from, to, reference, startBalance } = useTransactions();
-    const { refresh: refreshPerMonthTransactions } = usePerMonthTransactions();
+    const { refresh: refreshPerMonthTransactions, isFetching } = usePerMonthTransactions();
     const toast = useToast();
     const { t } = useI18n();
 
@@ -18,7 +18,10 @@ export default function useRefreshTransactions() {
             return;
         }
 
-        const perMonthPromise = refreshPerMonthTransactions();
+        isFetching.value = true;
+        const perMonthPromise = refreshPerMonthTransactions(openAccountId.value).finally(
+            () => (isFetching.value = false),
+        );
 
         const tz = getLocalTimeZone();
         const start = toCalendarDateTime(from.value, new Time(0, 0, 0, 0));
@@ -50,5 +53,6 @@ export default function useRefreshTransactions() {
             balancePromise,
             perMonthPromise,
         ]);
+        await refreshAccounts();
     };
 }

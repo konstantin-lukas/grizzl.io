@@ -30,7 +30,9 @@ const { refresh } = useAutoTransactions();
 <template>
     <UTabs :items :ui="{ content: 'mt-8' }" :unmount-on-hide="false" @update:model-value="() => refresh()">
         <template #default="{ item }">
-            {{ $t(`finance.tabs.${item.label}`) }}
+            <span data-test-id="finance-tab">
+                {{ $t(`finance.tabs.${item.label}`) }}
+            </span>
         </template>
         <template #account>
             <AccountTab />

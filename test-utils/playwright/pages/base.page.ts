@@ -30,6 +30,7 @@ const BASE_LOCATORS = {
     cookieBannerButton: "hide-cookie-banner-button",
     formErrors: "form-error-digest",
     upsertSubmit: "upsert-form-submit-button",
+    closeToastButton: "toast-close-button",
 };
 
 type LocatorKey<T extends Record<string, string>> = keyof T | keyof typeof BASE_LOCATORS;
@@ -133,17 +134,16 @@ export default abstract class BasePage<T extends Record<string, string>> {
         const fullPage = target === this.page;
 
         if (fullPage) {
-            await this.page.evaluate(() => {
-                window.scrollTo(0, 0);
-            });
+            await this.scrollToTop();
         }
 
         if (blur) {
-            await this.page.click("body", { position: { x: 0, y: 0 } });
+            await this.doubleClickEmptyArea();
         }
 
-        if (name)
+        if (name) {
             return expect(target).toHaveScreenshot(name, { fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
+        }
         return expect(target).toHaveScreenshot({ fullPage, threshold, maxDiffPixels, maxDiffPixelRatio });
     }
 
@@ -255,9 +255,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
         };
     }
 
-    async click(what: LocatorKey<T>, options: { nth?: number } = {}) {
-        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).click();
-        return this.locators[what].click();
+    async click(what: LocatorKey<T>, options: Parameters<Locator["click"]>[0] & { nth?: number } = {}) {
+        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).click(options);
+        return this.locators[what].click(options);
     }
 
     async fill(what: LocatorKey<T>, value: string, options?: Parameters<Locator["fill"]>[1] & { nth?: number }) {
@@ -293,5 +293,16 @@ export default abstract class BasePage<T extends Record<string, string>> {
             await this.page.keyboard.press("Escape");
             await this.page.click("body", { position: { x: 0, y: 0 } });
         }
+    }
+
+    async doubleClickEmptyArea() {
+        await this.page.click("body", { position: { x: 0, y: 0 } });
+        await this.page.click("body", { position: { x: 0, y: 0 } });
+    }
+
+    async scrollToTop() {
+        await this.page.evaluate(() => {
+            window.scrollTo(0, 0);
+        });
     }
 }
