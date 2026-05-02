@@ -16,7 +16,7 @@
       - heading "Transaction History" [level=2]
       - list:
         - listitem:
-          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
           - button "Edit"
           - button "Delete"
         - listitem:
@@ -24,15 +24,15 @@
           - button "Edit"
           - button "Delete"
         - listitem:
-          - text: /Pellentesque tortor volutpat aliquam lectus vivamus\. Voluptate quisque sollicitudin nisi aenean fau\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+          - text: /Pellentesque tortor volutpat aliquam lectus vivamus\. Voluptate quisque sollicitudin nisi aenean fau\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
           - button "Edit"
           - button "Delete"
         - listitem:
-          - text: /Tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget\. In\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+          - text: /Tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget\. In\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
           - button "Edit"
           - button "Delete"
         - listitem:
-          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/2\/2025 \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
           - button "Edit"
           - button "Delete"
   - contentinfo:

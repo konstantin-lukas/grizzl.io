@@ -1,0 +1,225 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account" [selected]
+      - tab "Budgets"
+      - tab "Bills"
+    - tabpanel "Account":
+      - heading "Account Balance" [level=2]
+      - button "Add transaction"
+      - button "Manage automatic transactions"
+      - button "Filters"
+      - text: "/Current account balance: €\\d+\\.\\d+ Expected Month-End Balance: €\\d+\\.\\d+/"
+      - heading "Transaction History" [level=2]
+      - list:
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| officiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreinteg €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| duispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolor €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| dolordoloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiut €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| placeratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamu €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| laborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlo -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| curabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgr €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| duisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplacera €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/\d+\/\d+ \| essesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidacons -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/9\/\d+ \| utlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamcommododolornis -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/9\/\d+ \| nequedolordoloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetradui €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/9\/\d+ \| magnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscura -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/8\/\d+ \| laboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamcommododolornisio -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/8\/\d+ \| irureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequ €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/6\/\d+ \| lectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingv -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/6\/\d+ \| placerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolut €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/6\/\d+ \| dictumlobortisnequedolordoloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincidid €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/6\/\d+ \| doloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlabor €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/5\/\d+ \| duismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamcommododo -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/5\/\d+ \| placeratvivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscurabituressesollicitudinlaboren -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/5\/\d+ \| utsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisn -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/4\/\d+ \| euismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvolupta -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/4\/\d+ \| nequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscurabitur €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/3\/\d+ \| praesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordolo €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/3\/\d+ \| sollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecte -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/2\/\d+ \| pharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamc €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/2\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/1\/\d+ \| voluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplaceratege -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 8\/1\/\d+ \| miutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamcommododolorn -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| nibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortis €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| egetquiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccae €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| sintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagna €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| integervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullamcoanullamcommododolornisiodiouto -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| lobortisnequedolordoloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnullaincididuntpha -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| adipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscurabituresses -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| volutpatplaceratvivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscurabituressesollicitudi €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| duiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratviv €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| vivamusdictumlobortisnequedolordoloreofficiaplacerategetquiscurabituressesollicitudinlaborenibhnulla -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| nullaincididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibh -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| voluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesdui €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| molestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesent €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| ullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecat -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| elitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadip -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| estlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipisci -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| incididuntpharetraduismiutlaboreintegervolutpatoccaecatsitgravidaconsecteturodioestlobortisnibhullam €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| enimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvol -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| occaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisnequedolordoloreoffici €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| quiscurabituressesollicitudinlaborenibhnullaincididuntpharetraduismiutlaboreintegervolutpatoccaecats €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| praesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictuml -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| sodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpatplaceratvivamusdictumlobortisneq -€\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al\. 7\/\d+\/\d+ \| consectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipiscingvolutpa €\d+\.\d+/
+          - button "Edit"
+          - button "Delete"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
