@@ -1,0 +1,34 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account"
+      - tab "Budgets"
+      - tab "Bills" [selected]
+    - tabpanel "Bills":
+      - heading "Bills For May" [level=2]
+      - progressbar /\d+%/
+      - text: /€\d+\.\d+ \/ €\d+\.\d+/
+      - 'heading /Remaining Bills: €\d+\.\d+/ [level=3]'
+      - list:
+        - listitem: /Vitae lobortis pell\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Lobortis pellentesq\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Pellentesque tortor\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Tortor volutpat ali\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Volutpat aliquam le\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+      - separator
+      - 'heading /Paid Bills: €\d+\.\d+/ [level=3]'
+      - list:
+        - listitem: /Vitae lobortis pell\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Lobortis pellentesq\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+        - listitem: /Pellentesque tortor\. 5\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod -€\d+\.\d+/
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

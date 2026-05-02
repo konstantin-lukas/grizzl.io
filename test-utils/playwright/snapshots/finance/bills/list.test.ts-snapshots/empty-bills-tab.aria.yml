@@ -1,0 +1,26 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account"
+      - tab "Budgets"
+      - tab "Bills" [selected]
+    - tabpanel "Bills":
+      - heading "Bills For May" [level=2]
+      - progressbar "0%"
+      - text: /€\d+\.\d+ \/ €\d+\.\d+/
+      - 'heading /Remaining Bills: €\d+\.\d+/ [level=3]'
+      - list
+      - separator
+      - 'heading /Paid Bills: €\d+\.\d+/ [level=3]'
+      - list
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
