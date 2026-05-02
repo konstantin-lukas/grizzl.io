@@ -5,6 +5,7 @@ const projects = [
     {
         name: "api",
         testDir: "./tests/api",
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
     {
         name: "chromium",
@@ -13,17 +14,19 @@ const projects = [
             ...devices["Desktop Chrome"],
             permissions: ["clipboard-read", "clipboard-write"],
         },
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
     {
         name: "firefox",
         testDir: "./tests/e2e",
         use: { ...devices["Desktop Firefox"] },
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
     {
         name: "safari",
         testDir: "./tests/e2e",
         use: { ...devices["Desktop Safari"] },
-        retries: 2,
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
     {
         name: "mobile_chrome",
@@ -32,12 +35,13 @@ const projects = [
             ...devices["Pixel 5"],
             permissions: ["clipboard-read", "clipboard-write"],
         },
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
     {
         name: "mobile_safari",
         testDir: "./tests/e2e",
         use: { ...devices["iPhone 12"] },
-        retries: 2,
+        dependencies: process.env.CI ? ["setup"] : undefined,
     },
 ];
 
@@ -46,6 +50,13 @@ if (!process.env.CI) {
         name: "seed",
         testDir: "./test-utils/seed",
         testMatch: "**/*.seed.ts",
+    } as never);
+} else {
+    projects.push({
+        name: "setup",
+        testDir: "./test-utils/playwright",
+        testMatch: "**/dependency.setup.ts",
+        use: { storageState: false },
     } as never);
 }
 
@@ -58,7 +69,7 @@ export default defineConfig<ConfigOptions>({
     retries: 0,
     workers: 1,
     reporter: process.env.CI ? [["github"], ["html"]] : "line",
-    globalSetup: "./test-utils/playwright/global.setup.ts",
+    globalSetup: !process.env.CI ? "./test-utils/playwright/global.setup.ts" : undefined,
     expect: {
         timeout: 5000,
         toHaveScreenshot: {

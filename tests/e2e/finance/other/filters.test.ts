@@ -1,6 +1,7 @@
 import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { date, int } from "~~/test-utils/helpers/data";
 import { test } from "~~/test-utils/playwright";
+import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 const refDate = new Date("2025-08-15T12:00:00.000Z");
 
@@ -21,7 +22,7 @@ const setup = async (db: DBFixtures) => {
     return { transactions };
 };
 
-test("allows filtering by reference", async ({ db, financePage: page }) => {
+test("allows filtering by reference", { tag: SCREENSHOT }, async ({ db, financePage: page }) => {
     const { transactions } = await setup(db);
     await page.page.clock.install({ time: refDate });
     await page.goto();
@@ -35,7 +36,7 @@ test("allows filtering by reference", async ({ db, financePage: page }) => {
     await page.expect("balanceChartCanvas").toHaveScreenshot({ name: "balance-chart-filtered-by-reference" });
 });
 
-test("allows filtering by category", async ({ db, financePage: page }) => {
+test("allows filtering by category", { tag: SCREENSHOT }, async ({ db, financePage: page }) => {
     await setup(db);
     await page.page.clock.install({ time: refDate });
     await page.goto();
@@ -53,7 +54,7 @@ test("allows filtering by category", async ({ db, financePage: page }) => {
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-filtered-by-category" });
 });
 
-test("allows filtering by date range", async ({ db, financePage: page }) => {
+test("allows filtering by date range", { tag: SCREENSHOT }, async ({ db, financePage: page }) => {
     await setup(db);
     await page.page.clock.install({ time: refDate });
     await page.goto();
