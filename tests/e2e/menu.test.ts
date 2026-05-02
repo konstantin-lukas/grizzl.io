@@ -1,5 +1,64 @@
 import { expect, test } from "~~/test-utils/playwright";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
+import { forEachLocale } from "~~/test-utils/playwright/utils/locale";
+
+const texts = {
+    "de-DE": {
+        poll: "Umfragen",
+        todo: "To-do",
+        timer: "Timer",
+        finance: "Finanzen",
+    },
+    "en-US": {
+        poll: "Polls",
+        todo: "To-Do",
+        timer: "Timer",
+        finance: "Finance",
+    },
+    "es-ES": {
+        poll: "Encuestas",
+        todo: "Tareas",
+        timer: "Temporizador",
+        finance: "Finanzas",
+    },
+    "ja-JP": {
+        poll: "アンケート",
+        todo: "ToDoリスト",
+        timer: "タイマー",
+        finance: "ファイナンス",
+    },
+};
+
+forEachLocale((locale, texts) => {
+    test(`has links to all services for locale ${locale.language}`, async ({ homePage: page }) => {
+        const links = [
+            { locator: "pollLink", text: texts.poll, href: "" },
+            { locator: "todoLink", text: texts.todo, href: "" },
+            { locator: "timerLink", text: texts.timer, href: "/timer" },
+            { locator: "financeLink", text: texts.finance, href: "/finance" },
+        ] as const;
+
+        await test.step("Check that menu elements do not exist when the menu is closed", async () => {
+            await page.goto();
+            await page.expect("menuButton").toBeVisible();
+            for (const { locator } of links) {
+                await page.expect(locator).toBeHidden();
+            }
+        });
+
+        await test.step("Open the menu and check that all links exist", async () => {
+            await page.click("menuButton");
+            for (const { locator, text, href } of links) {
+                await page.expect(locator).toHaveText(text);
+                if (href === "") {
+                    await page.expect(locator).not.toHaveAttribute("href");
+                    continue;
+                }
+                await page.expect(locator).toHaveAttribute("href", href);
+            }
+        });
+    });
+}, texts);
 
 test("makes all other page elements not focusable when open", async ({ homePage: page }) => {
     await page.goto();
