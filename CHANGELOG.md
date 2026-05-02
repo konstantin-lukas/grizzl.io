@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.12.0...v1.13.0) (2026-05-02)
+
+
+### Features
+
+* make balance chart color change exactly at zero line and display change from previous data point in tooltip ([7c6af0e](https://github.com/konstantin-lukas/grizzl.io/commit/7c6af0e220b74d79b911b26737e01bbf218e7735))
+
+
+### Bug Fixes
+
+* **finance:** remove remaining bugs in finance section ([#418](https://github.com/konstantin-lukas/grizzl.io/issues/418)) ([247aece](https://github.com/konstantin-lukas/grizzl.io/commit/247aecebb16bc6a874af6ce3c3ebb5ec57465ee4))
+
 ## [1.12.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.11.0...v1.12.0) (2026-04-26)
 
 
