@@ -257,9 +257,9 @@ export default abstract class BasePage<T extends Record<string, string>> {
         };
     }
 
-    async click(what: LocatorKey<T>, options: { nth?: number } = {}) {
-        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).click();
-        return this.locators[what].click();
+    async click(what: LocatorKey<T>, options: Parameters<Locator["click"]>[0] & { nth?: number } = {}) {
+        if (typeof options.nth === "number") return this.locators[what].nth(options.nth).click(options);
+        return this.locators[what].click(options);
     }
 
     async fill(what: LocatorKey<T>, value: string, options?: Parameters<Locator["fill"]>[1] & { nth?: number }) {

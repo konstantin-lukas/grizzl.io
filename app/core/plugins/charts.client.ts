@@ -27,4 +27,9 @@ export default defineNuxtPlugin(() => {
         PieController,
         ArcElement,
     );
+
+    const runtimeConfig = useRuntimeConfig();
+    if (runtimeConfig.public.appEnv === "test") {
+        Chart.defaults.animation = false;
+    }
 });
