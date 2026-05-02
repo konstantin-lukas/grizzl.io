@@ -51,16 +51,11 @@ const expandedExpenses = computed(() => {
 </script>
 
 <template>
-    <EmptyBudgets
-        v-if="expandedExpenses.length === 0"
-        class="mt-4"
-        description-translation-key="finance.budgets.noBudgets"
-        :icon="ICON_SAVINGS"
-    />
-    <div v-else class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
-        <div v-for="expense in expandedExpenses" :key="expense.category">
+    <EmptyBudgets v-if="expandedExpenses.length === 0" class="mt-4" :icon="ICON_SAVINGS" />
+    <ul v-else class="mt-4 grid grid-cols-[1fr_1fr] gap-x-6 gap-y-12 sm:grid-cols-[1fr_1fr_1fr] sm:gap-12">
+        <li v-for="expense in expandedExpenses" :key="expense.category">
             <CategoryBudgetProgressSkeleton v-if="isFetchingAutoTransactions || props.isFetching" />
             <CategoryBudgetProgress v-else :expense="expense" :currency="props.currency" />
-        </div>
-    </div>
+        </li>
+    </ul>
 </template>

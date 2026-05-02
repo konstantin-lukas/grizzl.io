@@ -32,7 +32,9 @@ watchEffect(() => {
     <H2 class="mt-12">
         {{ $t("finance.budgets.categoryBudgetsHeading", { month: monthName }) }}
     </H2>
-    <CategoryBudgets :expenses="thisMonthsExpenses" :currency :is-fetching />
+    <div data-test-id="finance-category-budget-progress-card-container">
+        <CategoryBudgets :expenses="thisMonthsExpenses" :currency :is-fetching />
+    </div>
     <H2 class="mt-12">{{ $t("finance.budgets.previousExpensesHeading") }}</H2>
     <StackedExpenses :expenses="perMonthPerCategory" :currency />
 </template>

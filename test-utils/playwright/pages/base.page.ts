@@ -134,9 +134,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         const fullPage = target === this.page;
 
         if (fullPage) {
-            await this.page.evaluate(() => {
-                window.scrollTo(0, 0);
-            });
+            await this.scrollToTop();
         }
 
         if (blur) {
@@ -300,5 +298,11 @@ export default abstract class BasePage<T extends Record<string, string>> {
     async doubleClickEmptyArea() {
         await this.page.click("body", { position: { x: 0, y: 0 } });
         await this.page.click("body", { position: { x: 0, y: 0 } });
+    }
+
+    async scrollToTop() {
+        await this.page.evaluate(() => {
+            window.scrollTo(0, 0);
+        });
     }
 }

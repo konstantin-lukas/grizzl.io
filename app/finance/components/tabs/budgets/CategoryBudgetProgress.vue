@@ -27,14 +27,7 @@ const spentAmount = computed(() => formatCurrency(language.value, props.currency
 
 <template>
     <div class="flex flex-col items-center gap-4" data-test-id="finance-category-budget-progress-card">
-        <div
-            class="relative aspect-square w-full overflow-hidden rounded-full"
-            role="progressbar"
-            :aria-valuemin="0"
-            :aria-valuemax="props.expense.budget"
-            :aria-valuenow="props.expense.spent"
-            :aria-labelledby="props.expense.category"
-        >
+        <div class="relative aspect-square w-full overflow-hidden rounded-full">
             <div class="center aspect-square w-full" :style="{ backgroundImage }">
                 <span
                     :id="props.expense.category"

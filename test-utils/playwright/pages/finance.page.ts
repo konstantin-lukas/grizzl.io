@@ -52,6 +52,7 @@ const LOCATORS = {
     // BUDGETS TAB
     expensePieChart: "finance-expense-pie-chart",
     categoryBudgetCards: "finance-category-budget-progress-card",
+    categoryBudgetContainer: "finance-category-budget-progress-card-container",
     previousExpensesChart: "finance-previous-expenses-chart",
 
     // BILLS TAB
