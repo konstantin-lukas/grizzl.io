@@ -23,6 +23,7 @@ const projects = [
         name: "safari",
         testDir: "./tests/e2e",
         use: { ...devices["Desktop Safari"] },
+        retries: 2,
     },
     {
         name: "mobile_chrome",
@@ -36,6 +37,7 @@ const projects = [
         name: "mobile_safari",
         testDir: "./tests/e2e",
         use: { ...devices["iPhone 12"] },
+        retries: 2,
     },
 ];
 

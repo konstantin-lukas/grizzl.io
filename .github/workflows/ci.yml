@@ -102,7 +102,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                project: [api, chromium, firefox, mobile_chrome]
+                project: [api, chromium, firefox, safari, mobile_chrome, mobile_safari]
 
         steps:
             - name: Checkout repo
