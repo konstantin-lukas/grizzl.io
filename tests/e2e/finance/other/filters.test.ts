@@ -44,9 +44,12 @@ test("allows filtering by category", async ({ db, financePage: page }) => {
     await page.click("filterMenuButton");
 
     await page.click("filterCategorySelect");
-    const promise = page.page.waitForResponse(url => url.url().includes("/transactions"));
+    const promises = [
+        page.page.waitForResponse(url => url.url().includes("/transactions")),
+        page.page.waitForResponse(url => url.url().includes("/accounts")),
+    ];
     await page.page.keyboard.press("Enter");
-    await promise;
+    await Promise.all(promises);
 
     await page.page.waitForResponse(url => url.url().includes("/transactions"));
     await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-filtered-by-category" });
@@ -62,9 +65,12 @@ test("allows filtering by date range", async ({ db, financePage: page }) => {
     await page.click("filterMenuButton");
 
     await page.click("filterDateRangePicker", { position: { x: 10, y: 10 } });
-    const promise = page.page.waitForResponse(url => url.url().includes("/transactions"));
+    const promises = [
+        page.page.waitForResponse(url => url.url().includes("/transactions")),
+        page.page.waitForResponse(url => url.url().includes("/accounts")),
+    ];
     await page.page.keyboard.type("81220258152025");
-    await promise;
+    await Promise.all(promises);
 
     await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-filtered-by-date-range" });
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-filtered-by-date-range" });
