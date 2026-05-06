@@ -43,6 +43,7 @@ const transactionService = new TransactionService(
     categoryServiceMock as never,
     accountServiceMock as never,
     autoTransactionServiceMock as never,
+    {} as never,
 );
 
 beforeEach(() => {

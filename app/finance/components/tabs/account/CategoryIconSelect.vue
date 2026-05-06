@@ -34,6 +34,7 @@ watch(suggestion, async newSuggestion => {
             type="button"
             :aria-label="$t('finance.transaction.aria.selectCategoryIcon')"
             :disabled="pending"
+            data-test-id="finance-category-icon-select-button"
         >
             <CategoryIcon :category-name="model" />
             <span v-if="pending" class="center absolute top-0 left-0 size-full bg-theme-black/60 transition-opacity">
@@ -55,6 +56,7 @@ watch(suggestion, async newSuggestion => {
                         square
                         variant="ghost"
                         color="neutral"
+                        data-test-id="finance-category-icon-select-option"
                         @click="
                             model = ico;
                             open = false;

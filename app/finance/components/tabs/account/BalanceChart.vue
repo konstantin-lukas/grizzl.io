@@ -27,6 +27,7 @@ const errorColor = computed(() => (colorMode.value === "dark" ? COLOR_ERROR_DARK
 
 const canvasRef = ref();
 const chart = shallowRef<Chart>(); // https://github.com/chartjs/Chart.js/issues/8970
+
 onMounted(() => {
     if (!canvasRef.value || import.meta.server) return;
     chart.value = new Chart(canvasRef.value, {
@@ -43,8 +44,35 @@ onMounted(() => {
                     borderCapStyle: "round",
                     segment: {
                         borderColor: ctx => {
+                            const y0 = ctx.p0.parsed.y;
                             const y1 = ctx.p1.parsed.y;
-                            return y1 !== null && y1 < 0 ? errorColor.value : dataColor.value;
+                            if (!chart.value || y0 === null || y1 === null || (y0 >= 0 && y1 >= 0)) {
+                                return dataColor.value;
+                            }
+
+                            const { ctx: canvasCtx, chartArea, scales } = chart.value;
+
+                            if (!chartArea) return dataColor.value;
+
+                            const yScale = scales.y;
+                            const yZero = yScale?.getPixelForValue(0) ?? 0;
+                            const lineOffset = y0 === 0 || y1 === 0 ? 3 : 0;
+
+                            const gradient = canvasCtx.createLinearGradient(
+                                0,
+                                chartArea.top + lineOffset,
+                                0,
+                                chartArea.bottom + lineOffset,
+                            );
+
+                            const offset = (yZero - chartArea.top) / (chartArea.bottom - chartArea.top);
+
+                            gradient.addColorStop(0, dataColor.value);
+                            gradient.addColorStop(offset, dataColor.value);
+                            gradient.addColorStop(offset, errorColor.value);
+                            gradient.addColorStop(1, errorColor.value);
+
+                            return gradient;
                         },
                     },
                 },
@@ -102,8 +130,17 @@ onMounted(() => {
                     callbacks: {
                         label(context) {
                             const value = context.parsed.y;
+                            const prev = context.dataset.data[context.dataIndex - 1];
+
                             if (!openAccount.value || value === null) return "";
-                            return formatCurrency(language.value, openAccount.value.currency, value);
+
+                            const formatted = formatCurrency(language.value, openAccount.value.currency, value);
+
+                            if (typeof prev !== "number") return formatted;
+
+                            const delta = value - prev;
+
+                            return `${formatted} (${delta >= 0 ? "+" : ""}${formatCurrency(language.value, openAccount.value.currency, delta)})`;
                         },
                     },
                 },
@@ -133,13 +170,19 @@ watch(
 </script>
 
 <template>
-    <div class="rounded-xl bg-elevated p-6">
+    <div class="rounded-xl bg-elevated p-6" data-test-id="finance-account-balance-chart">
         <div class="h-[60dvh] max-h-80 portrait:h-[40dvh]">
-            <canvas ref="canvasRef" />
+            <canvas ref="canvasRef" data-test-id="finance-account-balance-chart-canvas" />
         </div>
-        <span class="mt-4 block">{{ $t("finance.account.currentBalance") }}: {{ accountBalance }}</span>
-        <span class="block text-muted">{{ $t("finance.account.expectedBalance") }}: {{ expectedBalance }}</span>
+        <span class="mt-4 flex items-center gap-1">
+            <span>{{ $t("finance.account.currentBalance") }}: </span>
+            <USkeleton v-if="!accountBalance" class="inline-block h-5 w-20 bg-accented" />
+            <span v-else>{{ accountBalance }}</span>
+        </span>
+        <span class="flex items-center gap-1 text-muted">
+            <span>{{ $t("finance.account.expectedBalance") }}: </span>
+            <USkeleton v-if="!expectedBalance" class="inline-block h-5 w-20 bg-accented" />
+            <span v-else>{{ expectedBalance }}</span>
+        </span>
     </div>
 </template>
-
-<style scoped></style>

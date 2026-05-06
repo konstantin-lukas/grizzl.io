@@ -31,6 +31,7 @@ const handleOpen = (isOpen: boolean) => {
             variant="ghost"
             color="neutral"
             :aria-label="$t('finance.account.addTransaction')"
+            data-test-id="finance-transaction-create-button"
             @click="emit('open-insert-transaction-form')"
         />
         <UPopover @update:open="handleOpen">
@@ -40,6 +41,7 @@ const handleOpen = (isOpen: boolean) => {
                 variant="ghost"
                 color="neutral"
                 :aria-label="$t('finance.account.manageAutoTransactions')"
+                data-test-id="finance-auto-transaction-menu-button"
             />
             <template #content>
                 <ul class="relative max-h-64 max-w-[calc(100dvw-1rem)] overflow-auto py-2">
@@ -48,6 +50,7 @@ const handleOpen = (isOpen: boolean) => {
                             :icon="ICON_PLUS_CIRCLE"
                             class="flex w-full justify-center"
                             variant="subtle"
+                            data-test-id="finance-auto-transaction-create-button"
                             @click="
                                 initialState = undefined;
                                 isUpsertFormOpen = true;
@@ -81,6 +84,7 @@ const handleOpen = (isOpen: boolean) => {
                                     variant="ghost"
                                     color="neutral"
                                     :aria-label="$t('ui.edit')"
+                                    data-test-id="finance-auto-transaction-edit-button"
                                     @click="
                                         initialState = autoTransaction;
                                         isUpsertFormOpen = true;

@@ -1,0 +1,34 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account" [selected]
+      - tab "Budgets"
+      - tab "Bills"
+    - tabpanel "Account":
+      - heading "Account Balance" [level=2]
+      - button "Add transaction"
+      - button "Manage automatic transactions"
+      - button "Filters"
+      - text: "Current account balance: €100.00 Expected Month-End Balance: €100.00"
+      - heading "Transaction History" [level=2]
+      - list:
+        - listitem:
+          - text: /Dog Food \d+\/\d+\/\d+ \| Target €100\.00/
+          - button "Edit"
+          - button "Delete"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - alert: /Notification \[ "Transaction Created", "A new transaction with amount “€100\.00” was created\." \]/
+  - region "Notifications (F8)":
+    - list:
+      - listitem:
+        - text: /Transaction Created A new transaction with amount “€100\.00” was created\./
+        - button "Close"
+        - progressbar /\d+%/

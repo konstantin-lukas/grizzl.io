@@ -9,7 +9,7 @@ export default class AccountService {
     constructor(private readonly accountRepository: AccountRepository) {}
 
     public async getUserAccount(userId: string, accountId: string, tx?: ExecutionContext) {
-        const accounts = await this.accountRepository.findByUserId(userId, tx);
+        const accounts = await this.accountRepository.findByUserId(userId, tx, true);
         const account = accounts.find(account => account.id === accountId);
 
         if (!account) {

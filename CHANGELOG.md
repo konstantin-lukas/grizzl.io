@@ -1,5 +1,45 @@
 # Changelog
 
+## [1.13.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.0...v1.13.1) (2026-05-02)
+
+
+### Bug Fixes
+
+* replace all default nuxt UI icons with icons from installed libraries ([#421](https://github.com/konstantin-lukas/grizzl.io/issues/421)) ([2265b14](https://github.com/konstantin-lukas/grizzl.io/commit/2265b144f0c7ba63d8481288197726c7774a680a))
+
+## [1.13.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.12.0...v1.13.0) (2026-05-02)
+
+
+### Features
+
+* make balance chart color change exactly at zero line and display change from previous data point in tooltip ([7c6af0e](https://github.com/konstantin-lukas/grizzl.io/commit/7c6af0e220b74d79b911b26737e01bbf218e7735))
+
+
+### Bug Fixes
+
+* **finance:** remove remaining bugs in finance section ([#418](https://github.com/konstantin-lukas/grizzl.io/issues/418)) ([247aece](https://github.com/konstantin-lukas/grizzl.io/commit/247aecebb16bc6a874af6ce3c3ebb5ec57465ee4))
+
+## [1.12.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.11.0...v1.12.0) (2026-04-26)
+
+
+### Features
+
+* add paid bills underneath upcoming bills ([#411](https://github.com/konstantin-lukas/grizzl.io/issues/411)) ([588c888](https://github.com/konstantin-lukas/grizzl.io/commit/588c88810f49e4be84cd71711e1ed882679146fe))
+
+
+### Bug Fixes
+
+* fetch categories immediately ([#413](https://github.com/konstantin-lukas/grizzl.io/issues/413)) ([cf74e1e](https://github.com/konstantin-lukas/grizzl.io/commit/cf74e1ef2d55009f294a8d9c89518c55dde84b37))
+
+## [1.11.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.2...v1.11.0) (2026-04-25)
+
+
+### Features
+
+* add bills UI ([#406](https://github.com/konstantin-lukas/grizzl.io/issues/406)) ([33ab0ac](https://github.com/konstantin-lukas/grizzl.io/commit/33ab0ac762c0eb09581fc8bbf51cdc85b06acd23))
+* **finance:** add budgets UI ([#407](https://github.com/konstantin-lukas/grizzl.io/issues/407)) ([a4d19f6](https://github.com/konstantin-lukas/grizzl.io/commit/a4d19f6a079d2582d2879736a7ed3f63493677b4))
+* trim inputs before validation and add auto complete to references ([#404](https://github.com/konstantin-lukas/grizzl.io/issues/404)) ([3b7f228](https://github.com/konstantin-lukas/grizzl.io/commit/3b7f2285e007b56e3fb02108f35be907f8060f0f))
+
 ## [1.10.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.10.1...v1.10.2) (2026-04-13)
 
 

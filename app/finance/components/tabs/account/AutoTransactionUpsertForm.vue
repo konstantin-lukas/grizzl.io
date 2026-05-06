@@ -18,6 +18,7 @@ import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSe
 import useAccounts from "~/finance/composables/useAccounts";
 import type { AutoTransaction } from "~/finance/composables/useAutoTransactions";
 import useCategories from "~/finance/composables/useCategories";
+import useReferences from "~/finance/composables/useReferences";
 import useRefreshTransactions from "~/finance/composables/useRefreshTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
@@ -26,6 +27,7 @@ const emit = defineEmits(["success"]);
 const isInsert = computed(() => initialState === null);
 
 const { openAccountId, openAccount } = useAccounts();
+const referenceItems = useReferences();
 const { categories } = useCategories();
 const categoryNames = computed(() => categories.value.map(({ displayName }) => displayName));
 const refresh = useRefreshTransactions();
@@ -119,7 +121,7 @@ const onSubmit = useOnSubmit({
                         :currency="openAccount!.currency"
                         :locale="language"
                         class="w-full"
-                        data-test-id="auto-transaction-upsert-amount-input"
+                        data-test-id="finance-auto-transaction-upsert-amount-input"
                     />
                 </UFormField>
                 <div class="flex w-full">
@@ -130,6 +132,7 @@ const onSubmit = useOnSubmit({
                             :items="categoryNames"
                             class="w-full"
                             :maxlength="TITLE_MAX"
+                            data-test-id="finance-auto-transaction-upsert-category-input"
                         />
                     </UFormField>
                     <div class="ml-4 translate-y-4">
@@ -141,11 +144,13 @@ const onSubmit = useOnSubmit({
                     </div>
                 </div>
                 <UFormField :label="$t('finance.reference')" name="reference" class="w-full">
-                    <UInput
+                    <UInputMenu
                         v-model="state.reference"
                         class="w-full"
+                        autocomplete
+                        :items="referenceItems"
                         :maxlength="TITLE_MAX"
-                        data-test-id="auto-transaction-upsert-reference-input"
+                        data-test-id="finance-auto-transaction-upsert-reference-input"
                     />
                 </UFormField>
                 <div class="flex w-full gap-4 not-xs:flex-col">
@@ -160,7 +165,7 @@ const onSubmit = useOnSubmit({
                             :min="FINANCE_EXEC_INTERVAL_MIN"
                             :max="FINANCE_EXEC_INTERVAL_MAX"
                             :format-options="{ style: 'unit', unit: 'month', unitDisplay: 'long' }"
-                            data-test-id="auto-transaction-upsert-exec-interval-input"
+                            data-test-id="finance-auto-transaction-upsert-exec-interval-input"
                         />
                     </UFormField>
                     <UFormField :label="$t('finance.autoTransaction.form.execOn')" name="execOn" class="w-full">
@@ -169,7 +174,7 @@ const onSubmit = useOnSubmit({
                             class="w-full"
                             :min="FINANCE_EXEC_ON_MIN"
                             :max="FINANCE_EXEC_ON_MAX"
-                            data-test-id="auto-transaction-upsert-exec-on-input"
+                            data-test-id="finance-auto-transaction-upsert-exec-on-input"
                         />
                     </UFormField>
                 </div>

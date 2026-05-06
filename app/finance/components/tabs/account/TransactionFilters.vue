@@ -27,13 +27,21 @@ onMounted(() => {
 
 <template>
     <UPopover>
-        <Button :icon="ICON_FILTER" square variant="ghost" color="neutral" :aria-label="$t('ui.filters')" />
+        <Button
+            :icon="ICON_FILTER"
+            square
+            variant="ghost"
+            color="neutral"
+            :aria-label="$t('ui.filters')"
+            data-test-id="finance-filter-menu-button"
+        />
         <template #content>
             <div class="flex max-w-[calc(100dvw-1rem)] flex-col gap-4 p-4">
                 <UFormField :label="$t('finance.reference')">
                     <UInput
                         class="w-full"
                         :model-value="deferredReference"
+                        data-test-id="finance-filter-reference-input"
                         @update:model-value="value => (deferredReference = value?.toString() || undefined)"
                     />
                 </UFormField>
@@ -44,11 +52,13 @@ onMounted(() => {
                         value-key="id"
                         clear
                         :model-value="categoryId"
+                        data-test-id="finance-filter-category-select"
                         @update:model-value="value => (categoryId = value || undefined)"
                     />
                 </UFormField>
                 <UFormField :label="$t('finance.dateRange')">
                     <DateRangePicker
+                        data-test-id="finance-filter-date-range-picker"
                         class="max-w-full"
                         :start="from"
                         :end="to"

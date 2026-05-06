@@ -1,8 +1,8 @@
-import { DatabaseIdSchema, TITLE_MAX, TITLE_MIN } from "#shared/core/validators/core.validator";
+import { DatabaseIdSchema, TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.validator";
 import { CategorySchema } from "#shared/finance/validators/category.validator";
 import { z } from "zod";
 
-const referenceSchema = z.string().min(TITLE_MIN).max(TITLE_MAX).optional();
+const referenceSchema = preTrim(z.string().min(TITLE_MIN).max(TITLE_MAX).optional());
 const databaseSchema = DatabaseIdSchema.optional();
 const isoDateTimeSchema = z.iso.datetime().transform(v => new Date(v));
 
@@ -21,11 +21,13 @@ export const GetTransactionFiltersSchema = z.object({
 
 export const PostTransactionSchema = z.object({
     amount: z.int(),
-    reference: z
-        .string()
-        .max(TITLE_MAX)
-        .nullable()
-        .transform(value => (value === "" ? null : value)),
+    reference: preTrim(
+        z
+            .string()
+            .max(TITLE_MAX)
+            .nullable()
+            .transform(value => (value === "" ? null : value)),
+    ),
     category: CategorySchema,
 });
 

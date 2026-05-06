@@ -1,0 +1,65 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account" [selected]
+      - tab "Budgets"
+      - tab "Bills"
+    - tabpanel "Account":
+      - heading "Account Balance" [level=2]
+      - button "Add transaction"
+      - button "Manage automatic transactions"
+      - button "Filters"
+      - text: "Current account balance: €45.00 Expected Month-End Balance: €45.00"
+      - heading "Transaction History" [level=2]
+      - list:
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| irureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequ €7\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| euismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvolupta €5\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod €0\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| sintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagna €6\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| voluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesdui €1\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| molestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesent €2\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| ullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecat €3\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| elitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadip €8\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| estlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvoluptatemagnanequeadipisci €9\.00/
+          - button "Edit"
+          - button "Delete"
+        - listitem:
+          - text: /Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate\. Quisque sollicitudini\. \d+\/\d+\/\d+ \| enimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsodalesduispraesentoccaecatduisvol €4\.00/
+          - button "Edit"
+          - button "Delete"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

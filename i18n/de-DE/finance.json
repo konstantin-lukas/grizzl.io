@@ -42,6 +42,21 @@
                 "deletedDescription": "Das Konto mit dem Namen „{title}“ wurde gelöscht."
             }
         },
+        "bills": {
+            "upcoming": "Rechnungen für {month}",
+            "remaining": "Ausstehende Rechnungen",
+            "paid": "Bezahlte Rechnungen",
+            "empty": "Du hast diesen Monat keine fälligen Rechnungen."
+        },
+        "budgets": {
+            "currentExpensesHeading": "Ausgaben im {month}",
+            "categoryBudgetsHeading": "Kategorie-Budgets für {month}",
+            "previousExpensesHeading": "Ausgaben in vorherigen Monaten",
+            "usedAmount": "{amount} / {max} ausgegeben",
+            "noExpenses": "Du hast diesen Monat noch kein Geld ausgegeben.",
+            "noBudgets": "Du hast diesen Monat keine Budgets.",
+            "sumTotal": "Gesamtsumme"
+        },
         "transaction": {
             "empty": "Es gibt keine Transaktionen, die den ausgewählten Filtern entsprechen.",
             "toast": {

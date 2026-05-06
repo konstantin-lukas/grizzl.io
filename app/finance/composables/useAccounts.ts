@@ -5,11 +5,18 @@ import { onResponseError } from "~/core/utils/toast";
 export default function useAccounts() {
     const toast = useToast();
     const { t } = useI18n();
-    const { data: accounts, refresh: refreshAccounts } = useFetch("/api/finance/accounts", {
+    const {
+        data: accounts,
+        refresh: refreshAccounts,
+        pending,
+    } = useFetch("/api/finance/accounts", {
         onResponseError: onResponseError(toast, t),
+        server: false,
     });
 
     const openAccountId = useLocalStorage("open-finance-account-id");
+    const hasMounted = ref(false);
+    onMounted(() => (hasMounted.value = true));
 
     watchEffect(() => {
         if (openAccountId.value && accounts.value?.every(account => account.id !== openAccountId.value)) {
@@ -18,7 +25,7 @@ export default function useAccounts() {
         }
 
         const firstAccount = accounts.value?.[0]?.id;
-        if (openAccountId.value || !firstAccount) return;
+        if (openAccountId.value || !firstAccount || !hasMounted.value) return;
         openAccountId.value = firstAccount;
     });
 
@@ -33,7 +40,7 @@ export default function useAccounts() {
             openAccountId.value = null;
             return;
         }
-        if (accountCountAfterRefresh > accountCountBeforeRefresh) {
+        if (accountCountBeforeRefresh !== 0 && accountCountAfterRefresh > accountCountBeforeRefresh) {
             const latest = accountsList.reduce((latest, current) => {
                 return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
             });
@@ -49,5 +56,5 @@ export default function useAccounts() {
         }
     };
 
-    return { accounts, refresh, openAccount, openAccountId };
+    return { accounts, refresh, openAccount, openAccountId, isFetching: pending };
 }

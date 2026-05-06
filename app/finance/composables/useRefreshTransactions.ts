@@ -1,12 +1,14 @@
 import { Time, getLocalTimeZone, toCalendarDateTime } from "@internationalized/date";
 import { onResponseError } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
+import usePerMonthTransactions from "~/finance/composables/usePerMonthTransactions";
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";
 
 export default function useRefreshTransactions() {
-    const { openAccountId } = useAccounts();
+    const { openAccountId, refresh: refreshAccounts } = useAccounts();
 
     const { transactions, categoryId, from, to, reference, startBalance } = useTransactions();
+    const { refresh: refreshPerMonthTransactions, isFetching } = usePerMonthTransactions();
     const toast = useToast();
     const { t } = useI18n();
 
@@ -15,6 +17,11 @@ export default function useRefreshTransactions() {
             transactions.value = [];
             return;
         }
+
+        isFetching.value = true;
+        const perMonthPromise = refreshPerMonthTransactions(openAccountId.value).finally(
+            () => (isFetching.value = false),
+        );
 
         const tz = getLocalTimeZone();
         const start = toCalendarDateTime(from.value, new Time(0, 0, 0, 0));
@@ -41,6 +48,11 @@ export default function useRefreshTransactions() {
             },
         });
 
-        [transactions.value, startBalance.value] = await Promise.all([transactionsPromise, balancePromise]);
+        [transactions.value, startBalance.value] = await Promise.all([
+            transactionsPromise,
+            balancePromise,
+            perMonthPromise,
+        ]);
+        await refreshAccounts();
     };
 }

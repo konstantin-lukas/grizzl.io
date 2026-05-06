@@ -1,0 +1,24 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button "Account Controls"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - tablist:
+      - tab "Account"
+      - tab "Budgets" [selected]
+      - tab "Bills"
+    - tabpanel "Budgets":
+      - heading "Expenses In May" [level=2]
+      - heading "No entries found" [level=2]
+      - text: You haven't spent any money yet this month.
+      - heading "Category Budgets For May" [level=2]
+      - heading "No entries found" [level=2]
+      - heading "Expenses In Previous Months" [level=2]
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
