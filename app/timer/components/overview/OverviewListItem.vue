@@ -24,7 +24,6 @@ const duration = useComputedOnLocaleChange(
             seconds: timeInSeconds % 60,
         };
 
-        // @ts-expect-error This feature has enough support but is not yet recognized
         return new Intl.DurationFormat(language.value, { style: "short" }).format(d);
     },
     () => props.timer.intervals,
