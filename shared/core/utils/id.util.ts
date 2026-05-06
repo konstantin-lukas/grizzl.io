@@ -7,7 +7,7 @@ import { ID_LENGTH } from "../validators/core.validator";
 // requests exceed the maximum buffer size.
 const POOL_SIZE_MULTIPLIER = 128;
 const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-let pool: Uint8Array;
+let pool: Uint8Array<ArrayBuffer>;
 let poolOffset: number;
 
 function fillPool(bytes: number) {
