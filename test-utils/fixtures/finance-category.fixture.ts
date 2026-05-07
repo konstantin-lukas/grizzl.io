@@ -1,9 +1,9 @@
-import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import { IconTagsMap } from "#shared/core/maps/icon-tags.map";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { int, str } from "~~/test-utils/helpers/data";
 
-const icons = Object.keys(CategoryIconsMap);
+const icons = Object.keys(IconTagsMap);
 export default class FinanceCategoryFixture extends BaseFixture<"financeCategory"> {
     protected defaults = (index: number) => {
         const displayName = str({ length: 100, seed: index });

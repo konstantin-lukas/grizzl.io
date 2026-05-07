@@ -1,10 +1,10 @@
-import { FeatureExtractionService } from "#server/finance/services/feature-extraction.service";
+import BaseController from "#server/core/controllers/base.controller";
+import { FeatureExtractionService } from "#server/core/services/feature-extraction.service";
 import { CategoryIconSuggestionSchema } from "#shared/finance/validators/category.validator";
 import type { H3Event } from "h3";
-import BaseController from "~~/server/core/controllers/base.controller";
 
 /* c8 ignore start */
-export default class CategoryIconController extends BaseController {
+export default class IconSuggestionController extends BaseController {
     static readonly deps = [];
 
     public async getIconSuggestion(event: H3Event) {

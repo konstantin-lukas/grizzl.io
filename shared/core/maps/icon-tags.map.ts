@@ -2,7 +2,7 @@
  * The keys are material symbols and have to be prefixed with "material-symbols:".
  * The longest key is 35 characters long.
  */
-export const CategoryIconsMap = {
+export const IconTagsMap = {
     // TRAVEL & TRANSPORTATION
     "flight-rounded": "Airplane Travel Fly Aviation Jet",
     "luggage-outline-rounded": "Suitcase Baggage Packing Trip Journey",

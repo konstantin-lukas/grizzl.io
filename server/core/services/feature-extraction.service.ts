@@ -1,5 +1,5 @@
 import LoggerService from "#server/core/services/logger.service";
-import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import { IconTagsMap } from "#shared/core/maps/icon-tags.map";
 import { type FeatureExtractionPipeline, env, pipeline } from "@huggingface/transformers";
 
 /* c8 ignore start */
@@ -41,9 +41,7 @@ export class FeatureExtractionService {
 
         if (!this.iconEmbeddings) {
             this.iconEmbeddings = await Promise.all(
-                Object.entries(CategoryIconsMap).map(
-                    async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const,
-                ),
+                Object.entries(IconTagsMap).map(async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const),
             );
             logger.info("Icon embeddings ready!");
         }
@@ -64,7 +62,7 @@ export class FeatureExtractionService {
         const closestMatch = similarities.reduce((max, current) =>
             current.similarity > max.similarity ? current : max,
         );
-        return closestMatch as { icon: keyof typeof CategoryIconsMap; similarity: number };
+        return closestMatch as { icon: keyof typeof IconTagsMap; similarity: number };
     }
 }
 /* c8 ignore stop */

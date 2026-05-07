@@ -1,9 +1,9 @@
+import { IconTagsMap } from "#shared/core/maps/icon-tags.map";
 import { TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.validator";
-import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
 import { normalize } from "#shared/finance/utils/string";
 import { z } from "zod";
 
-const VALID_ICONS = Object.keys(CategoryIconsMap) as (keyof typeof CategoryIconsMap)[];
+const VALID_ICONS = Object.keys(IconTagsMap) as (keyof typeof IconTagsMap)[];
 
 export const CategorySchema = z
     .object({

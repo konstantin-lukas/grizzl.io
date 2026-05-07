@@ -1,4 +1,4 @@
-import CategoryIconController from "#server/finance/controllers/category-icon.controller";
+import IconSuggestionController from "#server/core/controllers/icon-suggestion.controller";
 
 export default defineEventHandler(async event => {
     const runtimeConfig = useRuntimeConfig();
@@ -13,6 +13,6 @@ export default defineEventHandler(async event => {
         if (params["categoryName"]?.toString().startsWith("Dog")) return { icon: "pet-supplies-outline" };
         return { icon: "question-mark-rounded" };
     }
-    const categoryIconController = createContainer().resolve(CategoryIconController, event);
+    const categoryIconController = createContainer().resolve(IconSuggestionController, event);
     return categoryIconController.getIconSuggestion(event);
 });
