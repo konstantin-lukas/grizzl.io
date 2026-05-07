@@ -27,7 +27,7 @@
 
 </div>
 
-# Development (Linux)
+# Development (Linux/MacOS/WSL)
 Requirements: git, git lfs, docker
 
 1. You only need to do this step if your user:group IDs aren't 1000:1000. Add these lines to your `~/.bashrc` or `~/.zshrc` depending on the shell you're using:
@@ -37,8 +37,10 @@ Requirements: git, git lfs, docker
    ```
    The above is just for convenience when starting the containers. You can also set these values manually.
 2. Clone the repository and start a new shell inside of it.
-3. Fetch the large files: `git lfs install && git lfs pull`.
-4. Make sure localhost:80 and localhost:5432 are free and run `bin/start`.
+3. Fetch the large files: `git lfs fetch`.
+4. Make sure localhost:80 and localhost:5432 are free and run `bin/start`. This will remove all unused volumes before
+   starting the project so if this causes the start script to fail, either remove the unused volumes manually or run 
+   modify the start script to fit your needs.
 5. The project should now be running on `http://grizzl.localhost`.
 6. To shut down the project, simply run `bin/stop`.
 
@@ -90,6 +92,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
+Then restart your system.
 
 ### 3. Clone The Repository And Set Git Identity
 If git isn't already installed run `apt-get install git` (for Debian/Ubuntu) first.
@@ -97,7 +100,8 @@ If git isn't already installed run `apt-get install git` (for Debian/Ubuntu) fir
 cd ~
 mkdir git
 cd git
-git clone https://github.com/konstantin-lukas/grizzl.io.git
+git clone git@github.com:konstantin-lukas/grizzl.io.git
+git lfs fetch
 
 git config --global user.name "John Doe"
 git config --global user.email "johndoe@example.com"
