@@ -36,7 +36,7 @@ const execute = useSoftDelete(apiRoute, {
                 <Button
                     square
                     variant="ghost"
-                    class="hover:bg-accented focus-visible:bg-accented"
+                    class="hover:bg-front/15 focus-visible:bg-front/15"
                     :icon="ICON_EDIT"
                     color="neutral"
                     :aria-label="$t('ui.edit')"
@@ -46,7 +46,7 @@ const execute = useSoftDelete(apiRoute, {
                 <Button
                     square
                     variant="ghost"
-                    class="hover:bg-accented focus-visible:bg-accented"
+                    class="hover:bg-error/25 focus-visible:bg-error/25"
                     :icon="ICON_DELETE"
                     color="error"
                     :on-async-click="execute"

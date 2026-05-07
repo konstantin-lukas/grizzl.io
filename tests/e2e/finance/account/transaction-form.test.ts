@@ -14,7 +14,7 @@ test(
         await page.completeTransactionUpsertForm({ submit: false });
 
         // FOR SOME REASON THE SCREENSHOT ASSERTION DOESN'T AUTO RETRY ON MOBILE CHROME
-        await page.page.waitForRequest("/api/finance/category-icon?categoryName=Dog+Food");
+        await page.page.waitForRequest("/api/icon-suggestion?categoryName=Dog+Food");
 
         await page.expect("drawer").toHaveScreenshot({ name: "filled-transaction-upsert-form" });
         await page.click("upsertSubmit");

@@ -41,7 +41,7 @@ watch(upsertFormOpen, () => {
             :aria-label="$t('finance.account.aria.controls')"
             data-test-id="finance-account-control-menu"
             :ui="{
-                base: 'size-10 hover-none:size-12 p-0 flex items-center justify-center',
+                base: 'size-10 hover-none:size-12 p-0 flex items-center justify-center hover:bg-front/15 focus-visible:bg-front/15 focus:bg-front/15 active:bg-front/15',
                 leading: 'p-0 relative',
                 content: 'w-[calc(100dvw-1rem)] sm:w-64',
                 placeholder: 'hidden',
