@@ -28,7 +28,7 @@
         "drizzle-orm": "0.45.2",
         "nuxt": "4.4.2",
         "pg": "8.20.0",
-        "vue": "3.5.32",
+        "vue": "3.5.33",
         "vue-draggable-plus": "0.6.1",
         "vue-router": "5.0.4"
     },
@@ -54,7 +54,7 @@
         "prettier-plugin-tailwindcss": "0.7.2",
         "tailwindcss": "4.2.2",
         "typescript": "6.0.3",
-        "vue-tsc": "3.2.6"
+        "vue-tsc": "3.2.7"
     },
     "overrides": {
         "vitest": "4.1.2",
