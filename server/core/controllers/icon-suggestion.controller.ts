@@ -16,7 +16,7 @@ export default class IconSuggestionController extends BaseController {
 
         const result = await FeatureExtractionService.getClosestMatch(categoryName);
 
-        if (!result?.icon || result.similarity < 0.3) return fallbackReturnValue;
+        if (!result?.icon || result.similarity < 0.25) return fallbackReturnValue;
 
         return { icon: result.icon };
     }
