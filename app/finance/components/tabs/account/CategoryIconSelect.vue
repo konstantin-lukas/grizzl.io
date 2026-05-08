@@ -54,7 +54,7 @@ watch(suggestion, async newSuggestion => {
             <ul class="flex w-52 max-w-[calc(100dvw-1rem)] flex-wrap p-2 xs:w-68">
                 <li v-for="ico in CATEGORY_ICONS" :key="ico">
                     <UButton
-                        :icon="ico"
+                        :icon="'material-symbols:' + ico"
                         :aria-label="ico"
                         square
                         variant="ghost"

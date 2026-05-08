@@ -1,4 +1,4 @@
-import { SHORT_CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
+import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { int, str } from "~~/test-utils/helpers/data";
@@ -10,7 +10,7 @@ export default class FinanceCategoryFixture extends BaseFixture<"financeCategory
         return {
             displayName,
             normalizedName,
-            icon: SHORT_CATEGORY_ICONS[int({ min: 0, max: SHORT_CATEGORY_ICONS.length - 1, seed: index })],
+            icon: CATEGORY_ICONS[int({ min: 0, max: CATEGORY_ICONS.length - 1, seed: index })],
         };
     };
 

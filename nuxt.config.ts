@@ -1,7 +1,7 @@
 import { checkTranslationFileConsistency, getTranslationFiles } from "./config/i18n";
 import pwa from "./config/pwa";
-import { CATEGORY_ICONS } from "./shared/core/constants/category-icons.constant";
 import { LOCALES } from "./shared/core/constants/i18n.constant";
+import { IconTagsMap } from "./shared/core/maps/icon-tags.map";
 import type { LocaleObject } from "@nuxtjs/i18n";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -98,7 +98,9 @@ export default defineNuxtConfig({
             },
         ],
         clientBundle: {
-            icons: CATEGORY_ICONS,
+            icons: IconTagsMap.keys()
+                .map(key => `material-symbols:${key}`)
+                .toArray(),
             scan: {
                 globInclude: ["app/core/constants/icons.constant.ts"],
             },
