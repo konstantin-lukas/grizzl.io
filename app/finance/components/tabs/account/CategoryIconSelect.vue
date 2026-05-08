@@ -13,6 +13,7 @@ const props = defineProps<{ categoryName: string; categories: { normalizedName: 
 const open = ref(false);
 
 const categoryName = toRef(props, "categoryName");
+const ignoreSuggestion = ref(false);
 const deferredCategoryName = useDeferredSourceValue(categoryName);
 const query = computed(() => ({ categoryName: deferredCategoryName.value }));
 
@@ -21,7 +22,10 @@ const { data: suggestion, pending } = useFetch(`/api/icon-suggestion`, {
     default: () => ({ icon: emptyIcon }),
 });
 
+watch(categoryName, () => (ignoreSuggestion.value = false));
+
 watch(suggestion, async newSuggestion => {
+    if (ignoreSuggestion.value) return;
     const icon = props.categories.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
     model.value = icon ?? newSuggestion.icon;
 });
@@ -60,6 +64,7 @@ watch(suggestion, async newSuggestion => {
                         @click="
                             model = ico;
                             open = false;
+                            ignoreSuggestion = true;
                         "
                     />
                 </li>
