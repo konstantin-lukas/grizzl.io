@@ -118,10 +118,12 @@ export const TRANSACTION_VALID_REQUEST_TEST_CASES = [
         withTransaction("reference", ` ${str({ length: 100 })} `),
         withTransaction("reference", str({ length: 100 })),
     ],
-    ...(Object.keys(IconTagsMap).map(icon => [
-        `the category icon is ${icon}`,
-        withTransaction("category", { ...BASE_TRANSACTION.category, icon }),
-    ]) as [string, typeof BASE_TRANSACTION][]),
+    ...(IconTagsMap.keys()
+        .map(icon => [
+            `the category icon is ${icon}`,
+            withTransaction("category", { ...BASE_TRANSACTION.category, icon }),
+        ])
+        .toArray() as [string, typeof BASE_TRANSACTION][]),
 ] as const;
 
 export const TRANSACTION_BAD_REQUEST_TEST_CASES = [
@@ -172,10 +174,12 @@ export const AUTO_TRANSACTION_VALID_REQUEST_TEST_CASES = [
     ["execOn is just large enough", withAutoTransaction("execOn", 1)],
     ["execOn is just small enough", withAutoTransaction("execOn", 31)],
     ["lastExec is a valid date", withAutoTransaction("lastExec", "2025-06-30")],
-    ...(Object.keys(IconTagsMap).map(icon => [
-        `the category icon is ${icon}`,
-        withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon }),
-    ]) as [string, typeof BASE_AUTO_TRANSACTION][]),
+    ...(IconTagsMap.keys()
+        .map(icon => [
+            `the category icon is ${icon}`,
+            withAutoTransaction("category", { ...BASE_AUTO_TRANSACTION.category, icon }),
+        ])
+        .toArray() as [string, typeof BASE_AUTO_TRANSACTION][]),
 ] as const;
 
 export const AUTO_TRANSACTION_BAD_REQUEST_TEST_CASES = [

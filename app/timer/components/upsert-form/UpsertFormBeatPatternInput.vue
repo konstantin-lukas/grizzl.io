@@ -13,7 +13,7 @@ import {
     ICON_PAUSE,
     ICON_PLAY,
 } from "~/core/constants/icons.constant";
-import { BeatSymbol } from "~/timer/maps/beat-icon.map";
+import { BeatIconMap } from "~/timer/maps/beat-icon.map";
 
 const { beats, barLength } = defineProps<{ beats: Beat[]; barLength: number }>();
 const emit = defineEmits(["update:beats"]);
@@ -149,7 +149,7 @@ function addBeat(beat: Beat) {
                 class="size-8"
                 :class="{ 'bg-primary': index === currentBeat }"
                 :data-test-id="`beat-pattern-input-beat-${index}`"
-                :name="BeatSymbol[beat]"
+                :name="BeatIconMap.get(beat)"
             />
         </div>
     </div>

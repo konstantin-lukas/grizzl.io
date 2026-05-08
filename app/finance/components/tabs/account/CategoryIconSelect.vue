@@ -6,7 +6,7 @@ import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
-const icons = Object.keys(IconTagsMap);
+const icons = IconTagsMap.keys();
 const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string; categories: { normalizedName: string; icon: string }[] }>();
 

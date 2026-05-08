@@ -98,7 +98,9 @@ export default defineNuxtConfig({
             },
         ],
         clientBundle: {
-            icons: Object.keys(IconTagsMap).map(key => `material-symbols:${key}`),
+            icons: IconTagsMap.keys()
+                .map(key => `material-symbols:${key}`)
+                .toArray(),
             scan: {
                 globInclude: ["app/core/constants/icons.constant.ts"],
             },

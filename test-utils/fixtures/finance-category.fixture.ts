@@ -3,7 +3,7 @@ import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixture
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { int, str } from "~~/test-utils/helpers/data";
 
-const icons = Object.keys(IconTagsMap);
+const icons = IconTagsMap.keys().toArray();
 export default class FinanceCategoryFixture extends BaseFixture<"financeCategory"> {
     protected defaults = (index: number) => {
         const displayName = str({ length: 100, seed: index });

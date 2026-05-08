@@ -3,7 +3,7 @@ import { TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.vali
 import { normalize } from "#shared/finance/utils/string";
 import { z } from "zod";
 
-const VALID_ICONS = Object.keys(IconTagsMap) as (keyof typeof IconTagsMap)[];
+const VALID_ICONS = IconTagsMap.keys().toArray();
 
 export const CategorySchema = z
     .object({
