@@ -1,27 +1,30 @@
 <script setup lang="ts">
-import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
-const icons = Object.keys(CategoryIconsMap);
 const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string; categories: { normalizedName: string; icon: string }[] }>();
 
 const open = ref(false);
 
 const categoryName = toRef(props, "categoryName");
+const ignoreSuggestion = ref(false);
 const deferredCategoryName = useDeferredSourceValue(categoryName);
 const query = computed(() => ({ categoryName: deferredCategoryName.value }));
 
-const { data: suggestion, pending } = useFetch(`/api/finance/category-icon`, {
+const { data: suggestion, pending } = useFetch(`/api/icon-suggestion`, {
     query,
     default: () => ({ icon: emptyIcon }),
 });
 
+watch(categoryName, () => (ignoreSuggestion.value = false));
+
 watch(suggestion, async newSuggestion => {
+    if (ignoreSuggestion.value) return;
     const icon = props.categories.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
     model.value = icon ?? newSuggestion.icon;
 });
@@ -49,7 +52,7 @@ watch(suggestion, async newSuggestion => {
         </button>
         <template #content>
             <ul class="flex w-52 max-w-[calc(100dvw-1rem)] flex-wrap p-2 xs:w-68">
-                <li v-for="ico in icons" :key="ico">
+                <li v-for="ico in CATEGORY_ICONS" :key="ico">
                     <UButton
                         :icon="'material-symbols:' + ico"
                         :aria-label="ico"
@@ -60,6 +63,7 @@ watch(suggestion, async newSuggestion => {
                         @click="
                             model = ico;
                             open = false;
+                            ignoreSuggestion = true;
                         "
                     />
                 </li>

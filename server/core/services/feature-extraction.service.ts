@@ -1,12 +1,12 @@
 import LoggerService from "#server/core/services/logger.service";
-import { CategoryIconsMap } from "#shared/finance/maps/category-icons.map";
+import { IconTagsMap } from "#shared/core/maps/icon-tags.map";
 import { type FeatureExtractionPipeline, env, pipeline } from "@huggingface/transformers";
 
 /* c8 ignore start */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class FeatureExtractionService {
     static instance: FeatureExtractionPipeline | null = null;
-    static iconEmbeddings: [string, number[]][] | null = null;
+    static iconEmbeddings: (readonly [string, number[]])[] | null = null;
 
     static cosineSimilarity(vectorA: number[], vectorB: number[]) {
         let dotProduct = 0;
@@ -41,9 +41,9 @@ export class FeatureExtractionService {
 
         if (!this.iconEmbeddings) {
             this.iconEmbeddings = await Promise.all(
-                Object.entries(CategoryIconsMap).map(
-                    async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const,
-                ),
+                IconTagsMap.entries()
+                    .map(async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const)
+                    .toArray(),
             );
             logger.info("Icon embeddings ready!");
         }
@@ -64,7 +64,7 @@ export class FeatureExtractionService {
         const closestMatch = similarities.reduce((max, current) =>
             current.similarity > max.similarity ? current : max,
         );
-        return closestMatch as { icon: keyof typeof CategoryIconsMap; similarity: number };
+        return closestMatch as { icon: string; similarity: number };
     }
 }
 /* c8 ignore stop */

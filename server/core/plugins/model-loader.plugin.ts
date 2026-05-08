@@ -1,4 +1,4 @@
-import { FeatureExtractionService } from "#server/finance/services/feature-extraction.service";
+import { FeatureExtractionService } from "#server/core/services/feature-extraction.service";
 
 export default defineNitroPlugin(async () => {
     // This runtime logic was added to avoid using git lfs budget in CI workflow
