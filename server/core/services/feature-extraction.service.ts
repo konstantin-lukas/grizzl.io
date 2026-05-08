@@ -41,7 +41,9 @@ export class FeatureExtractionService {
 
         if (!this.iconEmbeddings) {
             this.iconEmbeddings = await Promise.all(
-                IconTagsMap.entries().map(async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const),
+                IconTagsMap.entries()
+                    .map(async ([icon, tags]) => [icon, await this.getEmbedding(tags)] as const)
+                    .toArray(),
             );
             logger.info("Icon embeddings ready!");
         }

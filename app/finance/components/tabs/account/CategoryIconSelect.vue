@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { IconTagsMap } from "#shared/core/maps/icon-tags.map";
+import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
-const icons = IconTagsMap.keys();
 const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string; categories: { normalizedName: string; icon: string }[] }>();
 
@@ -53,9 +52,9 @@ watch(suggestion, async newSuggestion => {
         </button>
         <template #content>
             <ul class="flex w-52 max-w-[calc(100dvw-1rem)] flex-wrap p-2 xs:w-68">
-                <li v-for="ico in icons" :key="ico">
+                <li v-for="ico in CATEGORY_ICONS" :key="ico">
                     <UButton
-                        :icon="'material-symbols:' + ico"
+                        :icon="ico"
                         :aria-label="ico"
                         square
                         variant="ghost"
