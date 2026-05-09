@@ -18,9 +18,6 @@ const { language } = useLocale();
 const { refresh } = useCategories();
 const initialState = ref<Transaction>();
 const upsertFormOpen = ref(false);
-watch(upsertFormOpen, isOpen => {
-    if (isOpen) refresh();
-});
 </script>
 
 <template>
@@ -69,6 +66,9 @@ watch(upsertFormOpen, isOpen => {
     <TransactionUpsertForm
         v-model:open="upsertFormOpen"
         :initial-state="initialState"
-        @success="upsertFormOpen = false"
+        @success="
+            upsertFormOpen = false;
+            refresh();
+        "
     />
 </template>
