@@ -4,7 +4,7 @@ import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "todoList";
 
-export default class TodoListRepository extends BaseRepository<typeof schema> {
+export default class ListRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, schema, userId => eq(this.schema.userId, userId));
     }

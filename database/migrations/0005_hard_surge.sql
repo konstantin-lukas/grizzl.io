@@ -20,6 +20,7 @@ CREATE TABLE "todo_list_item" (
 CREATE TABLE "todo_preset" (
 	"id" char(16) PRIMARY KEY NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"deleted_at" timestamp with time zone,
 	"title" varchar(100) NOT NULL,
 	"list_id" char(16) NOT NULL,
 	"items" varchar(200)[] DEFAULT ARRAY[]::varchar[] NOT NULL

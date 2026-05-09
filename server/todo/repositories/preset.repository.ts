@@ -5,7 +5,7 @@ import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "todoPreset";
 
-export default class TodoListItemRepository extends BaseRepository<typeof schema> {
+export default class PresetRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
         super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.todoList, this.schema.listId));
     }
