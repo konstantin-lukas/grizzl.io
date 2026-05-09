@@ -39,7 +39,7 @@ watch(upsertFormOpen, isOpen => {
     <BalanceChart />
     <H2 class="mt-12">{{ $t("finance.account.transactionHistory") }}</H2>
     <div aria-live="polite">
-        <div v-if="isFetching">
+        <div v-if="isFetching && transactions.length > 0">
             <TransactionCardSkeleton v-for="n in 10" :key="n" />
         </div>
         <ul v-else class="relative min-h-32">
