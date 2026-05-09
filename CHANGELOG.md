@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.1...v1.13.2) (2026-05-09)
+
+
+### Bug Fixes
+
+* ignore icon suggestion if the user made a manual selection before receiving a response ([#451](https://github.com/konstantin-lukas/grizzl.io/issues/451)) ([4008a79](https://github.com/konstantin-lukas/grizzl.io/commit/4008a794b0c7fd1d640b5bc1a4886af6fb57a0dd))
+* minor improvements for finance section ([#455](https://github.com/konstantin-lukas/grizzl.io/issues/455)) ([96e90c5](https://github.com/konstantin-lukas/grizzl.io/commit/96e90c5c15c8e0737a0e1379775ce46a11be78f9))
+
 ## [1.13.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.0...v1.13.1) (2026-05-02)
 
 
