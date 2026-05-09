@@ -7,6 +7,9 @@ import FinanceCategoryFixture from "~~/test-utils/fixtures/finance-category.fixt
 import FinanceTransactionFixture from "~~/test-utils/fixtures/finance-transaction.fixture";
 import TimerIntervalFixture from "~~/test-utils/fixtures/timer-interval.fixture";
 import TimerFixture from "~~/test-utils/fixtures/timer.fixture";
+import TodoListItemFixture from "~~/test-utils/fixtures/todo-list-item.fixture";
+import TodoListFixture from "~~/test-utils/fixtures/todo-list.fixture";
+import TodoPresetFixture from "~~/test-utils/fixtures/todo-preset.fixture";
 import UserFixture from "~~/test-utils/fixtures/user.fixture";
 
 function createDBFixtures(db: ReturnType<typeof drizzle>) {
@@ -17,6 +20,9 @@ function createDBFixtures(db: ReturnType<typeof drizzle>) {
         financeCategory: new FinanceCategoryFixture(db),
         financeTransaction: new FinanceTransactionFixture(db),
         financeAutoTransaction: new FinanceAutoTransactionFixture(db),
+        todoList: new TodoListFixture(db),
+        todoListItem: new TodoListItemFixture(db),
+        todoPreset: new TodoPresetFixture(db),
         user: new UserFixture(db),
         account: new AccountFixture(db),
         client: db,
