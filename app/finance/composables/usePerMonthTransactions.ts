@@ -1,5 +1,6 @@
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
+import useCategories from "~/finance/composables/useCategories";
 import type { Transaction } from "~/finance/composables/useTransactions";
 
 export interface PerMonthCategoryStatistics {
@@ -10,6 +11,7 @@ export interface PerMonthCategoryStatistics {
 
 export default function usePerMonthTransactions() {
     const { timeZone, today } = useToday();
+    const { categories } = useCategories();
     const toast = useToast();
     const { t } = useI18n();
     const perMonthTransactions = useState<Transaction[][]>("per-month-transactions", () => []);
@@ -60,6 +62,10 @@ export default function usePerMonthTransactions() {
                 const current = item.spent;
                 const change = Math.round(previous === 0 ? 0 : (100 * (current - previous)) / previous);
                 return { ...item, change };
+            }).sort((a, b) => {
+                const aDisplayName = categories.value.find(c => c.id === a.category)?.displayName ?? "";
+                const bDisplayName = categories.value.find(c => c.id === b.category)?.displayName ?? "";
+                return aDisplayName.localeCompare(bDisplayName);
             });
         }
 

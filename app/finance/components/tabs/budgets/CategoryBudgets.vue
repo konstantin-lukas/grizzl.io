@@ -6,10 +6,12 @@ import CategoryBudgetProgress from "~/finance/components/tabs/budgets/CategoryBu
 import CategoryBudgetProgressSkeleton from "~/finance/components/tabs/budgets/CategoryBudgetProgressSkeleton.vue";
 import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
+import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 
 const { autoTransactions, isFetching: isFetchingAutoTransactions } = useAutoTransactions();
 const { today } = useToday();
+const { categories } = useCategories();
 
 const props = defineProps<{ expenses: PerMonthCategoryStatistics[]; currency: string; isFetching: boolean }>();
 
@@ -46,7 +48,11 @@ const expandedExpenses = computed(() => {
         }
     }
 
-    return copy;
+    return copy.sort((a, b) => {
+        const aDisplayName = categories.value.find(c => c.id === a.category)?.displayName ?? "";
+        const bDisplayName = categories.value.find(c => c.id === b.category)?.displayName ?? "";
+        return aDisplayName.localeCompare(bDisplayName);
+    });
 });
 </script>
 

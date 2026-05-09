@@ -9,7 +9,7 @@ export function createDBConnection() {
         user: "admin",
         password: "admin",
         ssl: false,
-        max: 1,
+        max: 10,
     });
 
     const db = drizzle(pool, {

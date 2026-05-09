@@ -40,7 +40,11 @@ const monthNames = computed(() => {
 });
 const datasets = computed(() => {
     const allExpenses = props.expenses.flat();
-    const categoryIds = [...new Set(allExpenses.map(({ category }) => category))];
+    const categoryIds = [...new Set(allExpenses.map(({ category }) => category))].sort((a, b) => {
+        const aDisplayName = categories.value.find(c => c.id === a)?.displayName ?? "";
+        const bDisplayName = categories.value.find(c => c.id === b)?.displayName ?? "";
+        return aDisplayName.localeCompare(bDisplayName);
+    });
     return categoryIds.map((categoryId, i) => {
         const categoryName = categories.value.find(({ id }) => id === categoryId)?.displayName;
         const categoryExpenses = props.expenses.map(expense => expense.find(item => item.category === categoryId));

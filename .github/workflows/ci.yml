@@ -125,17 +125,12 @@ jobs:
             - name: Prepare Nuxt
               run: npm run postinstall
 
-            - name: Start Isolated Container Stack
+            - name: Run Playwright Tests
               run: |
                   export COMPOSE_PROJECT_NAME=test_${{ matrix.project }}
                   export DOCKER_USER_ID="$(id -u)"
                   export DOCKER_GROUP_ID="$(id -g)"
                   docker compose -f compose.test.yml up -d
-
-            - name: Run Playwright Tests
-              run: |
-                  export DOCKER_USER_ID="$(id -u)"
-                  export DOCKER_GROUP_ID="$(id -g)"
                   docker compose -f compose.test.yml run --rm -e CI=true playwright \
                     npx playwright test --project="${{ matrix.project }}"
 

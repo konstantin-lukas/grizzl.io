@@ -1,16 +1,25 @@
+import type BaseRepository from "#server/core/repositories/base.repository";
+import AccountRepository from "#server/finance/repositories/account.repository";
+import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
+import TransactionRepository from "#server/finance/repositories/transaction.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
 import LoggerService from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";
 
-const SOFT_DELETABLE_REPOSITORIES = [TimerRepository];
+const SOFT_DELETABLE_REPOSITORIES = [
+    TimerRepository,
+    AccountRepository,
+    TransactionRepository,
+    AutoTransactionRepository,
+];
 
 export async function purgeAll(options: { maxAge: number }) {
     const { maxAge } = options;
     const container = createContainer();
     const logger = container.resolve(LoggerService);
     for (const softDeletableRepository of SOFT_DELETABLE_REPOSITORIES) {
-        const repositoryInstance = container.resolve(softDeletableRepository);
+        const repositoryInstance = container.resolve(softDeletableRepository as never) as BaseRepository<never>;
 
         if (!repositoryInstance.isSoftDeletable) {
             logger.warn(`Attempting to purge table that is not soft-deletable: "${repositoryInstance.tableName}".`);
