@@ -41,26 +41,30 @@ const monthNames = computed(() => {
 const datasets = computed(() => {
     const allExpenses = props.expenses.flat();
     const categoryIds = [...new Set(allExpenses.map(({ category }) => category))];
-    return categoryIds.map((categoryId, i) => {
-        const categoryName = categories.value.find(({ id }) => id === categoryId)?.displayName;
-        const categoryExpenses = props.expenses.map(expense => expense.find(item => item.category === categoryId));
-        const categoryData = categoryExpenses.map(expense => expense?.spent ?? 0);
-        const color = CHART_COLORS[i % CHART_COLORS.length];
+    return categoryIds
+        .map((categoryId, i) => {
+            const categoryName = categories.value.find(({ id }) => id === categoryId)?.displayName;
+            const categoryExpenses = props.expenses.map(expense => expense.find(item => item.category === categoryId));
+            const categoryData = categoryExpenses.map(expense => expense?.spent ?? 0);
+            const color = CHART_COLORS[i % CHART_COLORS.length];
 
-        return {
-            label: categoryName,
-            data: categoryData,
-            backgroundColor: color,
-            hoverBackgroundColor: backgroundColor.value,
-            borderRadius: {
-                topLeft: 8,
-                topRight: 8,
-                bottomLeft: 8,
-                bottomRight: 8,
-            },
-            borderSkipped: false,
-        };
-    });
+            return {
+                label: categoryName,
+                data: categoryData,
+                backgroundColor: color,
+                hoverBackgroundColor: backgroundColor.value,
+                borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                    bottomLeft: 8,
+                    bottomRight: 8,
+                },
+                borderSkipped: false,
+            };
+        })
+        .sort((a, b) => {
+            return (a.label ?? "").localeCompare(b.label ?? "");
+        });
 });
 
 onMounted(() => {
