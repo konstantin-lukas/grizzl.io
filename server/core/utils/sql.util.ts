@@ -2,7 +2,11 @@ import type BaseRepository from "#server/core/repositories/base.repository";
 import AccountRepository from "#server/finance/repositories/account.repository";
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import TransactionRepository from "#server/finance/repositories/transaction.repository";
+import ListRepository from "#server/todo/repositories/list.repository";
+import PresetRepository from "#server/todo/repositories/preset.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
+import { type SQLWrapper, and, eq, exists, isNull } from "drizzle-orm";
+import type { drizzle } from "drizzle-orm/node-postgres";
 import LoggerService from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";
@@ -12,6 +16,8 @@ const SOFT_DELETABLE_REPOSITORIES = [
     AccountRepository,
     TransactionRepository,
     AutoTransactionRepository,
+    ListRepository,
+    PresetRepository,
 ];
 
 export async function purgeAll(options: { maxAge: number }) {
@@ -45,3 +51,19 @@ export async function purgeAll(options: { maxAge: number }) {
         logger.info(`Successfully deleted ${data} rows while purging table "${repositoryInstance.tableName}".`);
     }
 }
+
+/* c8 ignore start */
+export function transitiveOwnership(
+    userId: string,
+    db: ReturnType<typeof drizzle>,
+    selfSchema: { id: SQLWrapper; userId: SQLWrapper; deletedAt: SQLWrapper },
+    parentId: SQLWrapper,
+) {
+    return exists(
+        db
+            .select()
+            .from(selfSchema as never)
+            .where(and(eq(selfSchema.id, parentId), eq(selfSchema.userId, userId), isNull(selfSchema.deletedAt))),
+    );
+}
+/* c8 ignore stop */

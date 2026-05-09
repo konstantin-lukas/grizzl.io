@@ -1,8 +1,9 @@
+import { transitiveOwnership } from "#server/core/utils/sql.util";
 import type {
     PostAutoTransactionInternal,
     PutAutoTransactionInternal,
 } from "#shared/finance/validators/auto-transaction.validator";
-import { and, desc, eq, exists, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -11,20 +12,7 @@ const schema = "financeAutoTransaction";
 
 export default class AutoTransactionRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
-        super(db, schema, userId => {
-            return exists(
-                db
-                    .select()
-                    .from(dbSchema.financeAccount)
-                    .where(
-                        and(
-                            eq(dbSchema.financeAccount.id, this.schema.accountId),
-                            eq(dbSchema.financeAccount.userId, userId),
-                            isNull(dbSchema.financeAccount.deletedAt),
-                        ),
-                    ),
-            );
-        });
+        super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.financeAccount, this.schema.accountId));
     }
 
     public async update(
