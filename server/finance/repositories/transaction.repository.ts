@@ -1,10 +1,11 @@
+import { transitiveOwnership } from "#server/core/utils/sql.util";
 import type {
     BaseTransactionFilters,
     GetTransactionFilters,
     PostTransactionInternal,
     PutTransactionInternal,
 } from "#shared/finance/validators/transaction.validator";
-import { and, desc, eq, exists, gte, ilike, isNull, lte, sum } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, isNull, lte, sum } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import * as dbSchema from "~~/database/schema";
 import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -14,20 +15,7 @@ const schema = "financeTransaction";
 
 export default class TransactionRepository extends BaseRepository<typeof schema> {
     constructor(db: ReturnType<typeof drizzle>) {
-        super(db, schema, userId => {
-            return exists(
-                db
-                    .select()
-                    .from(dbSchema.financeAccount)
-                    .where(
-                        and(
-                            eq(dbSchema.financeAccount.id, this.schema.accountId),
-                            eq(dbSchema.financeAccount.userId, userId),
-                            isNull(dbSchema.financeAccount.deletedAt),
-                        ),
-                    ),
-            );
-        });
+        super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.financeAccount, this.schema.accountId));
     }
 
     public async create(
