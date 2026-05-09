@@ -1,7 +1,7 @@
 import { user } from "../server/core/schemas/auth.schema";
 import { nanoid } from "../shared/core/utils/id.util";
-import { ID_LENGTH } from "../shared/core/validators/core.validator";
-import { char, timestamp } from "drizzle-orm/pg-core";
+import { ID_LENGTH, TITLE_MAX } from "../shared/core/validators/core.validator";
+import { char, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const id = {
     id: char({ length: ID_LENGTH }).primaryKey().$defaultFn(nanoid),
@@ -19,4 +19,8 @@ export const userId = {
     userId: char({ length: ID_LENGTH })
         .references(() => user.id, { onDelete: "cascade" })
         .notNull(),
+};
+
+export const icon = {
+    icon: varchar({ length: TITLE_MAX }).notNull(),
 };
