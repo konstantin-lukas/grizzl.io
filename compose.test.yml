@@ -102,6 +102,11 @@ services:
             - .:/home/grizzl
         working_dir: /home/grizzl
         network_mode: "service:caddy"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            migrations:
+                condition: service_completed_successfully
         environment:
             - TZ=UTC
             - CI=true
