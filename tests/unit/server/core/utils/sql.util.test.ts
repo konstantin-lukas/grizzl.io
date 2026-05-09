@@ -6,6 +6,8 @@ const timerPurgeMock = vi.fn();
 const accountPurgeMock = vi.fn();
 const transactionPurgeMock = vi.fn();
 const autoTransactionPurgeMock = vi.fn();
+const listPurgeMock = vi.fn();
+const presetPurgeMock = vi.fn();
 let isSoftDeletable = true;
 
 vi.mock("~~/server/timer/repositories/timer.repository", () => {
@@ -60,6 +62,30 @@ vi.mock("#server/finance/repositories/auto-transaction.repository", () => {
     };
 });
 
+vi.mock("#server/todo/repositories/list.repository", () => {
+    return {
+        default: vi.fn(
+            class {
+                purge = listPurgeMock;
+                tableName = "todo_list";
+                isSoftDeletable = true;
+            },
+        ),
+    };
+});
+
+vi.mock("#server/todo/repositories/preset.repository", () => {
+    return {
+        default: vi.fn(
+            class {
+                purge = presetPurgeMock;
+                tableName = "todo_preset";
+                isSoftDeletable = true;
+            },
+        ),
+    };
+});
+
 const consoleErrorSpy = vi.spyOn(console, "error");
 const consoleWarnSpy = vi.spyOn(console, "warn");
 const consoleLogSpy = vi.spyOn(console, "log");
@@ -75,6 +101,8 @@ test("calls purge on all soft-deletable repositories", async () => {
     accountPurgeMock.mockReturnValueOnce(Promise.resolve(0));
     transactionPurgeMock.mockReturnValueOnce(Promise.resolve(0));
     autoTransactionPurgeMock.mockReturnValueOnce(Promise.resolve(0));
+    listPurgeMock.mockReturnValueOnce(Promise.resolve(0));
+    presetPurgeMock.mockReturnValueOnce(Promise.resolve(0));
 
     await purgeAll({ maxAge: 0 });
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -86,12 +114,17 @@ test("calls purge on all soft-deletable repositories", async () => {
     expect(consoleLogSpy).toHaveBeenCalledWith(
         'Successfully deleted 0 rows while purging table "finance_auto_transaction".',
     );
-    expect(consoleLogSpy).toHaveBeenCalledTimes(4);
+    expect(consoleLogSpy).toHaveBeenCalledWith('Successfully deleted 0 rows while purging table "todo_list".');
+    expect(consoleLogSpy).toHaveBeenCalledWith('Successfully deleted 0 rows while purging table "todo_preset".');
+
+    expect(consoleLogSpy).toHaveBeenCalledTimes(6);
 
     expect(timerPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
     expect(accountPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
     expect(transactionPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
     expect(autoTransactionPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
+    expect(listPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
+    expect(presetPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
 });
 
 test("logs an error for each purge that was unsuccessful", async () => {
