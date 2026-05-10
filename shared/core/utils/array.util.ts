@@ -20,3 +20,11 @@ export function moveElement<T>(array: T[], fromIndex: number, toIndex: number): 
 
     return result;
 }
+
+export function filterMap<I, O>(array: I[], callback: (value: I) => O | undefined) {
+    return array.reduce((aggregate, current) => {
+        const result = callback(current);
+        if (result !== undefined) aggregate.push(result);
+        return aggregate;
+    }, [] as O[]);
+}
