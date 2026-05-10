@@ -1,3 +1,4 @@
+import { filterMap } from "#shared/core/utils/array.util";
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
 import useCategories from "~/finance/composables/useCategories";
@@ -26,31 +27,32 @@ export default function usePerMonthTransactions() {
 
         const start = today.value.subtract({ months: 11 }).set({ day: 1 });
 
-        const transactions = (
-            await $fetch<Transaction[]>(`/api/finance/accounts/${id}/transactions`, {
-                onResponseError: onResponseError(toast, t),
-                query: {
-                    from: start.toDate(timeZone.value).toISOString(),
-                },
-            })
-        )
-            .filter(transaction => transaction.amount < 0)
-            .map(transaction => ({ ...transaction, amount: Math.abs(transaction.amount) }));
+        const transactions = await $fetch<Transaction[]>(`/api/finance/accounts/${id}/transactions`, {
+            onResponseError: onResponseError(toast, t),
+            query: {
+                from: start.toDate(timeZone.value).toISOString(),
+            },
+        });
+
+        const expenses = filterMap(transactions, transaction => {
+            if (transaction.amount < 0) return { ...transaction, amount: Math.abs(transaction.amount) };
+        });
 
         const perMonthArray = Array.from({ length: 12 }, () => []) as Transaction[][];
         const thisMonth = today.value.month;
 
-        for (const transaction of transactions) {
-            const date = new Date(transaction.createdAt);
+        for (const expense of expenses) {
+            const date = new Date(expense.createdAt);
             const month = date.getMonth();
             const index = (month - thisMonth + 12) % 12;
-            perMonthArray[index]!.push(transaction);
+            perMonthArray[index]!.push(expense);
         }
 
         const perCategoryArray = perMonthArray.map(monthTransactions => {
             const categories = Object.groupBy(monthTransactions, transaction => transaction.category.id);
-            const categoryArray = Object.values(categories).filter(c => c !== undefined);
-            return categoryArray.map(categoryTransactions => {
+            const categoryValues = Object.values(categories);
+            return filterMap(categoryValues, categoryTransactions => {
+                if (categoryTransactions === undefined) return;
                 const spent = categoryTransactions.reduce((sum, { amount }) => sum + amount, 0);
                 return { spent, category: categoryTransactions[0]?.category.id ?? "", change: null as number | null };
             });
