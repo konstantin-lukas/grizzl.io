@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.2...v1.14.0) (2026-05-11)
+
+
+### Features
+
+* update calculation of expected end-of-month balance to include normal transactions from last month ([#458](https://github.com/konstantin-lukas/grizzl.io/issues/458)) ([be3ef96](https://github.com/konstantin-lukas/grizzl.io/commit/be3ef96e85d60d40808135324d1cd06ddd596e4d))
+
 ## [1.13.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.1...v1.13.2) (2026-05-09)
 
 
