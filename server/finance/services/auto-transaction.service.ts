@@ -130,6 +130,7 @@ export default class AutoTransactionService {
                         amount: autoTransaction.amount,
                         reference: autoTransaction.reference,
                         categoryId: autoTransaction.category.id,
+                        automaticallyCreated: true,
                     };
                     sum += transaction.amount;
                     prevExec = nextExec;

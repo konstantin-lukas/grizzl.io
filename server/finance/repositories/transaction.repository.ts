@@ -20,12 +20,18 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
 
     public async create(
         accountId: string,
-        { amount, reference, categoryId, createdAt }: PostTransactionInternal & { createdAt?: Date },
+        {
+            amount,
+            reference,
+            categoryId,
+            createdAt,
+            automaticallyCreated = false,
+        }: PostTransactionInternal & { createdAt?: Date; automaticallyCreated?: boolean },
         ctx: ExecutionContext = this.db,
     ) {
         const [transaction] = await ctx
             .insert(this.schema)
-            .values({ accountId, amount, reference, categoryId, createdAt })
+            .values({ accountId, amount, reference, categoryId, createdAt, automaticallyCreated })
             .returning({ id: this.schema.id });
 
         return transaction!.id;
@@ -96,6 +102,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
                 createdAt: this.schema.createdAt,
                 amount: this.schema.amount,
                 reference: this.schema.reference,
+                automaticallyCreated: this.schema.automaticallyCreated,
                 category: {
                     id: dbSchema.financeCategory.id,
                     name: dbSchema.financeCategory.displayName,

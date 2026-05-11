@@ -1,0 +1,1 @@
+ALTER TABLE "finance_transaction" ADD COLUMN "automatically_created" boolean DEFAULT false NOT NULL;
