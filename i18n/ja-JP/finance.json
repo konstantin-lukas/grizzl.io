@@ -19,6 +19,7 @@
             "balance": "口座残高",
             "currentBalance": "現在の口座残高",
             "expectedBalance": "月末時点の予想残高",
+            "expectedBalanceInfo": "今後予定されているすべての取引と、先月の現在日以降に作成されたすべての手動取引をもとに計算されます。",
             "addTransaction": "取引の追加",
             "manageAutoTransactions": "自動取引の管理",
             "form": {
