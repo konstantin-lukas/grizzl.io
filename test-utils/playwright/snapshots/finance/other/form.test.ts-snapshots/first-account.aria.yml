@@ -12,7 +12,7 @@
       - button "Add transaction"
       - button "Manage automatic transactions"
       - button "Filters"
-      - text: "Current account balance: ¥0 Expected Month-End Balance: ¥0"
+      - text: "Current: ¥0 Expected: ¥0"
       - heading "Transaction History" [level=2]
       - list:
         - listitem:
