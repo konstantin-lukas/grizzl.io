@@ -5,7 +5,7 @@ import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import type { Transaction } from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 
-const props = defineProps<{ transaction: Transaction; currency: string }>();
+const props = defineProps<{ transaction: Omit<Transaction, "automaticallyCreated">; currency: string }>();
 const { language } = useLocale();
 const dateAndReference = computed(() => {
     let date = formatDate(props.transaction.createdAt, language.value);

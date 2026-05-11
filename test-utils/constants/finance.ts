@@ -19,6 +19,7 @@ export const BASE_TRANSACTION = {
         name: "Groceries",
         icon: "grocery",
     },
+    automaticallyCreated: false,
 };
 
 export const INTERNAL_TRANSACTION = {

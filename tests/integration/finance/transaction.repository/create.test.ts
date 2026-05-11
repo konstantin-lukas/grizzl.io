@@ -13,6 +13,7 @@ test("creates a transaction and returns the id of the created resource", async (
     expect(transaction).toStrictEqual({
         amount: BASE_TRANSACTION.amount,
         reference: BASE_TRANSACTION.reference,
+        automaticallyCreated: false,
         id: anyId,
         accountId: anyId,
         createdAt: expect.any(Date),

@@ -13,6 +13,7 @@ import {
 import useAccountBalanceChartData from "~/finance/composables/useAccountBalanceChartData";
 import useAccounts from "~/finance/composables/useAccounts";
 import { formatCurrency } from "~/finance/utils/currency";
+import Info from "~/core/components/data/Info.vue";
 
 const { sm } = useScreenSize();
 const { openAccount } = useAccounts();
@@ -183,6 +184,7 @@ watch(
             <span>{{ $t("finance.account.expectedBalance") }}: </span>
             <USkeleton v-if="!expectedBalance" class="inline-block h-5 w-20 bg-accented" />
             <span v-else>{{ expectedBalance }}</span>
+            <Info :text="$t('finance.account.expectedBalanceInfo')" class="shrink-0 -translate-x-1" />
         </span>
     </div>
 </template>

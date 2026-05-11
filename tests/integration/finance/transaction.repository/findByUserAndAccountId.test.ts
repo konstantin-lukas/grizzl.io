@@ -19,6 +19,7 @@ test("returns only the transactions belonging to the requested user", async ({ d
     expect(accounts).toStrictEqual([
         {
             amount: -27339,
+            automaticallyCreated: false,
             category: {
                 id: myCategory.id,
                 icon: myCategory.icon,

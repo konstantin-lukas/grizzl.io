@@ -1,3 +1,4 @@
+import { fromDateToLocal } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
 import useCategories from "~/finance/composables/useCategories";
@@ -19,6 +20,7 @@ export default function usePerMonthTransactions() {
         "per-month-per-category-transaction-data",
         () => [],
     );
+    const expectedTransactionSumByEndOfMonth = useState<number>("end-of-month-transaction-sum", () => 0);
     const isFetching = useState("is-fetching-per-month-transactions", () => false);
 
     const refresh = async (id: string) => {
@@ -26,21 +28,30 @@ export default function usePerMonthTransactions() {
 
         const start = today.value.subtract({ months: 11 }).set({ day: 1 });
 
-        const transactions = (
-            await $fetch<Transaction[]>(`/api/finance/accounts/${id}/transactions`, {
-                onResponseError: onResponseError(toast, t),
-                query: {
-                    from: start.toDate(timeZone.value).toISOString(),
-                },
+        const transactions = await $fetch<Transaction[]>(`/api/finance/accounts/${id}/transactions`, {
+            onResponseError: onResponseError(toast, t),
+            query: {
+                from: start.toDate(timeZone.value).toISOString(),
+            },
+        });
+
+        expectedTransactionSumByEndOfMonth.value = transactions
+            .filter(transaction => {
+                if (transaction.automaticallyCreated || !today.value) return false;
+                const refDate = today.value.subtract({ months: 1 });
+                const createdAt = fromDateToLocal(new Date(transaction.createdAt));
+                return createdAt.compare(refDate) > 0 && createdAt.month === refDate.month;
             })
-        )
+            .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+        const filterMappedTransactions = transactions
             .filter(transaction => transaction.amount < 0)
             .map(transaction => ({ ...transaction, amount: Math.abs(transaction.amount) }));
 
         const perMonthArray = Array.from({ length: 12 }, () => []) as Transaction[][];
         const thisMonth = today.value.month;
 
-        for (const transaction of transactions) {
+        for (const transaction of filterMappedTransactions) {
             const date = new Date(transaction.createdAt);
             const month = date.getMonth();
             const index = (month - thisMonth + 12) % 12;
@@ -73,5 +84,11 @@ export default function usePerMonthTransactions() {
         perMonthPerCategory.value = perCategoryArray;
     };
 
-    return { transactions: perMonthTransactions, perMonthPerCategory, refresh, isFetching };
+    return {
+        transactions: perMonthTransactions,
+        perMonthPerCategory,
+        refresh,
+        isFetching,
+        expectedTransactionSumByEndOfMonth,
+    };
 }

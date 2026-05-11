@@ -8,6 +8,7 @@ export default class FinanceTransactionFixture extends BaseFixture<"financeTrans
         reference: str({ length: 100, seed: index + 100, spaces: false }),
         amount: int({ min: -300_00, max: 300_00, seed: index }),
         createdAt: date({ seed: index }),
+        automaticallyCreated: false,
     });
 
     constructor(db: ReturnType<typeof drizzle>) {
