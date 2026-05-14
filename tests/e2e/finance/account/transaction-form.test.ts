@@ -48,17 +48,20 @@ test("allows overriding the suggested icon and changing the icon for the entire 
     expect(updatedCategory?.icon).toBe("flight-rounded");
 });
 
+const refDate = new Date("2026-05-11T12:00:00.000Z");
+
 test("automatically updates the account tab when editing a transaction", async ({ financePage: page, db }) => {
     const [account] = await db.financeAccount.insert(1);
     const [category] = await db.financeCategory.insert(1, { accountId: account.id });
     const transactions = await db.financeTransaction.insert(10, i => ({
         accountId: account.id,
-        createdAt: date({ seed: i, days: 25, refDate: new Date() }),
+        createdAt: date({ seed: i, days: 25, refDate }),
         categoryId: category.id,
         amount: i * 100,
     }));
     const sum = transactions.reduce((acc, { amount }) => acc + amount, 0);
     await db.financeAccount.update({ balance: sum }, account.id);
+    await page.page.clock.install({ time: refDate });
     await page.goto();
 
     await page.expect("root").toMatchAriaSnapshot({ name: "account-tab-before-updating-transaction" });
