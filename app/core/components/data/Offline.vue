@@ -7,14 +7,16 @@ const isOnline = useOnlineStatus();
 
 <template>
     <Transition name="fade-pure">
-        <div
+        <UBadge
             v-if="!isOnline"
-            data-test-id="offline-banner"
             role="alert"
-            class="fixed top-0 left-0 z-2 flex h-18 w-full items-center justify-center gap-2 bg-front text-center text-2xl text-back"
+            color="error"
+            class="text-md fixed top-5 left-18 z-41 hover-none:top-5.25 hover-none:left-20 hover-none:text-lg"
+            variant="soft"
+            data-test-id="offline-banner"
+            :icon="ICON_PLUG_OFF"
         >
-            <UIcon :name="ICON_PLUG_OFF" class="text-back" />
             <span data-test-id="offline-banner-title">{{ $t("ui.offline") }}</span>
-        </div>
+        </UBadge>
     </Transition>
 </template>
