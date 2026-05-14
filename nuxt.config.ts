@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         },
     },
     nitro: {
-        scanDirs: ["core", "timer", "finance"],
+        scanDirs: ["core", "timer", "finance", "todo"],
         // This is necessary because HMR seems to break @huggingface/transformers module
         // https://github.com/huggingface/transformers.js/issues/651
         hooks: {
