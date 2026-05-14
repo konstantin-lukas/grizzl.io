@@ -1,4 +1,5 @@
 import { todoListItem } from "#server/todo/schemas/list-item.schema";
+import type { PostList } from "#shared/todo/validators/list.validator";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -38,5 +39,14 @@ export default class ListRepository extends BaseRepository<typeof schema> {
             .orderBy(desc(this.schema.createdAt));
 
         return data as typeof data & { items: { id: string; text: string; scheduledFor: Date | null }[] };
+    }
+
+    async create(userId: string, { icon, title }: PostList) {
+        const [{ listId }] = (await this.db
+            .insert(this.schema)
+            .values({ userId, icon, title })
+            .returning({ listId: this.schema.id })) as [{ listId: string }];
+
+        return listId;
     }
 }
