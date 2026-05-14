@@ -1,3 +1,4 @@
+import { filterMap } from "#shared/core/utils/array.util";
 import { fromDateToLocal } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
@@ -44,9 +45,9 @@ export default function usePerMonthTransactions() {
             })
             .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-        const filterMappedTransactions = transactions
-            .filter(transaction => transaction.amount < 0)
-            .map(transaction => ({ ...transaction, amount: Math.abs(transaction.amount) }));
+        const filterMappedTransactions = filterMap(transactions, transaction => {
+            if (transaction.amount < 0) return { ...transaction, amount: Math.abs(transaction.amount) };
+        });
 
         const perMonthArray = Array.from({ length: 12 }, () => []) as Transaction[][];
         const thisMonth = today.value.month;
