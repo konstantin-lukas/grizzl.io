@@ -1,4 +1,4 @@
-import { filterMap } from "#shared/core/utils/array.util";
+import { fromDateToLocal } from "@internationalized/date";
 import useToday from "~/core/composables/useToday";
 import { onResponseError } from "~/core/utils/toast";
 import useCategories from "~/finance/composables/useCategories";
@@ -20,6 +20,7 @@ export default function usePerMonthTransactions() {
         "per-month-per-category-transaction-data",
         () => [],
     );
+    const expectedTransactionSumByEndOfMonth = useState<number>("end-of-month-transaction-sum", () => 0);
     const isFetching = useState("is-fetching-per-month-transactions", () => false);
 
     const refresh = async (id: string) => {
@@ -34,25 +35,33 @@ export default function usePerMonthTransactions() {
             },
         });
 
-        const expenses = filterMap(transactions, transaction => {
-            if (transaction.amount < 0) return { ...transaction, amount: Math.abs(transaction.amount) };
-        });
+        expectedTransactionSumByEndOfMonth.value = transactions
+            .filter(transaction => {
+                if (transaction.automaticallyCreated || !today.value) return false;
+                const refDate = today.value.subtract({ months: 1 });
+                const createdAt = fromDateToLocal(new Date(transaction.createdAt));
+                return createdAt.compare(refDate) > 0 && createdAt.month === refDate.month;
+            })
+            .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+        const filterMappedTransactions = transactions
+            .filter(transaction => transaction.amount < 0)
+            .map(transaction => ({ ...transaction, amount: Math.abs(transaction.amount) }));
 
         const perMonthArray = Array.from({ length: 12 }, () => []) as Transaction[][];
         const thisMonth = today.value.month;
 
-        for (const expense of expenses) {
-            const date = new Date(expense.createdAt);
+        for (const transaction of filterMappedTransactions) {
+            const date = new Date(transaction.createdAt);
             const month = date.getMonth();
             const index = (month - thisMonth + 12) % 12;
-            perMonthArray[index]!.push(expense);
+            perMonthArray[index]!.push(transaction);
         }
 
         const perCategoryArray = perMonthArray.map(monthTransactions => {
             const categories = Object.groupBy(monthTransactions, transaction => transaction.category.id);
-            const categoryValues = Object.values(categories);
-            return filterMap(categoryValues, categoryTransactions => {
-                if (categoryTransactions === undefined) return;
+            const categoryArray = Object.values(categories).filter(c => c !== undefined);
+            return categoryArray.map(categoryTransactions => {
                 const spent = categoryTransactions.reduce((sum, { amount }) => sum + amount, 0);
                 return { spent, category: categoryTransactions[0]?.category.id ?? "", change: null as number | null };
             });
@@ -75,5 +84,11 @@ export default function usePerMonthTransactions() {
         perMonthPerCategory.value = perCategoryArray;
     };
 
-    return { transactions: perMonthTransactions, perMonthPerCategory, refresh, isFetching };
+    return {
+        transactions: perMonthTransactions,
+        perMonthPerCategory,
+        refresh,
+        isFetching,
+        expectedTransactionSumByEndOfMonth,
+    };
 }

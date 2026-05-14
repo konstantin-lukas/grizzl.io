@@ -3,8 +3,9 @@ import { deleteNthElement } from "#shared/core/utils/array.util";
 import Button from "~/core/components/button/Button.vue";
 import useSpeakUtterance from "~/core/composables/useSpeakUtterance";
 import useVoices from "~/core/composables/useVoices";
-import { ICON_INFO, ICON_UNMUTED, ICON_WARNING } from "~/core/constants/icons.constant";
+import { ICON_UNMUTED, ICON_WARNING } from "~/core/constants/icons.constant";
 import useVoiceDigest from "~/timer/composables/useVoiceDigest";
+import Info from "~/core/components/data/Info.vue";
 
 const userTtsVoices = defineModel<string[]>("ttsVoices");
 
@@ -16,7 +17,6 @@ const id = useId();
 const alertId = computed(() => (displayWarning.value ? `${id}-alert` : null));
 
 const utteranceText = ref("");
-const tooltipOpen = ref(false);
 const voiceDigest = useVoiceDigest();
 
 watchEffect(() => {
@@ -63,23 +63,9 @@ const handleChange = (value: string | null) => {
             @update:model-value="handleChange"
         />
         <template #label>
-            <span class="allow-tooltip flex items-center">
+            <span class="flex items-center">
                 {{ $t("timer.form.ttsVoice") }}
-                <UTooltip
-                    :text="$t('timer.form.ttsInfo')"
-                    :delay-duration="0"
-                    class="ml-1"
-                    :open="tooltipOpen"
-                    :content="{ side: 'top' }"
-                    @update:open="o => (tooltipOpen = o)"
-                >
-                    <UIcon
-                        :name="ICON_INFO"
-                        tabindex="0"
-                        class="size-5 opacity-50 transition-all hover:text-front hover:opacity-100 focus:text-front focus:opacity-100"
-                        @touchstart="tooltipOpen = true"
-                    />
-                </UTooltip>
+                <Info :text="$t('timer.form.ttsInfo')" />
             </span>
         </template>
         <Transition name="fade">

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
-import useOnlineStatus from "~/core/composables/useOnlineStatus";
 import { ICON_MOON, ICON_SUN } from "~/core/constants/icons.constant";
 
-const isOnline = useOnlineStatus();
 const colorMode = useColorMode();
 const isDark = computed({
     get() {
@@ -26,18 +24,8 @@ const isDark = computed({
         @click="isDark = !isDark"
     >
         <template #leading>
-            <UIcon
-                class="hidden size-8 dark:inline-block"
-                :class="isOnline ? 'text-front' : 'text-back'"
-                :name="ICON_SUN"
-                data-test-id="icon-light-mode"
-            />
-            <UIcon
-                class="size-8 dark:hidden"
-                :class="isOnline ? 'text-front' : 'text-back'"
-                :name="ICON_MOON"
-                data-test-id="icon-dark-mode"
-            />
+            <UIcon class="hidden size-8 text-front dark:inline-block" :name="ICON_SUN" data-test-id="icon-light-mode" />
+            <UIcon class="size-8 text-front dark:hidden" :name="ICON_MOON" data-test-id="icon-dark-mode" />
         </template>
     </Button>
 </template>
