@@ -1,5 +1,5 @@
 import { LONG_TITLE_MAX, TITLE_MAX } from "#shared/core/validators/core.validator";
-import { TODO_LIST_MAX_LENGTH } from "#shared/finance/todo/list.validator";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import { date, int, str, strArr } from "~~/test-utils/helpers/data";

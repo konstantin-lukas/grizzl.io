@@ -1,4 +1,4 @@
-import { TODO_LIST_MAX_LENGTH } from "#shared/finance/todo/list.validator";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import { date, maybe } from "~~/test-utils/helpers/data";
 import { seed } from "~~/test-utils/playwright";
 
