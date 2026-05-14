@@ -3,7 +3,7 @@ import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
 
 /* c8 ignore start */
-export default class AccountController extends BaseController {
+export default class ListController extends BaseController {
     static readonly deps = [ListService];
 
     constructor(private readonly listService: ListService) {
