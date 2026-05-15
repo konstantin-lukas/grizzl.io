@@ -20,8 +20,8 @@ export default class ListService {
     public async update(id: string, userId: string, account: PutList) {
         const rowCount = await this.listRepository.update(id, userId, account);
         if (rowCount === 0) {
-            const logMessage = `Unable to update account with id ${id} and user id ${userId}. Given data: ${JSON.stringify(account)}.`;
-            throw new NotFoundError("The requested account does not exist.", logMessage);
+            const logMessage = `Unable to update todo list with id ${id} and user id ${userId}. Given data: ${JSON.stringify(account)}.`;
+            throw new NotFoundError("The requested todo list does not exist.", logMessage);
         }
     }
 
