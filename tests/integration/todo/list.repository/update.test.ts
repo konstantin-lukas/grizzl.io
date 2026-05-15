@@ -12,7 +12,7 @@ test("throws an error when the input data is faulty", async ({ db, user }) => {
     await expect(listRepository.update(id, user.id, "" as never)).rejects.toThrow();
 });
 
-test("returns 0 when the given account id doesn't exist", async ({ db, user }) => {
+test("returns 0 when the given list id doesn't exist", async ({ db, user }) => {
     const listRepository = new ListRepository(db.client);
     const rows = await listRepository.update("bananas", user.id, BASE_LIST);
     expect(rows).toBe(0);
