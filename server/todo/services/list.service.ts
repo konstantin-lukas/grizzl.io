@@ -1,3 +1,4 @@
+import NotFoundError from "#server/core/errors/not-found.error";
 import ListRepository from "#server/todo/repositories/list.repository";
 import type { PostList } from "#shared/todo/validators/list.validator";
 
@@ -7,6 +8,15 @@ export default class ListService {
     constructor(private readonly listRepository: ListRepository) {}
 
     /* c8 ignore start */
+    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+        const operation = isDeleted ? "delete" : "undelete";
+        const rowCount = await this.listRepository[operation]({ id, userId });
+        if (rowCount === 0) {
+            const logMessage = `Unable to ${operation} todo list with id ${id} and user id ${userId}.`;
+            throw new NotFoundError("The requested todo list does not exist.", logMessage);
+        }
+    }
+
     async getCollection(userId: string) {
         return this.listRepository.findByUserId(userId);
     }
