@@ -1,6 +1,6 @@
 import NotFoundError from "#server/core/errors/not-found.error";
 import ListRepository from "#server/todo/repositories/list.repository";
-import type { PostList } from "#shared/todo/validators/list.validator";
+import type { PostList, PutList } from "#shared/todo/validators/list.validator";
 
 export default class ListService {
     static readonly deps = [ListRepository];
@@ -14,6 +14,14 @@ export default class ListService {
         if (rowCount === 0) {
             const logMessage = `Unable to ${operation} todo list with id ${id} and user id ${userId}.`;
             throw new NotFoundError("The requested todo list does not exist.", logMessage);
+        }
+    }
+
+    public async update(id: string, userId: string, account: PutList) {
+        const rowCount = await this.listRepository.update(id, userId, account);
+        if (rowCount === 0) {
+            const logMessage = `Unable to update account with id ${id} and user id ${userId}. Given data: ${JSON.stringify(account)}.`;
+            throw new NotFoundError("The requested account does not exist.", logMessage);
         }
     }
 

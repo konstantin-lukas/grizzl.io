@@ -12,6 +12,7 @@ export function makeTodoListTestBuilder(method: Method) {
                 data: list,
                 basePath: "/api/todo/lists",
                 fullPath: `/api/todo/lists/${list.id}`,
+                putDatabaseOverrides: { items: items.map(({ index, listId, ...rest }) => rest) },
                 getDatabaseOverrides: { items: items.map(({ index, listId, ...rest }) => rest) },
             };
         },
@@ -27,7 +28,7 @@ export function makeTodoListTestBuilder(method: Method) {
                 fixtureName: "todoListItem",
                 foreignKeyName: "listId",
                 objectName: "items",
-                omittedFields: ["id", "index", "listId"],
+                omittedFields: ["index", "listId"],
             },
         ],
         method,
