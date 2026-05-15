@@ -2,7 +2,7 @@ import { test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
 
 withoutAuth(() => {
-    const protectedPaths = ["/timer", "/finance"];
+    const protectedPaths = ["/timer", "/finance", "/todo"];
     for (const path of protectedPaths) {
         test(`redirects the user to ${path} after signing in through a client-side redirect`, async ({
             homePage: page,
