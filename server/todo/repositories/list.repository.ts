@@ -1,5 +1,5 @@
 import { todoListItem } from "#server/todo/schemas/list-item.schema";
-import type { PostList } from "#shared/todo/validators/list.validator";
+import type { PostList, PutList } from "#shared/todo/validators/list.validator";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import type { drizzle } from "drizzle-orm/node-postgres";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -48,5 +48,14 @@ export default class ListRepository extends BaseRepository<typeof schema> {
             .returning({ listId: this.schema.id })) as [{ listId: string }];
 
         return listId;
+    }
+
+    public async update(id: string, userId: string, { title, icon }: PutList) {
+        const { rowCount } = await this.db
+            .update(this.schema)
+            .set({ title, icon })
+            .where(and(eq(this.schema.id, id), eq(this.schema.userId, userId)));
+
+        return rowCount;
     }
 }

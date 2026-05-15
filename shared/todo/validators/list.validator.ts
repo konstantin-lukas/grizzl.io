@@ -9,4 +9,7 @@ export const PostListSchema = z.object({
     icon: z.enum(CATEGORY_ICONS),
 });
 
+export const PutListSchema = PostListSchema;
+
 export type PostList = z.infer<typeof PostListSchema>;
+export type PutList = z.infer<typeof PutListSchema>;

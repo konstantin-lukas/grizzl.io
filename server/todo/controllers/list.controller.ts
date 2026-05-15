@@ -1,6 +1,6 @@
 import ListService from "#server/todo/services/list.service";
 import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
-import { PostListSchema } from "#shared/todo/validators/list.validator";
+import { PostListSchema, PutListSchema } from "#shared/todo/validators/list.validator";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
 
@@ -26,6 +26,12 @@ export default class ListController extends BaseController {
         const body = await ListController.parseRequestBody(event, PostListSchema);
         const data = await this.listService.create(event.context.user.id, body);
         setHeader(event, "Location", `/api/todo/lists/${data}`);
+    }
+
+    public async update(event: H3Event) {
+        const id = ListController.parseIdParameter(event, "listId");
+        const body = await ListController.parseRequestBody(event, PutListSchema);
+        await this.listService.update(id, event.context.user.id, body);
     }
 }
 /* c8 ignore stop */
