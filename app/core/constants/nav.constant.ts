@@ -2,7 +2,7 @@ import { ICON_FINANCE, ICON_POLL, ICON_TIMER, ICON_TODO } from "~/core/constants
 
 export const APP_NAV = [
     ["poll", ICON_POLL, true],
-    ["todo", ICON_TODO, true],
+    ["todo", ICON_TODO, false],
     ["timer", ICON_TIMER, false],
     ["finance", ICON_FINANCE, false],
 ] as const;

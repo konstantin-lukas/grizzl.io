@@ -1,0 +1,9 @@
+{
+    "todo": {
+        "mainHeading": "ToDoリスト",
+        "meta": {
+            "title": "ToDo",
+            "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"
+        }
+    }
+}
