@@ -1,7 +1,7 @@
 import { Beat } from "#shared/timer/enums/beat.enum";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import { str } from "@@/test-utils/helpers/data";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 
 export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
     protected defaults = (index: number) => ({
@@ -13,7 +13,7 @@ export default class TimerIntervalFixture extends BaseFixture<"timerInterval"> {
         beatPattern: index % 2 === 0 ? [Beat.NORMAL, Beat.NORMAL, Beat.NORMAL] : null,
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "timerInterval");
     }
 

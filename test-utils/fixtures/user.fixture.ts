@@ -1,6 +1,6 @@
 import BaseFixture, { type InsertOverrides } from "@@/test-utils/fixtures/base.fixture";
 import { eq } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 
 export default class UserFixture extends BaseFixture<"user"> {
     protected defaults = () => ({
@@ -9,7 +9,7 @@ export default class UserFixture extends BaseFixture<"user"> {
         emailVerified: true,
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "user");
     }
 

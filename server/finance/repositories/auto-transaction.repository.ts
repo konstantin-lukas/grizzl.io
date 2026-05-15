@@ -4,14 +4,14 @@ import type {
     PutAutoTransactionInternal,
 } from "#shared/finance/validators/auto-transaction.validator";
 import { and, desc, eq, isNull } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAutoTransaction";
 
 export default class AutoTransactionRepository extends BaseRepository<typeof schema> {
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.financeAccount, this.schema.accountId));
     }
 

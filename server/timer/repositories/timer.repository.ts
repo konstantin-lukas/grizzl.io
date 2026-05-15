@@ -1,13 +1,13 @@
 import type { PostTimer, PutTimer, Timer } from "#shared/timer/validators/timer.validator";
 import { and, desc, eq, isNull, notInArray, sql } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { timerInterval } from "~~/database/schema";
 import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "timer";
 
 export default class TimerRepository extends BaseRepository<typeof schema> {
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, schema, userId => eq(this.schema.userId, userId));
     }
 

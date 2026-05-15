@@ -1,11 +1,12 @@
 import type { InferInsertModel } from "drizzle-orm";
 import { eq, sql } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
 import { getTableConfig } from "drizzle-orm/pg-core";
+import type { Database } from "~~/database";
 import * as schema from "~~/database/schema";
 
 type ExcludeEnum<T extends string> = T extends `${string}Enum${string}` ? never : T;
-type SchemaKey = ExcludeEnum<keyof typeof schema>;
+type ExcludeRelation<T extends string> = T extends `${string}Relation${string}` ? never : T;
+type SchemaKey = ExcludeRelation<ExcludeEnum<keyof typeof schema>>;
 export type InsertModel<T extends SchemaKey> = Partial<InferInsertModel<(typeof schema)[T]>>;
 export type InsertOverrides<T extends SchemaKey> = InsertModel<T> | ((index: number) => InsertModel<T>);
 export type ExtendedInsertOverrides<T extends SchemaKey, E extends object> = InsertOverrides<T> &
@@ -15,7 +16,7 @@ export default abstract class BaseFixture<T extends SchemaKey> {
     protected readonly db;
     protected readonly schema;
     protected abstract readonly defaults: (index: number, count: number) => InsertModel<T>;
-    protected constructor(db: ReturnType<typeof drizzle>, tableName: T) {
+    protected constructor(db: Database, tableName: T) {
         this.db = db;
         this.schema = schema[tableName];
     }

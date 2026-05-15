@@ -1,4 +1,4 @@
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { createDBConnection } from "~~/test-utils/database/connection";
 import AccountFixture from "~~/test-utils/fixtures/account.fixture";
 import FinanceAccountFixture from "~~/test-utils/fixtures/finance-account.fixture";
@@ -12,7 +12,7 @@ import TodoListFixture from "~~/test-utils/fixtures/todo-list.fixture";
 import TodoPresetFixture from "~~/test-utils/fixtures/todo-preset.fixture";
 import UserFixture from "~~/test-utils/fixtures/user.fixture";
 
-function createDBFixtures(db: ReturnType<typeof drizzle>) {
+function createDBFixtures(db: Database) {
     return {
         timer: new TimerFixture(db),
         timerInterval: new TimerIntervalFixture(db),
@@ -40,7 +40,7 @@ export async function dbFixture({}, waitForUse: (value: DBFixtures) => Promise<v
     await pool.end();
 }
 
-async function createUser(db: ReturnType<typeof drizzle>) {
+async function createUser(db: Database) {
     const userFixture = new UserFixture(db);
     return (await userFixture.insert(1))[0];
 }

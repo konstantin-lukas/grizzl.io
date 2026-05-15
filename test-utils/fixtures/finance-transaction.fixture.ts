@@ -1,5 +1,5 @@
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date, int, str } from "~~/test-utils/helpers/data";
 
 export default class FinanceTransactionFixture extends BaseFixture<"financeTransaction"> {
@@ -11,7 +11,7 @@ export default class FinanceTransactionFixture extends BaseFixture<"financeTrans
         automaticallyCreated: false,
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "financeTransaction");
     }
 

@@ -1,5 +1,5 @@
 import BaseFixture, { type InsertOverrides } from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date } from "~~/test-utils/helpers/data";
 
 export default class AccountFixture extends BaseFixture<"account"> {
@@ -17,7 +17,7 @@ export default class AccountFixture extends BaseFixture<"account"> {
         updatedAt: date(),
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "account");
     }
 

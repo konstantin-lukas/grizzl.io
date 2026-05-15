@@ -1,6 +1,6 @@
 import type { SQL } from "drizzle-orm";
 import { and, eq, isNotNull, lt } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import * as schema from "~~/database/schema";
 
 type Schema =
@@ -13,8 +13,8 @@ type Schema =
     | "todoListItem"
     | "todoPreset";
 type OwnershipResolver = (userId: string) => SQL<unknown>;
-export type DatabaseTransaction = Parameters<Parameters<ReturnType<typeof drizzle>["transaction"]>[0]>[0];
-export type ExecutionContext = DatabaseTransaction | ReturnType<typeof drizzle>;
+export type DatabaseTransaction = Parameters<Parameters<Database["transaction"]>[0]>[0];
+export type ExecutionContext = DatabaseTransaction | Database;
 
 export default class BaseRepository<T extends Schema> {
     protected readonly db;
@@ -23,7 +23,7 @@ export default class BaseRepository<T extends Schema> {
     public readonly tableName;
     protected readonly ownershipResolver: OwnershipResolver;
 
-    constructor(db: ReturnType<typeof drizzle>, tableName: T, ownershipResolver: OwnershipResolver) {
+    constructor(db: Database, tableName: T, ownershipResolver: OwnershipResolver) {
         this.db = db;
         this.tableName = tableName;
         this.schema = schema[tableName];
