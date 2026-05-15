@@ -1,6 +1,7 @@
 {
     "todo": {
         "mainHeading": "Listas de tareas",
+        "calendar": "Calendario",
         "meta": {
             "title": "Tareas",
             "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."

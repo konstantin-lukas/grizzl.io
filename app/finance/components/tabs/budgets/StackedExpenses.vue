@@ -2,7 +2,7 @@
 import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
-import { useScreenSize } from "~/core/composables/useScreenSize";
+import useScreenSize from "~/core/composables/useScreenSize";
 import useToday from "~/core/composables/useToday";
 import { CHART_COLORS, COLOR_FRONT_DARK_MODE, COLOR_FRONT_LIGHT_MODE } from "~/core/constants/colors.constant";
 import useCategories from "~/finance/composables/useCategories";

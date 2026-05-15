@@ -1,6 +1,6 @@
 import { onMounted, onUnmounted, ref } from "vue";
 
-export function useScreenSize() {
+export default function useScreenSize() {
     const width = ref(import.meta.client ? window.innerWidth : 0);
     const height = ref(import.meta.client ? window.innerHeight : 0);
     const sm = computed(() => width.value >= 640);

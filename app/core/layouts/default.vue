@@ -7,7 +7,7 @@ import Footer from "~/core/components/nav/Footer.vue";
 import Menu from "~/core/components/nav/menu/Menu.vue";
 import MenuButton from "~/core/components/nav/menu/MenuButton.vue";
 import useMenu from "~/core/composables/useMenu";
-import { useScreenSize } from "~/core/composables/useScreenSize";
+import useScreenSize from "~/core/composables/useScreenSize";
 
 const { sm } = useScreenSize();
 const toaster = computed<{ duration: number; expand: boolean; position: "bottom-right" | "top-center" }>(() => ({

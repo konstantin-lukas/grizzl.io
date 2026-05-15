@@ -26,7 +26,24 @@ export default class ListService {
     }
 
     async getCollection(userId: string) {
-        return this.listRepository.findByUserId(userId);
+        const lists = await this.listRepository.findByUserId(userId);
+        return lists.map(({ items, ...rest }) => {
+            const mapItem = ({ index, ...item }: (typeof items)[number]) => item;
+
+            const groupedItems = {
+                uncompleted: [],
+                completed: [],
+                ...Object.groupBy(items, item => (typeof item.index === "number" ? "uncompleted" : "completed")),
+            };
+
+            return {
+                ...rest,
+                items: {
+                    completed: groupedItems.completed.map(mapItem),
+                    uncompleted: groupedItems.uncompleted.map(mapItem),
+                },
+            };
+        });
     }
 
     async create(userId: string, list: PostList) {

@@ -1,6 +1,6 @@
 import { beforeEach, expect, test, vi } from "vitest";
 import { nextTick } from "vue";
-import { useScreenSize } from "~/core/composables/useScreenSize";
+import useScreenSize from "~/core/composables/useScreenSize";
 import { withSetup } from "~~/test-utils/helpers/nuxt";
 
 function setWindowSize(width: number, height: number) {

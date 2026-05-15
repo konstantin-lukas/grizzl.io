@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chart } from "chart.js";
 import useLocale from "~/core/composables/useLocale";
-import { useScreenSize } from "~/core/composables/useScreenSize";
+import useScreenSize from "~/core/composables/useScreenSize";
 import {
     COLOR_ERROR_DARK_MODE,
     COLOR_ERROR_LIGHT_MODE,

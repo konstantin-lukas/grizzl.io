@@ -18,6 +18,7 @@ export default class ListRepository extends BaseRepository<typeof schema> {
                     columns: {
                         id: true,
                         text: true,
+                        index: true,
                         scheduledFor: true,
                     },
                     orderBy: (item, { asc }) => [asc(item.index)],
