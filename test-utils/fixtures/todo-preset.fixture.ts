@@ -1,7 +1,7 @@
 import { LONG_TITLE_MAX, TITLE_MAX } from "#shared/core/validators/core.validator";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date, int, str, strArr } from "~~/test-utils/helpers/data";
 
 export default class TodoPresetFixture extends BaseFixture<"todoPreset"> {
@@ -16,7 +16,7 @@ export default class TodoPresetFixture extends BaseFixture<"todoPreset"> {
         }),
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "todoPreset");
     }
 

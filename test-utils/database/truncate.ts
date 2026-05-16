@@ -1,13 +1,13 @@
 import type { TableConfig } from "drizzle-orm";
 import { sql } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { getTableConfig } from "drizzle-orm/pg-core";
+import type { Database } from "~~/database";
 import * as schema from "~~/database/schema";
 
-export async function truncate(db: ReturnType<typeof drizzle>, excludedTables = ["user", "account", "session"]) {
+export async function truncate(db: Database, excludedTables = ["user", "account", "session"]) {
     const isTableToEmpty = <T extends TableConfig>(key: string, _table: unknown): _table is PgTableWithColumns<T> => {
-        return !key.includes("Enum") && !excludedTables.includes(key);
+        return !key.includes("Enum") && !key.includes("Relation") && !excludedTables.includes(key);
     };
 
     for (const [key, table] of Object.entries(schema)) {

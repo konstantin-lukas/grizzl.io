@@ -1,0 +1,20 @@
+{
+    "todo": {
+        "mainHeading": "To-Do Lists",
+        "calendar": "Calendar",
+        "toDoCalendar": "To-Do Calendar",
+        "newList": "New To-Do List",
+        "meta": {
+            "title": "To-Do",
+            "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."
+        },
+        "toast": {
+            "createdTitle": "To-Do List Created",
+            "createdDescription": "A new to-do list was created.",
+            "updatedTitle": "To-Do List Updated",
+            "updatedDescription": "The todo-list titled “{title}” was updated.",
+            "deletedTitle": "To-Do List Deleted",
+            "deletedDescription": "The todo-list titled “{title}” was deleted."
+        }
+    }
+}

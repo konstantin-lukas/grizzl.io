@@ -16,3 +16,5 @@ export const db = drizzle(pool, {
     casing: "snake_case",
     schema,
 });
+
+export type Database = typeof db;

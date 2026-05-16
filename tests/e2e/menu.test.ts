@@ -33,7 +33,7 @@ forEachLocale((locale, texts) => {
     test(`has links to all services for locale ${locale.language}`, async ({ homePage: page }) => {
         const links = [
             { locator: "pollLink", text: texts.poll, href: "" },
-            { locator: "todoLink", text: texts.todo, href: "" },
+            { locator: "todoLink", text: texts.todo, href: "/todo" },
             { locator: "timerLink", text: texts.timer, href: "/timer" },
             { locator: "financeLink", text: texts.finance, href: "/finance" },
         ] as const;

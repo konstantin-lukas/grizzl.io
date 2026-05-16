@@ -6,7 +6,7 @@ import type {
     PutTransactionInternal,
 } from "#shared/finance/validators/transaction.validator";
 import { and, desc, eq, gte, ilike, isNull, lte, sum } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
 import BaseRepository from "~~/server/core/repositories/base.repository";
@@ -14,7 +14,7 @@ import BaseRepository from "~~/server/core/repositories/base.repository";
 const schema = "financeTransaction";
 
 export default class TransactionRepository extends BaseRepository<typeof schema> {
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.financeAccount, this.schema.accountId));
     }
 

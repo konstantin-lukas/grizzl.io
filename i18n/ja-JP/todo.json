@@ -1,0 +1,20 @@
+{
+    "todo": {
+        "mainHeading": "ToDoリスト",
+        "calendar": "カレンダー",
+        "toDoCalendar": "ToDoカレンダー",
+        "newList": "新しいToDoリスト",
+        "meta": {
+            "title": "ToDo",
+            "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"
+        },
+        "toast": {
+            "createdTitle": "ToDoリストを作成しました",
+            "createdDescription": "新しいToDoリストが作成されました。",
+            "updatedTitle": "ToDoリストを更新しました",
+            "updatedDescription": "タイトル「{title}」のToDoリストが更新されました。",
+            "deletedTitle": "ToDoリストを削除しました",
+            "deletedDescription": "タイトル「{title}」のToDoリストが削除されました。"
+        }
+    }
+}

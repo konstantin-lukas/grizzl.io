@@ -1,6 +1,6 @@
 import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { int, str } from "~~/test-utils/helpers/data";
 
 export default class FinanceCategoryFixture extends BaseFixture<"financeCategory"> {
@@ -14,7 +14,7 @@ export default class FinanceCategoryFixture extends BaseFixture<"financeCategory
         };
     };
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "financeCategory");
     }
 

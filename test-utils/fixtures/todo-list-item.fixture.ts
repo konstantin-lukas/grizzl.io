@@ -1,6 +1,6 @@
 import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import BaseFixture, { type ExtendedInsertOverrides } from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date, int, maybe, str } from "~~/test-utils/helpers/data";
 
 export default class TodoListItemFixture extends BaseFixture<"todoListItem"> {
@@ -11,7 +11,7 @@ export default class TodoListItemFixture extends BaseFixture<"todoListItem"> {
         index,
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "todoListItem");
     }
 

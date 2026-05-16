@@ -42,11 +42,13 @@ test("automatically includes the items belonging to a todo list", async ({ db, u
         items: [
             {
                 id: anyId,
+                index: 0,
                 scheduledFor: null,
                 text: "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexc",
             },
             {
                 id: anyId,
+                index: 1,
                 scheduledFor: null,
                 text: "lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteu",
             },

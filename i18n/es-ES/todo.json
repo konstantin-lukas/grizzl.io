@@ -1,0 +1,20 @@
+{
+    "todo": {
+        "mainHeading": "Listas de tareas",
+        "calendar": "Calendario",
+        "toDoCalendar": "Calendario de tareas",
+        "newList": "Nueva lista de tareas",
+        "meta": {
+            "title": "Tareas",
+            "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."
+        },
+        "toast": {
+            "createdTitle": "Lista de tareas creada",
+            "createdDescription": "Se ha creado una nueva lista de tareas.",
+            "updatedTitle": "Lista de tareas actualizada",
+            "updatedDescription": "La lista de tareas con el título «{title}» ha sido actualizada.",
+            "deletedTitle": "Lista de tareas eliminada",
+            "deletedDescription": "La lista de tareas con el título «{title}» ha sido eliminada."
+        }
+    }
+}

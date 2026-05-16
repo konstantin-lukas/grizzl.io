@@ -35,8 +35,8 @@ test("should use the correct translation keys and link to the correct pages", as
     expect(pollLI.attributes("aria-hidden")).toBe("true");
     expect(pollLink.text()).toBe("ui.poll");
 
-    expect(todoLink.attributes("href")).toBeUndefined();
-    expect(todoLI.attributes("aria-hidden")).toBe("true");
+    expect(todoLink.attributes("href")).toBe("/todo");
+    expect(todoLI.attributes("aria-hidden")).toBeUndefined();
     expect(todoLink.text()).toBe("ui.todo");
 });
 

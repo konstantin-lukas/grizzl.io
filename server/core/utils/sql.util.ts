@@ -6,7 +6,7 @@ import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
 import { type SQLWrapper, and, eq, exists, isNull } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import LoggerService from "~~/server/core/services/logger.service";
 import { createContainer } from "~~/server/core/utils/di.util";
 import TimerRepository from "~~/server/timer/repositories/timer.repository";
@@ -55,7 +55,7 @@ export async function purgeAll(options: { maxAge: number }) {
 /* c8 ignore start */
 export function transitiveOwnership(
     userId: string,
-    db: ReturnType<typeof drizzle>,
+    db: Database,
     selfSchema: { id: SQLWrapper; userId: SQLWrapper; deletedAt: SQLWrapper },
     parentId: SQLWrapper,
 ) {

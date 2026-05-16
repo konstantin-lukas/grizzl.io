@@ -16,9 +16,9 @@ export default function useOnSubmit<T extends object>({
     method: () => "POST" | "PUT";
     state: T;
     transform?: (v: T) => T;
-    emit: (e: "success") => void;
+    emit?: (e: "success") => void;
     translationKey: string;
-    interpolations: (v: T) => Record<string, string>;
+    interpolations?: (v: T) => Record<string, string>;
     refresh?: () => void;
 }) {
     const toast = useToast();
@@ -37,7 +37,7 @@ export default function useOnSubmit<T extends object>({
             body: submissionState,
         })
             .then(() => {
-                emit("success");
+                emit?.("success");
                 toast.add(
                     createToastSuccess(
                         isPost ? t(`${translationKey}.toast.createdTitle`) : t(`${translationKey}.toast.updatedTitle`),
@@ -45,7 +45,7 @@ export default function useOnSubmit<T extends object>({
                             isPost
                                 ? `${translationKey}.toast.${action}Description`
                                 : `${translationKey}.toast.${action}Description`,
-                            interpolations(submissionState),
+                            interpolations?.(submissionState) ?? {},
                         ),
                     ),
                 );

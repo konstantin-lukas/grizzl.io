@@ -1,5 +1,5 @@
 import BaseFixture from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date, str } from "~~/test-utils/helpers/data";
 
 export default class TimerFixture extends BaseFixture<"timer"> {
@@ -8,7 +8,7 @@ export default class TimerFixture extends BaseFixture<"timer"> {
         createdAt: date({ seed: index }),
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "timer");
     }
 }

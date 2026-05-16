@@ -22,6 +22,24 @@ export default {
             component: () => import("~/timer/pages/timer.page.vue"),
         },
         {
+            name: "todo",
+            path: "/todo",
+            meta: {
+                title: "todo.meta.title",
+                description: "todo.meta.description",
+            },
+            component: () => import("~/todo/pages/todo.page.vue"),
+        },
+        {
+            name: "todo-calendar",
+            path: "/todo/calendar",
+            meta: {
+                title: "todo.toDoCalendar",
+                description: "todo.meta.description",
+            },
+            component: () => import("~/todo/pages/calendar.page.vue"),
+        },
+        {
             name: "home",
             path: "/",
             component: () => import("~/core/pages/root.page.vue"),

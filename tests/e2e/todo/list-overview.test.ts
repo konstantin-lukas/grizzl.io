@@ -1,0 +1,13 @@
+import { test } from "~~/test-utils/playwright";
+
+test("allows creating new todo lists", async ({ todoPage: page }) => {
+    await page.goto();
+    await page.expect().toBeValid({ name: "empty-todo-list-overview" });
+
+    await page.click("addListButton");
+
+    await page.click("closeToastButton");
+    await page.expect("addListButton").toBeEnabled();
+
+    await page.expect().toHaveScreenshot({ name: "todo-list-overview-with-one-item" });
+});

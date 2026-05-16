@@ -7,7 +7,7 @@ import BalanceChart from "~/finance/components/tabs/account/BalanceChart.vue";
 import TransactionCard from "~/finance/components/tabs/account/TransactionCard.vue";
 import TransactionControls from "~/finance/components/tabs/account/TransactionControls.vue";
 import TransactionUpsertForm from "~/finance/components/tabs/account/TransactionUpsertForm.vue";
-import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
+import EmptyBudgets from "~/core/components/data/EmptyCard.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
 import useTransactions, { type Transaction } from "~/finance/composables/useTransactions";

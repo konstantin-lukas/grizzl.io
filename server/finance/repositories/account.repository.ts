@@ -1,13 +1,13 @@
 import type { PostAccount, PutAccount } from "#shared/finance/validators/account.validator";
 import { and, count, desc, eq, isNull } from "drizzle-orm";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "financeAccount";
 
 export default class AccountRepository extends BaseRepository<typeof schema> {
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, schema, userId => eq(this.schema.userId, userId));
     }
 

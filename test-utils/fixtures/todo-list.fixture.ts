@@ -1,7 +1,7 @@
 import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 import BaseFixture from "@@/test-utils/fixtures/base.fixture";
-import type { drizzle } from "drizzle-orm/node-postgres";
+import type { Database } from "~~/database";
 import { date, int, str } from "~~/test-utils/helpers/data";
 
 export default class TodoListFixture extends BaseFixture<"todoList"> {
@@ -11,7 +11,7 @@ export default class TodoListFixture extends BaseFixture<"todoList"> {
         icon: CATEGORY_ICONS[int({ min: 0, max: CATEGORY_ICONS.length - 1, seed: index })],
     });
 
-    constructor(db: ReturnType<typeof drizzle>) {
+    constructor(db: Database) {
         super(db, "todoList");
     }
 }

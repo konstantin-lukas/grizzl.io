@@ -11,7 +11,7 @@ const baseClass = tw`absolute left-1/2 h-[3.5px] w-full origin-center -translate
     <Button
         color="neutral"
         variant="ghost"
-        class="fixed top-4 left-4 z-50 size-10 cursor-pointer hover:bg-front/15 focus:bg-front/15 focus-visible:bg-front/15 active:bg-front/15 hover-none:size-12"
+        class="fixed top-4 left-4 z-50 size-10 cursor-pointer hover-none:size-12"
         :aria-label="$t('menu.aria.toggleMenu')"
         data-test-id="menu-button"
         @click="toggle"
