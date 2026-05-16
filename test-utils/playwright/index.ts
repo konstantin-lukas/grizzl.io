@@ -6,6 +6,7 @@ import toHaveTextEndingWith from "~~/test-utils/playwright/expect/toHaveTextEndi
 import FinancePage from "~~/test-utils/playwright/pages/finance.page";
 import HomePage from "~~/test-utils/playwright/pages/home.page";
 import TimerPage from "~~/test-utils/playwright/pages/timer.page";
+import TodoPage from "~~/test-utils/playwright/pages/todo.page";
 import globalBeforeAfterEach from "~~/test-utils/playwright/test/globalBeforeAfterEach.fixture";
 import constructPageObject from "~~/test-utils/playwright/test/page.fixture";
 
@@ -18,10 +19,12 @@ export const test = seed.extend<{
     homePage: HomePage;
     timerPage: TimerPage;
     financePage: FinancePage;
+    todoPage: TodoPage;
 }>({
     homePage: constructPageObject(HomePage),
     timerPage: constructPageObject(TimerPage),
     financePage: constructPageObject(FinancePage),
+    todoPage: constructPageObject(TodoPage),
     globalBeforeAfterEach: [globalBeforeAfterEach(), { auto: true }],
 });
 
