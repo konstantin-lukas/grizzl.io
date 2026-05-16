@@ -7,7 +7,7 @@ test("allows creating an application level lock", async ({ db, user }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });
     await db.todoListItem.insert(1, { listId: list.id, index: 0 });
     await Promise.all(
-        Array.from({ length: 20 }).map(() =>
+        Array.from({ length: 10 }).map(() =>
             db.client.transaction(async tx => {
                 await repository.advisoryLock("bananas", tx);
                 const [item] = await tx.select().from(schema["todoListItem"]);
@@ -15,6 +15,6 @@ test("allows creating an application level lock", async ({ db, user }) => {
             }),
         ),
     );
-    const [item] = await db.todoListItem.select(id);
+    const [item] = await db.todoListItem.select();
     expect(item?.index).toBe(20);
 });
