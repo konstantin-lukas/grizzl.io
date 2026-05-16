@@ -3,7 +3,7 @@ import H2 from "~/core/components/typo/H2.vue";
 import useToday from "~/core/composables/useToday";
 import { ICON_FINANCE } from "~/core/constants/icons.constant";
 import CategoryBudgets from "~/finance/components/tabs/budgets/CategoryBudgets.vue";
-import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
+import EmptyBudgets from "~/core/components/data/EmptyCard.vue";
 import ExpensePieChart from "~/finance/components/tabs/budgets/ExpensePieChart.vue";
 import StackedExpenses from "~/finance/components/tabs/budgets/StackedExpenses.vue";
 import useAccounts from "~/finance/composables/useAccounts";

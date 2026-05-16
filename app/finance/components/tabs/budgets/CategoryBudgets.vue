@@ -4,7 +4,7 @@ import useToday from "~/core/composables/useToday";
 import { ICON_SAVINGS } from "~/core/constants/icons.constant";
 import CategoryBudgetProgress from "~/finance/components/tabs/budgets/CategoryBudgetProgress.vue";
 import CategoryBudgetProgressSkeleton from "~/finance/components/tabs/budgets/CategoryBudgetProgressSkeleton.vue";
-import EmptyBudgets from "~/finance/components/tabs/budgets/EmptyBudgets.vue";
+import EmptyBudgets from "~/core/components/data/EmptyCard.vue";
 import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
