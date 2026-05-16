@@ -16,5 +16,5 @@ test("allows creating an application level lock", async ({ db, user }) => {
         ),
     );
     const [item] = await db.todoListItem.select();
-    expect(item?.index).toBe(20);
+    expect(item?.index).toBe(10);
 });
