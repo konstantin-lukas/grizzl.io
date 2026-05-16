@@ -1,6 +1,8 @@
+import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
+import UnknownError from "#server/core/errors/unknown.error";
 import ListRepository from "#server/todo/repositories/list.repository";
-import type { PostList, PutList } from "#shared/todo/validators/list.validator";
+import { type PostList, type PutList, TODO_MAX_LISTS } from "#shared/todo/validators/list.validator";
 
 export default class ListService {
     static readonly deps = [ListRepository];
@@ -47,7 +49,21 @@ export default class ListService {
     }
 
     async create(userId: string, list: PostList) {
-        return this.listRepository.create(userId, list);
+        return this.listRepository.transaction(async tx => {
+            await this.listRepository.advisoryLock(`createToDoList${userId}`, tx);
+            const count = await this.listRepository.getCount(userId, tx);
+
+            if (typeof count !== "number") {
+                const logMessage = `Unable to retrieve todo list count for user with id ${userId}. Received: "${count}".`;
+                throw new UnknownError("Unable to check entity limit.", logMessage);
+            }
+            if (count >= TODO_MAX_LISTS) {
+                const logMessage = `User with id ${userId} tried to create more todo lists than allowed. Received: ${count}; Max: ${TODO_MAX_LISTS}`;
+                throw new EntityLimitError(`The maximum amount of to-do lists is ${TODO_MAX_LISTS}.`, logMessage);
+            }
+
+            return this.listRepository.create(userId, list, tx);
+        });
     }
     /* c8 ignore stop */
 }

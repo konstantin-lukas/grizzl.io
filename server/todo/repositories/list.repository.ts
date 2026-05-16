@@ -1,7 +1,7 @@
 import type { PostList, PutList } from "#shared/todo/validators/list.validator";
-import { and, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 import type { Database } from "~~/database";
-import BaseRepository from "~~/server/core/repositories/base.repository";
+import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "todoList";
 
@@ -24,7 +24,7 @@ export default class ListRepository extends BaseRepository<typeof schema> {
                     orderBy: (item, { asc }) => [asc(item.index)],
                 },
             },
-            orderBy: (todoList, { desc }) => [desc(todoList.createdAt)],
+            orderBy: (todoList, { desc, asc }) => [desc(todoList.createdAt), asc(todoList.title)],
             columns: {
                 id: true,
                 title: true,
@@ -34,8 +34,14 @@ export default class ListRepository extends BaseRepository<typeof schema> {
         });
     }
 
-    async create(userId: string, { icon, title }: PostList) {
-        const [{ listId }] = (await this.db
+    public async getCount(userId: string, ctx: ExecutionContext = this.db) {
+        const result = await ctx.select({ count: count() }).from(this.schema).where(eq(this.schema.userId, userId));
+
+        return result[0]?.count;
+    }
+
+    async create(userId: string, { icon, title }: PostList, ctx: ExecutionContext = this.db) {
+        const [{ listId }] = (await ctx
             .insert(this.schema)
             .values({ userId, icon, title })
             .returning({ listId: this.schema.id })) as [{ listId: string }];

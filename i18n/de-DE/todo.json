@@ -2,9 +2,18 @@
     "todo": {
         "mainHeading": "To-do-Listen",
         "calendar": "Kalender",
+        "newList": "Neue To-do-Liste",
         "meta": {
             "title": "To-do",
             "description": "Erstelle To-do-Listen, verfolge deine täglichen Aufgaben und speichere oder lade To-do-Listen-Vorlagen."
+        },
+        "toast": {
+            "createdTitle": "To-do-Liste erstellt",
+            "createdDescription": "Eine neue To-do-Liste wurde erstellt.",
+            "updatedTitle": "To-do-Liste aktualisiert",
+            "updatedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde aktualisiert.",
+            "deletedTitle": "To-do-Liste gelöscht",
+            "deletedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde gelöscht."
         }
     }
 }

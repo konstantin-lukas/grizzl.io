@@ -3,6 +3,7 @@ import { TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.vali
 import { z } from "zod";
 
 export const TODO_LIST_MAX_LENGTH = 1000;
+export const TODO_MAX_LISTS = 100;
 
 export const PostListSchema = z.object({
     title: preTrim(z.string().min(TITLE_MIN).max(TITLE_MAX)),

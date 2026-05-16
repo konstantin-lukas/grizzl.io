@@ -1,5 +1,5 @@
 import type { SQL } from "drizzle-orm";
-import { and, eq, isNotNull, lt } from "drizzle-orm";
+import { and, eq, isNotNull, lt, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as schema from "~~/database/schema";
 
@@ -96,5 +96,9 @@ export default class BaseRepository<T extends Schema> {
             .delete(this.schema)
             .where(and(isNotNull(this.schema.deletedAt), lt(this.schema.deletedAt, refDate)));
         return rowCount;
+    }
+
+    public async advisoryLock(key: string, tx: DatabaseTransaction) {
+        await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${key}))`);
     }
 }

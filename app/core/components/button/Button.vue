@@ -23,8 +23,7 @@ const { isLoading, start, finish } = useLoadingIndicator();
 async function handler(event: MouseEvent) {
     if (typeof onAsyncClick !== "undefined") {
         start({ force: true });
-        await onAsyncClick(event);
-        finish();
+        await onAsyncClick(event).finally(() => finish());
         return;
     }
     if (typeof onClick === "function") {
