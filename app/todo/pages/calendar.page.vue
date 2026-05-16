@@ -10,7 +10,7 @@ import Wrapper from "~/core/components/layout/Wrapper.vue";
             :icon="ICON_RETURN"
             variant="ghost"
             color="neutral"
-            class="fixed top-4 right-4 flex size-10 justify-center hover:bg-front/15 focus:bg-front/15 focus-visible:bg-front/15 active:bg-front/15 hover-none:size-12"
+            class="fixed top-4 right-4 flex size-10 justify-center hover-none:size-12"
             :aria-label="$t('ui.goBack')"
             data-test-id="go-back-button"
             to="/todo"

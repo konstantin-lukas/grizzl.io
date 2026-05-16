@@ -45,6 +45,15 @@ import {
 
 export default defineAppConfig({
     ui: {
+        button: {
+            compoundVariants: [
+                {
+                    color: "neutral",
+                    variant: "ghost",
+                    class: "hover:bg-front/15 focus-visible:bg-front/15 active:bg-front/15",
+                },
+            ],
+        },
         inputNumber: {
             variants: {
                 size: {
