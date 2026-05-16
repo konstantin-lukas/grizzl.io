@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.15.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.14.0...v1.15.0) (2026-05-16)
+
+
+### Features
+
+* add get endpoint for todo list collections ([03f4405](https://github.com/konstantin-lukas/grizzl.io/commit/03f440504a67de438842694cb7f44f59b061d617))
+* add patch api endpoint for todo lists ([#473](https://github.com/konstantin-lukas/grizzl.io/issues/473)) ([73df513](https://github.com/konstantin-lukas/grizzl.io/commit/73df513ce7bc998b6c212915b045bb9d98666962))
+* add post api endpoint for todo lists ([#471](https://github.com/konstantin-lukas/grizzl.io/issues/471)) ([b9216b9](https://github.com/konstantin-lukas/grizzl.io/commit/b9216b9afc4c33d5a2075bc52428f9794b02a30a))
+* add put api endpoint for todo lists ([#474](https://github.com/konstantin-lukas/grizzl.io/issues/474)) ([f0a0f87](https://github.com/konstantin-lukas/grizzl.io/commit/f0a0f87ef52a55cc0d3ff944dd629aff3f6f6f4f))
+* create todo list overview ([#476](https://github.com/konstantin-lukas/grizzl.io/issues/476)) ([2c8c765](https://github.com/konstantin-lukas/grizzl.io/commit/2c8c76570dff19b2e7d5e9b6b65e976e742ce021))
+
+
+### Bug Fixes
+
+* disable pointer events on empty footer space and restyle offline… ([#466](https://github.com/konstantin-lukas/grizzl.io/issues/466)) ([30693b0](https://github.com/konstantin-lukas/grizzl.io/commit/30693b0a33e9e1f6df240770c41b8b382d7d366d))
+
 ## [1.14.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.13.2...v1.14.0) (2026-05-11)
 
 
