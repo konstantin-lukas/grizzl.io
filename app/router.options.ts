@@ -31,6 +31,15 @@ export default {
             component: () => import("~/todo/pages/todo.page.vue"),
         },
         {
+            name: "todo-calendar",
+            path: "/todo/calendar",
+            meta: {
+                title: "todo.toDoCalendar",
+                description: "todo.meta.description",
+            },
+            component: () => import("~/todo/pages/calendar.page.vue"),
+        },
+        {
             name: "home",
             path: "/",
             component: () => import("~/core/pages/root.page.vue"),

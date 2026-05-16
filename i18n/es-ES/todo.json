@@ -2,6 +2,7 @@
     "todo": {
         "mainHeading": "Listas de tareas",
         "calendar": "Calendario",
+        "toDoCalendar": "Calendario de tareas",
         "newList": "Nueva lista de tareas",
         "meta": {
             "title": "Tareas",

@@ -2,6 +2,7 @@
     "todo": {
         "mainHeading": "ToDoリスト",
         "calendar": "カレンダー",
+        "toDoCalendar": "ToDoカレンダー",
         "newList": "新しいToDoリスト",
         "meta": {
             "title": "ToDo",

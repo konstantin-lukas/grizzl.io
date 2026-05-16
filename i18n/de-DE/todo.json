@@ -2,6 +2,7 @@
     "todo": {
         "mainHeading": "To-do-Listen",
         "calendar": "Kalender",
+        "toDoCalendar": "To-do-Kalender",
         "newList": "Neue To-do-Liste",
         "meta": {
             "title": "To-do",

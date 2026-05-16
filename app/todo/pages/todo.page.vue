@@ -15,7 +15,9 @@ const { todoLists, createTodoList } = useTodoLists();
             <Button class="flex w-full justify-center" :icon="ICON_PLUS" :on-async-click="createTodoList">
                 {{ $t("ui.add") }}
             </Button>
-            <Button class="flex w-full justify-center" :icon="ICON_CALENDAR">{{ $t("todo.calendar") }}</Button>
+            <Button class="flex w-full justify-center" :icon="ICON_CALENDAR" to="/todo/calendar">
+                {{ $t("todo.calendar") }}
+            </Button>
         </div>
         <USeparator />
         <ul>
