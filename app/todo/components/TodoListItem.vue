@@ -26,7 +26,7 @@ watch(textModel, value => {
 </script>
 
 <template>
-    <li class="group border-b-muted py-1 not-last-of-type:border-b">
+    <li class="group box-border border-y border-y-transparent py-1 focus-within:border-y-muted">
         <div class="flex items-center gap-1">
             <div class="center cursor-move" data-handle>
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />

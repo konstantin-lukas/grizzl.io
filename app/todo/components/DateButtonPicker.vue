@@ -11,10 +11,13 @@ const clear = () => {
     open.value = false;
     modelValue.value = null;
 };
+const close = (value: boolean) => {
+    if (!value) open.value = false;
+};
 </script>
 
 <template>
-    <UPopover :open="open">
+    <UPopover :open="open" @update:open="close">
         <Button
             color="neutral"
             variant="ghost"
