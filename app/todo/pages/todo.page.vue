@@ -2,11 +2,44 @@
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import H1 from "~/core/components/typo/H1.vue";
 import TodoListCard from "~/todo/components/TodoListCard.vue";
-import useTodoLists from "~/todo/useTodoLists";
+import useTodoLists from "../composables/useTodoLists";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
 import EmptyBudgets from "../../core/components/data/EmptyCard.vue";
-const { todoLists, createTodoList } = useTodoLists();
+import { useOpenList } from "~/todo/composables/useOpenList";
+import ListSlideover from "~/todo/components/ListSlideover.vue";
+import { onResponseError } from "~/core/utils/toast";
+import { useToast } from "#ui/composables";
+import useOnSubmit from "~/core/composables/useOnSubmit";
+
+const route = useRoute();
+const toast = useToast();
+const { t } = useI18n();
+const { todoLists } = useTodoLists();
+const { openList } = useOpenList();
+const { data, refresh } = await useFetch("/api/todo/lists", {
+    onResponseError: onResponseError(toast, t),
+});
+const createTodoList = useOnSubmit({
+    url: () => "/api/todo/lists",
+    method: () => "POST",
+    state: {
+        icon: "question-mark-rounded",
+    },
+    transform: ({ ...state }) => ({ ...state, title: t("todo.newList") }),
+    translationKey: "todo",
+    refresh: () => refresh(),
+});
+
+watchEffect(() => {
+    if (!data.value) return;
+    todoLists.value = data.value;
+});
+
+watchEffect(() => {
+    const id = route.query.list;
+    openList.value = data.value?.find(list => list.id === id) ?? null;
+});
 </script>
 
 <template>
@@ -31,8 +64,14 @@ const { todoLists, createTodoList } = useTodoLists();
                 <EmptyBudgets class="mt-4" />
             </li>
             <TransitionGroup name="list">
-                <TodoListCard v-for="todoList in todoLists" :key="todoList.id" :list="todoList" />
+                <TodoListCard
+                    v-for="todoList in todoLists"
+                    :key="todoList.id"
+                    :list="todoList"
+                    @open="openList = todoList"
+                />
             </TransitionGroup>
         </ul>
+        <ListSlideover />
     </Wrapper>
 </template>
