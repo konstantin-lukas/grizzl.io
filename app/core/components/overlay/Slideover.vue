@@ -5,8 +5,8 @@ import { ICON_RETURN } from "~/core/constants/icons.constant";
 const emit = defineEmits(["close"]);
 const route = useRoute();
 const router = useRouter();
-const open = ref(false);
 const { queryKey, queryValue = null } = defineProps<{ queryKey: string; queryValue?: string }>();
+const open = ref(!!queryValue);
 
 watch(
     () => [queryKey, queryValue, route.path],
@@ -30,6 +30,7 @@ watch(
         :dismissible="false"
         direction="right"
         :handle="false"
+        :default-open="open"
         :ui="{
             content: 'rounded-none',
         }"
