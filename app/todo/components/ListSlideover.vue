@@ -6,6 +6,7 @@ import H1 from "~/core/components/typo/H1.vue";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_OPTIONS } from "~/core/constants/icons.constant";
 import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
+import TodoListItem from "~/todo/components/TodoListItem.vue";
 
 const { openList, openListCopy } = useOpenList();
 </script>
@@ -16,6 +17,9 @@ const { openList, openListCopy } = useOpenList();
             <Button :icon="ICON_OPTIONS" color="neutral" variant="ghost" class="fixed top-4 right-4 aspect-square" />
             <DataSyncIndicator />
             <H1>{{ openListCopy?.title }}</H1>
+            <ul v-if="openListCopy" class="mt-6">
+                <TodoListItem v-for="item in openListCopy.items.uncompleted" :key="item.id" :item />
+            </ul>
         </Wrapper>
     </Slideover>
 </template>

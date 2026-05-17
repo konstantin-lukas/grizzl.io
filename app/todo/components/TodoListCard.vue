@@ -7,7 +7,7 @@ const props = defineProps<{ list: TodoList }>();
 const emit = defineEmits(["open"]);
 
 const progress = computed(() => props.list.items.completed.length);
-const target = computed(() => props.list.items.uncompleted.length);
+const target = computed(() => props.list.items.completed.length + props.list.items.uncompleted.length);
 </script>
 
 <template>
