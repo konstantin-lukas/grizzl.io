@@ -7,7 +7,7 @@ import Button from "~/core/components/button/Button.vue";
 import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
 import EmptyBudgets from "../../core/components/data/EmptyCard.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
-import ListSlideover from "~/todo/components/ListSlideover.vue";
+import ListModal from "../components/ListModal.vue";
 import { onResponseError } from "~/core/utils/toast";
 import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
@@ -72,6 +72,6 @@ watchEffect(() => {
                 />
             </TransitionGroup>
         </ul>
-        <ListSlideover />
+        <ListModal />
     </Wrapper>
 </template>

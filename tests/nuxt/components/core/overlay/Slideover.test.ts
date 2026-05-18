@@ -1,6 +1,6 @@
+import QuerySlideover from "../../../../../app/core/components/overlay/QuerySlideover.vue";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import { beforeEach, expect, test, vi } from "vitest";
-import Slideover from "~/core/components/overlay/Slideover.vue";
 import { UTooltip } from "~~/test-utils/vitest/stubs";
 
 const slots = { default: "Hello, world!" };
@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 test("should be closed when no queryValue is passed", async () => {
-    const wrapper = await mountSuspended(Slideover, {
+    const wrapper = await mountSuspended(QuerySlideover, {
         scoped: true,
         slots,
         props: { portal: false, queryKey: "bananas" },
@@ -33,7 +33,7 @@ test("should be closed when no queryValue is passed", async () => {
 });
 
 test("should be opened by passing a queryValue", async () => {
-    const wrapper = await mountSuspended(Slideover, {
+    const wrapper = await mountSuspended(QuerySlideover, {
         scoped: true,
         slots,
         global: { stubs },
@@ -45,7 +45,7 @@ test("should be opened by passing a queryValue", async () => {
 });
 
 test("should have button that emits the close event", async () => {
-    const wrapper = await mountSuspended(Slideover, {
+    const wrapper = await mountSuspended(QuerySlideover, {
         scoped: true,
         slots,
         global: { stubs },

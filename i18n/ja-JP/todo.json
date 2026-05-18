@@ -4,9 +4,17 @@
         "calendar": "カレンダー",
         "toDoCalendar": "ToDoカレンダー",
         "newList": "新しいToDoリスト",
+        "clearDate": "日付をクリア",
+        "confirmClose": "ToDoリストを閉じてもよろしいですか？ 一部の変更はまだ保存されていません。",
         "meta": {
             "title": "ToDo",
             "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"
+        },
+        "aria": {
+            "modal": {
+                "title": "ToDoリストを編集",
+                "description": "完了したタスクをチェックし、新しいタスクを追加したり、スケジュールを設定したり、後で再利用できるようにプリセットを保存できます。"
+            }
         },
         "toast": {
             "createdTitle": "ToDoリストを作成しました",

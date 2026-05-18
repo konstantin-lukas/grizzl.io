@@ -4,9 +4,17 @@
         "calendar": "Calendar",
         "toDoCalendar": "To-Do Calendar",
         "newList": "New To-Do List",
+        "clearDate": "Clear date",
+        "confirmClose": "Are you sure you want to close the to-do list? Some changes have not been saved yet.",
         "meta": {
             "title": "To-Do",
             "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."
+        },
+        "aria": {
+            "modal": {
+                "title": "Edit To-Do List",
+                "description": "Check off completed to-dos, add new ones, schedule to-dos or save presets to load again later."
+            }
         },
         "toast": {
             "createdTitle": "To-Do List Created",

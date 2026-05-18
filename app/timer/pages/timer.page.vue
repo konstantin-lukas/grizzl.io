@@ -4,7 +4,7 @@ import { useToast } from "#ui/composables";
 import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
-import Slideover from "~/core/components/overlay/Slideover.vue";
+import QuerySlideover from "../../core/components/overlay/QuerySlideover.vue";
 import { onResponseError } from "~/core/utils/toast";
 import OverviewList from "~/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/timer/components/playback/PlaybackContainer.vue";
@@ -36,7 +36,7 @@ watch(open, () => {
 <template>
     <Wrapper :class="{ 'max-w-xl': true }">
         <div class="flex min-h-main-height-no-padding w-full flex-col">
-            <Slideover
+            <QuerySlideover
                 query-key="play"
                 :query-value="activeTimer?.id"
                 @close="
@@ -51,7 +51,7 @@ watch(open, () => {
                 <Wrapper center-vertically>
                     <PlaybackContainer v-if="activeTimer" :timer="activeTimer" />
                 </Wrapper>
-            </Slideover>
+            </QuerySlideover>
             <div class="relative mb-16 flex w-full grow flex-col">
                 <Drawer v-model:open="open">
                     <UpsertForm @success="open = false" />
