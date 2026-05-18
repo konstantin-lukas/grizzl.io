@@ -8,7 +8,7 @@ import TodoListItem from "~/todo/components/TodoListItem.vue";
 import QueryModal from "~/todo/components/ListModalBase.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 
-const { openList, openListCopy } = useOpenList();
+const { openList, title, completedItems, uncompletedItems } = useOpenList();
 const { queue } = useMutationQueue();
 </script>
 
@@ -19,14 +19,14 @@ const { queue } = useMutationQueue();
         :unsaved-changes="queue.length > 0 ? 'todo.confirmClose' : undefined"
         @close="openList = null"
     >
-        <div class="p-6 pt-7">
-            <H1>{{ openListCopy?.title }}</H1>
-            <ul v-if="openListCopy" class="mt-6 mb-4">
-                <TodoListItem v-for="item in openListCopy.items.uncompleted" :key="item.id" :item />
+        <div class="p-6 pt-8">
+            <H1>{{ title }}</H1>
+            <ul v-if="uncompletedItems.length > 0" class="mt-6 mb-4">
+                <TodoListItem v-for="item in uncompletedItems" :key="item.id" :item />
             </ul>
             <USeparator />
-            <ul v-if="openListCopy" class="mt-4">
-                <TodoListItem v-for="item in openListCopy.items.completed" :key="item.id" :item />
+            <ul v-if="completedItems.length > 0" class="mt-4">
+                <TodoListItem v-for="item in completedItems" :key="item.id" :item />
             </ul>
         </div>
         <template #header>

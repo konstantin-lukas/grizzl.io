@@ -9,7 +9,7 @@ import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement } from "#shared/core/utils/array.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
-const { openListCopy } = useOpenList();
+const { completedItems, id, uncompletedItems } = useOpenList();
 const props = defineProps<{ item: TodoItem }>();
 
 const text = ref(props.item.text);
@@ -19,37 +19,53 @@ const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 
 const self = computed(() => {
-    if (!openListCopy.value) return null;
     const findItem = (item: TodoItem) => item.id === props.item.id;
-    let index = openListCopy.value.items.uncompleted.findIndex(findItem);
-    if (index > -1) return { index, type: "uncompleted", item: openListCopy.value.items.uncompleted[index]! } as const;
-    index = openListCopy.value.items.completed.findIndex(findItem);
-    if (index > -1) return { index, type: "completed", item: openListCopy.value.items.completed[index]! } as const;
+    let index = uncompletedItems.value.findIndex(findItem);
+    if (index > -1) return { index, type: "uncompleted", item: uncompletedItems.value[index]! } as const;
+    index = completedItems.value.findIndex(findItem);
+    if (index > -1) return { index, type: "completed", item: completedItems.value[index]! } as const;
     return null;
 });
 
-const checked = ref(() => self.value?.type === "completed");
+const checked = ref(self.value?.type === "completed");
 
 const deleteSelf = () => {
-    if (!openListCopy.value || !self.value) return;
-    queue.value.push({ action: "delete", id: props.item.id, listId: openListCopy.value.id });
+    if (!self.value) return;
+    queue.value.push({ action: "delete", id: props.item.id, listId: id.value });
 
-    openListCopy.value.items[self.value.type] = deleteNthElement(
-        openListCopy.value.items[self.value.type],
-        self.value.index,
-    );
+    if (self.value.type === "completed") {
+        completedItems.value = deleteNthElement(completedItems.value, self.value.index);
+        return;
+    }
+
+    uncompletedItems.value = deleteNthElement(uncompletedItems.value, self.value.index);
+    return;
 };
 
 watch(text, value => {
-    if (!openListCopy.value || !self.value) return;
+    if (!self.value) return;
     self.value.item.text = value;
-    queue.value.push({ action: "text", id: self.value.item.id, value, listId: openListCopy.value.id });
+    queue.value.push({ action: "text", id: self.value.item.id, value, listId: id.value });
 });
 
 watch(scheduledFor, value => {
-    if (!openListCopy.value || !self.value) return;
+    if (!self.value) return;
     self.value.item.scheduledFor = value;
-    queue.value.push({ action: "schedule", id: self.value.item.id, value, listId: openListCopy.value.id });
+    queue.value.push({ action: "schedule", id: self.value.item.id, value, listId: id.value });
+});
+
+watch(checked, value => {
+    if (!self.value) return;
+
+    const { index } = self.value;
+
+    if (value) {
+        completedItems.value.push(self.value.item);
+        uncompletedItems.value = deleteNthElement(uncompletedItems.value, index);
+    } else {
+        uncompletedItems.value.push(self.value.item);
+        completedItems.value = deleteNthElement(completedItems.value, index);
+    }
 });
 </script>
 

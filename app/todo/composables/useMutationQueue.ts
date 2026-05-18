@@ -6,9 +6,9 @@ type MutationQueueItem =
     | { action: "schedule"; id: string; value: Date | null; listId: string };
 
 export default function useMutationQueue() {
-    const { openListCopy } = useOpenList();
-    const queue = useState<MutationQueueItem[]>(`todo-list-mutation-queue-${openListCopy.value?.id}`, () => []);
-    const isFetching = useState<boolean>(`todo-list-mutation-queue-${openListCopy.value?.id}-is-fetching`, () => false);
+    const { id } = useOpenList();
+    const queue = useState<MutationQueueItem[]>(`todo-list-mutation-queue-${id.value}`, () => []);
+    const isFetching = useState<boolean>(`todo-list-mutation-queue-${id.value}-is-fetching`, () => false);
 
     watch(
         [queue, isFetching],
