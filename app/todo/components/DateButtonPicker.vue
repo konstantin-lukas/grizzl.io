@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ICON_EVENT_AVAILABLE, ICON_EVENT_BUSY } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
+import type { DateValue } from "@internationalized/date";
 
-const modelValue = defineModel<string | null>();
+const modelValue = defineModel<DateValue | null>();
 const open = ref(false);
 const toggle = () => {
     open.value = !open.value;
