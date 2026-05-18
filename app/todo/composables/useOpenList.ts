@@ -8,10 +8,11 @@ export function useOpenList() {
     const uncompletedItems = useState<TodoList["items"]["completed"]>("open-todo-list-uncompleted-items", () => []);
 
     watch(
-        openList,
+        () => openList.value?.id,
         () => {
-            if (!openList.value) return;
+            if (!openList.value || openList.value.id === id.value) return;
             const clone = structuredClone(toRaw(openList.value));
+            id.value = clone.id;
             title.value = clone.title;
             completedItems.value = clone.items.completed;
             uncompletedItems.value = clone.items.uncompleted;

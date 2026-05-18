@@ -60,7 +60,7 @@ watch(checked, value => {
     const { index } = self.value;
 
     if (value) {
-        completedItems.value.push(self.value.item);
+        completedItems.value.unshift(self.value.item);
         uncompletedItems.value = deleteNthElement(uncompletedItems.value, index);
     } else {
         uncompletedItems.value.push(self.value.item);
