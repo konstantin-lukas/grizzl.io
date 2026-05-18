@@ -32,7 +32,6 @@ watch(
     <UModal
         :open
         :default-open="open"
-        :scrollable="true"
         :dismissible="true"
         @update:open="
             v => {
@@ -42,13 +41,16 @@ watch(
         "
     >
         <template #content>
-            <div class="min-h-[calc(100dvh-4rem)]" data-test-id="modal">
-                <div class="absolute top-4 right-4 size-10 hover-none:size-12">
+            <div class="relative h-[calc(100dvh-4rem)]" data-test-id="modal">
+                <div
+                    class="absolute top-0 left-0 z-1 h-14 w-full border-b border-b-muted bg-back px-4 py-2 hover-none:h-16"
+                >
+                    <slot name="header" />
                     <Button
                         :icon="ICON_CANCEL"
                         variant="ghost"
                         color="neutral"
-                        class="flex size-10 justify-center hover-none:size-12"
+                        class="absolute top-2 right-4 flex size-10 justify-center hover-none:size-12"
                         :aria-label="$t('ui.close')"
                         data-test-id="go-back-button"
                         @click="
@@ -59,7 +61,9 @@ watch(
                         "
                     />
                 </div>
-                <slot />
+                <div class="mt-14 h-[calc(100%-3.5rem)] overflow-y-auto">
+                    <slot />
+                </div>
             </div>
         </template>
         <template #title><slot name="title" /></template>

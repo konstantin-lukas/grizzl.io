@@ -5,9 +5,9 @@ import TodoListCard from "~/todo/components/TodoListCard.vue";
 import useTodoLists from "../composables/useTodoLists";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
-import EmptyBudgets from "../../core/components/data/EmptyCard.vue";
+import EmptyCard from "../../core/components/data/EmptyCard.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
-import ListModal from "../components/ListModal.vue";
+import ListModal from "../components/ListModalContent.vue";
 import { onResponseError } from "~/core/utils/toast";
 import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
@@ -61,7 +61,7 @@ watchEffect(() => {
         <USeparator />
         <ul>
             <li v-if="todoLists?.length === 0">
-                <EmptyBudgets class="mt-4" />
+                <EmptyCard class="mt-4" />
             </li>
             <TransitionGroup name="list">
                 <TodoListCard

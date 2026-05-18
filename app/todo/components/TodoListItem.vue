@@ -12,10 +12,10 @@ type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const { openListCopy } = useOpenList();
 const props = defineProps<{ item: TodoItem }>();
 
-const textModel = ref(props.item.text);
+const text = ref(props.item.text);
 const scheduledFor = shallowRef(null);
 
-const deferredText = useDeferredValue(textModel);
+const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 
 const self = computed(() => {
@@ -28,6 +28,8 @@ const self = computed(() => {
     return null;
 });
 
+const checked = ref(() => self.value?.type === "completed");
+
 const deleteSelf = () => {
     if (!openListCopy.value || !self.value) return;
     queue.value.push({ action: "delete", id: props.item.id, listId: openListCopy.value.id });
@@ -38,7 +40,7 @@ const deleteSelf = () => {
     );
 };
 
-watch(textModel, value => {
+watch(text, value => {
     if (!openListCopy.value || !self.value) return;
     self.value.item.text = value;
     queue.value.push({ action: "text", id: self.value.item.id, value, listId: openListCopy.value.id });
@@ -57,7 +59,7 @@ watch(scheduledFor, value => {
             <div class="center cursor-move" data-handle>
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
             </div>
-            <UCheckbox />
+            <UCheckbox v-model="checked" />
             <UInput
                 :model-value="props.item.text"
                 class="grow"
