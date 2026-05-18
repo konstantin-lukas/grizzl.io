@@ -13,6 +13,8 @@ const { openListCopy } = useOpenList();
 const props = defineProps<{ item: TodoItem }>();
 
 const textModel = ref(props.item.text);
+const scheduledFor = shallowRef(null);
+
 const deferredText = useDeferredValue(textModel);
 const { queue } = useMutationQueue();
 
@@ -28,7 +30,7 @@ const self = computed(() => {
 
 const deleteSelf = () => {
     if (!openListCopy.value || !self.value) return;
-    queue.value.push({ action: "delete", id: props.item.id });
+    queue.value.push({ action: "delete", id: props.item.id, listId: openListCopy.value.id });
 
     openListCopy.value.items[self.value.type] = deleteNthElement(
         openListCopy.value.items[self.value.type],
@@ -37,9 +39,15 @@ const deleteSelf = () => {
 };
 
 watch(textModel, value => {
-    if (!self.value) return;
+    if (!openListCopy.value || !self.value) return;
     self.value.item.text = value;
-    queue.value.push({ action: "text", id: self.value.item.id, value });
+    queue.value.push({ action: "text", id: self.value.item.id, value, listId: openListCopy.value.id });
+});
+
+watch(scheduledFor, value => {
+    if (!openListCopy.value || !self.value) return;
+    self.value.item.scheduledFor = value;
+    queue.value.push({ action: "schedule", id: self.value.item.id, value, listId: openListCopy.value.id });
 });
 </script>
 
@@ -57,7 +65,7 @@ watch(textModel, value => {
                 @update:model-value="value => (deferredText = value)"
             />
             <div class="flex hover-none:gap-1">
-                <DateButtonPicker />
+                <DateButtonPicker v-model="scheduledFor" />
                 <Button
                     :icon="ICON_CANCEL"
                     variant="ghost"

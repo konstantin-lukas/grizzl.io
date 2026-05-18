@@ -2,7 +2,7 @@
 import { ICON_EVENT_AVAILABLE, ICON_EVENT_BUSY } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
 
-const modelValue = shallowRef(null);
+const modelValue = defineModel<string | null>();
 const open = ref(false);
 const toggle = () => {
     open.value = !open.value;
