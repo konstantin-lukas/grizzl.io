@@ -1,6 +1,6 @@
 import { useOpenList } from "~/todo/composables/useOpenList";
 
-type MutationQueueItem = { action: "text"; id: string; value: string };
+type MutationQueueItem = { action: "text"; id: string; value: string } | { action: "delete"; id: string };
 
 export default function useMutationQueue() {
     const { openListCopy } = useOpenList();

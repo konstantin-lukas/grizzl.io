@@ -6,6 +6,7 @@ import { useOpenList } from "~/todo/composables/useOpenList";
 import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
+import { deleteNthElement } from "#shared/core/utils/array.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const { openListCopy } = useOpenList();
@@ -15,13 +16,30 @@ const textModel = ref(props.item.text);
 const deferredText = useDeferredValue(textModel);
 const { queue } = useMutationQueue();
 
-watch(textModel, value => {
+const self = computed(() => {
+    if (!openListCopy.value) return null;
     const findItem = (item: TodoItem) => item.id === props.item.id;
-    const targetItem =
-        openListCopy.value?.items.uncompleted.find(findItem) || openListCopy.value?.items.completed.find(findItem);
-    if (!targetItem) return;
-    targetItem.text = value;
-    queue.value.push({ action: "text", id: targetItem.id, value });
+    let index = openListCopy.value.items.uncompleted.findIndex(findItem);
+    if (index > -1) return { index, type: "uncompleted", item: openListCopy.value.items.uncompleted[index]! } as const;
+    index = openListCopy.value.items.completed.findIndex(findItem);
+    if (index > -1) return { index, type: "completed", item: openListCopy.value.items.completed[index]! } as const;
+    return null;
+});
+
+const deleteSelf = () => {
+    if (!openListCopy.value || !self.value) return;
+    queue.value.push({ action: "delete", id: props.item.id });
+
+    openListCopy.value.items[self.value.type] = deleteNthElement(
+        openListCopy.value.items[self.value.type],
+        self.value.index,
+    );
+};
+
+watch(textModel, value => {
+    if (!self.value) return;
+    self.value.item.text = value;
+    queue.value.push({ action: "text", id: self.value.item.id, value });
 });
 </script>
 
@@ -45,6 +63,7 @@ watch(textModel, value => {
                     variant="ghost"
                     color="neutral"
                     class="center size-7 text-muted hover-none:size-8"
+                    @click="deleteSelf"
                 />
             </div>
         </div>
