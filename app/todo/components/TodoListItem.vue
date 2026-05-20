@@ -57,13 +57,14 @@ watch(scheduledFor, value => {
 watch(checked, value => {
     if (!self.value) return;
 
-    const { index } = self.value;
+    const { index, item } = self.value;
 
     if (value) {
-        completedItems.value.unshift(self.value.item);
+        completedItems.value.unshift(item);
         uncompletedItems.value = deleteNthElement(uncompletedItems.value, index);
+        queue.value.push({ action: "check", id: item.id, listId: id.value });
     } else {
-        uncompletedItems.value.push(self.value.item);
+        uncompletedItems.value.push(item);
         completedItems.value = deleteNthElement(completedItems.value, index);
     }
 });

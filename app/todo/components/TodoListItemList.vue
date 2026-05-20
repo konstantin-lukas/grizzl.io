@@ -5,12 +5,12 @@ import { VueDraggable } from "vue-draggable-plus";
 import { useOpenList } from "~/todo/composables/useOpenList";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 
-const { uncompletedItems } = useOpenList();
+const { uncompletedItems, id } = useOpenList();
 const { queue } = useMutationQueue();
 
 const moveItem = (event: SortableEvent & { data: { id: string } }) => {
-    if (!event.oldIndex || !event.newIndex) return;
-    queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex });
+    if (!id.value || !event.oldIndex || !event.newIndex) return;
+    queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
 </script>
 
