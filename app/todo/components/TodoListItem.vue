@@ -27,6 +27,8 @@ const self = computed(() => {
     return null;
 });
 
+const autoCompleteSuggestions = computed(() => completedItems.value.map(({ text }) => text));
+
 const checked = ref(self.value?.type === "completed");
 
 const deleteSelf = () => {
@@ -78,9 +80,13 @@ watch(checked, value => {
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
             </div>
             <UCheckbox v-model="checked" :aria-label="props.item.text" />
-            <UInput
+            <UInputMenu
                 :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
+                autocomplete
+                :items="autoCompleteSuggestions"
+                :trailing-icon="false"
+                :content="{ hideWhenEmpty: true }"
                 class="grow"
                 variant="none"
                 @update:model-value="value => (deferredText = value)"
