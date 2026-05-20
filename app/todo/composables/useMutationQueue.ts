@@ -3,7 +3,8 @@ import { useOpenList } from "~/todo/composables/useOpenList";
 type MutationQueueItem =
     | { action: "text"; id: string; value: string; listId: string }
     | { action: "delete"; id: string; listId: string }
-    | { action: "schedule"; id: string; value: Date | null; listId: string };
+    | { action: "schedule"; id: string; value: Date | null; listId: string }
+    | { action: "move"; id: string; from: number; to: number };
 
 export default function useMutationQueue() {
     const { id } = useOpenList();

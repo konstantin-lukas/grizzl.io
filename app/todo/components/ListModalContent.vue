@@ -7,8 +7,9 @@ import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
 import TodoListItem from "~/todo/components/TodoListItem.vue";
 import QueryModal from "~/todo/components/ListModalBase.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
+import TodoListItemList from "~/todo/components/TodoListItemList.vue";
 
-const { openList, title, completedItems, uncompletedItems } = useOpenList();
+const { openList, title, completedItems } = useOpenList();
 const { queue } = useMutationQueue();
 </script>
 
@@ -21,12 +22,12 @@ const { queue } = useMutationQueue();
     >
         <div class="p-6 pt-8">
             <H1>{{ title }}</H1>
-            <ul v-if="uncompletedItems.length > 0" class="mt-6 mb-4">
-                <TodoListItem v-for="item in uncompletedItems" :key="item.id" :item />
-            </ul>
+            <TodoListItemList />
             <USeparator />
             <ul v-if="completedItems.length > 0" class="mt-4">
-                <TodoListItem v-for="item in completedItems" :key="item.id" :item />
+                <TransitionGroup name="draggable-list">
+                    <TodoListItem v-for="item in completedItems" :key="item.id" :item />
+                </TransitionGroup>
             </ul>
         </div>
         <template #header>
