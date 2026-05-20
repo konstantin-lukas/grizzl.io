@@ -5,6 +5,7 @@
         "toDoCalendar": "To-do-Kalender",
         "newList": "Neue To-do-Liste",
         "clearDate": "Datum löschen",
+        "completedItems": "1 erledigter Eintrag | {n} erledigte Einträge",
         "confirmClose": "Möchtest du die To-do-Liste wirklich schließen? Einige Änderungen wurden noch nicht gespeichert.",
         "meta": {
             "title": "To-do",
@@ -14,7 +15,11 @@
             "modal": {
                 "title": "To-do-Liste bearbeiten",
                 "description": "Markiere erledigte Aufgaben, füge neue hinzu, plane Aufgaben oder speichere Vorlagen, um sie später erneut zu laden."
-            }
+            },
+            "scheduleTask": "Aufgabe planen",
+            "deleteTask": "Aufgabe löschen",
+            "itemText": "Text des To-do-Listeneintrags",
+            "todoListSettings": "To-do-Listen-Einstellungen"
         },
         "toast": {
             "createdTitle": "To-do-Liste erstellt",

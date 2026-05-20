@@ -66,6 +66,7 @@ watch(checked, value => {
     } else {
         uncompletedItems.value.push(item);
         completedItems.value = deleteNthElement(completedItems.value, index);
+        queue.value.push({ action: "uncheck", id: item.id, listId: id.value });
     }
 });
 </script>
@@ -76,20 +77,22 @@ watch(checked, value => {
             <div v-if="!checked" class="center cursor-move" data-handle>
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
             </div>
-            <UCheckbox v-model="checked" />
+            <UCheckbox v-model="checked" :aria-label="props.item.text" />
             <UInput
+                :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
                 class="grow"
                 variant="none"
                 @update:model-value="value => (deferredText = value)"
             />
             <div class="flex hover-none:gap-1">
-                <DateButtonPicker v-model="scheduledFor" />
+                <DateButtonPicker v-if="!checked" v-model="scheduledFor" />
                 <Button
                     :icon="ICON_CANCEL"
                     variant="ghost"
                     color="neutral"
                     class="center size-7 text-muted hover-none:size-8"
+                    :aria-label="$t('todo.aria.deleteTask')"
                     @click="deleteSelf"
                 />
             </div>

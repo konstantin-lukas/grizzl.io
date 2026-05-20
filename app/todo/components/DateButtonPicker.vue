@@ -22,6 +22,7 @@ const close = (value: boolean) => {
         <Button
             color="neutral"
             variant="ghost"
+            :aria-label="$t('todo.aria.scheduleTask')"
             :icon="modelValue ? ICON_EVENT_AVAILABLE : ICON_EVENT_BUSY"
             class="center aspect-square size-7 text-nowrap text-muted hover-none:size-8"
             :on-click="toggle"

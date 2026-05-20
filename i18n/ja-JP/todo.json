@@ -5,6 +5,7 @@
         "toDoCalendar": "ToDoカレンダー",
         "newList": "新しいToDoリスト",
         "clearDate": "日付をクリア",
+        "completedItems": "1個の完了済みアイテム | {n}個の完了済みアイテム",
         "confirmClose": "ToDoリストを閉じてもよろしいですか？ 一部の変更はまだ保存されていません。",
         "meta": {
             "title": "ToDo",
@@ -14,7 +15,11 @@
             "modal": {
                 "title": "ToDoリストを編集",
                 "description": "完了したタスクをチェックし、新しいタスクを追加したり、スケジュールを設定したり、後で再利用できるようにプリセットを保存できます。"
-            }
+            },
+            "scheduleTask": "タスクをスケジュール",
+            "deleteTask": "タスクを削除",
+            "itemText": "ToDoリスト項目のテキスト",
+            "todoListSettings": "ToDoリスト設定"
         },
         "toast": {
             "createdTitle": "ToDoリストを作成しました",

@@ -5,6 +5,7 @@
         "toDoCalendar": "Calendario de tareas",
         "newList": "Nueva lista de tareas",
         "clearDate": "Borrar fecha",
+        "completedItems": "1 tarea completada | {n} tareas completadas",
         "confirmClose": "¿Seguro que quieres cerrar la lista de tareas? Algunos cambios todavía no se han guardado.",
         "meta": {
             "title": "Tareas",
@@ -14,7 +15,11 @@
             "modal": {
                 "title": "Editar lista de tareas",
                 "description": "Marca las tareas completadas, añade nuevas, programa tareas o guarda plantillas para volver a cargarlas más tarde."
-            }
+            },
+            "scheduleTask": "Programar tarea",
+            "deleteTask": "Eliminar tarea",
+            "itemText": "Texto del elemento de la lista de tareas",
+            "todoListSettings": "Configuración de la lista de tareas"
         },
         "toast": {
             "createdTitle": "Lista de tareas creada",
