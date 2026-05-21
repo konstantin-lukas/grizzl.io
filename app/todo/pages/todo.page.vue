@@ -36,10 +36,13 @@ watchEffect(() => {
     todoLists.value = data.value;
 });
 
-watchEffect(() => {
-    const id = route.query.list;
-    openList.value = data.value?.find(list => list.id === id) ?? null;
-});
+watch(
+    () => route.query.list,
+    id => {
+        openList.value = data.value?.find(list => list.id === id) ?? null;
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
@@ -72,6 +75,6 @@ watchEffect(() => {
                 />
             </TransitionGroup>
         </ul>
-        <ListModal />
+        <ListModal @close="refresh" />
     </Wrapper>
 </template>

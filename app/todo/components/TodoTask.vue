@@ -6,13 +6,15 @@ import { useOpenList } from "~/todo/composables/useOpenList";
 import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
-import { deleteNthElement } from "#shared/core/utils/array.util";
+import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
+import { nanoid } from "#shared/core/utils/id.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
-const { completedItems, id, uncompletedItems } = useOpenList();
+const { completedItems, id, uncompletedItems, sortCompletedItems } = useOpenList();
 const props = defineProps<{ item: TodoItem }>();
 
 const text = ref(props.item.text);
+const menuOpen = ref(false);
 const scheduledFor = shallowRef(null);
 
 const deferredText = useDeferredValue(text);
@@ -44,8 +46,45 @@ const deleteSelf = () => {
     return;
 };
 
+const handleKeydown = (e: KeyboardEvent) => {
+    if (!self.value) return;
+
+    const input = e.target;
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const relevantList = self.value.type === "completed" ? completedItems : uncompletedItems;
+
+    const { value } = input;
+
+    const beforeCaret = value.slice(0, input.selectionStart ?? value.length);
+    const afterCaret = value.slice(input.selectionEnd ?? value.length);
+
+    if (e.key === "Backspace") {
+        if (input.selectionStart === 0) {
+            if (self.value.index === 0) return;
+            relevantList.value[self.value.index - 1]!.text += afterCaret;
+            relevantList.value = deleteNthElement(relevantList.value, self.value.index);
+        }
+    }
+
+    if (e.key === "Enter" && !menuOpen.value) {
+        const newItem = { text: afterCaret, scheduledFor: null, id: nanoid() };
+        relevantList.value = insertElement(relevantList.value, newItem, self.value.index + 1);
+        if (self.value.type === "completed") sortCompletedItems();
+
+        text.value = beforeCaret;
+    }
+};
+
 watch(text, value => {
     if (!self.value) return;
+
+    const duplicateIndex = completedItems.value.findIndex(({ text }) => text === value);
+    if (duplicateIndex > -1) {
+        completedItems.value = deleteNthElement(completedItems.value, duplicateIndex);
+    }
+
     self.value.item.text = value;
     queue.value.push({ action: "text", id: self.value.item.id, value, listId: id.value });
 });
@@ -62,11 +101,14 @@ watch(checked, value => {
     const { index, item } = self.value;
 
     if (value) {
-        completedItems.value.unshift(item);
+        if (completedItems.value.every(({ text }) => text !== item.text)) {
+            completedItems.value.push(item);
+            sortCompletedItems();
+        }
         uncompletedItems.value = deleteNthElement(uncompletedItems.value, index);
         queue.value.push({ action: "check", id: item.id, listId: id.value });
     } else {
-        uncompletedItems.value.push(item);
+        uncompletedItems.value.push({ ...item, scheduledFor: null });
         completedItems.value = deleteNthElement(completedItems.value, index);
         queue.value.push({ action: "uncheck", id: item.id, listId: id.value });
     }
@@ -81,6 +123,7 @@ watch(checked, value => {
             </div>
             <UCheckbox v-model="checked" :aria-label="props.item.text" />
             <UInputMenu
+                v-if="self?.type === 'uncompleted'"
                 :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
                 autocomplete
@@ -89,7 +132,21 @@ watch(checked, value => {
                 :content="{ hideWhenEmpty: true }"
                 class="grow"
                 variant="none"
+                @update:open="value => (menuOpen = value)"
                 @update:model-value="value => (deferredText = value)"
+                @keydown="handleKeydown"
+            />
+            <UInput
+                v-else
+                :aria-label="$t('todo.aria.itemText')"
+                :model-value="props.item.text"
+                :items="autoCompleteSuggestions"
+                :trailing-icon="false"
+                :content="{ hideWhenEmpty: true }"
+                class="grow"
+                variant="none"
+                @update:model-value="value => (deferredText = value)"
+                @keydown="handleKeydown"
             />
             <div class="flex hover-none:gap-1">
                 <DateButtonPicker v-if="!checked" v-model="scheduledFor" />

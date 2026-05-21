@@ -14,11 +14,22 @@ export function useOpenList() {
             const clone = structuredClone(toRaw(openList.value));
             id.value = clone.id;
             title.value = clone.title;
-            completedItems.value = clone.items.completed;
+            completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
             uncompletedItems.value = clone.items.uncompleted;
         },
         { immediate: true },
     );
 
-    return { openList, id, title, completedItems, uncompletedItems };
+    const sortCompletedItems = () => {
+        completedItems.value.sort((left, right) => left.text.localeCompare(right.text));
+    };
+
+    const persistChanges = () => {
+        if (!openList.value) return;
+        openList.value.title = title.value;
+        openList.value.items.completed = completedItems.value;
+        openList.value.items.uncompleted = uncompletedItems.value;
+    };
+
+    return { openList, id, title, persistChanges, sortCompletedItems, completedItems, uncompletedItems };
 }

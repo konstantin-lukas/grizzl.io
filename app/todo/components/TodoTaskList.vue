@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TodoListItem from "~/todo/components/TodoListItem.vue";
+import TodoTask from "~/todo/components/TodoTask.vue";
 import type { SortableEvent } from "vue-draggable-plus";
 import { VueDraggable } from "vue-draggable-plus";
 import { useOpenList } from "~/todo/composables/useOpenList";
@@ -26,7 +26,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
             @end="moveItem"
         >
             <TransitionGroup name="draggable-list">
-                <TodoListItem v-for="item in uncompletedItems" :key="item.id" :item />
+                <TodoTask v-for="item in uncompletedItems" :key="item.id" :item />
             </TransitionGroup>
         </VueDraggable>
     </div>
