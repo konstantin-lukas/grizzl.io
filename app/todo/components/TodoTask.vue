@@ -85,9 +85,13 @@ const handleKeydown = (e: KeyboardEvent) => {
         text.value = beforeCaret;
     }
 };
+const bottomID = computed(() => (self.value ? `bottom-${self.value.item.id}` : undefined));
 
 watch(text, value => {
     if (!self.value) return;
+    queueMicrotask(() => {
+        menuOpen.value = document.getElementById(bottomID.value ?? "")?.checkVisibility() ?? false;
+    });
 
     const duplicateIndex = completedItems.value.findIndex(({ text }) => text === value);
     if (duplicateIndex > -1) {
@@ -125,6 +129,14 @@ watch(checked, value => {
         queue.value.push({ action: "uncheck", id: item.id, listId: id.value });
     }
 });
+
+const handleUpdate = (value: string) => {
+    queueMicrotask(() => {
+        menuOpen.value = document.getElementById(bottomID.value ?? "")?.checkVisibility() ?? false;
+        if (menuOpen.value) text.value = value;
+        else deferredText.value = value;
+    });
+};
 </script>
 
 <template>
@@ -138,16 +150,19 @@ watch(checked, value => {
                 v-if="self?.type === 'uncompleted'"
                 :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
-                autocomplete
+                mode="autocomplete"
                 :items="autoCompleteSuggestions"
                 :trailing-icon="false"
                 :content="{ hideWhenEmpty: true }"
                 class="grow"
                 variant="none"
-                @update:open="value => (menuOpen = value)"
-                @update:model-value="value => (deferredText = value)"
+                @update:model-value="handleUpdate"
                 @keydown="handleKeydown"
-            />
+            >
+                <template #content-bottom>
+                    <span :id="bottomID" />
+                </template>
+            </UInputMenu>
             <UInput
                 v-else
                 :aria-label="$t('todo.aria.itemText')"
