@@ -1,0 +1,1 @@
+ALTER TABLE "todo_list_item" DROP CONSTRAINT "todo_list_item_listId_text_unique";

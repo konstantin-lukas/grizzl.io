@@ -12,7 +12,7 @@ import UAccordion from "#ui/components/Accordion.vue";
 
 const emit = defineEmits(["close"]);
 
-const { openList, title, completedItems, persistChanges } = useOpenList();
+const { openList, title, completedItems, uncompletedItems, persistChanges } = useOpenList();
 const { queue } = useMutationQueue();
 </script>
 
@@ -30,7 +30,7 @@ const { queue } = useMutationQueue();
         <div class="p-6 pt-8">
             <H1>{{ title }}</H1>
             <TodoTaskList />
-            <USeparator />
+            <USeparator v-if="completedItems.length > 0 && uncompletedItems.length > 0" />
             <Transition name="fade">
                 <UAccordion
                     v-if="completedItems.length > 0"

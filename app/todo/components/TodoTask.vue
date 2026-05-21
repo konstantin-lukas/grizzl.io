@@ -20,6 +20,12 @@ const scheduledFor = shallowRef(null);
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 
+const existingIDs = computed(() => {
+    const completedIDs = completedItems.value.map(({ id }) => id);
+    const uncompletedIDs = uncompletedItems.value.map(({ id }) => id);
+    return new Set<string>([...completedIDs, ...uncompletedIDs]);
+});
+
 const self = computed(() => {
     const findItem = (item: TodoItem) => item.id === props.item.id;
     let index = uncompletedItems.value.findIndex(findItem);
@@ -46,6 +52,13 @@ const deleteSelf = () => {
     return;
 };
 
+const generateNewID = () => {
+    while (true) {
+        const id = nanoid();
+        if (!existingIDs.value.has(id)) return id;
+    }
+};
+
 const handleKeydown = (e: KeyboardEvent) => {
     if (!self.value) return;
 
@@ -69,7 +82,7 @@ const handleKeydown = (e: KeyboardEvent) => {
     }
 
     if (e.key === "Enter" && !menuOpen.value) {
-        const newItem = { text: afterCaret, scheduledFor: null, id: nanoid() };
+        const newItem = { text: afterCaret, scheduledFor: null, id: generateNewID() };
         relevantList.value = insertElement(relevantList.value, newItem, self.value.index + 1);
         if (self.value.type === "completed") sortCompletedItems();
 
