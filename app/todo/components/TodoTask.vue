@@ -66,7 +66,8 @@ const handleKeydown = (e: KeyboardEvent) => {
 
     if (!(input instanceof HTMLInputElement)) return;
 
-    const relevantList = self.value.type === "completed" ? completedItems : uncompletedItems;
+    const completedIsRelevant = self.value.type === "completed";
+    const relevantList = completedIsRelevant ? completedItems : uncompletedItems;
 
     const { value } = input;
 
@@ -76,15 +77,24 @@ const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === "Backspace") {
         if (input.selectionStart === 0) {
             if (self.value.index === 0) return;
-            relevantList.value[self.value.index - 1]!.text += afterCaret;
+            const targetItem = relevantList.value[self.value.index - 1]!;
+            targetItem.text += afterCaret;
+            queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
+            queue.value.push({ action: "delete", listId: id.value, id: self.value.item.id });
             relevantList.value = deleteNthElement(relevantList.value, self.value.index);
         }
-    }
-
-    if (e.key === "Enter" && !menuOpen.value) {
+    } else if (e.key === "Enter" && !menuOpen.value) {
         const newItem = { text: afterCaret, scheduledFor: null, id: generateNewID() };
-        relevantList.value = insertElement(relevantList.value, newItem, self.value.index + 1);
-        if (self.value.type === "completed") sortCompletedItems();
+        const newIndex = self.value.index + 1;
+        queue.value.push({
+            action: "create",
+            listId: id.value,
+            id: newItem.id,
+            text: afterCaret,
+            index: completedIsRelevant ? null : newIndex,
+        });
+        relevantList.value = insertElement(relevantList.value, newItem, newIndex);
+        if (completedIsRelevant) sortCompletedItems();
 
         text.value = beforeCaret;
     }
@@ -95,6 +105,7 @@ watch(text, value => {
 
     const duplicateIndex = completedItems.value.findIndex(({ text }) => text === value);
     if (duplicateIndex > -1) {
+        queue.value.push({ action: "delete", id: completedItems.value[duplicateIndex]!.id, listId: id.value });
         completedItems.value = deleteNthElement(completedItems.value, duplicateIndex);
     }
 
@@ -116,10 +127,12 @@ watch(checked, value => {
     if (value) {
         if (completedItems.value.every(({ text }) => text !== item.text)) {
             completedItems.value.push(item);
+            queue.value.push({ action: "check", id: item.id, listId: id.value });
             sortCompletedItems();
+        } else {
+            queue.value.push({ action: "delete", id: item.id, listId: id.value });
         }
         uncompletedItems.value = deleteNthElement(uncompletedItems.value, index);
-        queue.value.push({ action: "check", id: item.id, listId: id.value });
     } else {
         uncompletedItems.value.push({ ...item, scheduledFor: null });
         completedItems.value = deleteNthElement(completedItems.value, index);

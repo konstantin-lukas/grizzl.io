@@ -5,7 +5,8 @@ type MutationQueueItem =
     | { action: "delete"; id: string; listId: string }
     | { action: "schedule"; id: string; value: Date | null; listId: string }
     | { action: "move"; id: string; from: number; to: number; listId: string }
-    | { action: "uncheck" | "check"; id: string; listId: string };
+    | { action: "uncheck" | "check"; id: string; listId: string }
+    | { action: "create"; id: string; listId: string; text: string; index: number | null };
 
 export default function useMutationQueue() {
     const { id } = useOpenList();
