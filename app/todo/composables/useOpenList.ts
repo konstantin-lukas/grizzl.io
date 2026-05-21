@@ -1,3 +1,4 @@
+import { nanoid } from "#shared/core/utils/id.util";
 import type { TodoList } from "~/todo/composables/useTodoLists";
 
 export function useOpenList() {
@@ -6,6 +7,7 @@ export function useOpenList() {
     const title = useState<string>("open-todo-list-title", () => "");
     const completedItems = useState<TodoList["items"]["completed"]>("open-todo-list-completed-items", () => []);
     const uncompletedItems = useState<TodoList["items"]["completed"]>("open-todo-list-uncompleted-items", () => []);
+    const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
 
     watch(
         () => openList.value?.id,
@@ -20,6 +22,19 @@ export function useOpenList() {
         { immediate: true },
     );
 
+    watchEffect(() => {
+        const completedIDs = completedItems.value.map(({ id }) => id);
+        const uncompletedIDs = uncompletedItems.value.map(({ id }) => id);
+        existingIDs.value = new Set<string>([...completedIDs, ...uncompletedIDs]);
+    });
+
+    const generateNewID = () => {
+        while (true) {
+            const id = nanoid();
+            if (!existingIDs.value.has(id)) return id;
+        }
+    };
+
     const sortCompletedItems = () => {
         completedItems.value.sort((left, right) => left.text.localeCompare(right.text));
     };
@@ -31,5 +46,15 @@ export function useOpenList() {
         openList.value.items.uncompleted = uncompletedItems.value;
     };
 
-    return { openList, id, title, persistChanges, sortCompletedItems, completedItems, uncompletedItems };
+    return {
+        openList,
+        id,
+        title,
+        persistChanges,
+        sortCompletedItems,
+        generateNewID,
+        existingIDs,
+        completedItems,
+        uncompletedItems,
+    };
 }

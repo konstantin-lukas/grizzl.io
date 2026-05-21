@@ -7,10 +7,9 @@ import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
-import { nanoid } from "#shared/core/utils/id.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
-const { completedItems, id, uncompletedItems, sortCompletedItems } = useOpenList();
+const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
 const props = defineProps<{ item: TodoItem }>();
 
 const text = ref(props.item.text);
@@ -19,12 +18,6 @@ const scheduledFor = shallowRef(null);
 
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
-
-const existingIDs = computed(() => {
-    const completedIDs = completedItems.value.map(({ id }) => id);
-    const uncompletedIDs = uncompletedItems.value.map(({ id }) => id);
-    return new Set<string>([...completedIDs, ...uncompletedIDs]);
-});
 
 const self = computed(() => {
     const findItem = (item: TodoItem) => item.id === props.item.id;
@@ -50,13 +43,6 @@ const deleteSelf = () => {
 
     uncompletedItems.value = deleteNthElement(uncompletedItems.value, self.value.index);
     return;
-};
-
-const generateNewID = () => {
-    while (true) {
-        const id = nanoid();
-        if (!existingIDs.value.has(id)) return id;
-    }
 };
 
 const handleKeydown = (e: KeyboardEvent) => {

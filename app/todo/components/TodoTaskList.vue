@@ -19,7 +19,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
         <VueDraggable
             v-model="uncompletedItems"
             :animation="250"
-            class="mt-6 mb-4"
+            class="mt-6"
             tag="ul"
             handle="[data-handle]"
             ghost-class="ghost"

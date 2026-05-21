@@ -2,7 +2,7 @@
 import { useOpenList } from "~/todo/composables/useOpenList";
 import H1 from "~/core/components/typo/H1.vue";
 import Button from "~/core/components/button/Button.vue";
-import { ICON_OPTIONS } from "~/core/constants/icons.constant";
+import { ICON_OPTIONS, ICON_PLUS } from "~/core/constants/icons.constant";
 import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
 import TodoTask from "./TodoTask.vue";
 import QueryModal from "~/todo/components/ListModalBase.vue";
@@ -12,8 +12,14 @@ import UAccordion from "#ui/components/Accordion.vue";
 
 const emit = defineEmits(["close"]);
 
-const { openList, title, completedItems, uncompletedItems, persistChanges } = useOpenList();
+const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 const { queue } = useMutationQueue();
+
+const addItem = () => {
+    const newId = generateNewID();
+    queue.value.push({ action: "create", id: newId, listId: id.value, text: "", index: uncompletedItems.value.length });
+    uncompletedItems.value.push({ id: newId, text: "", scheduledFor: null });
+};
 </script>
 
 <template>
@@ -30,7 +36,12 @@ const { queue } = useMutationQueue();
         <div class="p-6 pt-8">
             <H1>{{ title }}</H1>
             <TodoTaskList />
-            <USeparator v-if="completedItems.length > 0 && uncompletedItems.length > 0" />
+            <div class="mt-2 mb-4" :class="{ 'mt-8': uncompletedItems.length === 0 }">
+                <Button :icon="ICON_PLUS" variant="ghost" class="w-full pl-6" @click="addItem">
+                    {{ $t("ui.add") }}
+                </Button>
+            </div>
+            <USeparator v-if="completedItems.length > 0" />
             <Transition name="fade">
                 <UAccordion
                     v-if="completedItems.length > 0"
