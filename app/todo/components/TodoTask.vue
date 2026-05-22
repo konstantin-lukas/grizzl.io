@@ -15,7 +15,9 @@ const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted"; i
 const text = ref(props.item.text);
 const menuOpen = ref(false);
 const scheduledFor = shallowRef(null);
-const isInFocus = ref(false);
+const el = ref(null);
+const isVisible = ref(false);
+let observer: IntersectionObserver;
 
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
@@ -123,49 +125,63 @@ const handleUpdate = (value: string) => {
         else deferredText.value = value;
     });
 };
+
+onMounted(() => {
+    observer = new IntersectionObserver(
+        ([entry]) => {
+            if (!entry) return;
+            isVisible.value = entry.isIntersecting;
+        },
+        {
+            threshold: 0,
+        },
+    );
+
+    if (el.value) observer.observe(el.value);
+});
+
+onBeforeUnmount(() => {
+    if (observer && el.value) observer.unobserve(el.value);
+});
 </script>
 
 <template>
-    <li
-        class="box-border border-y border-y-transparent py-1 focus-within:border-y-muted"
-        @focusin="isInFocus = true"
-        @focusout="isInFocus = false"
-    >
-        <div class="flex items-center gap-1" :class="{ 'ml-6.5': checked }">
-            <div v-if="!checked" class="center cursor-move" data-handle>
-                <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
-            </div>
-            <UCheckbox v-model="checked" :aria-label="props.item.text" />
-            <UInputMenu
-                v-if="props.type === 'uncompleted'"
-                :aria-label="$t('todo.aria.itemText')"
-                :model-value="props.item.text"
-                mode="autocomplete"
-                :items="autoCompleteSuggestions"
-                :trailing-icon="false"
-                :content="{ hideWhenEmpty: true }"
-                class="grow"
-                variant="none"
-                @update:model-value="handleUpdate"
-                @keydown="handleKeydown"
-            >
-                <template #content-bottom>
-                    <span :id="bottomID" />
-                </template>
-            </UInputMenu>
-            <UInput
-                v-else
-                :aria-label="$t('todo.aria.itemText')"
-                :model-value="props.item.text"
-                :trailing-icon="false"
-                :content="{ hideWhenEmpty: true }"
-                class="grow"
-                variant="none"
-                @update:model-value="value => (deferredText = value)"
-                @keydown="handleKeydown"
-            />
-            <div class="min-w-14 hover-none:min-w-18">
-                <div v-if="isInFocus" class="flex hover-none:gap-1">
+    <li ref="el" class="box-border h-10.5 border-y border-y-transparent py-1 focus-within:border-y-muted">
+        <Transition name="fade">
+            <div v-if="isVisible" class="flex items-center gap-1" :class="{ 'ml-6.5': checked }">
+                <div v-if="!checked" class="center cursor-move" data-handle>
+                    <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
+                </div>
+                <UCheckbox v-model="checked" :aria-label="props.item.text" />
+                <UInputMenu
+                    v-if="props.type === 'uncompleted'"
+                    :aria-label="$t('todo.aria.itemText')"
+                    :model-value="props.item.text"
+                    mode="autocomplete"
+                    :items="autoCompleteSuggestions"
+                    :trailing-icon="false"
+                    :content="{ hideWhenEmpty: true }"
+                    class="grow"
+                    variant="none"
+                    @update:model-value="handleUpdate"
+                    @keydown="handleKeydown"
+                >
+                    <template #content-bottom>
+                        <span :id="bottomID" />
+                    </template>
+                </UInputMenu>
+                <UInput
+                    v-else
+                    :aria-label="$t('todo.aria.itemText')"
+                    :model-value="props.item.text"
+                    :trailing-icon="false"
+                    :content="{ hideWhenEmpty: true }"
+                    class="grow"
+                    variant="none"
+                    @update:model-value="value => (deferredText = value)"
+                    @keydown="handleKeydown"
+                />
+                <div class="flex hover-none:gap-1">
                     <DateButtonPicker v-if="!checked" v-model="scheduledFor" />
                     <Button
                         :icon="ICON_CANCEL"
@@ -177,6 +193,6 @@ const handleUpdate = (value: string) => {
                     />
                 </div>
             </div>
-        </div>
+        </Transition>
     </li>
 </template>
