@@ -7,8 +7,8 @@ import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
 import TodoTask from "./TodoTask.vue";
 import QueryModal from "~/todo/components/ListModalBase.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
-import TodoTaskList from "./TodoTaskList.vue";
 import UAccordion from "#ui/components/Accordion.vue";
+import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
 
 const emit = defineEmits(["close"]);
 
@@ -19,6 +19,11 @@ const addItem = () => {
     const newId = generateNewID();
     queue.value.push({ action: "create", id: newId, listId: id.value, text: "", index: uncompletedItems.value.length });
     uncompletedItems.value.push({ id: newId, text: "", scheduledFor: null });
+};
+
+const moveItem = (event: SortableEvent & { data: { id: string } }) => {
+    if (!id.value || !event.oldIndex || !event.newIndex) return;
+    queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
 </script>
 
@@ -35,7 +40,27 @@ const addItem = () => {
     >
         <div class="p-6 pt-8">
             <H1>{{ title }}</H1>
-            <TodoTaskList />
+            <div v-if="uncompletedItems.length > 0">
+                <VueDraggable
+                    v-model="uncompletedItems"
+                    :animation="250"
+                    class="mt-6"
+                    tag="ul"
+                    handle="[data-handle]"
+                    ghost-class="ghost"
+                    @end="moveItem"
+                >
+                    <TransitionGroup name="draggable-list">
+                        <TodoTask
+                            v-for="(item, index) in uncompletedItems"
+                            :key="item.id"
+                            :index
+                            :item
+                            type="uncompleted"
+                        />
+                    </TransitionGroup>
+                </VueDraggable>
+            </div>
             <div class="mt-2 mb-4" :class="{ 'mt-8': uncompletedItems.length === 0 }">
                 <Button :icon="ICON_PLUS" variant="ghost" class="w-full pl-6" @click="addItem">
                     {{ $t("ui.add") }}
@@ -51,7 +76,13 @@ const addItem = () => {
                     <template #content>
                         <ul>
                             <TransitionGroup name="draggable-list">
-                                <TodoTask v-for="item in completedItems" :key="item.id" :item />
+                                <TodoTask
+                                    v-for="(item, index) in completedItems"
+                                    :key="item.id"
+                                    :index
+                                    :item
+                                    type="completed"
+                                />
                             </TransitionGroup>
                         </ul>
                     </template>

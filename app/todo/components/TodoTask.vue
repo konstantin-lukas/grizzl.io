@@ -10,7 +10,7 @@ import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
-const props = defineProps<{ item: TodoItem }>();
+const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted"; index: number }>();
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
@@ -19,40 +19,28 @@ const scheduledFor = shallowRef(null);
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 
-const self = computed(() => {
-    const findItem = (item: TodoItem) => item.id === props.item.id;
-    let index = uncompletedItems.value.findIndex(findItem);
-    if (index > -1) return { index, type: "uncompleted", item: uncompletedItems.value[index]! } as const;
-    index = completedItems.value.findIndex(findItem);
-    if (index > -1) return { index, type: "completed", item: completedItems.value[index]! } as const;
-    return null;
-});
-
 const autoCompleteSuggestions = computed(() => completedItems.value.map(({ text }) => text));
 
-const checked = ref(self.value?.type === "completed");
+const checked = ref(props.type === "completed");
 
 const deleteSelf = () => {
-    if (!self.value) return;
     queue.value.push({ action: "delete", id: props.item.id, listId: id.value });
 
-    if (self.value.type === "completed") {
-        completedItems.value = deleteNthElement(completedItems.value, self.value.index);
+    if (props.type === "completed") {
+        completedItems.value = deleteNthElement(completedItems.value, props.index);
         return;
     }
 
-    uncompletedItems.value = deleteNthElement(uncompletedItems.value, self.value.index);
+    uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
     return;
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
-    if (!self.value) return;
-
     const input = e.target;
 
     if (!(input instanceof HTMLInputElement)) return;
 
-    const completedIsRelevant = self.value.type === "completed";
+    const completedIsRelevant = props.type === "completed";
     const relevantList = completedIsRelevant ? completedItems : uncompletedItems;
 
     const { value } = input;
@@ -62,16 +50,16 @@ const handleKeydown = (e: KeyboardEvent) => {
 
     if (e.key === "Backspace") {
         if (input.selectionStart === 0) {
-            if (self.value.index === 0) return;
-            const targetItem = relevantList.value[self.value.index - 1]!;
+            if (props.index === 0) return;
+            const targetItem = relevantList.value[props.index - 1]!;
             targetItem.text += afterCaret;
             queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
-            queue.value.push({ action: "delete", listId: id.value, id: self.value.item.id });
-            relevantList.value = deleteNthElement(relevantList.value, self.value.index);
+            queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
+            relevantList.value = deleteNthElement(relevantList.value, props.index);
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
         const newItem = { text: afterCaret, scheduledFor: null, id: generateNewID() };
-        const newIndex = self.value.index + 1;
+        const newIndex = props.index + 1;
         queue.value.push({
             action: "create",
             listId: id.value,
@@ -85,10 +73,9 @@ const handleKeydown = (e: KeyboardEvent) => {
         text.value = beforeCaret;
     }
 };
-const bottomID = computed(() => (self.value ? `bottom-${self.value.item.id}` : undefined));
+const bottomID = computed(() => `bottom-${props.item.id}`);
 
 watch(text, value => {
-    if (!self.value) return;
     queueMicrotask(() => {
         menuOpen.value = document.getElementById(bottomID.value ?? "")?.checkVisibility() ?? false;
     });
@@ -99,20 +86,18 @@ watch(text, value => {
         completedItems.value = deleteNthElement(completedItems.value, duplicateIndex);
     }
 
-    self.value.item.text = value;
-    queue.value.push({ action: "text", id: self.value.item.id, value, listId: id.value });
+    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.text = value;
+    queue.value.push({ action: "text", id: props.item.id, value, listId: id.value });
 });
 
 watch(scheduledFor, value => {
-    if (!self.value) return;
-    self.value.item.scheduledFor = value;
-    queue.value.push({ action: "schedule", id: self.value.item.id, value, listId: id.value });
+    if (!props) return;
+    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.scheduledFor = value;
+    queue.value.push({ action: "schedule", id: props.item.id, value, listId: id.value });
 });
 
 watch(checked, value => {
-    if (!self.value) return;
-
-    const { index, item } = self.value;
+    const { index, item } = props;
 
     if (value) {
         if (completedItems.value.every(({ text }) => text !== item.text)) {
@@ -147,7 +132,7 @@ const handleUpdate = (value: string) => {
             </div>
             <UCheckbox v-model="checked" :aria-label="props.item.text" />
             <UInputMenu
-                v-if="self?.type === 'uncompleted'"
+                v-if="props.type === 'uncompleted'"
                 :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
                 mode="autocomplete"
@@ -167,7 +152,6 @@ const handleUpdate = (value: string) => {
                 v-else
                 :aria-label="$t('todo.aria.itemText')"
                 :model-value="props.item.text"
-                :items="autoCompleteSuggestions"
                 :trailing-icon="false"
                 :content="{ hideWhenEmpty: true }"
                 class="grow"
