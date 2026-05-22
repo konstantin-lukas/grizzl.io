@@ -16,7 +16,7 @@ const route = useRoute();
 const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
-const { openList } = useOpenList();
+const { openList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists", {
     onResponseError: onResponseError(toast, t),
 });
