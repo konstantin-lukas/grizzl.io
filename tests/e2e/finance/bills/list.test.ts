@@ -67,6 +67,7 @@ test(
             });
         }
 
+        // THE TEST HAS TO HAPPEN LIKE THIS BECAUSE FETCHING TRANSACTIONS EXECUTES AUTO TRANSACTIONS ON THE SERVER
         await page.page.route(`/api/finance/accounts/${account.id}/auto-transactions`, async route => {
             await route.fulfill({ json: autoTransactions });
         });

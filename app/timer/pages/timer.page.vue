@@ -4,7 +4,7 @@ import { useToast } from "#ui/composables";
 import Empty from "~/core/components/data/Empty.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
-import QuerySlideover from "../../core/components/overlay/QuerySlideover.vue";
+import QuerySlideover from "~/core/components/overlay/QuerySlideover.vue";
 import { onResponseError } from "~/core/utils/toast";
 import OverviewList from "~/timer/components/overview/OverviewList.vue";
 import PlaybackContainer from "~/timer/components/playback/PlaybackContainer.vue";
