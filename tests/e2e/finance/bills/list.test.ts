@@ -2,6 +2,36 @@ import { str } from "~~/test-utils/helpers/data";
 import { test } from "~~/test-utils/playwright";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
+const BASE_AUTO_TRANSACTION_1 = {
+    id: "i4fDJdzZtt3UhwSG",
+    createdAt: "2025-05-18T01:18:19.000Z",
+    amount: -10000,
+    reference: "potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod",
+    execInterval: 1,
+    execOn: 20,
+    lastExec: "2026-04-20",
+    category: {
+        id: "KTEHimtMEhxLGXNJ",
+        name: "Vitae lobortis pell.",
+        icon: "child-friendly-outline-rounded",
+    },
+};
+
+const BASE_AUTO_TRANSACTION_2 = {
+    id: "6qtYzdaxuaFefvAc",
+    createdAt: "2025-05-18T01:18:19.000Z",
+    amount: -10000,
+    reference: "potentivoluptatemolestieullamcoenimeuismodsintirureelitestlectusconsectetuerduiplaceratpraesentutsod",
+    execInterval: 1,
+    execOn: 10,
+    lastExec: "2026-05-10",
+    category: {
+        id: "KTEHimtMEhxLGXNJ",
+        name: "Vitae lobortis pell.",
+        icon: "child-friendly-outline-rounded",
+    },
+};
+
 test(
     "shows upcoming bills at the top and paid bills at the bottom",
     { tag: SCREENSHOT },
@@ -12,27 +42,35 @@ test(
             displayName: str({ length: 20, seed }),
             normalizedName: str({ length: 20, spaces: false, seed }).toLowerCase(),
         }));
+
+        const autoTransactions: (typeof BASE_AUTO_TRANSACTION_1)[] = [];
+
         for (const [index, category] of categories.entries()) {
-            await db.financeAutoTransaction.insert(1, {
-                categoryId: category.id,
-                accountId: account.id,
-                amount: -100_00,
-                lastExec: "2026-04-20",
-                execInterval: 1,
-                execOn: 20,
+            autoTransactions.push({
+                ...BASE_AUTO_TRANSACTION_1,
+                category: {
+                    id: category.id,
+                    name: category.displayName,
+                    icon: category.icon,
+                },
             });
 
             if (index > 2) continue;
 
-            await db.financeAutoTransaction.insert(1, {
-                categoryId: category.id,
-                accountId: account.id,
-                amount: -100_00,
-                lastExec: "2026-05-10",
-                execInterval: 1,
-                execOn: 10,
+            autoTransactions.push({
+                ...BASE_AUTO_TRANSACTION_2,
+                category: {
+                    id: category.id,
+                    name: category.displayName,
+                    icon: category.icon,
+                },
             });
         }
+
+        await page.page.route(`/api/finance/accounts/${account.id}/auto-transactions`, async route => {
+            await route.fulfill({ json: autoTransactions });
+        });
+
         await page.page.clock.install({ time: "2026-05-15" });
         await page.goto();
         await page.click("tabs", { nth: 2 });
