@@ -15,6 +15,7 @@ const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted"; i
 const text = ref(props.item.text);
 const menuOpen = ref(false);
 const scheduledFor = shallowRef(null);
+const isInFocus = ref(false);
 
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
@@ -125,7 +126,11 @@ const handleUpdate = (value: string) => {
 </script>
 
 <template>
-    <li class="group box-border border-y border-y-transparent py-1 focus-within:border-y-muted">
+    <li
+        class="box-border border-y border-y-transparent py-1 focus-within:border-y-muted"
+        @focusin="isInFocus = true"
+        @focusout="isInFocus = false"
+    >
         <div class="flex items-center gap-1" :class="{ 'ml-6.5': checked }">
             <div v-if="!checked" class="center cursor-move" data-handle>
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
@@ -159,16 +164,18 @@ const handleUpdate = (value: string) => {
                 @update:model-value="value => (deferredText = value)"
                 @keydown="handleKeydown"
             />
-            <div class="flex hover-none:gap-1">
-                <DateButtonPicker v-if="!checked" v-model="scheduledFor" />
-                <Button
-                    :icon="ICON_CANCEL"
-                    variant="ghost"
-                    color="neutral"
-                    class="center size-7 text-muted hover-none:size-8"
-                    :aria-label="$t('todo.aria.deleteTask')"
-                    @click="deleteSelf"
-                />
+            <div class="min-w-14 hover-none:min-w-18">
+                <div v-if="isInFocus" class="flex hover-none:gap-1">
+                    <DateButtonPicker v-if="!checked" v-model="scheduledFor" />
+                    <Button
+                        :icon="ICON_CANCEL"
+                        variant="ghost"
+                        color="neutral"
+                        class="center size-7 text-muted hover-none:size-8"
+                        :aria-label="$t('todo.aria.deleteTask')"
+                        @click="deleteSelf"
+                    />
+                </div>
             </div>
         </div>
     </li>
