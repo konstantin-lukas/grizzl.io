@@ -14,5 +14,5 @@ export const todoListItem = pgTable(
         index: integer(),
         scheduledFor: date(),
     },
-    t => [unique().on(t.listId, t.text), unique().on(t.listId, t.index)],
+    t => [unique().on(t.listId, t.index)],
 );

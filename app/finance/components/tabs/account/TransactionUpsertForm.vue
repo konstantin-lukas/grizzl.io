@@ -99,7 +99,7 @@ const onSubmit = useOnSubmit({
                     <UFormField :label="$t('finance.category')" name="category.name" class="w-full" required>
                         <UInputMenu
                             v-model="state.category.name"
-                            autocomplete
+                            mode="autocomplete"
                             :items="categoryNames"
                             class="w-full"
                             :maxlength="TITLE_MAX"
@@ -118,7 +118,7 @@ const onSubmit = useOnSubmit({
                     <UInputMenu
                         v-model="state.reference"
                         :items="referenceItems"
-                        autocomplete
+                        mode="autocomplete"
                         class="w-full"
                         :maxlength="TITLE_MAX"
                         data-test-id="finance-transaction-upsert-reference-input"

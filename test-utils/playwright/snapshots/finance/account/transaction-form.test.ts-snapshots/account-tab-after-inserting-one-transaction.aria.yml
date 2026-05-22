@@ -25,7 +25,7 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
-  - alert: /Notification \[ "Transaction Created", "A new transaction with amount “€100\.00” was created\." \]/
+  - alert: /Notification Transaction CreatedA new transaction with amount “€100\.00” was created\./
   - region "Notifications (F8)":
     - list:
       - listitem:

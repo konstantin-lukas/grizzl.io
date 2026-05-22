@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import CategoryIcon from "~/finance/components/CategoryIcon.vue";
 import { ICON_CHEVRON_RIGHT } from "~/core/constants/icons.constant";
-import type { TodoList } from "~/todo/useTodoLists";
+import type { TodoList } from "~/todo/composables/useTodoLists";
+
 const props = defineProps<{ list: TodoList }>();
+const emit = defineEmits(["open"]);
+
 const progress = computed(() => props.list.items.completed.length);
-const target = computed(() => props.list.items.uncompleted.length);
+const target = computed(() => props.list.items.completed.length + props.list.items.uncompleted.length);
 </script>
 
 <template>
@@ -24,6 +27,7 @@ const target = computed(() => props.list.items.uncompleted.length);
                 :ui="{ leadingIcon: 'size-12' }"
                 variant="link"
                 color="neutral"
+                @click="emit('open')"
             />
         </div>
     </li>

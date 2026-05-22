@@ -8,6 +8,11 @@ export function deleteNthElement<T>(array: T[], n: number) {
     return [...array.slice(0, n), ...array.slice(n + 1)];
 }
 
+export function insertElement<T>(array: T[], element: T, n: number) {
+    if (n < 0 || n > array.length) return [...array];
+    return [...array.slice(0, n), element, ...array.slice(n)];
+}
+
 export function moveElement<T>(array: T[], fromIndex: number, toIndex: number): T[] {
     const result = [...array];
 

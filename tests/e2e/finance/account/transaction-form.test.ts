@@ -3,7 +3,7 @@ import { expect, test } from "~~/test-utils/playwright";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 test(
-    "automatically updates the account tab content when add or deleting a transaction",
+    "automatically updates the account tab content when adding or deleting a transaction",
     { tag: SCREENSHOT },
     async ({ financePage: page, db }) => {
         await db.financeAccount.insert(1);

@@ -39,7 +39,7 @@ test("displays an alert when there were form validation errors", async ({ timerP
     await page.click("emptyButton");
     await page.click("upsertSubmit");
 
-    const errorTitle = "The Submission Failed Due An Error";
+    const errorTitle = "The Submission Failed Due to An Error";
     const errorDescription = "The provided text has to be at least 1 character long.";
     await page.expect("formErrors").toHaveText(errorTitle + errorDescription);
 });
