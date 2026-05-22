@@ -31,7 +31,7 @@ test("should not add a tooltip when no aria-label is provided", async () => {
         global: { stubs },
     });
     const tooltip = wrapper.findByTestId("tooltip");
-    const button = wrapper.findByTestId("button");
+    const button = wrapper.find("button");
     expect(button.exists()).toBe(true);
     expect(tooltip.exists()).toBe(false);
 });
