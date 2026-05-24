@@ -36,7 +36,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
 };
 
 const handleShiftFocus = async (index: number, caretPos: number, repeat = true) => {
-    const target = document.querySelectorAll("[data-task-text-input]")[index];
+    const target = document.querySelector(`[data-task-item]:nth-of-type(${index + 1}) [data-task-text-input]`);
     if (target instanceof HTMLInputElement) {
         target.focus();
         await nextTick();

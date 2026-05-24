@@ -181,7 +181,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <li ref="el" class="box-border h-10.5 border-y border-y-transparent py-1 focus-within:border-y-muted">
+    <li
+        ref="el"
+        class="box-border h-10.5 border-y border-y-transparent py-1 focus-within:border-y-muted"
+        data-task-item
+    >
         <Transition name="fade">
             <div v-if="isVisible" class="flex items-center gap-1" :class="{ 'ml-6.5': checked }">
                 <div v-if="!checked" class="center cursor-move" data-handle>
