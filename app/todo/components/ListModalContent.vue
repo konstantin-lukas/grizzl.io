@@ -34,6 +34,16 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
     if (!id.value || typeof event.oldIndex !== "number" || typeof event.newIndex !== "number") return;
     queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
+
+watch(id, async value => {
+    if (!value) return;
+
+    await nextTick();
+
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+});
 </script>
 
 <template>
