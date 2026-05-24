@@ -17,6 +17,8 @@ const { openList, title, completedItems, uncompletedItems, id, persistChanges, g
 const { queue } = useMutationQueue();
 const { t } = useI18n();
 
+const skipFocus = ref(true);
+
 const listFullWarning = computed(() => {
     if (completedItems.value.length + uncompletedItems.value.length >= TODO_LIST_MAX_LENGTH) {
         return t("todo.tooManyItems");
@@ -36,6 +38,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
 };
 
 watch(id, async value => {
+    skipFocus.value = true;
     if (!value) return;
 
     await nextTick();
@@ -77,6 +80,8 @@ watch(id, async value => {
                             :item
                             type="uncompleted"
                             :list-full-warning="listFullWarning"
+                            :skip-focus="skipFocus"
+                            @break-item="skipFocus = false"
                         />
                     </TransitionGroup>
                 </VueDraggable>
@@ -109,6 +114,7 @@ watch(id, async value => {
                                     :item
                                     type="completed"
                                     :list-full-warning="listFullWarning"
+                                    :skip-focus="skipFocus"
                                 />
                             </TransitionGroup>
                         </ul>

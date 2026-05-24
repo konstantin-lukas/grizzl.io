@@ -7,6 +7,7 @@ import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
+import AutoFocusInputMenu from "~/todo/components/AutoFocusInputMenu.vue";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
@@ -14,8 +15,10 @@ const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
     index: number;
+    skipFocus: boolean;
     listFullWarning?: string;
 }>();
+const emit = defineEmits(["break-item"]);
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
@@ -44,12 +47,10 @@ const deleteSelf = () => {
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
+    if (props.type === "completed") return;
     const input = e.target;
 
     if (!(input instanceof HTMLInputElement)) return;
-
-    const completedIsRelevant = props.type === "completed";
-    const relevantList = completedIsRelevant ? completedItems : uncompletedItems;
 
     const { value } = input;
 
@@ -59,13 +60,14 @@ const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === "Backspace") {
         if (input.selectionStart === 0) {
             if (props.index === 0) return;
-            const targetItem = relevantList.value[props.index - 1]!;
+            const targetItem = uncompletedItems.value[props.index - 1]!;
             targetItem.text += afterCaret;
             queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
             queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
-            relevantList.value = deleteNthElement(relevantList.value, props.index);
+            uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
+        emit("break-item");
         if (props.listFullWarning) {
             alert(props.listFullWarning);
             return;
@@ -77,10 +79,9 @@ const handleKeydown = (e: KeyboardEvent) => {
             listId: id.value,
             id: newItem.id,
             text: afterCaret,
-            index: completedIsRelevant ? null : newIndex,
+            index: newIndex,
         });
-        relevantList.value = insertElement(relevantList.value, newItem, newIndex);
-        if (completedIsRelevant) sortCompletedItems();
+        uncompletedItems.value = insertElement(uncompletedItems.value, newItem, newIndex);
 
         text.value = beforeCaret;
     }
@@ -162,7 +163,7 @@ onBeforeUnmount(() => {
                     <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
                 </div>
                 <UCheckbox v-model="checked" :aria-label="props.item.text" />
-                <UInputMenu
+                <AutoFocusInputMenu
                     v-if="props.type === 'uncompleted'"
                     :aria-label="$t('todo.aria.itemText')"
                     :model-value="props.item.text"
@@ -172,24 +173,17 @@ onBeforeUnmount(() => {
                     :content="{ hideWhenEmpty: true }"
                     class="grow"
                     variant="none"
+                    :skip-focus="props.skipFocus"
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
                 >
                     <template #content-bottom>
                         <span :id="bottomID" />
                     </template>
-                </UInputMenu>
-                <UInput
-                    v-else
-                    :aria-label="$t('todo.aria.itemText')"
-                    :model-value="props.item.text"
-                    :trailing-icon="false"
-                    :content="{ hideWhenEmpty: true }"
-                    class="grow"
-                    variant="none"
-                    @update:model-value="value => (deferredText = value)"
-                    @keydown="handleKeydown"
-                />
+                </AutoFocusInputMenu>
+                <div v-else class="w-full grow px-3 text-sm text-muted line-through">
+                    {{ props.item.text }}
+                </div>
                 <div class="flex hover-none:gap-1">
                     <DateButtonPicker v-if="!checked" v-model="scheduledFor" />
                     <Button
