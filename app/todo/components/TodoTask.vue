@@ -199,6 +199,7 @@ onBeforeUnmount(() => {
                     class="grow"
                     variant="none"
                     data-task-text-input
+                    :maxlength="LONG_TITLE_MAX"
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
                 >
