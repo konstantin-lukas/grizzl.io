@@ -131,7 +131,7 @@ watch(checked, value => {
     const { index, item } = props;
 
     if (value) {
-        if (completedItems.value.every(({ text }) => text !== item.text)) {
+        if (completedItems.value.every(({ text }) => text.trim() !== item.text.trim())) {
             completedItems.value.push(item);
             queue.value.push({ action: "check", id: item.id, listId: id.value });
             sortCompletedItems();
