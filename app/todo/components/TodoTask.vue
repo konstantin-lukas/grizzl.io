@@ -7,20 +7,15 @@ import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
-import AutoFocusInputMenu from "~/todo/components/AutoFocusInputMenu.vue";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
     index: number;
-    skipFocus: boolean;
     listFullWarning?: string;
 }>();
-const emit = defineEmits<{
-    (e: "break-item"): void;
-    (e: "merge-items", index: number, caretPos: number): void;
-}>();
+const emit = defineEmits<{ (e: "shift-focus", index: number, caretPos: number): void }>();
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
@@ -85,11 +80,11 @@ const handleKeydown = (e: KeyboardEvent) => {
             queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
             queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
             uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
-            emit("merge-items", props.index - 1, targetCaretPos);
+            emit("shift-focus", props.index - 1, targetCaretPos);
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
         e.preventDefault();
-        emit("break-item");
+        emit("shift-focus", props.index + 1, 0);
         if (props.listFullWarning) {
             alert(props.listFullWarning);
             return;
@@ -105,6 +100,22 @@ const handleKeydown = (e: KeyboardEvent) => {
         });
         uncompletedItems.value = insertElement(uncompletedItems.value, newItem, newIndex);
         updateText(beforeCaret);
+    } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (input.selectionStart === 0) {
+            emit("shift-focus", props.index - 1, -1);
+        } else {
+            input.selectionStart = 0;
+            input.selectionEnd = 0;
+        }
+    } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (input.selectionStart === value.length) {
+            emit("shift-focus", props.index + 1, 0);
+        } else {
+            input.selectionStart = value.length;
+            input.selectionEnd = value.length;
+        }
     }
 };
 
@@ -170,7 +181,7 @@ onBeforeUnmount(() => {
                     <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
                 </div>
                 <UCheckbox v-model="checked" :aria-label="props.item.text" />
-                <AutoFocusInputMenu
+                <UInputMenu
                     v-if="props.type === 'uncompleted'"
                     :aria-label="$t('todo.aria.itemText')"
                     :model-value="props.item.text"
@@ -180,7 +191,6 @@ onBeforeUnmount(() => {
                     :content="{ hideWhenEmpty: true }"
                     class="grow"
                     variant="none"
-                    :skip-focus="props.skipFocus"
                     data-task-text-input
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
@@ -188,7 +198,7 @@ onBeforeUnmount(() => {
                     <template #content-bottom>
                         <span :id="bottomID" />
                     </template>
-                </AutoFocusInputMenu>
+                </UInputMenu>
                 <div v-else class="grow overflow-hidden px-3 text-sm text-ellipsis text-muted line-through">
                     {{ props.item.text }}
                 </div>

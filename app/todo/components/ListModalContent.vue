@@ -17,8 +17,6 @@ const { openList, title, completedItems, uncompletedItems, id, persistChanges, g
 const { queue } = useMutationQueue();
 const { t } = useI18n();
 
-const skipFocus = ref(true);
-
 const listFullWarning = computed(() => {
     if (completedItems.value.length + uncompletedItems.value.length >= TODO_LIST_MAX_LENGTH) {
         return t("todo.tooManyItems");
@@ -37,7 +35,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
     queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
 
-const handleMerge = async (index: number, caretPos: number, repeat = true) => {
+const handleShiftFocus = async (index: number, caretPos: number, repeat = true) => {
     const target = document.querySelectorAll("[data-task-text-input]")[index];
     if (!(target instanceof HTMLInputElement)) return;
     target.focus();
@@ -45,11 +43,10 @@ const handleMerge = async (index: number, caretPos: number, repeat = true) => {
     target.selectionStart = caretPos;
     target.selectionEnd = caretPos;
     if (!repeat) return;
-    setTimeout(() => handleMerge(index, caretPos, false), 50);
+    setTimeout(() => handleShiftFocus(index, caretPos, false), 50);
 };
 
 watch(id, async value => {
-    skipFocus.value = true;
     if (!value) return;
 
     await nextTick();
@@ -90,9 +87,7 @@ watch(id, async value => {
                         :item
                         type="uncompleted"
                         :list-full-warning="listFullWarning"
-                        :skip-focus="skipFocus"
-                        @break-item="skipFocus = false"
-                        @merge-items="handleMerge"
+                        @shift-focus="handleShiftFocus"
                     />
                 </VueDraggable>
             </div>
@@ -123,7 +118,6 @@ watch(id, async value => {
                                 :item
                                 type="completed"
                                 :list-full-warning="listFullWarning"
-                                :skip-focus="skipFocus"
                             />
                         </ul>
                     </template>
