@@ -37,13 +37,15 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
     queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
 
-const handleMerge = async (index: number, caretPos: number) => {
+const handleMerge = async (index: number, caretPos: number, repeat = true) => {
     const target = document.querySelectorAll("[data-task-text-input]")[index];
     if (!(target instanceof HTMLInputElement)) return;
     target.focus();
     await nextTick();
     target.selectionStart = caretPos;
     target.selectionEnd = caretPos;
+    if (!repeat) return;
+    setTimeout(() => handleMerge(index, caretPos, false), 50);
 };
 
 watch(id, async value => {
