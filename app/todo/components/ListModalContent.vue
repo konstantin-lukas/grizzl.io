@@ -9,11 +9,20 @@ import QueryModal from "~/todo/components/ListModalBase.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import UAccordion from "#ui/components/Accordion.vue";
 import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
 const emit = defineEmits(["close"]);
 
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 const { queue } = useMutationQueue();
+const { t } = useI18n();
+
+const listFullWarning = computed(() => {
+    if (completedItems.value.length + uncompletedItems.value.length >= TODO_LIST_MAX_LENGTH) {
+        return t("todo.tooManyItems");
+    }
+    return undefined;
+});
 
 const addItem = () => {
     const newId = generateNewID();
@@ -57,12 +66,19 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                             :index
                             :item
                             type="uncompleted"
+                            :list-full-warning="listFullWarning"
                         />
                     </TransitionGroup>
                 </VueDraggable>
             </div>
             <div class="mt-2 mb-4" :class="{ 'mt-8': uncompletedItems.length === 0 }">
-                <Button :icon="ICON_PLUS" variant="ghost" class="w-full pl-6" @click="addItem">
+                <Button
+                    :icon="ICON_PLUS"
+                    variant="ghost"
+                    class="w-full pl-6"
+                    :disabled="!!listFullWarning"
+                    @click="addItem"
+                >
                     {{ $t("ui.add") }}
                 </Button>
             </div>
@@ -82,6 +98,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                                     :index
                                     :item
                                     type="completed"
+                                    :list-full-warning="listFullWarning"
                                 />
                             </TransitionGroup>
                         </ul>

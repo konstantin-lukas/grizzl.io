@@ -10,7 +10,12 @@ import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
-const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted"; index: number }>();
+const props = defineProps<{
+    item: TodoItem;
+    type: "completed" | "uncompleted";
+    index: number;
+    listFullWarning?: string;
+}>();
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
@@ -61,6 +66,10 @@ const handleKeydown = (e: KeyboardEvent) => {
             relevantList.value = deleteNthElement(relevantList.value, props.index);
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
+        if (props.listFullWarning) {
+            alert(props.listFullWarning);
+            return;
+        }
         const newItem = { text: afterCaret, scheduledFor: null, id: generateNewID() };
         const newIndex = props.index + 1;
         queue.value.push({

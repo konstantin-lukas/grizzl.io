@@ -7,6 +7,7 @@
         "clearDate": "日付をクリア",
         "completedItems": "1個の完了済みアイテム | {n}個の完了済みアイテム",
         "confirmClose": "ToDoリストを閉じてもよろしいですか？ 一部の変更はまだ保存されていません。",
+        "tooManyItems": "これ以上項目を追加できません。このリストはいっぱいです。",
         "meta": {
             "title": "ToDo",
             "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"
