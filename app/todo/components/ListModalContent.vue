@@ -114,9 +114,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                 class="absolute top-2 left-4 aspect-square"
                 :aria-label="$t('todo.aria.todoListSettings')"
             />
-            <div class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18">
-                <DataSyncIndicator />
-            </div>
+            <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>
         <template #title>{{ $t("todo.aria.modal.title") }}</template>
         <template #description>{{ $t("todo.aria.modal.description") }}</template>
