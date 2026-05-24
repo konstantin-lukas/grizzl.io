@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
                         <span :id="bottomID" />
                     </template>
                 </AutoFocusInputMenu>
-                <div v-else class="w-full grow px-3 text-sm text-muted line-through">
+                <div v-else class="grow overflow-hidden px-3 text-sm text-ellipsis text-muted line-through">
                     {{ props.item.text }}
                 </div>
                 <div class="flex hover-none:gap-1">

@@ -83,19 +83,17 @@ watch(id, async value => {
                     ghost-class="ghost"
                     @end="moveItem"
                 >
-                    <TransitionGroup name="draggable-list">
-                        <TodoTask
-                            v-for="(item, index) in uncompletedItems"
-                            :key="item.id"
-                            :index
-                            :item
-                            type="uncompleted"
-                            :list-full-warning="listFullWarning"
-                            :skip-focus="skipFocus"
-                            @break-item="skipFocus = false"
-                            @merge-items="handleMerge"
-                        />
-                    </TransitionGroup>
+                    <TodoTask
+                        v-for="(item, index) in uncompletedItems"
+                        :key="item.id"
+                        :index
+                        :item
+                        type="uncompleted"
+                        :list-full-warning="listFullWarning"
+                        :skip-focus="skipFocus"
+                        @break-item="skipFocus = false"
+                        @merge-items="handleMerge"
+                    />
                 </VueDraggable>
             </div>
             <div class="mt-2 mb-4" :class="{ 'mt-8': uncompletedItems.length === 0 }">
@@ -118,17 +116,15 @@ watch(id, async value => {
                 >
                     <template #content>
                         <ul>
-                            <TransitionGroup name="draggable-list">
-                                <TodoTask
-                                    v-for="(item, index) in completedItems"
-                                    :key="item.id"
-                                    :index
-                                    :item
-                                    type="completed"
-                                    :list-full-warning="listFullWarning"
-                                    :skip-focus="skipFocus"
-                                />
-                            </TransitionGroup>
+                            <TodoTask
+                                v-for="(item, index) in completedItems"
+                                :key="item.id"
+                                :index
+                                :item
+                                type="completed"
+                                :list-full-warning="listFullWarning"
+                                :skip-focus="skipFocus"
+                            />
                         </ul>
                     </template>
                 </UAccordion>
