@@ -6,7 +6,6 @@
         "newList": "Neue To-do-Liste",
         "clearDate": "Datum löschen",
         "completedItems": "1 erledigter Eintrag | {n} erledigte Einträge",
-        "confirmClose": "Möchtest du die To-do-Liste wirklich schließen? Einige Änderungen wurden noch nicht gespeichert.",
         "tooManyItems": "Du kannst keine weiteren Einträge hinzufügen. Diese Liste ist voll.",
         "meta": {
             "title": "To-do",

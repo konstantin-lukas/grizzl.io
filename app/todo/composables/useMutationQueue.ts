@@ -1,5 +1,3 @@
-import { useOpenList } from "~/todo/composables/useOpenList";
-
 type MutationQueueItem =
     | { action: "text"; id: string; value: string; listId: string }
     | { action: "delete"; id: string; listId: string }
@@ -9,9 +7,8 @@ type MutationQueueItem =
     | { action: "create"; id: string; listId: string; text: string; index: number | null };
 
 export default function useMutationQueue(watchChanges = false) {
-    const { id } = useOpenList();
-    const queue = useState<MutationQueueItem[]>(`todo-list-mutation-queue-${id.value}`, () => []);
-    const isFetching = useState<boolean>(`todo-list-mutation-queue-${id.value}-is-fetching`, () => false);
+    const queue = useState<MutationQueueItem[]>("todo-list-mutation-queue", () => []);
+    const isFetching = useState<boolean>("todo-list-mutation-queue-is-fetching", () => false);
 
     if (watchChanges) {
         watch(

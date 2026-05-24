@@ -1,17 +1,8 @@
 <script setup lang="ts">
 import { ICON_CLOUD_CHECK, ICON_LOAD } from "~/core/constants/icons.constant";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
-import useEventListener from "~/core/composables/useEventListener";
 
 const { queue } = useMutationQueue(true);
-const confirmNavigation = (event: BeforeUnloadEvent) => {
-    if (queue.value.length === 0) return;
-    event.preventDefault();
-    event.returnValue = "";
-    return "";
-};
-
-useEventListener(window, "beforeunload", confirmNavigation);
 </script>
 
 <template>

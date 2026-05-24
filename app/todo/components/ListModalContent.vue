@@ -61,7 +61,6 @@ watch(id, async value => {
     <QueryModal
         query-key="list"
         :query-value="openList?.id"
-        :unsaved-changes="queue.length > 0 ? 'todo.confirmClose' : undefined"
         @close="
             persistChanges();
             openList = null;

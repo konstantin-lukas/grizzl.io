@@ -6,7 +6,6 @@
         "newList": "Nueva lista de tareas",
         "clearDate": "Borrar fecha",
         "completedItems": "1 tarea completada | {n} tareas completadas",
-        "confirmClose": "¿Seguro que quieres cerrar la lista de tareas? Algunos cambios todavía no se han guardado.",
         "tooManyItems": "No puedes añadir más elementos. Esta lista está llena.",
         "meta": {
             "title": "Tareas",

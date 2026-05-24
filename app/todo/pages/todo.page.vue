@@ -11,11 +11,14 @@ import ListModal from "~/todo/components/ListModalContent.vue";
 import { onResponseError } from "~/core/utils/toast";
 import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
+import useMutationQueue from "~/todo/composables/useMutationQueue";
+import useEventListener from "~/core/composables/useEventListener";
 
 const route = useRoute();
 const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
+const { queue } = useMutationQueue();
 const { openList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists", {
     onResponseError: onResponseError(toast, t),
@@ -29,6 +32,13 @@ const createTodoList = useOnSubmit({
     transform: ({ ...state }) => ({ ...state, title: t("todo.newList") }),
     translationKey: "todo",
     refresh: () => refresh(),
+});
+
+useEventListener(window, "beforeunload", (event: BeforeUnloadEvent) => {
+    if (queue.value.length === 0) return;
+    event.preventDefault();
+    event.returnValue = "";
+    return "";
 });
 
 watchEffect(() => {
