@@ -2,16 +2,11 @@
 import Button from "~/core/components/button/Button.vue";
 import { ICON_CANCEL } from "~/core/constants/icons.constant";
 
-const { t } = useI18n();
 const emit = defineEmits(["close"]);
 const route = useRoute();
 const router = useRouter();
-const props = defineProps<{ queryKey: string; queryValue?: string; unsavedChanges?: string }>();
+const props = defineProps<{ queryKey: string; queryValue?: string }>();
 const open = ref(!!props.queryValue);
-
-const confirmClose = (key: string) => {
-    return window.confirm(t(key));
-};
 
 watch(
     () => [props.queryKey, props.queryValue, route.path],
@@ -35,7 +30,6 @@ watch(
         :dismissible="true"
         @update:open="
             v => {
-                if (props.unsavedChanges && !confirmClose(props.unsavedChanges)) return;
                 if (!v) emit('close');
             }
         "
@@ -55,7 +49,6 @@ watch(
                         data-test-id="go-back-button"
                         @click="
                             () => {
-                                if (props.unsavedChanges && !confirmClose(props.unsavedChanges)) return;
                                 emit('close');
                             }
                         "

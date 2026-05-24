@@ -6,7 +6,8 @@
         "newList": "New To-Do List",
         "clearDate": "Clear date",
         "completedItems": "1 completed item | {n} completed items",
-        "confirmClose": "Are you sure you want to close the to-do list? Some changes have not been saved yet.",
+        "cannotMerge": "You can't merge this item with the previous one because the resulting text exceeds the maximum.",
+        "tooManyItems": "You can't add any more items. This list is full.",
         "meta": {
             "title": "To-Do",
             "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."

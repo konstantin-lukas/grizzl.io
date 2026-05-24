@@ -9,11 +9,20 @@ import QueryModal from "~/todo/components/ListModalBase.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import UAccordion from "#ui/components/Accordion.vue";
 import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
 const emit = defineEmits(["close"]);
 
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 const { queue } = useMutationQueue();
+const { t } = useI18n();
+
+const listFullWarning = computed(() => {
+    if (completedItems.value.length + uncompletedItems.value.length >= TODO_LIST_MAX_LENGTH) {
+        return t("todo.tooManyItems");
+    }
+    return undefined;
+});
 
 const addItem = () => {
     const newId = generateNewID();
@@ -22,16 +31,37 @@ const addItem = () => {
 };
 
 const moveItem = (event: SortableEvent & { data: { id: string } }) => {
-    if (!id.value || !event.oldIndex || !event.newIndex) return;
+    if (!id.value || typeof event.oldIndex !== "number" || typeof event.newIndex !== "number") return;
     queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
+
+const handleShiftFocus = async (index: number, caretPos: number, repeat = true) => {
+    const target = document.querySelector(`[data-task-item]:nth-of-type(${index + 1}) [data-task-text-input]`);
+    if (target instanceof HTMLInputElement) {
+        target.focus();
+        await nextTick();
+        target.selectionStart = caretPos;
+        target.selectionEnd = caretPos;
+    }
+    if (!repeat) return;
+    setTimeout(() => handleShiftFocus(index, caretPos, false), 50);
+};
+
+watch(id, async value => {
+    if (!value) return;
+
+    await nextTick();
+
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+});
 </script>
 
 <template>
     <QueryModal
         query-key="list"
         :query-value="openList?.id"
-        :unsaved-changes="queue.length > 0 ? 'todo.confirmClose' : undefined"
         @close="
             persistChanges();
             openList = null;
@@ -50,19 +80,26 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                     ghost-class="ghost"
                     @end="moveItem"
                 >
-                    <TransitionGroup name="draggable-list">
-                        <TodoTask
-                            v-for="(item, index) in uncompletedItems"
-                            :key="item.id"
-                            :index
-                            :item
-                            type="uncompleted"
-                        />
-                    </TransitionGroup>
+                    <TodoTask
+                        v-for="(item, index) in uncompletedItems"
+                        :key="item.id"
+                        :index
+                        :item
+                        type="uncompleted"
+                        :list-full-warning="listFullWarning"
+                        :merge-warning="$t('todo.cannotMerge')"
+                        @shift-focus="handleShiftFocus"
+                    />
                 </VueDraggable>
             </div>
             <div class="mt-2 mb-4" :class="{ 'mt-8': uncompletedItems.length === 0 }">
-                <Button :icon="ICON_PLUS" variant="ghost" class="w-full pl-6" @click="addItem">
+                <Button
+                    :icon="ICON_PLUS"
+                    variant="ghost"
+                    class="w-full pl-6"
+                    :disabled="!!listFullWarning"
+                    @click="addItem"
+                >
                     {{ $t("ui.add") }}
                 </Button>
             </div>
@@ -75,15 +112,15 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                 >
                     <template #content>
                         <ul>
-                            <TransitionGroup name="draggable-list">
-                                <TodoTask
-                                    v-for="(item, index) in completedItems"
-                                    :key="item.id"
-                                    :index
-                                    :item
-                                    type="completed"
-                                />
-                            </TransitionGroup>
+                            <TodoTask
+                                v-for="(item, index) in completedItems"
+                                :key="item.id"
+                                :index
+                                :item
+                                type="completed"
+                                :merge-warning="$t('todo.cannotMerge')"
+                                :list-full-warning="listFullWarning"
+                            />
                         </ul>
                     </template>
                 </UAccordion>
@@ -97,9 +134,7 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
                 class="absolute top-2 left-4 aspect-square"
                 :aria-label="$t('todo.aria.todoListSettings')"
             />
-            <div class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18">
-                <DataSyncIndicator />
-            </div>
+            <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>
         <template #title>{{ $t("todo.aria.modal.title") }}</template>
         <template #description>{{ $t("todo.aria.modal.description") }}</template>

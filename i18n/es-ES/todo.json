@@ -6,7 +6,8 @@
         "newList": "Nueva lista de tareas",
         "clearDate": "Borrar fecha",
         "completedItems": "1 tarea completada | {n} tareas completadas",
-        "confirmClose": "¿Seguro que quieres cerrar la lista de tareas? Algunos cambios todavía no se han guardado.",
+        "cannotMerge": "No puedes combinar este elemento con el anterior porque el texto resultante supera el máximo permitido.",
+        "tooManyItems": "No puedes añadir más elementos. Esta lista está llena.",
         "meta": {
             "title": "Tareas",
             "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."
