@@ -58,7 +58,7 @@ const updateText = (value: string) => {
     }
 
     (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.text = value;
-    queue.value.push({ action: "text", id: props.item.id, value, listId: id.value });
+    queue.value.push({ action: "change", id: props.item.id, value, listId: id.value });
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
@@ -84,7 +84,7 @@ const handleKeydown = (e: KeyboardEvent) => {
                 return;
             }
             targetItem.text = newValue;
-            queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
+            queue.value.push({ action: "change", listId: id.value, id: targetItem.id, value: targetItem.text });
             queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
             uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
             emit("shift-focus", props.index - 1, targetCaretPos);

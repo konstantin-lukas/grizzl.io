@@ -1,13 +1,7 @@
-type MutationQueueItem =
-    | { action: "text"; id: string; value: string; listId: string }
-    | { action: "delete"; id: string; listId: string }
-    | { action: "schedule"; id: string; value: Date | null; listId: string }
-    | { action: "move"; id: string; from: number; to: number; listId: string }
-    | { action: "uncheck" | "check"; id: string; listId: string }
-    | { action: "create"; id: string; listId: string; text: string; index: number | null };
+import type { PostAction } from "#shared/todo/validators/action.validator";
 
 export default function useMutationQueue(watchChanges = false) {
-    const queue = useState<MutationQueueItem[]>("todo-list-mutation-queue", () => []);
+    const queue = useState<PostAction[]>("todo-list-mutation-queue", () => []);
     const isFetching = useState<boolean>("todo-list-mutation-queue-is-fetching", () => false);
 
     if (watchChanges) {
