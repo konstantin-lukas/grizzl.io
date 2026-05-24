@@ -37,6 +37,15 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
     queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
 };
 
+const handleMerge = async (index: number, caretPos: number) => {
+    const target = document.querySelectorAll("[data-task-text-input]")[index];
+    if (!(target instanceof HTMLInputElement)) return;
+    target.focus();
+    await nextTick();
+    target.selectionStart = caretPos;
+    target.selectionEnd = caretPos;
+};
+
 watch(id, async value => {
     skipFocus.value = true;
     if (!value) return;
@@ -82,6 +91,7 @@ watch(id, async value => {
                             :list-full-warning="listFullWarning"
                             :skip-focus="skipFocus"
                             @break-item="skipFocus = false"
+                            @merge-items="handleMerge"
                         />
                     </TransitionGroup>
                 </VueDraggable>

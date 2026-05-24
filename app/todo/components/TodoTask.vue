@@ -10,7 +10,6 @@ import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
 import AutoFocusInputMenu from "~/todo/components/AutoFocusInputMenu.vue";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
-const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
 const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
@@ -18,21 +17,25 @@ const props = defineProps<{
     skipFocus: boolean;
     listFullWarning?: string;
 }>();
-const emit = defineEmits(["break-item"]);
+const emit = defineEmits<{
+    (e: "break-item"): void;
+    (e: "merge-items", index: number, caretPos: number): void;
+}>();
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
 const scheduledFor = shallowRef(null);
 const el = ref(null);
 const isVisible = ref(false);
+const checked = ref(props.type === "completed");
 let observer: IntersectionObserver;
 
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
+const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
 
 const autoCompleteSuggestions = computed(() => completedItems.value.map(({ text }) => text));
-
-const checked = ref(props.type === "completed");
+const bottomID = computed(() => `bottom-${props.item.id}`);
 
 const deleteSelf = () => {
     queue.value.push({ action: "delete", id: props.item.id, listId: id.value });
@@ -44,6 +47,21 @@ const deleteSelf = () => {
 
     uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
     return;
+};
+
+const updateText = (value: string) => {
+    queueMicrotask(() => {
+        menuOpen.value = document.getElementById(bottomID.value ?? "")?.checkVisibility() ?? false;
+    });
+
+    const duplicateIndex = completedItems.value.findIndex(({ text }) => text === value);
+    if (duplicateIndex > -1) {
+        queue.value.push({ action: "delete", id: completedItems.value[duplicateIndex]!.id, listId: id.value });
+        completedItems.value = deleteNthElement(completedItems.value, duplicateIndex);
+    }
+
+    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.text = value;
+    queue.value.push({ action: "text", id: props.item.id, value, listId: id.value });
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
@@ -59,14 +77,18 @@ const handleKeydown = (e: KeyboardEvent) => {
 
     if (e.key === "Backspace") {
         if (input.selectionStart === 0) {
+            e.preventDefault();
             if (props.index === 0) return;
             const targetItem = uncompletedItems.value[props.index - 1]!;
+            const targetCaretPos = targetItem.text.length;
             targetItem.text += afterCaret;
             queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
             queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
             uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
+            emit("merge-items", props.index - 1, targetCaretPos);
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
+        e.preventDefault();
         emit("break-item");
         if (props.listFullWarning) {
             alert(props.listFullWarning);
@@ -82,26 +104,11 @@ const handleKeydown = (e: KeyboardEvent) => {
             index: newIndex,
         });
         uncompletedItems.value = insertElement(uncompletedItems.value, newItem, newIndex);
-
-        text.value = beforeCaret;
+        updateText(beforeCaret);
     }
 };
-const bottomID = computed(() => `bottom-${props.item.id}`);
 
-watch(text, value => {
-    queueMicrotask(() => {
-        menuOpen.value = document.getElementById(bottomID.value ?? "")?.checkVisibility() ?? false;
-    });
-
-    const duplicateIndex = completedItems.value.findIndex(({ text }) => text === value);
-    if (duplicateIndex > -1) {
-        queue.value.push({ action: "delete", id: completedItems.value[duplicateIndex]!.id, listId: id.value });
-        completedItems.value = deleteNthElement(completedItems.value, duplicateIndex);
-    }
-
-    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.text = value;
-    queue.value.push({ action: "text", id: props.item.id, value, listId: id.value });
-});
+watch(text, updateText);
 
 watch(scheduledFor, value => {
     if (!props) return;
@@ -174,6 +181,7 @@ onBeforeUnmount(() => {
                     class="grow"
                     variant="none"
                     :skip-focus="props.skipFocus"
+                    data-task-text-input
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
                 >
