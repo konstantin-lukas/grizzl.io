@@ -7,12 +7,14 @@ import useDeferredValue from "~/core/composables/useDeferredValue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
+import { LONG_TITLE_MAX } from "#shared/core/validators/core.validator";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
     index: number;
+    mergeWarning: string;
     listFullWarning?: string;
 }>();
 const emit = defineEmits<{ (e: "shift-focus", index: number, caretPos: number): void }>();
@@ -72,11 +74,16 @@ const handleKeydown = (e: KeyboardEvent) => {
 
     if (e.key === "Backspace") {
         if (input.selectionStart === 0) {
-            e.preventDefault();
             if (props.index === 0) return;
+            e.preventDefault();
             const targetItem = uncompletedItems.value[props.index - 1]!;
             const targetCaretPos = targetItem.text.length;
-            targetItem.text += afterCaret;
+            const newValue = targetItem.text + afterCaret;
+            if (newValue.length > LONG_TITLE_MAX) {
+                alert(props.mergeWarning);
+                return;
+            }
+            targetItem.text = newValue;
             queue.value.push({ action: "text", listId: id.value, id: targetItem.id, value: targetItem.text });
             queue.value.push({ action: "delete", listId: id.value, id: props.item.id });
             uncompletedItems.value = deleteNthElement(uncompletedItems.value, props.index);
@@ -84,7 +91,6 @@ const handleKeydown = (e: KeyboardEvent) => {
         }
     } else if (e.key === "Enter" && !menuOpen.value) {
         e.preventDefault();
-        emit("shift-focus", props.index + 1, 0);
         if (props.listFullWarning) {
             alert(props.listFullWarning);
             return;
@@ -100,6 +106,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         });
         uncompletedItems.value = insertElement(uncompletedItems.value, newItem, newIndex);
         updateText(beforeCaret);
+        emit("shift-focus", props.index + 1, 0);
     } else if (e.key === "ArrowUp") {
         e.preventDefault();
         if (input.selectionStart === 0) {

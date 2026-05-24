@@ -6,6 +6,7 @@
         "newList": "Neue To-do-Liste",
         "clearDate": "Datum löschen",
         "completedItems": "1 erledigter Eintrag | {n} erledigte Einträge",
+        "cannotMerge": "Du kannst diesen Eintrag nicht mit dem vorherigen zusammenführen, da der resultierende Text das Maximum überschreitet.",
         "tooManyItems": "Du kannst keine weiteren Einträge hinzufügen. Diese Liste ist voll.",
         "meta": {
             "title": "To-do",

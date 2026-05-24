@@ -37,11 +37,12 @@ const moveItem = (event: SortableEvent & { data: { id: string } }) => {
 
 const handleShiftFocus = async (index: number, caretPos: number, repeat = true) => {
     const target = document.querySelectorAll("[data-task-text-input]")[index];
-    if (!(target instanceof HTMLInputElement)) return;
-    target.focus();
-    await nextTick();
-    target.selectionStart = caretPos;
-    target.selectionEnd = caretPos;
+    if (target instanceof HTMLInputElement) {
+        target.focus();
+        await nextTick();
+        target.selectionStart = caretPos;
+        target.selectionEnd = caretPos;
+    }
     if (!repeat) return;
     setTimeout(() => handleShiftFocus(index, caretPos, false), 50);
 };
@@ -86,6 +87,7 @@ watch(id, async value => {
                         :item
                         type="uncompleted"
                         :list-full-warning="listFullWarning"
+                        :merge-warning="$t('todo.cannotMerge')"
                         @shift-focus="handleShiftFocus"
                     />
                 </VueDraggable>
@@ -116,6 +118,7 @@ watch(id, async value => {
                                 :index
                                 :item
                                 type="completed"
+                                :merge-warning="$t('todo.cannotMerge')"
                                 :list-full-warning="listFullWarning"
                             />
                         </ul>

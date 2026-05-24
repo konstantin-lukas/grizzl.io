@@ -6,6 +6,7 @@
         "newList": "新しいToDoリスト",
         "clearDate": "日付をクリア",
         "completedItems": "1個の完了済みアイテム | {n}個の完了済みアイテム",
+        "cannotMerge": "結合後のテキストが最大文字数を超えるため、この項目を前の項目と結合できません。",
         "tooManyItems": "これ以上項目を追加できません。このリストはいっぱいです。",
         "meta": {
             "title": "ToDo",
