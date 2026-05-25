@@ -13,7 +13,7 @@ export function useOpenList(watchChanges = false) {
         watch(
             () => openList.value?.id,
             () => {
-                if (!openList.value || openList.value.id === id.value) return;
+                if (!openList.value) return;
                 const clone = structuredClone(toRaw(openList.value));
                 id.value = clone.id;
                 title.value = clone.title;
