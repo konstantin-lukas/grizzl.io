@@ -1,7 +1,8 @@
 import NotFoundError from "#server/core/errors/not-found.error";
+import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
-import type { PostActionQueue } from "#shared/todo/validators/action.validator";
+import type { CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
 
 export default class ListService {
     static readonly deps = [ListRepository, ListItemRepository];
@@ -10,6 +11,13 @@ export default class ListService {
         private readonly listRepository: ListRepository,
         private readonly listItemRepository: ListItemRepository,
     ) {}
+
+    async create(action: CreateAction, tx: DatabaseTransaction) {
+        if (action.index !== null) {
+            await this.listItemRepository.incrementIndices(action.listId, action.index, tx);
+        }
+        await this.listItemRepository.create(action, tx);
+    }
 
     async processActions(userId: string, actions: PostActionQueue) {
         return this.listRepository.transaction(async tx => {
@@ -24,7 +32,7 @@ export default class ListService {
                 }
                 switch (action.action) {
                     case "create":
-                        await this.listItemRepository.create(action, tx);
+                        await this.create(action, tx);
                         break;
                 }
             }

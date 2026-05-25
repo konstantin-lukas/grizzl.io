@@ -1,5 +1,6 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
 import type { CreateAction } from "#shared/todo/validators/action.validator";
+import { and, eq, gte, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -13,5 +14,12 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
 
     async create({ id, listId, text, index }: CreateAction, ctx: ExecutionContext = this.db) {
         await ctx.insert(this.schema).values({ id, listId, text, index });
+    }
+
+    async incrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
+        await ctx
+            .update(this.schema)
+            .set({ index: sql`${this.schema.index} + 1` })
+            .where(and(eq(this.schema.listId, listId), gte(this.schema.index, startingIndex)));
     }
 }
