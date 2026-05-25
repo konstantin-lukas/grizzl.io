@@ -1,3 +1,4 @@
+import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import ActionService from "#server/todo/services/action.service";
@@ -85,7 +86,7 @@ test("does not move any items back one position if the given index is null", asy
     );
 });
 
-test("throws a UniqueConstraintError error and rolls back all actions when trying to insert multiple items with the same id on the same list", async ({
+test("throws a UniqueConstraintError and rolls back all actions when trying to insert multiple items with the same id on the same list", async ({
     db,
     user,
 }) => {
@@ -105,7 +106,7 @@ test("does not throw when creating multiple elements with the same id on differe
     expect(listItemsAfterActions).toHaveLength(2);
 });
 
-test("throws a UniqueConstraintError error when trying to create multiple elements with the same text and index null", async ({
+test("throws a UniqueConstraintError when trying to create multiple elements with the same text and index null", async ({
     db,
     user,
 }) => {
@@ -115,7 +116,7 @@ test("throws a UniqueConstraintError error when trying to create multiple elemen
     await expect(actionService.processActions(user.id, [item1, item2])).rejects.toThrow(UniqueConstraintError);
 });
 
-test("does not throw a UniqueConstraintError error when trying to create multiple elements with the same text and index null on different lists", async ({
+test("does not throw a UniqueConstraintError when trying to create multiple elements with the same text and index null on different lists", async ({
     db,
     user,
 }) => {
@@ -123,4 +124,11 @@ test("does not throw a UniqueConstraintError error when trying to create multipl
     const item1 = { action: "create", id: "2222222222222222", index: null, listId: list1.id, text: "a" } as const;
     const item2 = { action: "create", id: "2222222222222222", index: null, listId: list2.id, text: "a" } as const;
     await expect(actionService.processActions(user.id, [item1, item2])).resolves.not.toThrow();
+});
+
+test("throws an EntityLimitError error when trying to create tasks on a full list", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    await db.todoListItem.insert<number>(1000, { listId: list.id });
+    const item = { action: "create", id: "2222222222222222", index: null, listId: list.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item])).rejects.toThrow(EntityLimitError);
 });

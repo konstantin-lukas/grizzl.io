@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 import BaseController from "~~/server/core/controllers/base.controller";
 import DomainError from "~~/server/core/errors/domain.error";
+import EntityLimitError from "~~/server/core/errors/entity-limit.error";
 import NotFoundError from "~~/server/core/errors/not-found.error";
 import { HTTP_CODES } from "~~/test-utils/constants/http";
 
@@ -209,6 +210,14 @@ describe("mapDomainResultToHttp", () => {
             serverMessage: `${id} - NotFoundError: B`,
             code: 404,
             msg: "Not Found",
+        },
+        {
+            error: new EntityLimitError("A", "B"),
+            errorType: "EntityLimitError",
+            message: `A | ${id}`,
+            serverMessage: `${id} - EntityLimitError: B`,
+            code: 409,
+            msg: "Conflict",
         },
         {
             error: zodError,
