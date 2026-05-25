@@ -126,10 +126,13 @@ test("does not throw when trying to create multiple elements with the same text 
     await expect(actionService.processActions(user.id, [item1, item2])).resolves.not.toThrow();
 });
 
-test("does not throw when creating multiple elements with index null", async ({ db, user }) => {
-    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
-    const item1 = { action: "create", id: "2222222222222222", index: null, listId: list1.id, text: "a" } as const;
-    const item2 = { action: "create", id: "2222222222222223", index: null, listId: list2.id, text: "b" } as const;
+test("does not throw when creating multiple elements with index null but different text on the same list", async ({
+    db,
+    user,
+}) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const item1 = { action: "create", id: "2222222222222222", index: null, listId: list.id, text: "a" } as const;
+    const item2 = { action: "create", id: "2222222222222223", index: null, listId: list.id, text: "b" } as const;
     await expect(actionService.processActions(user.id, [item1, item2])).resolves.not.toThrow();
 });
 
