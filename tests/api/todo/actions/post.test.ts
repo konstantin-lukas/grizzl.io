@@ -11,11 +11,17 @@ const item = {
 
 test.beforeEach(async ({ db }) => {
     const [list] = await db.todoList.insert(1);
+    item.id = "2222222222222222";
     item.listId = list.id;
 });
 
 test("returns a 400 error when the user submits an empty list of actions", async ({ request }) => {
     const response = await request.post("/api/todo/actions", { data: [] });
+    expect(response.status()).toBe(400);
+});
+
+test("returns a 400 error when the provided id is invalid", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", { data: [{ ...item, id: "123" }] });
     expect(response.status()).toBe(400);
 });
 
@@ -41,6 +47,30 @@ test("returns a 204 status when the amount of actions is just long enough", asyn
 test("returns a 409 error trying to create two items with the same id", async ({ request }) => {
     const response = await request.post("/api/todo/actions", {
         data: [item, item],
+    });
+    expect(response.status()).toBe(409);
+});
+
+test("returns a 409 error when trying to create new items on a full list", async ({ request, db }) => {
+    await db.todoListItem.insert(998, { listId: item.listId });
+    const response = await request.post("/api/todo/actions", {
+        data: [
+            { ...item, id: nanoid(), listId: item.listId },
+            { ...item, id: nanoid(), listId: item.listId },
+            { ...item, id: nanoid(), listId: item.listId },
+        ],
+    });
+    expect(response.status()).toBe(409);
+});
+
+test("returns a 409 error when trying to create two items with index null whose text resolves to the same string when trimmed", async ({
+    request,
+}) => {
+    const response = await request.post("/api/todo/actions", {
+        data: [
+            { ...item, id: nanoid(), listId: item.listId, index: null, text: " abc" },
+            { ...item, id: nanoid(), listId: item.listId, index: null, text: "abc " },
+        ],
     });
     expect(response.status()).toBe(409);
 });

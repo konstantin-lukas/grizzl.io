@@ -1,3 +1,4 @@
+import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
@@ -5,6 +6,7 @@ import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
 import type { CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
 export default class ActionService {
     static readonly deps = [ListRepository, ListItemRepository];
@@ -32,17 +34,21 @@ export default class ActionService {
         return this.listRepository.transaction(async tx => {
             await this.listRepository.advisoryLock(`execute-to-do-list-actions-${userId}`, tx);
             const lists = await this.listRepository.findByUserId(userId, tx);
-            const listIds = new Set(lists.map(list => list.id));
             for (const action of actions) {
-                if (!listIds.has(action.listId)) {
+                const list = lists.find(list => list.id === action.listId);
+                if (!list) {
                     const message = `Cannot ${action.action} task with id ${action.id} on list with id ${action.listId} for user with id ${userId}. List does not exist for given user.`;
                     const logMessage = `Cannot ${action.action} task on given to-do list.`;
                     throw new NotFoundError(message, logMessage);
                 }
-                switch (action.action) {
-                    case "create":
-                        await this.create(action, tx);
-                        break;
+                if (action.action === "create") {
+                    if (list.items.length >= TODO_LIST_MAX_LENGTH) {
+                        const message = "Cannot create new task. The given list is full.";
+                        const logMessage = `Cannot create new task on list with id ${list.id}. List is full.`;
+                        throw new EntityLimitError(message, logMessage);
+                    }
+                    list.items.push({ ...action, scheduledFor: null });
+                    await this.create(action, tx);
                 }
             }
         });

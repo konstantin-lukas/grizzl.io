@@ -1,6 +1,6 @@
 {
-    "id": "eaae0356-3065-4ebe-960d-e24d9ded9329",
-    "prevId": "422f4407-9e6b-4b72-8c0f-1dc5406b60e3",
+    "id": "5a4a8a5a-ced5-4650-aa03-8d1ef65279eb",
+    "prevId": "eaae0356-3065-4ebe-960d-e24d9ded9329",
     "version": "7",
     "dialect": "postgresql",
     "tables": {
@@ -789,6 +789,93 @@
             },
             "compositePrimaryKeys": {},
             "uniqueConstraints": {},
+            "policies": {},
+            "checkConstraints": {},
+            "isRLSEnabled": false
+        },
+        "public.todo_list_item": {
+            "name": "todo_list_item",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "char(16)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "text": {
+                    "name": "text",
+                    "type": "varchar(200)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "list_id": {
+                    "name": "list_id",
+                    "type": "char(16)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "index": {
+                    "name": "index",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "scheduled_for": {
+                    "name": "scheduled_for",
+                    "type": "date",
+                    "primaryKey": false,
+                    "notNull": false
+                }
+            },
+            "indexes": {
+                "todo_list_item_list_id_text_index": {
+                    "name": "todo_list_item_list_id_text_index",
+                    "columns": [
+                        {
+                            "expression": "list_id",
+                            "isExpression": false,
+                            "asc": true,
+                            "nulls": "last"
+                        },
+                        {
+                            "expression": "text",
+                            "isExpression": false,
+                            "asc": true,
+                            "nulls": "last"
+                        }
+                    ],
+                    "isUnique": true,
+                    "where": "\"todo_list_item\".\"index\" IS NULL",
+                    "concurrently": false,
+                    "method": "btree",
+                    "with": {}
+                }
+            },
+            "foreignKeys": {
+                "todo_list_item_list_id_todo_list_id_fk": {
+                    "name": "todo_list_item_list_id_todo_list_id_fk",
+                    "tableFrom": "todo_list_item",
+                    "tableTo": "todo_list",
+                    "columnsFrom": ["list_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "cascade",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {
+                "todo_list_item_list_id_id_pk": {
+                    "name": "todo_list_item_list_id_id_pk",
+                    "columns": ["list_id", "id"]
+                }
+            },
+            "uniqueConstraints": {
+                "todo_list_item_listId_index_unique": {
+                    "name": "todo_list_item_listId_index_unique",
+                    "nullsNotDistinct": false,
+                    "columns": ["list_id", "index"]
+                }
+            },
             "policies": {},
             "checkConstraints": {},
             "isRLSEnabled": false

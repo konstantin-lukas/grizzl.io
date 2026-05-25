@@ -85,7 +85,7 @@ test("does not move any items back one position if the given index is null", asy
     );
 });
 
-test("throws a UniqueConstraintError error and rolls back all actions when trying to insert multiple items with the same id", async ({
+test("throws a UniqueConstraintError error and rolls back all actions when trying to insert multiple items with the same id on the same list", async ({
     db,
     user,
 }) => {
@@ -94,4 +94,33 @@ test("throws a UniqueConstraintError error and rolls back all actions when tryin
     await expect(actionService.processActions(user.id, [item, item])).rejects.toThrow(UniqueConstraintError);
     const listItemsAfterActions = await db.todoListItem.select();
     expect(listItemsAfterActions).toStrictEqual([]);
+});
+
+test("does not throw when creating multiple elements with the same id on different lists", async ({ db, user }) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const item1 = { action: "create", id: "2222222222222222", index: 0, listId: list1.id, text: "" } as const;
+    const item2 = { action: "create", id: "2222222222222222", index: 0, listId: list2.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item1, item2])).resolves.not.toThrow();
+    const listItemsAfterActions = await db.todoListItem.select();
+    expect(listItemsAfterActions).toHaveLength(2);
+});
+
+test("throws a UniqueConstraintError error when trying to create multiple elements with the same text and index null", async ({
+    db,
+    user,
+}) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const item1 = { action: "create", id: "2222222222222222", index: null, listId: list.id, text: "a" } as const;
+    const item2 = { action: "create", id: "2222222222222223", index: null, listId: list.id, text: "a" } as const;
+    await expect(actionService.processActions(user.id, [item1, item2])).rejects.toThrow(UniqueConstraintError);
+});
+
+test("does not throw a UniqueConstraintError error when trying to create multiple elements with the same text and index null on different lists", async ({
+    db,
+    user,
+}) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const item1 = { action: "create", id: "2222222222222222", index: null, listId: list1.id, text: "a" } as const;
+    const item2 = { action: "create", id: "2222222222222222", index: null, listId: list2.id, text: "a" } as const;
+    await expect(actionService.processActions(user.id, [item1, item2])).resolves.not.toThrow();
 });
