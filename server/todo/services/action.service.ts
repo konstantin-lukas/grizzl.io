@@ -4,7 +4,7 @@ import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import type { CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
 
-export default class ListService {
+export default class ActionService {
     static readonly deps = [ListRepository, ListItemRepository];
 
     constructor(
@@ -12,7 +12,7 @@ export default class ListService {
         private readonly listItemRepository: ListItemRepository,
     ) {}
 
-    async create(action: CreateAction, tx: DatabaseTransaction) {
+    private async create(action: CreateAction, tx: DatabaseTransaction) {
         if (action.index !== null) {
             await this.listItemRepository.incrementIndices(action.listId, action.index, tx);
         }
