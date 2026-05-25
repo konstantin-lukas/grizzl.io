@@ -10,8 +10,8 @@ export default class ListRepository extends BaseRepository<typeof schema> {
         super(db, schema, userId => eq(this.schema.userId, userId));
     }
 
-    public async findByUserId(userId: string) {
-        return this.db.query.todoList.findMany({
+    public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
+        return ctx.query.todoList.findMany({
             where: (todoList, { eq, isNull, and }) => and(eq(todoList.userId, userId), isNull(todoList.deletedAt)),
             with: {
                 items: {

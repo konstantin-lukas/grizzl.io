@@ -36,5 +36,5 @@ export default function useMutationQueue(watchChanges = false, onResponseError?:
             { deep: true },
         );
     }
-    return { queue };
+    return { queue, isFetching };
 }

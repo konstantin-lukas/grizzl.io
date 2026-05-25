@@ -9,32 +9,32 @@ const BaseActionSchema = z.object({
     listId: DatabaseIdSchema,
 });
 
-const CreateActionSchema = BaseActionSchema.extend({
+export const CreateActionSchema = BaseActionSchema.extend({
     action: z.literal("create"),
     text: preTrim(z.string()),
     index: z.number().min(0).nullable(),
 });
 
-const CheckActionSchema = BaseActionSchema.extend({
+export const CheckActionSchema = BaseActionSchema.extend({
     action: z.enum(["check", "uncheck"]),
 });
 
-const MoveActionSchema = BaseActionSchema.extend({
+export const MoveActionSchema = BaseActionSchema.extend({
     action: z.literal("move"),
     from: z.number(),
     to: z.number(),
 });
 
-const ScheduleActionSchema = BaseActionSchema.extend({
+export const ScheduleActionSchema = BaseActionSchema.extend({
     action: z.literal("schedule"),
     value: z.iso.date().nullable(),
 });
 
-const DeleteActionSchema = BaseActionSchema.extend({
+export const DeleteActionSchema = BaseActionSchema.extend({
     action: z.literal("delete"),
 });
 
-const ChangeActionSchema = BaseActionSchema.extend({
+export const ChangeActionSchema = BaseActionSchema.extend({
     action: z.literal("change"),
     value: z.string(),
 });
@@ -52,3 +52,9 @@ export const PostActionQueueSchema = PostActionSchema.array().min(TODO_MIN_ACTIO
 
 export type PostAction = z.infer<typeof PostActionSchema>;
 export type PostActionQueue = z.infer<typeof PostActionQueueSchema>;
+export type CreateAction = z.infer<typeof CreateActionSchema>;
+export type CheckAction = z.infer<typeof CheckActionSchema>;
+export type MoveAction = z.infer<typeof MoveActionSchema>;
+export type ScheduleAction = z.infer<typeof ScheduleActionSchema>;
+export type DeleteAction = z.infer<typeof DeleteActionSchema>;
+export type ChangeAction = z.infer<typeof ChangeActionSchema>;

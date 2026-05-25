@@ -18,7 +18,7 @@ const route = useRoute();
 const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
-const { queue } = useMutationQueue(true, error => {
+const { queue, isFetching } = useMutationQueue(true, error => {
     toast.add(createToastError(error));
 });
 const { openList } = useOpenList(true);
@@ -47,6 +47,15 @@ watchEffect(() => {
     if (!data.value) return;
     todoLists.value = data.value;
 });
+
+watch(
+    [queue, isFetching, openList],
+    () => {
+        if (isFetching.value || queue.value.length > 0 || openList.value) return;
+        refresh();
+    },
+    { deep: true },
+);
 
 watch(
     () => route.query.list,
@@ -87,6 +96,6 @@ watch(
                 />
             </TransitionGroup>
         </ul>
-        <ListModal @close="refresh" />
+        <ListModal />
     </Wrapper>
 </template>

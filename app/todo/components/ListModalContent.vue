@@ -11,8 +11,6 @@ import UAccordion from "#ui/components/Accordion.vue";
 import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
-const emit = defineEmits(["close"]);
-
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 const { queue } = useMutationQueue();
 const { t } = useI18n();
@@ -65,7 +63,6 @@ watch(id, async value => {
         @close="
             persistChanges();
             openList = null;
-            emit('close');
         "
     >
         <div class="p-6 pt-8">
