@@ -169,3 +169,15 @@ test("does not throw when trying to create tasks on the last position of the lis
     const item = { action: "create", id: "2222222222222222", index: 3, listId: list.id, text: "" } as const;
     await expect(actionService.processActions(user.id, [item])).resolves.not.toThrow();
 });
+
+test("does not throw when trying to create tasks on the last position of the list after inserting", async ({
+    db,
+    user,
+}) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    await db.todoListItem.insert(3, { listId: list.id });
+    const item1 = { action: "create", id: "2222222222222222", index: 3, listId: list.id, text: "" } as const;
+    const item2 = { action: "create", id: "2222222222222223", index: 4, listId: list.id, text: "" } as const;
+    const item3 = { action: "create", id: "2222222222222224", index: 5, listId: list.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item1, item2, item3])).resolves.not.toThrow();
+});
