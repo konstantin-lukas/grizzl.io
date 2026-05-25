@@ -2,7 +2,7 @@
 import { ICON_CLOUD_CHECK, ICON_LOAD } from "~/core/constants/icons.constant";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 
-const { queue } = useMutationQueue(true);
+const { queue } = useMutationQueue(false);
 </script>
 
 <template>

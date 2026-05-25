@@ -57,6 +57,20 @@
             "when": 1779380313249,
             "tag": "0007_even_victor_mancha",
             "breakpoints": true
+        },
+        {
+            "idx": 8,
+            "version": "7",
+            "when": 1779741772092,
+            "tag": "0008_graceful_triathlon",
+            "breakpoints": true
+        },
+        {
+            "idx": 9,
+            "version": "7",
+            "when": 1779741863178,
+            "tag": "0009_orange_kronos",
+            "breakpoints": true
         }
     ]
 }

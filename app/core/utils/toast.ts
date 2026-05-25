@@ -2,7 +2,7 @@ import type { NuxtError } from "#app";
 import type { useToast } from "#ui/composables";
 import { h } from "vue";
 
-type ApiError = NuxtError<{
+export type ApiError = NuxtError<{
     message: string;
     statusCode: number;
     statusMessage: string;

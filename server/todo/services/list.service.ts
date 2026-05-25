@@ -50,7 +50,7 @@ export default class ListService {
 
     async create(userId: string, list: PostList) {
         return this.listRepository.transaction(async tx => {
-            await this.listRepository.advisoryLock(`createToDoList${userId}`, tx);
+            await this.listRepository.advisoryLock(`create-to-do-list-${userId}`, tx);
             const count = await this.listRepository.getCount(userId, tx);
 
             if (typeof count !== "number") {

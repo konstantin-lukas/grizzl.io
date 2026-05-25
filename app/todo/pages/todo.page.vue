@@ -8,7 +8,7 @@ import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
 import ListModal from "~/todo/components/ListModalContent.vue";
-import { onResponseError } from "~/core/utils/toast";
+import { createToastError, onResponseError } from "~/core/utils/toast";
 import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
@@ -18,7 +18,9 @@ const route = useRoute();
 const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
-const { queue } = useMutationQueue();
+const { queue, isFetching } = useMutationQueue(true, error => {
+    toast.add(createToastError(error));
+});
 const { openList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists", {
     onResponseError: onResponseError(toast, t),
@@ -45,6 +47,15 @@ watchEffect(() => {
     if (!data.value) return;
     todoLists.value = data.value;
 });
+
+watch(
+    [queue, isFetching, openList],
+    () => {
+        if (isFetching.value || queue.value.length > 0 || openList.value) return;
+        refresh();
+    },
+    { deep: true },
+);
 
 watch(
     () => route.query.list,
@@ -85,6 +96,6 @@ watch(
                 />
             </TransitionGroup>
         </ul>
-        <ListModal @close="refresh" />
+        <ListModal />
     </Wrapper>
 </template>
