@@ -1,3 +1,4 @@
+import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { nanoid } from "#shared/core/utils/id.util";
@@ -201,7 +202,8 @@ export default class BaseController {
         if (
             error instanceof InvalidAccountBalanceError ||
             error instanceof UniqueConstraintError ||
-            error instanceof EntityLimitError
+            error instanceof EntityLimitError ||
+            error instanceof OutOfBoundsError
         )
             BaseController.throwError(error, "CONFLICT");
 

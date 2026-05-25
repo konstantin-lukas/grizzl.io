@@ -1,5 +1,6 @@
 import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
+import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import ListItemRepository from "#server/todo/repositories/list-item.repository";
@@ -46,6 +47,22 @@ export default class ActionService {
                         const message = "Cannot create new task. The given list is full.";
                         const logMessage = `Cannot create new task on list with id ${list.id}. List is full.`;
                         throw new EntityLimitError(message, logMessage);
+                    }
+                    const largestIndex = list.items.reduce(
+                        (max: { index: number | null }, item: { index: number | null }) => {
+                            if (item.index === null) return max;
+                            if (max.index === null) return item;
+                            return item.index > max.index ? item : max;
+                        },
+                        { index: null },
+                    ).index;
+                    if (
+                        (largestIndex === null && action.index !== null && action.index !== 0) ||
+                        (largestIndex !== null && action.index !== null && action.index > largestIndex + 1)
+                    ) {
+                        const message = `Cannot create new task at position ${action.index}. Out of bounds.`;
+                        const logMessage = `Cannot create new task on list with id ${list.id} at position ${action.index}. Out of bounds.`;
+                        throw new OutOfBoundsError(message, logMessage);
                     }
                     list.items.push({ ...action, scheduledFor: null });
                     await this.create(action, tx);

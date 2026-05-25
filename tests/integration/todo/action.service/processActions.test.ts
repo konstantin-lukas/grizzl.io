@@ -1,5 +1,6 @@
 import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
+import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import ActionService from "#server/todo/services/action.service";
 import ListItemRepository from "~~/server/todo/repositories/list-item.repository";
@@ -141,4 +142,30 @@ test("throws an EntityLimitError error when trying to create tasks on a full lis
     await db.todoListItem.insert<number>(1000, { listId: list.id });
     const item = { action: "create", id: "2222222222222222", index: null, listId: list.id, text: "" } as const;
     await expect(actionService.processActions(user.id, [item])).rejects.toThrow(EntityLimitError);
+});
+
+test("throws an OutOfBoundsError error when trying to create tasks on second position of an empty list", async ({
+    db,
+    user,
+}) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const item = { action: "create", id: "2222222222222222", index: 1, listId: list.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item])).rejects.toThrow(OutOfBoundsError);
+});
+
+test("throws an OutOfBoundsError error when trying to create tasks one past the last item of a list", async ({
+    db,
+    user,
+}) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    await db.todoListItem.insert(3, { listId: list.id });
+    const item = { action: "create", id: "2222222222222222", index: 4, listId: list.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item])).rejects.toThrow(OutOfBoundsError);
+});
+
+test("does not throw when trying to create tasks on the last position of the list", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    await db.todoListItem.insert(3, { listId: list.id });
+    const item = { action: "create", id: "2222222222222222", index: 3, listId: list.id, text: "" } as const;
+    await expect(actionService.processActions(user.id, [item])).resolves.not.toThrow();
 });

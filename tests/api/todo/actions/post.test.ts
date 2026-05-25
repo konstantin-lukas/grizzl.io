@@ -30,6 +30,16 @@ test("returns a 400 error when the user submits a list of actions that's too lon
     expect(response.status()).toBe(400);
 });
 
+test("returns a 400 error when the index is negative", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", { data: [{ ...item, index: -1 }] });
+    expect(response.status()).toBe(400);
+});
+
+test("returns a 409 error when the index is out of bounds", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", { data: [{ ...item, index: 1 }] });
+    expect(response.status()).toBe(409);
+});
+
 test("returns a 204 status when the amount of actions is just short enough", async ({ request }) => {
     const response = await request.post("/api/todo/actions", {
         data: Array.from({ length: 20 }).map(() => ({ ...item, id: nanoid() })),
