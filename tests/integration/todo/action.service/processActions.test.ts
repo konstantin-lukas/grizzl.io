@@ -1,4 +1,5 @@
 import NotFoundError from "#server/core/errors/not-found.error";
+import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import ActionService from "#server/todo/services/action.service";
 import ListItemRepository from "~~/server/todo/repositories/list-item.repository";
 import ListRepository from "~~/server/todo/repositories/list.repository";
@@ -28,9 +29,16 @@ test("throws a NotFoundError and rolls back all actions when trying to operate o
     expect(listItemsAfterActions).toStrictEqual([]);
 });
 
-test("allows creating a single todo item", async ({ db, user }) => {
+test("allows creating a single todo item but doesn't allow setting scheduledFor", async ({ db, user }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });
-    const item = { action: "create", id: "2222222222222222", index: 0, listId: list.id, text: "Bananas" } as const;
+    const item = {
+        action: "create",
+        id: "2222222222222222",
+        index: 0,
+        listId: list.id,
+        text: "Bananas",
+        scheduledFor: "2025-01-15",
+    } as const;
     await actionService.processActions(user.id, [item]);
     const listItemsAfterActions = await db.todoListItem.select();
     expect(listItemsAfterActions).toStrictEqual([{ ...omit(item, "action"), scheduledFor: null }]);
@@ -77,13 +85,13 @@ test("does not move any items back one position if the given index is null", asy
     );
 });
 
-test("throws an error and rolls back all actions when trying to insert multiple items with the same id", async ({
+test("throws a UniqueConstraintError error and rolls back all actions when trying to insert multiple items with the same id", async ({
     db,
     user,
 }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });
     const item = { action: "create", id: "2222222222222222", index: 0, listId: list.id, text: "" } as const;
-    await expect(actionService.processActions(user.id, [item, item])).rejects.toThrow();
+    await expect(actionService.processActions(user.id, [item, item])).rejects.toThrow(UniqueConstraintError);
     const listItemsAfterActions = await db.todoListItem.select();
     expect(listItemsAfterActions).toStrictEqual([]);
 });

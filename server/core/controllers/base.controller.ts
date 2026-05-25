@@ -1,3 +1,4 @@
+import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
 import { nanoid } from "#shared/core/utils/id.util";
 import { DatabaseIdSchema } from "#shared/core/validators/core.validator";
@@ -197,8 +198,12 @@ export default class BaseController {
         // SPECIFIC DOMAIN ERROR
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
         if (error instanceof UnknownError) BaseController.throwError(error, "INTERNAL_SERVER_ERROR");
-        if (error instanceof InvalidAccountBalanceError) BaseController.throwError(error, "CONFLICT");
-        if (error instanceof EntityLimitError) BaseController.throwError(error, "CONFLICT");
+        if (
+            error instanceof InvalidAccountBalanceError ||
+            error instanceof UniqueConstraintError ||
+            error instanceof EntityLimitError
+        )
+            BaseController.throwError(error, "CONFLICT");
 
         // REQUEST ERROR
         if (error instanceof ZodError) BaseController.throwError(error, "BAD_REQUEST");
@@ -211,8 +216,14 @@ export default class BaseController {
             setResponseStatus(event, BaseController.HttpStatusCode[status], BaseController.HttpStatusMessage[status]);
         };
 
-        if (event.method === "POST") setStatus("CREATED");
-        if (event.method === "GET") setStatus("OK");
-        if (event.method === "PUT" || event.method === "PATCH") setStatus("NO_CONTENT");
+        const status = (() => {
+            if (event.method === "PUT" || event.method === "PATCH" || event.path === "/api/todo/actions") {
+                return "NO_CONTENT";
+            }
+            if (event.method === "POST") return "CREATED";
+            if (event.method === "GET") return "OK";
+        })();
+
+        if (status) setStatus(status);
     }
 }

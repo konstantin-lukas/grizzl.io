@@ -4,7 +4,7 @@ import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
 
 /* c8 ignore start */
-export default class ListController extends BaseController {
+export default class ActionController extends BaseController {
     static readonly deps = [ActionService];
 
     constructor(private readonly actionService: ActionService) {
@@ -12,8 +12,8 @@ export default class ListController extends BaseController {
     }
 
     public async triggerActions(event: H3Event) {
-        const actions = await ListController.parseRequestBody(event, PostActionQueueSchema);
-        return await this.actionService.processActions(event.context.user.id, actions);
+        const actions = await ActionController.parseRequestBody(event, PostActionQueueSchema);
+        await this.actionService.processActions(event.context.user.id, actions);
     }
 }
 /* c8 ignore stop */

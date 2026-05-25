@@ -1,7 +1,9 @@
 import NotFoundError from "#server/core/errors/not-found.error";
+import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
+import { tryCatch } from "#shared/core/utils/result.util";
 import type { CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
 
 export default class ActionService {
@@ -16,7 +18,14 @@ export default class ActionService {
         if (action.index !== null) {
             await this.listItemRepository.incrementIndices(action.listId, action.index, tx);
         }
-        await this.listItemRepository.create(action, tx);
+
+        const { error } = await tryCatch(this.listItemRepository.create(action, tx));
+        if (!error) return;
+
+        throw new UniqueConstraintError(
+            `Unable to create item with id ${action.id} on list with id ${action.listId}`,
+            error.message,
+        );
     }
 
     async processActions(userId: string, actions: PostActionQueue) {
