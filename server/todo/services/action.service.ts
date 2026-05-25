@@ -22,6 +22,17 @@ export default class ActionService {
         private readonly listItemRepository: ListItemRepository,
     ) {}
 
+    public static findLargestIndex(list: MinimalList) {
+        return list.items.reduce(
+            (max, item) => {
+                if (item.index === null) return max;
+                if (max.index === null) return item;
+                return item.index > max.index ? item : max;
+            },
+            { index: null as number | null },
+        ).index;
+    }
+
     private async create(action: CreateAction, list: MinimalList, tx: DatabaseTransaction) {
         if (list.items.length >= TODO_LIST_MAX_LENGTH) {
             const message = "Cannot create new task. The given list is full.";
@@ -29,14 +40,7 @@ export default class ActionService {
             throw new EntityLimitError(message, logMessage);
         }
 
-        const largestIndex = list.items.reduce(
-            (max: { index: number | null }, item: { index: number | null }) => {
-                if (item.index === null) return max;
-                if (max.index === null) return item;
-                return item.index > max.index ? item : max;
-            },
-            { index: null },
-        ).index;
+        const largestIndex = ActionService.findLargestIndex(list);
 
         if (
             (largestIndex === null && action.index !== null && action.index !== 0) ||
