@@ -1,4 +1,4 @@
-FROM node:24.8-bookworm-slim AS base
+FROM node:24.11-bookworm-slim AS base
 
 FROM base AS deps
 WORKDIR /home/grizzl
