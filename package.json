@@ -21,7 +21,7 @@
         "@nuxt/image": "2.0.0",
         "@nuxt/ui": "4.8.0",
         "@nuxtjs/color-mode": "4.0.0",
-        "@nuxtjs/i18n": "10.2.4",
+        "@nuxtjs/i18n": "10.3.0",
         "@vite-pwa/nuxt": "1.1.1",
         "better-auth": "1.6.10",
         "chart.js": "4.5.1",
