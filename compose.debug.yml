@@ -1,6 +1,6 @@
 services:
     setup:
-        image: node:24.8-bookworm-slim
+        image: node:24.11-bookworm-slim
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
@@ -32,7 +32,7 @@ services:
             retries: 10
 
     migrations:
-        image: node:24.8-bookworm-slim
+        image: node:24.11-bookworm-slim
         depends_on:
             postgres:
                 condition: service_healthy
@@ -60,7 +60,7 @@ services:
 
     webserver:
         container_name: grizzl-web-server-dev
-        image: node:24.8-bookworm-slim
+        image: node:24.11-bookworm-slim
         restart: unless-stopped
         volumes:
             - .:/home/grizzl
@@ -80,7 +80,7 @@ services:
 
     playwright:
         container_name: grizzl-playwright-dev
-        image: mcr.microsoft.com/playwright:v1.59.1-noble
+        image: mcr.microsoft.com/playwright:v1.60.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
