@@ -46,7 +46,7 @@
         "@vitest/coverage-v8": "4.1.6",
         "@vue/test-utils": "2.4.10",
         "drizzle-kit": "0.31.10",
-        "eslint": "10.2.1",
+        "eslint": "10.3.0",
         "eslint-plugin-vuejs-accessibility": "2.5.0",
         "happy-dom": "20.9.0",
         "playwright-core": "1.60.0",
