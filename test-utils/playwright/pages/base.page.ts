@@ -218,7 +218,6 @@ export default abstract class BasePage<T extends Record<string, string>> {
         const isTargetPage = isPage(target);
 
         const {
-            // @ts-expect-error Destructuring used to discard overridden methods
             toMatchAriaSnapshot: _aria,
             toHaveScreenshot: _screen,
             ...expectObject

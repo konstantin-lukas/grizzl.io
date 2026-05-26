@@ -80,7 +80,7 @@ services:
 
     playwright:
         container_name: grizzl-playwright-dev
-        image: mcr.microsoft.com/playwright:v1.59.1-noble
+        image: mcr.microsoft.com/playwright:v1.60.0-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
