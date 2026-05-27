@@ -6,7 +6,7 @@ import type { DatabaseTransaction } from "#server/core/repositories/base.reposit
 import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
-import type { CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
+import type { ChangeAction, CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
 interface MinimalList {
@@ -67,6 +67,10 @@ export default class ActionService {
         );
     }
 
+    private async change(action: ChangeAction, tx: DatabaseTransaction) {
+        await this.listItemRepository.updateText(action, tx);
+    }
+
     async processActions(userId: string, actions: PostActionQueue) {
         return this.listRepository.transaction(async tx => {
             await this.listRepository.advisoryLock(`execute-to-do-list-actions-${userId}`, tx);
@@ -80,6 +84,10 @@ export default class ActionService {
                 }
                 if (action.action === "create") {
                     await this.create(action, list, tx);
+                    continue;
+                }
+                if (action.action === "change") {
+                    await this.change(action, tx);
                     continue;
                 }
             }
