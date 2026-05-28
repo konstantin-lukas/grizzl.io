@@ -154,7 +154,7 @@ watch(checked, value => {
     } else {
         uncompletedItems.value.push({ ...item, scheduledFor: null });
         completedItems.value = deleteNthElement(completedItems.value, index);
-        queue.value.push({ action: "uncheck", id: item.id, listId: id.value });
+        queue.value.push({ action: "check", id: item.id, listId: id.value });
     }
 });
 

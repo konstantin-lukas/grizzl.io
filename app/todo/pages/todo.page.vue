@@ -18,12 +18,13 @@ const route = useRoute();
 const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
-const { queue, isFetching } = useMutationQueue(true, error => {
-    toast.add(createToastError(error));
-});
-const { openList } = useOpenList(true);
+const { openList, refreshOpenList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists", {
     onResponseError: onResponseError(toast, t),
+});
+const { queue, isFetching } = useMutationQueue(true, error => {
+    toast.add(createToastError(error));
+    refresh().then(refreshOpenList);
 });
 const createTodoList = useOnSubmit({
     url: () => "/api/todo/lists",

@@ -1,6 +1,6 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
 import type { ChangeAction, CreateAction, ScheduleAction } from "#shared/todo/validators/action.validator";
-import { and, eq, gte, sql } from "drizzle-orm";
+import { and, eq, gte, isNotNull, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -17,8 +17,22 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
     }
 
     async incrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
-        const condition = and(eq(this.schema.listId, listId), gte(this.schema.index, startingIndex));
+        const condition = and(
+            eq(this.schema.listId, listId),
+            isNotNull(this.schema.index),
+            gte(this.schema.index, startingIndex),
+        );
         const values = { index: sql`${this.schema.index} + 1` };
+        await ctx.update(this.schema).set(values).where(condition);
+    }
+
+    async decrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
+        const condition = and(
+            eq(this.schema.listId, listId),
+            isNotNull(this.schema.index),
+            gte(this.schema.index, startingIndex),
+        );
+        const values = { index: sql`${this.schema.index} - 1` };
         await ctx.update(this.schema).set(values).where(condition);
     }
 
@@ -30,6 +44,15 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
 
     async updateScheduledFor({ listId, id, value }: ScheduleAction, ctx: ExecutionContext = this.db) {
         const values = { scheduledFor: value };
+        const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
+        await ctx.update(this.schema).set(values).where(condition);
+    }
+
+    async updateIndex(
+        { listId, id, value }: { listId: string; id: string; value: number | null },
+        ctx: ExecutionContext = this.db,
+    ) {
+        const values = { index: value };
         const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
         await ctx.update(this.schema).set(values).where(condition);
     }

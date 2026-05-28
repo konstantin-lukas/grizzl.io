@@ -9,19 +9,17 @@ export function useOpenList(watchChanges = false) {
     const uncompletedItems = useState<TodoList["items"]["completed"]>("open-todo-list-uncompleted-items", () => []);
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
 
+    const refreshOpenList = () => {
+        if (!openList.value) return;
+        const clone = structuredClone(toRaw(openList.value));
+        id.value = clone.id;
+        title.value = clone.title;
+        completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
+        uncompletedItems.value = clone.items.uncompleted;
+    };
+
     if (watchChanges) {
-        watch(
-            () => openList.value?.id,
-            () => {
-                if (!openList.value) return;
-                const clone = structuredClone(toRaw(openList.value));
-                id.value = clone.id;
-                title.value = clone.title;
-                completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
-                uncompletedItems.value = clone.items.uncompleted;
-            },
-            { immediate: true },
-        );
+        watch(() => openList.value?.id, refreshOpenList, { immediate: true });
 
         watchEffect(() => {
             const completedIDs = completedItems.value.map(({ id }) => id);
@@ -58,5 +56,6 @@ export function useOpenList(watchChanges = false) {
         existingIDs,
         completedItems,
         uncompletedItems,
+        refreshOpenList,
     };
 }
