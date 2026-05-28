@@ -84,3 +84,13 @@ test("returns a 409 error when trying to create two items with index null whose 
     });
     expect(response.status()).toBe(409);
 });
+
+test("trims changes before saving them", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId });
+    await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "change", value: " abc " }],
+    });
+    const tasks = await db.todoListItem.select();
+    expect(tasks).toHaveLength(1);
+    expect(tasks[0]!.text).toBe("abc");
+});

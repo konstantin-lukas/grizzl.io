@@ -1,3 +1,4 @@
+import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
@@ -87,17 +88,6 @@ test("does not move any items back one position if the given index is null", asy
     );
 });
 
-test("throws a UniqueConstraintError and rolls back all actions when trying to insert multiple items with the same id on the same list", async ({
-    db,
-    user,
-}) => {
-    const [list] = await db.todoList.insert(1, { userId: user.id });
-    const item = { action: "create", id: "2222222222222222", index: 0, listId: list.id, text: "" } as const;
-    await expect(actionService.processActions(user.id, [item, item])).rejects.toThrow(UniqueConstraintError);
-    const listItemsAfterActions = await db.todoListItem.select();
-    expect(listItemsAfterActions).toStrictEqual([]);
-});
-
 test("does not throw when creating multiple elements with the same id on different lists", async ({ db, user }) => {
     const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
     const item1 = { action: "create", id: "2222222222222222", index: 0, listId: list1.id, text: "" } as const;
@@ -180,4 +170,42 @@ test("does not throw when trying to create tasks on the last position of the lis
     const item2 = { action: "create", id: "2222222222222223", index: 4, listId: list.id, text: "" } as const;
     const item3 = { action: "create", id: "2222222222222224", index: 5, listId: list.id, text: "" } as const;
     await expect(actionService.processActions(user.id, [item1, item2, item3])).resolves.not.toThrow();
+});
+
+test("allows changing the text of a todo list item", async ({ user, db }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list.id });
+    const action = { action: "change", listId: list.id, value: "Bananas", id: item.id } as const;
+    await actionService.processActions(user.id, [action]);
+    const items = await db.todoListItem.select();
+    expect(items).toStrictEqual([{ index: 0, listId: list.id, scheduledFor: null, text: "Bananas", id: item.id }]);
+});
+
+test("throws a NotFoundError when trying to edit a todo list item belonging to a different list", async ({
+    db,
+    user,
+}) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list1.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [{ action: "change", id: item.id, value: "Bananas", listId: list2.id }]),
+    ).rejects.toThrow(NotFoundError);
+    const listItemsAfterActions = await db.todoListItem.select();
+    expect(listItemsAfterActions).toStrictEqual([
+        {
+            id: item.id,
+            index: 0,
+            listId: list1.id,
+            scheduledFor: null,
+            text: "Oranges",
+        },
+    ]);
+});
+
+test("throws a DuplicateKeyError when trying to create a todo list item that already exists", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [{ action: "create", id: item.id, index: 0, text: "", listId: list.id }]),
+    ).rejects.toThrow(DuplicateKeyError);
 });

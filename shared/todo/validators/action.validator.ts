@@ -36,7 +36,7 @@ export const DeleteActionSchema = BaseActionSchema.extend({
 
 export const ChangeActionSchema = BaseActionSchema.extend({
     action: z.literal("change"),
-    value: z.string(),
+    value: preTrim(z.string()),
 });
 
 export const PostActionSchema = z.union([
