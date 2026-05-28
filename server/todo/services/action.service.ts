@@ -7,7 +7,12 @@ import type { DatabaseTransaction } from "#server/core/repositories/base.reposit
 import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
-import type { ChangeAction, CreateAction, PostActionQueue } from "#shared/todo/validators/action.validator";
+import type {
+    ChangeAction,
+    CreateAction,
+    PostActionQueue,
+    ScheduleAction,
+} from "#shared/todo/validators/action.validator";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 
 interface MinimalList {
@@ -72,6 +77,10 @@ export default class ActionService {
         await this.listItemRepository.updateText(action, tx);
     }
 
+    private async schedule(action: ScheduleAction, tx: DatabaseTransaction) {
+        await this.listItemRepository.updateScheduledFor(action, tx);
+    }
+
     async processActions(userId: string, actions: PostActionQueue) {
         return this.listRepository.transaction(async tx => {
             await this.listRepository.advisoryLock(`execute-to-do-list-actions-${userId}`, tx);
@@ -86,15 +95,19 @@ export default class ActionService {
 
                 const hasItem = list.items.some(item => item.id === action.id);
 
-                if (action.action === "create") {
-                    if (hasItem) throw new DuplicateKeyError(message, logMessage);
-                    await this.create(action, list, tx);
-                    continue;
-                }
-                if (action.action === "change") {
-                    if (!hasItem) throw new NotFoundError(message, logMessage);
-                    await this.change(action, tx);
-                    continue;
+                switch (action.action) {
+                    case "create":
+                        if (hasItem) throw new DuplicateKeyError(message, logMessage);
+                        await this.create(action, list, tx);
+                        break;
+                    case "change":
+                        if (!hasItem) throw new NotFoundError(message, logMessage);
+                        await this.change(action, tx);
+                        break;
+                    case "schedule":
+                        if (!hasItem) throw new NotFoundError(message, logMessage);
+                        await this.schedule(action, tx);
+                        break;
                 }
             }
         });
