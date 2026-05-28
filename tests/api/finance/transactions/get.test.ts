@@ -1,3 +1,4 @@
+import { today } from "@internationalized/date";
 import { generateFilterCombinations } from "~~/test-utils/helpers/object";
 import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
 import { expect, test } from "~~/test-utils/playwright";
@@ -102,6 +103,8 @@ test("executes auto transactions before returning result", async ({ request, db 
     const [autoTransaction] = await db.financeAutoTransaction.insert(1, {
         accountId: account.id,
         categoryId: category.id,
+        execInterval: 1,
+        lastExec: today("UTC").subtract({ months: 1 }).toString(),
     });
     const response = await request.get(route(account.id));
     const data = await response.json();
@@ -119,6 +122,8 @@ test("only applies each auto transaction execution once", async ({ request, db }
     await db.financeAutoTransaction.insert(1, {
         accountId: account.id,
         categoryId: category.id,
+        execInterval: 1,
+        lastExec: today("UTC").subtract({ months: 1 }).toString(),
     });
     await Promise.all(Array.from({ length: 10 }).map(() => request.get(route(account.id))));
     const transactions = await db.financeTransaction.select();
