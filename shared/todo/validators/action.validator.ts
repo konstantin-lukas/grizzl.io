@@ -16,7 +16,7 @@ export const CreateActionSchema = BaseActionSchema.extend({
 });
 
 export const CheckActionSchema = BaseActionSchema.extend({
-    action: z.enum(["check", "uncheck"]),
+    action: z.literal("check"),
 });
 
 export const MoveActionSchema = BaseActionSchema.extend({
