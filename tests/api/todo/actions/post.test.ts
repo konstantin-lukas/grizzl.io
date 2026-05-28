@@ -94,3 +94,28 @@ test("trims changes before saving them", async ({ request, db }) => {
     expect(tasks).toHaveLength(1);
     expect(tasks[0]!.text).toBe("abc");
 });
+
+test("returns a 400 error when trying to schedule an invalid date", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId });
+    const response = await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "schedule", value: "AAAA-01-01" }],
+    });
+    expect(response.status()).toBe(400);
+});
+
+test("returns a 204 status when trying to schedule a valid date", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId });
+    const response = await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "schedule", value: "2020-01-01" }],
+    });
+    expect(response.status()).toBe(204);
+    expect((await db.todoListItem.select())[0]?.scheduledFor).toBe("2020-01-01");
+});
+
+test("allows unscheduling a task", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId, scheduledFor: "2020-01-01" });
+    await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "schedule", value: null }],
+    });
+    expect((await db.todoListItem.select())[0]?.scheduledFor).toBe(null);
+});
