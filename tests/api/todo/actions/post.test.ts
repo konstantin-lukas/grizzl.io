@@ -119,3 +119,19 @@ test("allows unscheduling a task", async ({ request, db }) => {
     });
     expect((await db.todoListItem.select())[0]?.scheduledFor).toBe(null);
 });
+
+test("allows unchecking a task", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId, index: 0 });
+    await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "check", value: null }],
+    });
+    expect((await db.todoListItem.select())[0]?.index).toBe(null);
+});
+
+test("allows checking a task", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId, index: null });
+    await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "check", value: null }],
+    });
+    expect((await db.todoListItem.select())[0]?.index).toBe(0);
+});

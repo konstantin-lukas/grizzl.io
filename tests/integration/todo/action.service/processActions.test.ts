@@ -232,3 +232,44 @@ test("allows changing a todo list item's scheduledFor", async ({ db, user }) => 
     await actionService.processActions(user.id, [{ action: "schedule", id: item.id, value: null, listId: list.id }]);
     expect((await db.todoListItem.select())[0]?.scheduledFor).toBe(null);
 });
+
+test("allows checking and unchecking an item and updating indices", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const items = await db.todoListItem.insert(3, index => ({ listId: list.id, index }));
+
+    await actionService.processActions(user.id, [{ action: "check", id: items[0].id, listId: list.id }]);
+
+    expect((await db.todoListItem.select(items[0].id))[0]!.index).toBeNull();
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(1);
+
+    await actionService.processActions(user.id, [{ action: "check", id: items[0].id, listId: list.id }]);
+
+    expect((await db.todoListItem.select(items[0].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(1);
+
+    await actionService.processActions(user.id, [
+        { action: "check", id: items[1].id, listId: list.id },
+        { action: "check", id: items[1].id, listId: list.id },
+    ]);
+
+    expect((await db.todoListItem.select(items[0].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(0);
+});
+
+test("allows checking consecutiveItems in one transaction", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const items = await db.todoListItem.insert(4, index => ({ listId: list.id, index }));
+
+    await actionService.processActions(user.id, [
+        { action: "check", id: items[0].id, listId: list.id },
+        { action: "check", id: items[1].id, listId: list.id },
+    ]);
+
+    expect((await db.todoListItem.select(items[0].id))[0]!.index).toBeNull();
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBeNull();
+    expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(items[3].id))[0]!.index).toBe(1);
+});
