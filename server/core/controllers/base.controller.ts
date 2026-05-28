@@ -1,3 +1,4 @@
+import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
@@ -203,7 +204,8 @@ export default class BaseController {
             error instanceof InvalidAccountBalanceError ||
             error instanceof UniqueConstraintError ||
             error instanceof EntityLimitError ||
-            error instanceof OutOfBoundsError
+            error instanceof OutOfBoundsError ||
+            error instanceof DuplicateKeyError
         )
             BaseController.throwError(error, "CONFLICT");
 

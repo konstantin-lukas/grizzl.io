@@ -1,3 +1,4 @@
+import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
@@ -78,22 +79,20 @@ export default class ActionService {
             for (const action of actions) {
                 const list: MinimalList | undefined = lists.find(list => list.id === action.listId);
 
-                const taskNotFound = () => {
-                    const message = `Cannot ${action.action} task with id ${action.id} on list with id ${action.listId} for user with id ${userId}. List does not exist for given user.`;
-                    const logMessage = `Cannot ${action.action} task on given to-do list.`;
-                    return new NotFoundError(message, logMessage);
-                };
+                const message = `Cannot ${action.action} task with id ${action.id} on list with id ${action.listId} for user with id ${userId}. List does not exist for given user.`;
+                const logMessage = `Cannot ${action.action} task on given to-do list.`;
 
-                if (!list) throw taskNotFound();
+                if (!list) throw new NotFoundError(message, logMessage);
 
                 const hasItem = list.items.some(item => item.id === action.id);
 
                 if (action.action === "create") {
+                    if (hasItem) throw new DuplicateKeyError(message, logMessage);
                     await this.create(action, list, tx);
                     continue;
                 }
                 if (action.action === "change") {
-                    if (!hasItem) throw taskNotFound();
+                    if (!hasItem) throw new NotFoundError(message, logMessage);
                     await this.change(action, tx);
                     continue;
                 }
