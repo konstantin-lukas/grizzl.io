@@ -77,16 +77,23 @@ export default class ActionService {
             const lists = await this.listRepository.findByUserId(userId, tx);
             for (const action of actions) {
                 const list: MinimalList | undefined = lists.find(list => list.id === action.listId);
-                if (!list) {
+
+                const taskNotFound = () => {
                     const message = `Cannot ${action.action} task with id ${action.id} on list with id ${action.listId} for user with id ${userId}. List does not exist for given user.`;
                     const logMessage = `Cannot ${action.action} task on given to-do list.`;
-                    throw new NotFoundError(message, logMessage);
-                }
+                    return new NotFoundError(message, logMessage);
+                };
+
+                if (!list) throw taskNotFound();
+
+                const hasItem = list.items.some(item => item.id === action.id);
+
                 if (action.action === "create") {
                     await this.create(action, list, tx);
                     continue;
                 }
                 if (action.action === "change") {
+                    if (!hasItem) throw taskNotFound();
                     await this.change(action, tx);
                     continue;
                 }

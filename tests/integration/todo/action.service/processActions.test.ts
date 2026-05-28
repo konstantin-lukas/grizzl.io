@@ -181,3 +181,33 @@ test("does not throw when trying to create tasks on the last position of the lis
     const item3 = { action: "create", id: "2222222222222224", index: 5, listId: list.id, text: "" } as const;
     await expect(actionService.processActions(user.id, [item1, item2, item3])).resolves.not.toThrow();
 });
+
+test("allows changing the text of a todo list item", async ({ user, db }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list.id });
+    const action = { action: "change", listId: list.id, value: "Bananas", id: item.id } as const;
+    await actionService.processActions(user.id, [action]);
+    const items = await db.todoListItem.select();
+    expect(items).toStrictEqual([{ index: 0, listId: list.id, scheduledFor: null, text: "Bananas", id: item.id }]);
+});
+
+test("throws a NotFoundError when trying to edit a todo list item belonging to a different list", async ({
+    db,
+    user,
+}) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list1.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [{ action: "change", id: item.id, value: "Bananas", listId: list2.id }]),
+    ).rejects.toThrow(NotFoundError);
+    const listItemsAfterActions = await db.todoListItem.select();
+    expect(listItemsAfterActions).toStrictEqual([
+        {
+            id: item.id,
+            index: 0,
+            listId: list1.id,
+            scheduledFor: null,
+            text: "Oranges",
+        },
+    ]);
+});

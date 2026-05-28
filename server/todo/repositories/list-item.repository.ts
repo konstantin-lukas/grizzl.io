@@ -17,16 +17,14 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
     }
 
     async incrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
-        await ctx
-            .update(this.schema)
-            .set({ index: sql`${this.schema.index} + 1` })
-            .where(and(eq(this.schema.listId, listId), gte(this.schema.index, startingIndex)));
+        const condition = and(eq(this.schema.listId, listId), gte(this.schema.index, startingIndex));
+        const values = { index: sql`${this.schema.index} + 1` };
+        await ctx.update(this.schema).set(values).where(condition);
     }
 
     async updateText({ listId, id, value }: ChangeAction, ctx: ExecutionContext = this.db) {
-        await ctx
-            .update(this.schema)
-            .set({ text: value })
-            .where(and(eq(this.schema.listId, listId), gte(this.schema.id, id)));
+        const values = { text: value };
+        const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
+        await ctx.update(this.schema).set(values).where(condition);
     }
 }
