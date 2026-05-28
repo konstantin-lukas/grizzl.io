@@ -220,6 +220,14 @@ test("throws a NotFoundError when trying to schedule a todo list item on the wro
     ).rejects.toThrow(NotFoundError);
 });
 
+test("throws a NotFoundError when trying to check a todo list item on the wrong list", async ({ db, user }) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list1.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [{ action: "check", id: item.id, listId: list2.id }]),
+    ).rejects.toThrow(NotFoundError);
+});
+
 test("allows changing a todo list item's scheduledFor", async ({ db, user }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });
     const [item] = await db.todoListItem.insert(1, { listId: list.id, text: "Oranges" });
