@@ -104,7 +104,8 @@ test("executes auto transactions before returning result", async ({ request, db 
         accountId: account.id,
         categoryId: category.id,
         execInterval: 1,
-        lastExec: today("UTC").subtract({ months: 1 }).toString(),
+        execOn: 1,
+        lastExec: today("UTC").subtract({ months: 1 }).set({ day: 1 }).toString(),
     });
     const response = await request.get(route(account.id));
     const data = await response.json();
@@ -123,7 +124,8 @@ test("only applies each auto transaction execution once", async ({ request, db }
         accountId: account.id,
         categoryId: category.id,
         execInterval: 1,
-        lastExec: today("UTC").subtract({ months: 1 }).toString(),
+        execOn: 1,
+        lastExec: today("UTC").subtract({ months: 1 }).set({ day: 1 }).toString(),
     });
     await Promise.all(Array.from({ length: 10 }).map(() => request.get(route(account.id))));
     const transactions = await db.financeTransaction.select();
