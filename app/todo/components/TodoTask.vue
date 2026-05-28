@@ -8,6 +8,8 @@ import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DateButtonPicker from "~/todo/components/DateButtonPicker.vue";
 import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
 import { LONG_TITLE_MAX } from "#shared/core/validators/core.validator";
+import type { CalendarDate } from "@internationalized/date";
+import { parseCalendarDate } from "~/core/utils/date";
 
 type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const props = defineProps<{
@@ -21,7 +23,9 @@ const emit = defineEmits<{ (e: "shift-focus", index: number, caretPos: number): 
 
 const text = ref(props.item.text);
 const menuOpen = ref(false);
-const scheduledFor = shallowRef(null);
+const scheduledFor = shallowRef<CalendarDate | null>(
+    props.item.scheduledFor ? parseCalendarDate(props.item.scheduledFor) : null,
+);
 const el = ref(null);
 const isVisible = ref(false);
 const checked = ref(props.type === "completed");
@@ -130,8 +134,9 @@ watch(text, updateText);
 
 watch(scheduledFor, value => {
     if (!props) return;
-    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.scheduledFor = value;
-    queue.value.push({ action: "schedule", id: props.item.id, value, listId: id.value });
+    (props.type === "completed" ? completedItems : uncompletedItems).value[props.index]!.scheduledFor =
+        value?.toString() || null;
+    queue.value.push({ action: "schedule", id: props.item.id, value: value?.toString() || null, listId: id.value });
 });
 
 watch(checked, value => {

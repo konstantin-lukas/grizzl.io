@@ -209,3 +209,26 @@ test("throws a DuplicateKeyError when trying to create a todo list item that alr
         actionService.processActions(user.id, [{ action: "create", id: item.id, index: 0, text: "", listId: list.id }]),
     ).rejects.toThrow(DuplicateKeyError);
 });
+
+test("throws a NotFoundError when trying to schedule a todo list item on the wrong list", async ({ db, user }) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list1.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [
+            { action: "schedule", id: item.id, value: "2020-01-01", listId: list2.id },
+        ]),
+    ).rejects.toThrow(NotFoundError);
+});
+
+test("allows changing a todo list item's scheduledFor", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list.id, text: "Oranges" });
+
+    await actionService.processActions(user.id, [
+        { action: "schedule", id: item.id, value: "2020-01-01", listId: list.id },
+    ]);
+    expect((await db.todoListItem.select())[0]?.scheduledFor).toBe("2020-01-01");
+
+    await actionService.processActions(user.id, [{ action: "schedule", id: item.id, value: null, listId: list.id }]);
+    expect((await db.todoListItem.select())[0]?.scheduledFor).toBe(null);
+});

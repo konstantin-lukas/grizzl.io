@@ -18,3 +18,9 @@ export function formatDate(date: CalendarDate | Date | string, locale: Language)
     const formatter = new DateFormatter(locale);
     return formatter.format(resolvedDate);
 }
+
+export function parseCalendarDate(date: string) {
+    const [year, month, day] = date.split("-").map(Number);
+    if (!year || !month || !day) throw new Error("Invalid date");
+    return new CalendarDate(year, month, day);
+}

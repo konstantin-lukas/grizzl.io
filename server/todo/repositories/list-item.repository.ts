@@ -1,5 +1,5 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
-import type { ChangeAction, CreateAction } from "#shared/todo/validators/action.validator";
+import type { ChangeAction, CreateAction, ScheduleAction } from "#shared/todo/validators/action.validator";
 import { and, eq, gte, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
@@ -24,6 +24,12 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
 
     async updateText({ listId, id, value }: ChangeAction, ctx: ExecutionContext = this.db) {
         const values = { text: value };
+        const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
+        await ctx.update(this.schema).set(values).where(condition);
+    }
+
+    async updateScheduledFor({ listId, id, value }: ScheduleAction, ctx: ExecutionContext = this.db) {
+        const values = { scheduledFor: value };
         const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
         await ctx.update(this.schema).set(values).where(condition);
     }
