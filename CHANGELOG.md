@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.16.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.15.0...v1.16.0) (2026-05-29)
+
+
+### Features
+
+* add virtualization to do list slideover ([#487](https://github.com/konstantin-lukas/grizzl.io/issues/487)) ([3c0dbf1](https://github.com/konstantin-lukas/grizzl.io/commit/3c0dbf118439d14071bfa1dde7b6d47c02427dd9))
+* allow creating to-do items ([#490](https://github.com/konstantin-lukas/grizzl.io/issues/490)) ([7ffd9c1](https://github.com/konstantin-lukas/grizzl.io/commit/7ffd9c1891c117bf2c8e672e26e90aedd365e10a))
+* create mutation queue endpoint post apitodoactions   delete ([#506](https://github.com/konstantin-lukas/grizzl.io/issues/506)) ([3a932d6](https://github.com/konstantin-lukas/grizzl.io/commit/3a932d6511c87df1b1a18bc7693f1d8ab5c24823))
+* create mutation queue endpoint post apitodoactions   move ([#508](https://github.com/konstantin-lukas/grizzl.io/issues/508)) ([2506c23](https://github.com/konstantin-lukas/grizzl.io/commit/2506c2366788c0d855aa8aa6449ac8a38c31d82a))
+* create mutation queue endpoint post apitodoactions   schedule ([#504](https://github.com/konstantin-lukas/grizzl.io/issues/504)) ([669f923](https://github.com/konstantin-lukas/grizzl.io/commit/669f9232614c85aab440d8948f616667a4bb7005))
+* create mutation queue endpoint post apitodoactions   text ([#501](https://github.com/konstantin-lukas/grizzl.io/issues/501)) ([5f21ae3](https://github.com/konstantin-lukas/grizzl.io/commit/5f21ae30d37217a8e582af1665839d5d9486c502))
+* create mutation queue endpoint post apitodoactions   uncheck ([#505](https://github.com/konstantin-lukas/grizzl.io/issues/505)) ([db09a9e](https://github.com/konstantin-lukas/grizzl.io/commit/db09a9e0616a219f7913d3f0f0b0a9936428fc1b))
+* create todo list slideover ([#482](https://github.com/konstantin-lukas/grizzl.io/issues/482)) ([7f8a916](https://github.com/konstantin-lukas/grizzl.io/commit/7f8a916869dba20230d47994a26fd31f32604d30))
+
 ## [1.15.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.14.0...v1.15.0) (2026-05-16)
 
 
