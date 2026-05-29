@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.0...v1.16.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* remove .env file before deployment build ([205a2c0](https://github.com/konstantin-lukas/grizzl.io/commit/205a2c02cf3ef1dcf9cdbe91f4530c9922dba1c6))
+
 ## [1.16.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.15.0...v1.16.0) (2026-05-29)
 
 
