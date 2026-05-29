@@ -13,6 +13,11 @@ import BaseRepository, { type ExecutionContext } from "~~/server/core/repositori
 
 const schema = "todoListItem";
 
+interface Boundaries {
+    min: number;
+    max?: number;
+}
+
 export default class ListItemRepository extends BaseRepository<typeof schema> {
     constructor(db: Database) {
         super(db, schema, userId => transitiveOwnership(userId, db, dbSchema.todoList, this.schema.listId));
@@ -24,7 +29,7 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
 
     private async updateIndices(
         listId: string,
-        { min, max = TODO_LIST_MAX_LENGTH }: { min: number; max?: number },
+        { min, max = TODO_LIST_MAX_LENGTH }: Boundaries,
         values: { index: SQL<unknown> },
         ctx: ExecutionContext = this.db,
     ) {
@@ -37,20 +42,12 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
         await ctx.update(this.schema).set(values).where(condition);
     }
 
-    async incrementIndices(
-        listId: string,
-        { min, max = TODO_LIST_MAX_LENGTH }: { min: number; max?: number },
-        ctx: ExecutionContext = this.db,
-    ) {
-        await this.updateIndices(listId, { min, max }, { index: sql`${this.schema.index} + 1` }, ctx);
+    async incrementIndices(listId: string, boundaries: Boundaries, ctx: ExecutionContext = this.db) {
+        await this.updateIndices(listId, boundaries, { index: sql`${this.schema.index} + 1` }, ctx);
     }
 
-    async decrementIndices(
-        listId: string,
-        { min, max = TODO_LIST_MAX_LENGTH }: { min: number; max?: number },
-        ctx: ExecutionContext = this.db,
-    ) {
-        await this.updateIndices(listId, { min, max }, { index: sql`${this.schema.index} - 1` }, ctx);
+    async decrementIndices(listId: string, boundaries: Boundaries, ctx: ExecutionContext = this.db) {
+        await this.updateIndices(listId, boundaries, { index: sql`${this.schema.index} - 1` }, ctx);
     }
 
     async updateText({ listId, id, value }: ChangeAction, ctx: ExecutionContext = this.db) {
