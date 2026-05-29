@@ -124,12 +124,20 @@ export default class ActionService {
 
     private async move(action: MoveAction, targetItem: ListItem, list: MinimalList, tx: DatabaseTransaction) {
         const oldIndex = targetItem.index;
-        if (oldIndex === null || oldIndex === action.to) return;
-        if (oldIndex < action.to) {
-            await this.listItemRepository.decrementIndices(list.id, { min: oldIndex + 1, max: action.to }, tx);
-            await this.listItemRepository.updateIndex({ listId: list.id, id: targetItem.id, value: action.to }, tx);
+        const maxAllowedIndex = list.items.filter(item => item.index !== null).length;
+        const targetIndex = action.to > maxAllowedIndex ? maxAllowedIndex : action.to;
+        if (oldIndex === null || oldIndex === targetIndex) return;
+        if (oldIndex < targetIndex) {
+            this.decrementLocalListIndices(list, oldIndex + 1, targetIndex);
+            targetItem.index = targetIndex;
+            await this.listItemRepository.decrementIndices(list.id, { min: oldIndex + 1, max: targetIndex }, tx);
+            await this.listItemRepository.updateIndex({ listId: list.id, id: targetItem.id, value: targetIndex }, tx);
             return;
         }
+        this.incrementLocalListIndices(list, targetIndex, oldIndex - 1);
+        targetItem.index = targetIndex;
+        await this.listItemRepository.incrementIndices(list.id, { min: targetIndex, max: oldIndex - 1 }, tx);
+        await this.listItemRepository.updateIndex({ listId: list.id, id: targetItem.id, value: targetIndex }, tx);
     }
 
     async processActions(userId: string, actions: PostActionQueue) {
