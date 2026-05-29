@@ -27,9 +27,9 @@ const EnvProductionSchema = z.object({
     NUXT_PUBLIC_ORIGIN: z.literal("https://grizzl.io"),
     NUXT_PUBLIC_VERSION: z.string().regex(/^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/),
 
-    POSTGRES_USER: z.undefined(),
-    POSTGRES_PASSWORD: z.undefined(),
-    POSTGRES_DB: z.undefined(),
+    POSTGRES_USER: z.undefined().optional(),
+    POSTGRES_PASSWORD: z.undefined().optional(),
+    POSTGRES_DB: z.undefined().optional(),
 
     DB_HOST: z.literal("postgres"),
     DB_NAME: z.literal("grizzl"),
