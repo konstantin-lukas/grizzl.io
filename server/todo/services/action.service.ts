@@ -11,6 +11,7 @@ import type {
     ChangeAction,
     CheckAction,
     CreateAction,
+    DeleteAction,
     PostActionQueue,
     ScheduleAction,
 } from "#shared/todo/validators/action.validator";
@@ -20,6 +21,8 @@ interface MinimalList {
     id: string;
     items: { text: string; index: number | null; id: string }[];
 }
+
+type ListItem = MinimalList["items"][number];
 
 export default class ActionService {
     static readonly deps = [ListRepository, ListItemRepository];
@@ -60,6 +63,7 @@ export default class ActionService {
 
         if (action.index !== null) {
             await this.listItemRepository.incrementIndices(action.listId, action.index, tx);
+            this.incrementLocalListIndices(list, action.index);
         }
 
         const { error } = await tryCatch(this.listItemRepository.create(action, tx));
@@ -82,12 +86,19 @@ export default class ActionService {
         await this.listItemRepository.updateScheduledFor(action, tx);
     }
 
-    private async check(
-        action: CheckAction,
-        targetItem: MinimalList["items"][number],
-        list: MinimalList,
-        tx: DatabaseTransaction,
-    ) {
+    private decrementLocalListIndices(list: MinimalList, removedIndex: number) {
+        for (const item of list.items) {
+            if (item.index !== null && item.index >= removedIndex) item.index--;
+        }
+    }
+
+    private incrementLocalListIndices(list: MinimalList, addedIndex: number) {
+        for (const item of list.items) {
+            if (item.index !== null && item.index >= addedIndex) item.index++;
+        }
+    }
+
+    private async check(action: CheckAction, targetItem: ListItem, list: MinimalList, tx: DatabaseTransaction) {
         const oldIndex = targetItem.index;
         if (oldIndex === null) {
             const newIndex = list.items.filter(item => item.index !== null).length;
@@ -96,11 +107,18 @@ export default class ActionService {
             return;
         }
         targetItem.index = null;
-        for (const item of list.items) {
-            if (item.index !== null) item.index--;
-        }
+        this.decrementLocalListIndices(list, oldIndex + 1);
         await this.listItemRepository.updateIndex({ listId: list.id, id: action.id, value: null }, tx);
         await this.listItemRepository.decrementIndices(list.id, oldIndex + 1, tx);
+    }
+
+    private async delete(action: DeleteAction, targetItem: ListItem, list: MinimalList, tx: DatabaseTransaction) {
+        await this.listItemRepository.deleteByList(action, tx);
+        if (targetItem.index !== null) {
+            await this.listItemRepository.decrementIndices(list.id, targetItem.index + 1, tx);
+            this.decrementLocalListIndices(list, targetItem.index + 1);
+        }
+        list.items = list.items.filter(item => item.id !== action.id);
     }
 
     async processActions(userId: string, actions: PostActionQueue) {
@@ -133,6 +151,10 @@ export default class ActionService {
                     case "check":
                         if (!targetItem) throw new NotFoundError(message, logMessage);
                         await this.check(action, targetItem, list, tx);
+                        break;
+                    case "delete":
+                        if (!targetItem) throw new NotFoundError(message, logMessage);
+                        await this.delete(action, targetItem, list, tx);
                         break;
                 }
             }
