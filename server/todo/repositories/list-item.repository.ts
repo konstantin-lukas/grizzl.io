@@ -5,12 +5,18 @@ import type {
     DeleteAction,
     ScheduleAction,
 } from "#shared/todo/validators/action.validator";
-import { and, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
+import { type SQL, and, eq, gte, isNotNull, lte, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "todoListItem";
+
+interface Boundaries {
+    min: number;
+    max?: number;
+}
 
 export default class ListItemRepository extends BaseRepository<typeof schema> {
     constructor(db: Database) {
@@ -21,24 +27,27 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
         await ctx.insert(this.schema).values({ id, listId, text, index });
     }
 
-    async incrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
+    private async updateIndices(
+        listId: string,
+        { min, max = TODO_LIST_MAX_LENGTH }: Boundaries,
+        values: { index: SQL<unknown> },
+        ctx: ExecutionContext = this.db,
+    ) {
         const condition = and(
             eq(this.schema.listId, listId),
             isNotNull(this.schema.index),
-            gte(this.schema.index, startingIndex),
+            gte(this.schema.index, min),
+            lte(this.schema.index, max),
         );
-        const values = { index: sql`${this.schema.index} + 1` };
         await ctx.update(this.schema).set(values).where(condition);
     }
 
-    async decrementIndices(listId: string, startingIndex: number, ctx: ExecutionContext = this.db) {
-        const condition = and(
-            eq(this.schema.listId, listId),
-            isNotNull(this.schema.index),
-            gte(this.schema.index, startingIndex),
-        );
-        const values = { index: sql`${this.schema.index} - 1` };
-        await ctx.update(this.schema).set(values).where(condition);
+    async incrementIndices(listId: string, boundaries: Boundaries, ctx: ExecutionContext = this.db) {
+        await this.updateIndices(listId, boundaries, { index: sql`${this.schema.index} + 1` }, ctx);
+    }
+
+    async decrementIndices(listId: string, boundaries: Boundaries, ctx: ExecutionContext = this.db) {
+        await this.updateIndices(listId, boundaries, { index: sql`${this.schema.index} - 1` }, ctx);
     }
 
     async updateText({ listId, id, value }: ChangeAction, ctx: ExecutionContext = this.db) {

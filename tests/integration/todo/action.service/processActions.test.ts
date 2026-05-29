@@ -332,3 +332,83 @@ test("throws a NotFoundError error when trying to delete the same item twice", a
         ]),
     ).rejects.toThrow(NotFoundError);
 });
+
+test("allows moving a task down", async ({ user, db }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(5, { listId: list.id });
+
+    await actionService.processActions(user.id, [{ id: tasks[1].id, listId: list.id, action: "move", to: 3 }]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(3);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(tasks[3].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(tasks[4].id))[0]!.index).toBe(4);
+});
+
+test("allows moving a task up", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(5, { listId: list.id });
+
+    await actionService.processActions(user.id, [{ id: tasks[3].id, listId: list.id, action: "move", to: 1 }]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(3);
+    expect((await db.todoListItem.select(tasks[3].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(tasks[4].id))[0]!.index).toBe(4);
+});
+
+test("allows moving multiple items in one transactions", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(5, { listId: list.id });
+
+    await actionService.processActions(user.id, [
+        { id: tasks[1].id, listId: list.id, action: "move", to: 3 },
+        { id: tasks[1].id, listId: list.id, action: "move", to: 1 },
+    ]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(tasks[3].id))[0]!.index).toBe(3);
+    expect((await db.todoListItem.select(tasks[4].id))[0]!.index).toBe(4);
+});
+
+test("clips the target index to the largest possible value when over length of list", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(5, { listId: list.id });
+
+    await actionService.processActions(user.id, [{ id: tasks[0].id, listId: list.id, action: "move", to: 5 }]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(4);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(tasks[3].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(tasks[4].id))[0]!.index).toBe(3);
+});
+
+test("does nothing on completed items", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(3, index => ({
+        listId: list.id,
+        index: index === 0 ? null : index - 1,
+    }));
+    await actionService.processActions(user.id, [{ id: tasks[0].id, listId: list.id, action: "move", to: 1 }]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBeNull();
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(1);
+});
+
+test("does nothing when the target index is the same as the current one", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const tasks = await db.todoListItem.insert(2, index => ({
+        listId: list.id,
+        index,
+    }));
+    await actionService.processActions(user.id, [{ id: tasks[1].id, listId: list.id, action: "move", to: 1 }]);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(1);
+});

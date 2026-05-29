@@ -143,3 +143,20 @@ test("allows deleting a task", async ({ request, db }) => {
     });
     expect(await db.todoListItem.select()).toStrictEqual([]);
 });
+
+test("allows moving items", async ({ request, db }) => {
+    const tasks = await db.todoListItem.insert(3, { listId: item.listId });
+    const response = await request.post("/api/todo/actions", {
+        data: [{ ...item, id: tasks[0].id, action: "move", to: 2 }],
+    });
+    expect(response.status()).toBe(204);
+
+    expect((await db.todoListItem.select(tasks[0].id))[0]!.index).toBe(2);
+    expect((await db.todoListItem.select(tasks[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(tasks[2].id))[0]!.index).toBe(1);
+});
+
+test("returns a 400 error when the target index is negative", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", { data: [{ ...item, action: "move", to: -1 }] });
+    expect(response.status()).toBe(400);
+});

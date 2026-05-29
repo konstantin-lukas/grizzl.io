@@ -18,4 +18,4 @@ ALTER TABLE "todo_list_item"
 ALTER TABLE "todo_list_item"
     ADD CONSTRAINT "todo_list_item_listId_index_unique"
         UNIQUE ("list_id", "index")
-            DEFERRABLE INITIALLY IMMEDIATE;
+            DEFERRABLE INITIALLY DEFERRED;
