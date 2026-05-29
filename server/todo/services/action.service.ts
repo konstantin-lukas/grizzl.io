@@ -124,8 +124,8 @@ export default class ActionService {
 
     private async move(action: MoveAction, targetItem: ListItem, list: MinimalList, tx: DatabaseTransaction) {
         const oldIndex = targetItem.index;
-        const maxAllowedIndex = list.items.filter(item => item.index !== null).length;
-        const targetIndex = action.to > maxAllowedIndex ? maxAllowedIndex : action.to;
+        const uncheckedItemCount = list.items.filter(item => item.index !== null).length;
+        const targetIndex = action.to >= uncheckedItemCount ? uncheckedItemCount - 1 : action.to;
         if (oldIndex === null || oldIndex === targetIndex) return;
         if (oldIndex < targetIndex) {
             this.decrementLocalListIndices(list, oldIndex + 1, targetIndex);
