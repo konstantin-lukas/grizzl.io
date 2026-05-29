@@ -57,7 +57,9 @@ jobs:
                       NUXT_PUBLIC_LEGAL_STREET,NUXT_PUBLIC_LEGAL_ZIP_AND_CITY,NUXT_PUBLIC_VERSION,NUXT_PUBLIC_ORIGIN
                   script: |
                       cd /home/${{ secrets.VPS_USER }}/git/grizzl.io
-                      rm .env
+                      echo "POSTGRES_DB=[$POSTGRES_DB]"
+                      echo "DB_NAME=[$DB_NAME]"
+                      echo "NUXT_PUBLIC_VERSION=[$NUXT_PUBLIC_VERSION]"
                       
                       git fetch --tags
                       git checkout ${{ github.ref_name }}
