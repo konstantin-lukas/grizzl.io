@@ -281,3 +281,54 @@ test("allows checking consecutiveItems in one transaction", async ({ db, user })
     expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(0);
     expect((await db.todoListItem.select(items[3].id))[0]!.index).toBe(1);
 });
+
+test("updates indices after deleting items", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const items = await db.todoListItem.insert(4, index => ({ listId: list.id, index }));
+
+    await actionService.processActions(user.id, [
+        { action: "delete", id: items[0].id, listId: list.id },
+        { action: "delete", id: items[2].id, listId: list.id },
+    ]);
+
+    expect(await db.todoListItem.select()).toHaveLength(2);
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(items[3].id))[0]!.index).toBe(1);
+});
+
+test("does not update indices when deleting an item with index null", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const items = await db.todoListItem.insert(4, index => ({
+        listId: list.id,
+        index: index === 0 ? null : index - 1,
+    }));
+
+    await actionService.processActions(user.id, [{ action: "delete", id: items[0].id, listId: list.id }]);
+
+    expect(await db.todoListItem.select()).toHaveLength(3);
+    expect((await db.todoListItem.select(items[1].id))[0]!.index).toBe(0);
+    expect((await db.todoListItem.select(items[2].id))[0]!.index).toBe(1);
+    expect((await db.todoListItem.select(items[3].id))[0]!.index).toBe(2);
+});
+
+test("throws a NotFoundError when trying to delete a todo list item belonging to a different list", async ({
+    db,
+    user,
+}) => {
+    const [list1, list2] = await db.todoList.insert(2, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list1.id, text: "Oranges" });
+    await expect(
+        actionService.processActions(user.id, [{ action: "delete", id: item.id, listId: list2.id }]),
+    ).rejects.toThrow(NotFoundError);
+});
+
+test("throws a NotFoundError error when trying to delete the same item twice", async ({ db, user }) => {
+    const [list] = await db.todoList.insert(1, { userId: user.id });
+    const [item] = await db.todoListItem.insert(1, { listId: list.id });
+    await expect(
+        actionService.processActions(user.id, [
+            { action: "delete", id: item.id, listId: list.id },
+            { action: "delete", id: item.id, listId: list.id },
+        ]),
+    ).rejects.toThrow(NotFoundError);
+});
