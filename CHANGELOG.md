@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.1...v1.16.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* - ([595be70](https://github.com/konstantin-lukas/grizzl.io/commit/595be70b1689c320dd819ba1bf42d8ca96f18d08))
+
 ## [1.16.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.0...v1.16.1) (2026-05-29)
 
 
