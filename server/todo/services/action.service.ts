@@ -129,14 +129,12 @@ export default class ActionService {
         if (oldIndex === null || oldIndex === targetIndex) return;
         if (oldIndex < targetIndex) {
             this.decrementLocalListIndices(list, oldIndex + 1, targetIndex);
-            targetItem.index = targetIndex;
             await this.listItemRepository.decrementIndices(list.id, { min: oldIndex + 1, max: targetIndex }, tx);
-            await this.listItemRepository.updateIndex({ listId: list.id, id: targetItem.id, value: targetIndex }, tx);
-            return;
+        } else {
+            this.incrementLocalListIndices(list, targetIndex, oldIndex - 1);
+            await this.listItemRepository.incrementIndices(list.id, { min: targetIndex, max: oldIndex - 1 }, tx);
         }
-        this.incrementLocalListIndices(list, targetIndex, oldIndex - 1);
         targetItem.index = targetIndex;
-        await this.listItemRepository.incrementIndices(list.id, { min: targetIndex, max: oldIndex - 1 }, tx);
         await this.listItemRepository.updateIndex({ listId: list.id, id: targetItem.id, value: targetIndex }, tx);
     }
 
