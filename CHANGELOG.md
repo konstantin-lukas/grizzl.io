@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.5](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.4...v1.16.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* make postgres fields optional in env plugin ([4b551b7](https://github.com/konstantin-lukas/grizzl.io/commit/4b551b781c3cc9e7bbea06d62b16c06a18fb04c8))
+
 ## [1.16.4](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.3...v1.16.4) (2026-05-29)
 
 
