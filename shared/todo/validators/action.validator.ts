@@ -21,7 +21,6 @@ export const CheckActionSchema = BaseActionSchema.extend({
 
 export const MoveActionSchema = BaseActionSchema.extend({
     action: z.literal("move"),
-    from: z.number(),
     to: z.number(),
 });
 

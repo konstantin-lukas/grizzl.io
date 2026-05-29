@@ -30,7 +30,7 @@ const addItem = () => {
 
 const moveItem = (event: SortableEvent & { data: { id: string } }) => {
     if (!id.value || typeof event.oldIndex !== "number" || typeof event.newIndex !== "number") return;
-    queue.value.push({ action: "move", id: event.data.id, from: event.oldIndex, to: event.newIndex, listId: id.value });
+    queue.value.push({ action: "move", id: event.data.id, to: event.newIndex, listId: id.value });
 };
 
 const handleShiftFocus = async (index: number, caretPos: number, repeat = true) => {
