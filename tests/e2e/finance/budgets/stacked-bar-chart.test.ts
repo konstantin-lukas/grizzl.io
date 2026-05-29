@@ -14,11 +14,7 @@ test(
         }));
 
         const today = new Date();
-        const [year, month, day] = today.toISOString().split("T")[0]!.split("-").map(Number) as [
-            number,
-            number,
-            number,
-        ];
+        const [year, month] = today.toISOString().split("T")[0]!.split("-").map(Number) as [number, number];
 
         for (let i = 1; i <= 5; i++) {
             await db.financeTransaction.insert(12, j => {
@@ -27,7 +23,7 @@ test(
                 const effectiveYear = offsetMonth < 0 ? year - 1 : year;
                 return {
                     amount: i * -100_00,
-                    createdAt: new Date(effectiveYear, effectiveMonth, day, 12),
+                    createdAt: new Date(effectiveYear, effectiveMonth, 15, 12),
                     categoryId: categories[i - 1]!.id,
                     accountId: account.id,
                 };
