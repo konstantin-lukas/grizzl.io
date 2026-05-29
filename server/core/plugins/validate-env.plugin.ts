@@ -4,7 +4,7 @@ const NonEmptyString = z.string().min(1);
 const NotLiteral = (literal: string) => NonEmptyString.refine(value => value !== literal);
 const EmptyString = z.literal("");
 
-const EnvProductionSchema = z.strictObject({
+const EnvProductionSchema = z.object({
     OAUTH_GITHUB_ID: NonEmptyString,
     OAUTH_GITHUB_SECRET: NonEmptyString,
     OAUTH_DISCORD_ID: NonEmptyString,
@@ -26,6 +26,10 @@ const EnvProductionSchema = z.strictObject({
     NUXT_PUBLIC_APP_ENV: z.literal("production"),
     NUXT_PUBLIC_ORIGIN: z.literal("https://grizzl.io"),
     NUXT_PUBLIC_VERSION: z.string().regex(/^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/),
+
+    POSTGRES_USER: z.undefined().optional(),
+    POSTGRES_PASSWORD: z.undefined().optional(),
+    POSTGRES_DB: z.undefined().optional(),
 
     DB_HOST: z.literal("postgres"),
     DB_NAME: z.literal("grizzl"),
