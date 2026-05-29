@@ -1,5 +1,10 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
-import type { ChangeAction, CreateAction, ScheduleAction } from "#shared/todo/validators/action.validator";
+import type {
+    ChangeAction,
+    CreateAction,
+    DeleteAction,
+    ScheduleAction,
+} from "#shared/todo/validators/action.validator";
 import { and, eq, gte, isNotNull, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
@@ -55,5 +60,10 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
         const values = { index: value };
         const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
         await ctx.update(this.schema).set(values).where(condition);
+    }
+
+    async deleteByList({ id, listId }: DeleteAction, ctx: ExecutionContext = this.db) {
+        const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
+        await ctx.delete(this.schema).where(condition);
     }
 }

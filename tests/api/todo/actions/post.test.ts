@@ -135,3 +135,11 @@ test("allows checking a task", async ({ request, db }) => {
     });
     expect((await db.todoListItem.select())[0]?.index).toBe(0);
 });
+
+test("allows deleting a task", async ({ request, db }) => {
+    const [task] = await db.todoListItem.insert(1, { listId: item.listId });
+    await request.post("/api/todo/actions", {
+        data: [{ ...item, id: task.id, action: "delete" }],
+    });
+    expect(await db.todoListItem.select()).toStrictEqual([]);
+});
