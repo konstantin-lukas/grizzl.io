@@ -28,6 +28,9 @@ watch(
         :open
         :default-open="open"
         :dismissible="true"
+        :ui="{
+            content: 'not-sm:max-w-full not-sm:w-full not-sm:rounded-none not-sm:max-h-full',
+        }"
         @update:open="
             v => {
                 if (!v) emit('close');
@@ -35,7 +38,7 @@ watch(
         "
     >
         <template #content>
-            <div class="relative h-[calc(100dvh-4rem)]" data-test-id="modal">
+            <div class="relative h-dvh sm:h-[calc(100dvh-4rem)]" data-test-id="modal">
                 <div
                     class="absolute top-0 left-0 z-1 h-14 w-full border-b border-b-muted bg-back px-4 py-2 hover-none:h-16"
                 >
@@ -54,7 +57,7 @@ watch(
                         "
                     />
                 </div>
-                <div class="mt-14 h-[calc(100%-3.5rem)] overflow-y-auto">
+                <div class="mt-14 sm:h-[calc(100%-3.5rem)] overflow-y-auto">
                     <slot />
                 </div>
             </div>
