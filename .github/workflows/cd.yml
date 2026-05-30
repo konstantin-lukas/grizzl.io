@@ -64,4 +64,6 @@ jobs:
                       git lfs install
                       git lfs pull --include="models/**"
                       
+                      bin/backup || echo "No backup volume found"
+                      
                       docker compose -f compose.production.yml up -d --build
