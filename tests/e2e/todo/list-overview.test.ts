@@ -7,7 +7,6 @@ test("allows creating new todo lists", { tag: SCREENSHOT }, async ({ todoPage: p
 
     await page.click("addListButton");
 
-    await page.click("closeToastButton");
     await page.expect("addListButton").toBeEnabled();
 
     await page.expect().toHaveScreenshot({ name: "todo-list-overview-with-one-item" });
