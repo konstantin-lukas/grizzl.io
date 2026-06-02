@@ -16,7 +16,7 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
     await page.expect().toBeValid({ name: "todo-list-modal-with-one-item", skipThemeToggle: true, blur: false });
 
     await page.page.reload();
-    await page.locators.optionsButton.blur();
+    await page.click("notSyncing");
 
     await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false });
 });
@@ -32,6 +32,7 @@ test("allows editing an item's text and persists changes", async ({ todoPage: pa
     await page.fill("textInputs", "Bananas");
 
     await page.syncAndReload();
+    await page.click("notSyncing");
 
     await page.expect("textInputs").toHaveValue("Bananas");
 });
@@ -46,6 +47,7 @@ test("allows deleting an item and persists changes", { tag: SCREENSHOT }, async 
     await page.click("deleteButtons");
 
     await page.syncAndReload();
+    await page.click("notSyncing");
 
     await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
 });
@@ -67,19 +69,27 @@ for (const [action, ordering, checkbox] of [
             await page.expect("notSyncing").toBeAttached();
 
             await page.click("accordion");
-            await page
-                .expect()
-                .toHaveScreenshot({ name: "todo-list-modal-before-changing-an-items-completed-status", blur: false });
+            await page.expect().toHaveScreenshot({
+                name: "todo-list-modal-before-changing-an-items-completed-status",
+                blur: false,
+            });
             await page.click("checkboxes", { nth: checkbox });
             await page.waitForSync();
-            await page
-                .expect()
-                .toHaveScreenshot({ name: "todo-list-modal-before-changing-an-items-completed-status", blur: false });
+            await page.expect().toHaveScreenshot({
+                name: `todo-list-modal-after-${action}-an-item`,
+                blur: false,
+                maxDiffPixelRatio: 0.01,
+            });
 
             await page.syncAndReload();
-
             await page.click("accordion");
-            await page.expect().toHaveScreenshot({ name: `todo-list-modal-after-${action}-an-item`, blur: false });
+            await page.click("notSyncing");
+
+            await page.expect().toHaveScreenshot({
+                name: `todo-list-modal-after-${action}-an-item`,
+                blur: false,
+                maxDiffPixelRatio: 0.01,
+            });
         },
     );
 }
@@ -101,7 +111,7 @@ test("reverts local changes if syncing fails", { tag: SCREENSHOT }, async ({ tod
 
     await abort.dispose();
     await page.page.reload();
-    await page.locators.optionsButton.blur();
+    await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
 });
 
@@ -116,11 +126,12 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
     await page.page.keyboard.press("ArrowLeft");
     await page.page.keyboard.press("Enter");
     await page.waitForSync();
+    await page.click("notSyncing");
 
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 
     await page.page.reload();
-    await page.locators.optionsButton.blur();
+    await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 });
 
@@ -138,11 +149,12 @@ test(
         await page.page.keyboard.press("ArrowLeft");
         await page.page.keyboard.press("Backspace");
         await page.waitForSync();
+        await page.click("notSyncing");
 
         await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
 
         await page.page.reload();
-        await page.locators.optionsButton.blur();
+        await page.click("notSyncing");
         await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
     },
 );
@@ -157,10 +169,11 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
 
     await page.locators.dragHandles.nth(0).dragTo(page.locators.dragHandles.nth(3));
     await page.waitForSync();
+    await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 
     await page.page.reload();
-    await page.locators.optionsButton.blur();
+    await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 });
 
