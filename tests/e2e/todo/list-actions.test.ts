@@ -234,12 +234,10 @@ test(
         await page.click("addItem");
         await page.fill("textInputs", "b", { nth: 0 });
         await page.waitForSync();
-        await page
-            .expect()
-            .toHaveScreenshot({
-                name: "todo-list-with-autocomplete-suggestions",
-                blur: false,
-                maxDiffPixelRatio: 0.01,
-            });
+        await page.expect().toHaveScreenshot({
+            name: "todo-list-with-autocomplete-suggestions",
+            blur: false,
+            maxDiffPixelRatio: 0.01,
+        });
     },
 );
