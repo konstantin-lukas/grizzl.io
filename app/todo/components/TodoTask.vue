@@ -213,9 +213,9 @@ onBeforeUnmount(() => {
                     variant="none"
                     data-task-text-input
                     :maxlength="LONG_TITLE_MAX"
+                    data-test-id="todo-item-text-input"
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
-                    data-test-id="todo-item-text-input"
                 >
                     <template #content-bottom>
                         <span :id="bottomID" />
@@ -232,8 +232,8 @@ onBeforeUnmount(() => {
                         color="neutral"
                         class="center size-7 text-muted hover-none:size-8"
                         :aria-label="$t('todo.aria.deleteTask')"
-                        @click="deleteSelf"
                         data-test-id="todo-item-delete-button"
+                        @click="deleteSelf"
                     />
                 </div>
             </div>

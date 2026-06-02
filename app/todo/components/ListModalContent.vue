@@ -96,8 +96,8 @@ watch(id, async value => {
                     variant="ghost"
                     class="w-full pl-6"
                     :disabled="!!listFullWarning"
-                    @click="addItem"
                     data-test-id="todo-add-item-button"
+                    @click="addItem"
                 >
                     {{ $t("ui.add") }}
                 </Button>
