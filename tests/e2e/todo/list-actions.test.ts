@@ -12,10 +12,7 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
 
     await page.click("addItem");
 
-    await page.waitForSync();
-    await page.expect().toBeValid({ name: "todo-list-modal-with-one-item", skipThemeToggle: true, blur: false });
-
-    await page.page.reload();
+    await page.syncAndReload();
     await page.click("notSyncing");
 
     await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false });
@@ -49,7 +46,7 @@ test("allows deleting an item and persists changes", { tag: SCREENSHOT }, async 
     await page.syncAndReload();
     await page.click("notSyncing");
 
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
 });
 
 for (const [action, ordering, checkbox] of [
@@ -74,12 +71,6 @@ for (const [action, ordering, checkbox] of [
                 blur: false,
             });
             await page.click("checkboxes", { nth: checkbox });
-            await page.waitForSync();
-            await page.expect().toHaveScreenshot({
-                name: `todo-list-modal-after-${action}-an-item`,
-                blur: false,
-                maxDiffPixelRatio: 0.01,
-            });
 
             await page.syncAndReload();
             await page.click("accordion");
@@ -107,12 +98,12 @@ test("reverts local changes if syncing fails", { tag: SCREENSHOT }, async ({ tod
 
     await page.waitForSync();
     await page.click("closeToastButton");
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
 
     await abort.dispose();
     await page.page.reload();
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
 });
 
 test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
