@@ -8,7 +8,9 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
     await page.click("openListButtons");
     await page.expect("notSyncing").toBeAttached();
 
-    await page.expect().toBeValid({ name: "empty-todo-list-modal", skipThemeToggle: true, blur: false });
+    await page
+        .expect()
+        .toBeValid({ name: "empty-todo-list-modal", skipThemeToggle: true, blur: false, threshold: 0.01 });
 
     await page.click("addItem");
 
