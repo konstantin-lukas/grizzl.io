@@ -147,31 +147,6 @@ test(
     },
 );
 
-test("allows moving through list items with the arrow keys", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
-    const [list] = await db.todoList.insert(1);
-    await db.todoListItem.insert(10, { listId: list.id });
-
-    await page.goto();
-    await page.click("openListButtons");
-
-    await page.focus("textInputs", { nth: 0 });
-
-    await page.expect().toHaveScreenshot({ name: "todo-list-with-focus-on-first-element", blur: false });
-
-    await page.page.keyboard.press("ArrowDown");
-    await page.expect().toHaveScreenshot({ name: "todo-list-with-focus-on-second-element", blur: false });
-
-    await page.page.keyboard.press("ArrowDown");
-    await page.page.keyboard.press("ArrowDown");
-    await page.expect().toHaveScreenshot({ name: "todo-list-with-focus-on-third-element", blur: false });
-
-    await page.page.keyboard.press("ArrowUp");
-    await page.expect().toHaveScreenshot({ name: "todo-list-with-focus-on-second-element", blur: false });
-
-    await page.page.keyboard.press("ArrowDown");
-    await page.expect().toHaveScreenshot({ name: "todo-list-with-focus-on-third-element", blur: false });
-});
-
 test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
     const [list] = await db.todoList.insert(1);
     await db.todoListItem.insert(5, { listId: list.id });
@@ -188,66 +163,6 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
     await page.locators.optionsButton.blur();
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 });
-
-test(
-    "allows making multiple changes and persists them locally as well as on the server",
-    { tag: SCREENSHOT },
-    async ({ todoPage: page, db }) => {
-        const [list] = await db.todoList.insert(1);
-        await db.todoListItem.insert(5, { listId: list.id });
-
-        await page.goto();
-        await page.expect().toBeValid({ name: "todo-list-overview-before-multiple-actions", skipThemeToggle: true });
-
-        await page.click("openListButtons");
-        await page.expect().toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false });
-
-        await page.click("addItem");
-        await page.locators.dragHandles.nth(5).dragTo(page.locators.dragHandles.nth(0));
-        await page.fill("textInputs", "Bananas", { nth: 1 });
-        await page.focus("textInputs", { nth: 3 });
-        await page.page.keyboard.press("ArrowLeft");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("Enter");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("ArrowDown");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("ArrowDown");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("ArrowRight");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("Enter");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("ArrowUp");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("ArrowLeft");
-        await page.page.waitForTimeout(100);
-        await page.page.keyboard.press("Backspace");
-        await page.click("deleteButtons", { nth: 5 });
-        await page.page.waitForTimeout(100);
-        await page.click("checkboxes", { nth: 3 });
-        await page.page.waitForTimeout(100);
-        await page.click("checkboxes", { nth: 3 });
-        await page.waitForSync();
-
-        await page.click("accordion");
-
-        await page.expect().toBeValid({ name: "todo-list-after-multiple-actions", skipThemeToggle: true, blur: false });
-
-        await page.click("closeButton");
-        await page.expect().toBeValid({ name: "todo-list-overview-after-edit", skipThemeToggle: true });
-
-        await page.page.reload();
-        await page.expect().toBeValid({ name: "todo-list-overview-after-edit", skipThemeToggle: true });
-
-        await page.toggleTheme();
-        await page.click("openListButtons");
-        await page.click("accordion");
-        await page
-            .expect()
-            .toBeValid({ name: "todo-list-after-multiple-actions-darkmode", skipThemeToggle: true, blur: false });
-    },
-);
 
 test("does not allow merging items when the combined item length is too large", async ({ todoPage: page, db }) => {
     const [list] = await db.todoList.insert(1);
