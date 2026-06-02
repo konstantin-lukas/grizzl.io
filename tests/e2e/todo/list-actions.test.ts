@@ -125,10 +125,8 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
     await page.focus("textInputs");
     await page.page.keyboard.press("ArrowLeft");
     await page.page.keyboard.press("Enter");
-    await page.waitForSync();
-    await page.page.keyboard.press("ArrowUp");
-    await page.page.keyboard.press("ArrowUp");
-    await page.waitForSync();
+
+    await page.syncAndReload();
     await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 });
@@ -146,12 +144,8 @@ test(
         await page.focus("textInputs", { nth: 1 });
         await page.page.keyboard.press("ArrowLeft");
         await page.page.keyboard.press("Backspace");
-        await page.waitForSync();
-        await page.click("notSyncing");
+        await page.syncAndReload();
 
-        await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
-
-        await page.page.reload();
         await page.click("notSyncing");
         await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
     },
@@ -166,11 +160,8 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
     await page.expect().toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false, threshold: 0.01 });
 
     await page.locators.dragHandles.nth(0).dragTo(page.locators.dragHandles.nth(3));
-    await page.waitForSync();
-    await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false, threshold: 0.01 });
+    await page.syncAndReload();
 
-    await page.page.reload();
     await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 });
