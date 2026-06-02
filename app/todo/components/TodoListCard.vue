@@ -28,6 +28,8 @@ const target = computed(() => props.list.items.completed.length + props.list.ite
                 variant="link"
                 color="neutral"
                 @click="emit('open')"
+                :aria-label="$t('ui.open')"
+                data-test-id="todo-open-list-button"
             />
         </div>
     </li>

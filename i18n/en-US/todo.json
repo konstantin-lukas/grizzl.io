@@ -20,11 +20,10 @@
             "scheduleTask": "Schedule task",
             "deleteTask": "Delete task",
             "itemText": "To-do list item text",
-            "todoListSettings": "To-do list settings"
+            "todoListSettings": "To-do list settings",
+            "emptyItem": "Empty item"
         },
         "toast": {
-            "createdTitle": "To-Do List Created",
-            "createdDescription": "A new to-do list was created.",
             "updatedTitle": "To-Do List Updated",
             "updatedDescription": "The todo-list titled “{title}” was updated.",
             "deletedTitle": "To-Do List Deleted",

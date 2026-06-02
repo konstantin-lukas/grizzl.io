@@ -12,7 +12,7 @@ const { queue } = useMutationQueue(false);
     >
         <UIcon
             :name="queue.length === 0 ? ICON_CLOUD_CHECK : ICON_LOAD"
-            :data-test-id="queue.length === 0 ? 'is-syncing' : 'is-not-syncing'"
+            :data-test-id="queue.length === 0 ? 'todo-list-is-not-syncing' : 'todo-list-is-syncing'"
             class="center size-5 scale-105 text-muted hover-none:size-6"
         />
     </div>

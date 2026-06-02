@@ -73,6 +73,7 @@ watch(id, async value => {
                     :animation="250"
                     class="mt-6"
                     tag="ul"
+                    data-test-id="todo-uncompleted-items-list"
                     handle="[data-handle]"
                     ghost-class="ghost"
                     @end="moveItem"
@@ -96,6 +97,7 @@ watch(id, async value => {
                     class="w-full pl-6"
                     :disabled="!!listFullWarning"
                     @click="addItem"
+                    data-test-id="todo-add-item-button"
                 >
                     {{ $t("ui.add") }}
                 </Button>
@@ -106,9 +108,10 @@ watch(id, async value => {
                     v-if="completedItems.length > 0"
                     :items="[{ label: $t('todo.completedItems', completedItems.length) }]"
                     :ui="{ trailingIcon: 'mr-1.5', label: 'ml-2 text-muted' }"
+                    data-test-id="todo-completed-items-accordion"
                 >
                     <template #content>
-                        <ul>
+                        <ul data-test-id="todo-completed-items-list">
                             <TodoTask
                                 v-for="(item, index) in completedItems"
                                 :key="item.id"

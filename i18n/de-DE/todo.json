@@ -20,11 +20,10 @@
             "scheduleTask": "Aufgabe planen",
             "deleteTask": "Aufgabe löschen",
             "itemText": "Text des To-do-Listeneintrags",
-            "todoListSettings": "To-do-Listen-Einstellungen"
+            "todoListSettings": "To-do-Listen-Einstellungen",
+            "emptyItem": "Leerer Eintrag"
         },
         "toast": {
-            "createdTitle": "To-do-Liste erstellt",
-            "createdDescription": "Eine neue To-do-Liste wurde erstellt.",
             "updatedTitle": "To-do-Liste aktualisiert",
             "updatedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde aktualisiert.",
             "deletedTitle": "To-do-Liste gelöscht",

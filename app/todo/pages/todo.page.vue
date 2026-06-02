@@ -8,7 +8,7 @@ import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
 import ListModal from "~/todo/components/ListModalContent.vue";
-import { createToastError, onResponseError } from "~/core/utils/toast";
+import { createToastError } from "~/core/utils/toast";
 import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
@@ -19,9 +19,7 @@ const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
 const { openList, refreshOpenList } = useOpenList(true);
-const { data, refresh } = await useFetch("/api/todo/lists", {
-    onResponseError: onResponseError(toast, t),
-});
+const { data, refresh } = await useFetch("/api/todo/lists");
 const { queue, isFetching } = useMutationQueue(true, error => {
     toast.add(createToastError(error));
     refresh().then(refreshOpenList);
@@ -32,6 +30,7 @@ const createTodoList = useOnSubmit({
     state: {
         icon: "question-mark-rounded",
     },
+    skipSuccess: true,
     transform: ({ ...state }) => ({ ...state, title: t("todo.newList") }),
     translationKey: "todo",
     refresh: () => refresh(),
