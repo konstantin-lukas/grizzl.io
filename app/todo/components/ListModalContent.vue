@@ -131,8 +131,9 @@ watch(id, async value => {
                 :icon="ICON_OPTIONS"
                 color="neutral"
                 variant="ghost"
-                class="absolute top-2 left-4 aspect-square"
+                class="absolute top-2 left-4 size-10 hover-none:size-12"
                 :aria-label="$t('todo.aria.todoListSettings')"
+                data-test-id="todo-list-options-button"
             />
             <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>

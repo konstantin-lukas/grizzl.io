@@ -9,6 +9,7 @@ const LOCATORS = {
 
     // LIST MODAL
     modal: "todo-list-modal",
+    optionsButton: "todo-list-options-button",
     closeButton: "todo-close-modal-button",
     notSyncing: "todo-list-is-not-syncing",
     syncing: "todo-list-is-syncing",

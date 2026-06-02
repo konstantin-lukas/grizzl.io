@@ -16,6 +16,8 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
     await page.expect().toBeValid({ name: "todo-list-modal-with-one-item", skipThemeToggle: true, blur: false });
 
     await page.page.reload();
+    await page.locators.optionsButton.blur();
+
     await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false });
 });
 
@@ -99,6 +101,7 @@ test("reverts local changes if syncing fails", { tag: SCREENSHOT }, async ({ tod
 
     await abort.dispose();
     await page.page.reload();
+    await page.locators.optionsButton.blur();
     await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", blur: false });
 });
 
@@ -117,6 +120,7 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 
     await page.page.reload();
+    await page.locators.optionsButton.blur();
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 });
 
@@ -138,6 +142,7 @@ test(
         await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
 
         await page.page.reload();
+        await page.locators.optionsButton.blur();
         await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
     },
 );
@@ -180,6 +185,7 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 
     await page.page.reload();
+    await page.locators.optionsButton.blur();
     await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
 });
 
