@@ -169,13 +169,13 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
     private async toBeValid(
         options:
-            | { name: string; skipThemeToggle?: boolean; blur?: boolean; threshold?: number }
+            | { name: string; skipThemeToggle?: boolean; blur?: boolean; maxDiffPixelRatio?: number }
             | {
                   screenshotName: string;
                   ariaName: string;
                   skipThemeToggle?: boolean;
                   blur?: boolean;
-                  threshold?: number;
+                  maxDiffPixelRatio?: number;
               },
         target?: Locator | Page,
     ) {
@@ -193,7 +193,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         await this.toHaveScreenshot(target ?? this.page, {
             name: screenshotName!,
             blur: options.blur,
-            threshold: options.threshold,
+            maxDiffPixelRatio: options.maxDiffPixelRatio,
         });
         this.toHydrate();
         this.toHaveNoErrors();
@@ -202,7 +202,7 @@ export default abstract class BasePage<T extends Record<string, string>> {
         await this.toHaveScreenshot(target ?? this.page, {
             name: `${screenshotName}-darkmode`,
             blur: options.blur,
-            threshold: options.threshold,
+            maxDiffPixelRatio: options.maxDiffPixelRatio,
         });
         await this.toggleTheme();
     }

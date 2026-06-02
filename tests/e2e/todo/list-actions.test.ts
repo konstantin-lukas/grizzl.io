@@ -10,14 +10,16 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
 
     await page
         .expect()
-        .toBeValid({ name: "empty-todo-list-modal", skipThemeToggle: true, blur: false, threshold: 0.01 });
+        .toBeValid({ name: "empty-todo-list-modal", skipThemeToggle: true, blur: false, maxDiffPixelRatio: 0.01 });
 
     await page.click("addItem");
 
     await page.syncAndReload();
     await page.click("notSyncing");
 
-    await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false, threshold: 0.01 });
+    await page
+        .expect()
+        .toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false, maxDiffPixelRatio: 0.01 });
 });
 
 test("allows editing an item's text and persists changes", async ({ todoPage: page, db }) => {
@@ -48,7 +50,7 @@ test("allows deleting an item and persists changes", { tag: SCREENSHOT }, async 
     await page.syncAndReload();
     await page.click("notSyncing");
 
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", maxDiffPixelRatio: 0.01, blur: false });
 });
 
 for (const [action, ordering, checkbox] of [
@@ -71,7 +73,7 @@ for (const [action, ordering, checkbox] of [
             await page.expect().toHaveScreenshot({
                 name: "todo-list-modal-before-changing-an-items-completed-status",
                 blur: false,
-                threshold: 0.01,
+                maxDiffPixelRatio: 0.01,
             });
             await page.click("checkboxes", { nth: checkbox });
 
@@ -101,12 +103,12 @@ test("reverts local changes if syncing fails", { tag: SCREENSHOT }, async ({ tod
 
     await page.waitForSync();
     await page.click("closeToastButton");
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", maxDiffPixelRatio: 0.01, blur: false });
 
     await abort.dispose();
     await page.page.reload();
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", threshold: 0.01, blur: false });
+    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", maxDiffPixelRatio: 0.01, blur: false });
 });
 
 test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
@@ -122,7 +124,9 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
 
     await page.syncAndReload();
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false, threshold: 0.01 });
+    await page
+        .expect()
+        .toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false, maxDiffPixelRatio: 0.01 });
 });
 
 test(
@@ -141,7 +145,9 @@ test(
         await page.syncAndReload();
 
         await page.click("notSyncing");
-        await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false, threshold: 0.01 });
+        await page
+            .expect()
+            .toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false, maxDiffPixelRatio: 0.01 });
     },
 );
 
@@ -151,13 +157,17 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
 
     await page.goto();
     await page.click("openListButtons");
-    await page.expect().toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false, threshold: 0.01 });
+    await page
+        .expect()
+        .toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false, maxDiffPixelRatio: 0.01 });
 
     await page.locators.dragHandles.nth(0).dragTo(page.locators.dragHandles.nth(3));
     await page.syncAndReload();
 
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false, threshold: 0.01 });
+    await page
+        .expect()
+        .toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false, maxDiffPixelRatio: 0.01 });
 });
 
 test("does not allow merging items when the combined item length is too large", async ({ todoPage: page, db }) => {
@@ -226,6 +236,10 @@ test(
         await page.waitForSync();
         await page
             .expect()
-            .toHaveScreenshot({ name: "todo-list-with-autocomplete-suggestions", blur: false, threshold: 0.01 });
+            .toHaveScreenshot({
+                name: "todo-list-with-autocomplete-suggestions",
+                blur: false,
+                maxDiffPixelRatio: 0.01,
+            });
     },
 );
