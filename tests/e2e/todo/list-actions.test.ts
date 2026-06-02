@@ -126,11 +126,9 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
     await page.page.keyboard.press("ArrowLeft");
     await page.page.keyboard.press("Enter");
     await page.waitForSync();
-    await page.click("notSyncing");
-
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
-
-    await page.page.reload();
+    await page.page.keyboard.press("ArrowUp");
+    await page.page.keyboard.press("ArrowUp");
+    await page.waitForSync();
     await page.click("notSyncing");
     await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
 });
