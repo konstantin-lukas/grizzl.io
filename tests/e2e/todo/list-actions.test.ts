@@ -119,7 +119,7 @@ test("allows splitting items by pressing enter", { tag: SCREENSHOT }, async ({ t
 
     await page.syncAndReload();
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false });
+    await page.expect().toHaveScreenshot({ name: "todo-list-after-splitting-an-item", blur: false, threshold: 0.01 });
 });
 
 test(
