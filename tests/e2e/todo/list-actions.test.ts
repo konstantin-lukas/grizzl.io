@@ -219,8 +219,8 @@ test(
         await page.goto();
         await page.click("openListButtons");
         await page.click("addItem");
-        await page.waitForSync();
         await page.fill("textInputs", "b", { nth: 0 });
+        await page.waitForSync();
         await page.expect().toHaveScreenshot({ name: "todo-list-with-autocomplete-suggestions", blur: false });
     },
 );
