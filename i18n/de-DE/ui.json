@@ -39,6 +39,7 @@
         "add": "Hinzufügen",
         "filters": "Filter",
         "selectDateRange": "Wähle einen Datumsbereich",
+        "open": "Öffnen",
         "toast": {
             "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
             "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."

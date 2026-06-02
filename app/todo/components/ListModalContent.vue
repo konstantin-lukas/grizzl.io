@@ -73,6 +73,7 @@ watch(id, async value => {
                     :animation="250"
                     class="mt-6"
                     tag="ul"
+                    data-test-id="todo-uncompleted-items-list"
                     handle="[data-handle]"
                     ghost-class="ghost"
                     @end="moveItem"
@@ -95,6 +96,7 @@ watch(id, async value => {
                     variant="ghost"
                     class="w-full pl-6"
                     :disabled="!!listFullWarning"
+                    data-test-id="todo-add-item-button"
                     @click="addItem"
                 >
                     {{ $t("ui.add") }}
@@ -106,9 +108,10 @@ watch(id, async value => {
                     v-if="completedItems.length > 0"
                     :items="[{ label: $t('todo.completedItems', completedItems.length) }]"
                     :ui="{ trailingIcon: 'mr-1.5', label: 'ml-2 text-muted' }"
+                    data-test-id="todo-completed-items-accordion"
                 >
                     <template #content>
-                        <ul>
+                        <ul data-test-id="todo-completed-items-list">
                             <TodoTask
                                 v-for="(item, index) in completedItems"
                                 :key="item.id"
@@ -128,8 +131,9 @@ watch(id, async value => {
                 :icon="ICON_OPTIONS"
                 color="neutral"
                 variant="ghost"
-                class="absolute top-2 left-4 aspect-square"
+                class="absolute top-2 left-4 size-10 hover-none:size-12"
                 :aria-label="$t('todo.aria.todoListSettings')"
+                data-test-id="todo-list-options-button"
             />
             <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>

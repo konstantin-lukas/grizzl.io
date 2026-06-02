@@ -193,10 +193,14 @@ onBeforeUnmount(() => {
     >
         <Transition name="fade">
             <div v-if="isVisible" class="flex items-center gap-1" :class="{ 'ml-6.5': checked }">
-                <div v-if="!checked" class="center cursor-move" data-handle>
+                <div v-if="!checked" class="center cursor-move" data-handle data-test-id="todo-item-drag-handle">
                     <UIcon :name="ICON_DRAG_VERTICAL" class="size-5.5 text-muted hover-none:size-6.5" />
                 </div>
-                <UCheckbox v-model="checked" :aria-label="props.item.text" />
+                <UCheckbox
+                    v-model="checked"
+                    :aria-label="props.item.text || $t('todo.aria.emptyItem')"
+                    data-test-id="todo-item-checkbox"
+                />
                 <UInputMenu
                     v-if="props.type === 'uncompleted'"
                     :aria-label="$t('todo.aria.itemText')"
@@ -209,6 +213,7 @@ onBeforeUnmount(() => {
                     variant="none"
                     data-task-text-input
                     :maxlength="LONG_TITLE_MAX"
+                    data-test-id="todo-item-text-input"
                     @update:model-value="handleUpdate"
                     @keydown="handleKeydown"
                 >
@@ -227,6 +232,7 @@ onBeforeUnmount(() => {
                         color="neutral"
                         class="center size-7 text-muted hover-none:size-8"
                         :aria-label="$t('todo.aria.deleteTask')"
+                        data-test-id="todo-item-delete-button"
                         @click="deleteSelf"
                     />
                 </div>

@@ -28,6 +28,9 @@ watch(
         :open
         :default-open="open"
         :dismissible="true"
+        :ui="{
+            content: 'not-sm:max-w-full not-sm:w-full not-sm:rounded-none not-sm:max-h-full',
+        }"
         @update:open="
             v => {
                 if (!v) emit('close');
@@ -35,7 +38,7 @@ watch(
         "
     >
         <template #content>
-            <div class="relative h-[calc(100dvh-4rem)]" data-test-id="modal">
+            <div class="relative h-dvh sm:h-[calc(100dvh-4rem)]" data-test-id="todo-list-modal">
                 <div
                     class="absolute top-0 left-0 z-1 h-14 w-full border-b border-b-muted bg-back px-4 py-2 hover-none:h-16"
                 >
@@ -46,7 +49,7 @@ watch(
                         color="neutral"
                         class="absolute top-2 right-4 flex size-10 justify-center hover-none:size-12"
                         :aria-label="$t('ui.close')"
-                        data-test-id="go-back-button"
+                        data-test-id="todo-close-modal-button"
                         @click="
                             () => {
                                 emit('close');
@@ -54,7 +57,7 @@ watch(
                         "
                     />
                 </div>
-                <div class="mt-14 h-[calc(100%-3.5rem)] overflow-y-auto">
+                <div class="mt-14 overflow-y-auto sm:h-[calc(100%-3.5rem)]">
                     <slot />
                 </div>
             </div>

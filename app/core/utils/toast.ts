@@ -15,7 +15,15 @@ export function createToastError(error: ApiError) {
     const [description, id] = message.split(" | ");
     const title = id ? `${rawTitle} (ID: ${id})` : rawTitle;
 
-    if (!isNuxtError) return { title, description, color: "error" } as const;
+    if (!isNuxtError)
+        return {
+            title,
+            description,
+            color: "error",
+            close: {
+                "data-test-id": "toast-close-button",
+            } as never,
+        } as const;
 
     return {
         title,
@@ -23,6 +31,9 @@ export function createToastError(error: ApiError) {
             innerHTML: description,
             style: "white-space: preserve nowrap; text-overflow: ellipsis; overflow: hidden;",
         }),
+        close: {
+            "data-test-id": "toast-close-button",
+        } as never,
         color: "error",
     } as const;
 }
@@ -45,6 +56,9 @@ export function onResponseError(toast: ReturnType<typeof useToast>, t: (key: str
             title: t("ui.toast.unableToFetchTitle"),
             description: t("ui.toast.unableToFetchDescription"),
             color: "error",
+            close: {
+                "data-test-id": "toast-close-button",
+            } as never,
         });
     };
 }

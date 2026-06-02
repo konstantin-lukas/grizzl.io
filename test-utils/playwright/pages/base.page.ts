@@ -169,8 +169,14 @@ export default abstract class BasePage<T extends Record<string, string>> {
 
     private async toBeValid(
         options:
-            | { name: string; skipThemeToggle?: boolean }
-            | { screenshotName: string; ariaName: string; skipThemeToggle?: boolean },
+            | { name: string; skipThemeToggle?: boolean; blur?: boolean; maxDiffPixelRatio?: number }
+            | {
+                  screenshotName: string;
+                  ariaName: string;
+                  skipThemeToggle?: boolean;
+                  blur?: boolean;
+                  maxDiffPixelRatio?: number;
+              },
         target?: Locator | Page,
     ) {
         const usesNameShortcut = (value: object): value is { name: string; skipThemeToggle?: boolean } => {
@@ -184,12 +190,20 @@ export default abstract class BasePage<T extends Record<string, string>> {
             name: ariaName!,
         });
         await this.toBeAccessible();
-        await this.toHaveScreenshot(target ?? this.page, { name: screenshotName! });
+        await this.toHaveScreenshot(target ?? this.page, {
+            name: screenshotName!,
+            blur: options.blur,
+            maxDiffPixelRatio: options.maxDiffPixelRatio,
+        });
         this.toHydrate();
         this.toHaveNoErrors();
         if (skipThemeToggle) return;
         await this.toggleTheme();
-        await this.toHaveScreenshot(target ?? this.page, { name: `${screenshotName}-darkmode` });
+        await this.toHaveScreenshot(target ?? this.page, {
+            name: `${screenshotName}-darkmode`,
+            blur: options.blur,
+            maxDiffPixelRatio: options.maxDiffPixelRatio,
+        });
         await this.toggleTheme();
     }
 

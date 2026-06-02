@@ -1,0 +1,6 @@
+- document:
+  - dialog "Edit To-Do List":
+    - button "To-do list settings"
+    - button "Close"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - button "Add"

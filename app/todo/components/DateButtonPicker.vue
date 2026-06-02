@@ -26,6 +26,7 @@ const close = (value: boolean) => {
             :icon="modelValue ? ICON_EVENT_AVAILABLE : ICON_EVENT_BUSY"
             class="center aspect-square size-7 text-nowrap text-muted hover-none:size-8"
             :on-click="toggle"
+            data-test-id="date-picker-button"
         />
         <template #content>
             <UCalendar v-model="modelValue" class="p-2" @update:model-value="open = false" />

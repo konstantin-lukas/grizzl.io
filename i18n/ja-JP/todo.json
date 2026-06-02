@@ -20,11 +20,10 @@
             "scheduleTask": "タスクをスケジュール",
             "deleteTask": "タスクを削除",
             "itemText": "ToDoリスト項目のテキスト",
-            "todoListSettings": "ToDoリスト設定"
+            "todoListSettings": "ToDoリスト設定",
+            "emptyItem": "空の項目"
         },
         "toast": {
-            "createdTitle": "ToDoリストを作成しました",
-            "createdDescription": "新しいToDoリストが作成されました。",
             "updatedTitle": "ToDoリストを更新しました",
             "updatedDescription": "タイトル「{title}」のToDoリストが更新されました。",
             "deletedTitle": "ToDoリストを削除しました",

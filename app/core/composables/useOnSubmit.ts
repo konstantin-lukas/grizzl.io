@@ -11,6 +11,7 @@ export default function useOnSubmit<T extends object>({
     transform,
     interpolations,
     refresh,
+    skipSuccess,
 }: {
     url: () => string;
     method: () => "POST" | "PUT";
@@ -20,6 +21,7 @@ export default function useOnSubmit<T extends object>({
     translationKey: string;
     interpolations?: (v: T) => Record<string, string>;
     refresh?: () => void;
+    skipSuccess?: boolean;
 }) {
     const toast = useToast();
     const { t } = useI18n();
@@ -38,17 +40,21 @@ export default function useOnSubmit<T extends object>({
         })
             .then(() => {
                 emit?.("success");
-                toast.add(
-                    createToastSuccess(
-                        isPost ? t(`${translationKey}.toast.createdTitle`) : t(`${translationKey}.toast.updatedTitle`),
-                        t(
+                if (!skipSuccess) {
+                    toast.add(
+                        createToastSuccess(
                             isPost
-                                ? `${translationKey}.toast.${action}Description`
-                                : `${translationKey}.toast.${action}Description`,
-                            interpolations?.(submissionState) ?? {},
+                                ? t(`${translationKey}.toast.createdTitle`)
+                                : t(`${translationKey}.toast.updatedTitle`),
+                            t(
+                                isPost
+                                    ? `${translationKey}.toast.${action}Description`
+                                    : `${translationKey}.toast.${action}Description`,
+                                interpolations?.(submissionState) ?? {},
+                            ),
                         ),
-                    ),
-                );
+                    );
+                }
                 if (refresh) refresh();
             })
             .catch(error => {
