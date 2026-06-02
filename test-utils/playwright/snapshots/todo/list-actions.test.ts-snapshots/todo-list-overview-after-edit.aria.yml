@@ -1,0 +1,21 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "To-Do Lists" [level=1]
+    - button "Add"
+    - link "Calendar":
+      - /url: /todo/calendar
+    - separator
+    - list:
+      - listitem:
+        - text: vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau 2/6
+        - progressbar /\d+%/
+        - button "Open"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

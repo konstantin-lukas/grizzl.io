@@ -1,0 +1,39 @@
+- document:
+  - dialog "Edit To-Do List":
+    - button "To-do list settings"
+    - button "Close"
+    - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
+    - list:
+      - listitem:
+        - checkbox "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexc"
+        - combobox "To-do list item text": vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexc
+        - button "Schedule task"
+        - button "Delete task"
+      - listitem:
+        - checkbox "Bananas"
+        - combobox "To-do list item text": Bananas
+        - button "Schedule task"
+        - button "Delete task"
+      - listitem:
+        - checkbox "pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosneq"
+        - combobox "To-do list item text": pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosneq
+        - button "Schedule task"
+        - button "Delete task"
+      - listitem:
+        - checkbox "Empty item"
+        - combobox "To-do list item text"
+        - button "Schedule task"
+        - button "Delete task"
+    - button "Add"
+    - separator
+    - button "2 completed items" [expanded]
+    - region "2 completed items":
+      - list:
+        - listitem:
+          - checkbox "av" [checked]
+          - text: av
+          - button "Delete task"
+        - listitem:
+          - checkbox "tortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisier" [checked]
+          - text: tortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisier
+          - button "Delete task"
