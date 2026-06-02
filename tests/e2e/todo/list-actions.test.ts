@@ -15,7 +15,7 @@ test("allows creating new items and persists changes", { tag: SCREENSHOT }, asyn
     await page.syncAndReload();
     await page.click("notSyncing");
 
-    await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false });
+    await page.expect().toHaveScreenshot({ name: "todo-list-modal-with-one-item", blur: false, threshold: 0.01 });
 });
 
 test("allows editing an item's text and persists changes", async ({ todoPage: page, db }) => {
@@ -69,6 +69,7 @@ for (const [action, ordering, checkbox] of [
             await page.expect().toHaveScreenshot({
                 name: "todo-list-modal-before-changing-an-items-completed-status",
                 blur: false,
+                threshold: 0.01,
             });
             await page.click("checkboxes", { nth: checkbox });
 
@@ -138,7 +139,7 @@ test(
         await page.syncAndReload();
 
         await page.click("notSyncing");
-        await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false });
+        await page.expect().toHaveScreenshot({ name: "todo-list-after-merging-items", blur: false, threshold: 0.01 });
     },
 );
 
@@ -154,7 +155,7 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
     await page.syncAndReload();
 
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
+    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false, threshold: 0.01 });
 });
 
 test("does not allow merging items when the combined item length is too large", async ({ todoPage: page, db }) => {
@@ -221,6 +222,8 @@ test(
         await page.click("addItem");
         await page.fill("textInputs", "b", { nth: 0 });
         await page.waitForSync();
-        await page.expect().toHaveScreenshot({ name: "todo-list-with-autocomplete-suggestions", blur: false });
+        await page
+            .expect()
+            .toHaveScreenshot({ name: "todo-list-with-autocomplete-suggestions", blur: false, threshold: 0.01 });
     },
 );
