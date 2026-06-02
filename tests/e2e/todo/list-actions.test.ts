@@ -165,12 +165,12 @@ test("allows moving items via drag-and-drop", { tag: SCREENSHOT }, async ({ todo
 
     await page.goto();
     await page.click("openListButtons");
-    await page.expect().toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false });
+    await page.expect().toHaveScreenshot({ name: "todo-list-before-drag-and-drop", blur: false, threshold: 0.01 });
 
     await page.locators.dragHandles.nth(0).dragTo(page.locators.dragHandles.nth(3));
     await page.waitForSync();
     await page.click("notSyncing");
-    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false });
+    await page.expect().toHaveScreenshot({ name: "todo-list-after-drag-and-drop", blur: false, threshold: 0.01 });
 
     await page.page.reload();
     await page.click("notSyncing");
