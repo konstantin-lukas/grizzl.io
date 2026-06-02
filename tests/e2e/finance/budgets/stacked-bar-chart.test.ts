@@ -13,8 +13,9 @@ test(
             normalizedName: str({ length: 20, spaces: false, seed }).toLowerCase(),
         }));
 
-        const today = new Date();
-        const [year, month] = today.toISOString().split("T")[0]!.split("-").map(Number) as [number, number];
+        const refDate = new Date("2026-05-15T12:00:00Z");
+        await page.page.clock.install({ time: refDate });
+        const [year, month] = refDate.toISOString().split("T")[0]!.split("-").map(Number) as [number, number];
 
         for (let i = 1; i <= 5; i++) {
             await db.financeTransaction.insert(12, j => {
