@@ -5,8 +5,8 @@
     - heading "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [level=1]
     - list:
       - listitem:
-        - checkbox "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexc"
-        - combobox "To-do list item text": vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexc
+        - checkbox "Empty item"
+        - combobox "To-do list item text"
         - button "Schedule task"
         - button "Delete task"
       - listitem:
@@ -15,13 +15,13 @@
         - button "Schedule task"
         - button "Delete task"
       - listitem:
-        - checkbox "pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosneq"
-        - combobox "To-do list item text": pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosneq
+        - checkbox "lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteu"
+        - combobox "To-do list item text": lobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteu
         - button "Schedule task"
         - button "Delete task"
       - listitem:
-        - checkbox "Empty item"
-        - combobox "To-do list item text"
+        - checkbox "volutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisierattrist"
+        - combobox "To-do list item text": volutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisierattrist
         - button "Schedule task"
         - button "Delete task"
     - button "Add"
@@ -30,10 +30,10 @@
     - region "2 completed items":
       - list:
         - listitem:
-          - checkbox "av" [checked]
-          - text: av
+          - checkbox "pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosne" [checked]
+          - text: pellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosne
           - button "Delete task"
         - listitem:
-          - checkbox "tortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisier" [checked]
-          - text: tortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfaucibusegetintegeraliquamconsecteturbibendumsodalesturpisirurepretiumphasellusegestaspraesentaliquaexcepteurerosnequenonnisier
+          - checkbox "qt" [checked]
+          - text: qt
           - button "Delete task"
