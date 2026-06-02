@@ -69,6 +69,7 @@ for (const [action, ordering, checkbox] of [
                 .expect()
                 .toHaveScreenshot({ name: "todo-list-modal-before-changing-an-items-completed-status", blur: false });
             await page.click("checkboxes", { nth: checkbox });
+            await page.waitForSync();
             await page
                 .expect()
                 .toHaveScreenshot({ name: "todo-list-modal-before-changing-an-items-completed-status", blur: false });
@@ -242,45 +243,40 @@ test(
     },
 );
 
-test(
-    "does not allow merging items when the combined item length is too large",
-    { tag: SCREENSHOT },
-    async ({ todoPage: page, db }) => {
-        const [list] = await db.todoList.insert(1);
-        await db.todoListItem.insert(2, { listId: list.id });
+test("does not allow merging items when the combined item length is too large", async ({ todoPage: page, db }) => {
+    const [list] = await db.todoList.insert(1);
+    await db.todoListItem.insert(2, { listId: list.id });
 
-        await page.goto();
-        await page.click("openListButtons");
-        await page.focus("textInputs", { nth: 1 });
-        await page.page.keyboard.press("ArrowUp");
-        await page.page.keyboard.press("Backspace");
+    await page.goto();
+    await page.click("openListButtons");
+    await page.focus("textInputs", { nth: 1 });
+    await page.page.keyboard.press("ArrowUp");
+    await page.page.keyboard.press("Backspace");
 
-        await expect.poll(() => page.dialog?.type()).toBe("alert");
-        await expect
-            .poll(() => page.dialog?.message())
-            .toBe("You can't merge this item with the previous one because the resulting text exceeds the maximum.");
-    },
-);
+    await expect.poll(() => page.dialog?.type()).toBe("alert");
+    await expect
+        .poll(() => page.dialog?.message())
+        .toBe("You can't merge this item with the previous one because the resulting text exceeds the maximum.");
+});
 
-test(
-    "warns the user when trying to leave the page before synchronization has finished",
-    { tag: SCREENSHOT },
-    async ({ todoPage: page, db }) => {
-        const [list] = await db.todoList.insert(1);
-        await db.todoListItem.insert(1, { listId: list.id });
+test("warns the user when trying to leave the page before synchronization has finished", async ({
+    todoPage: page,
+    db,
+}) => {
+    const [list] = await db.todoList.insert(1);
+    await db.todoListItem.insert(1, { listId: list.id });
 
-        await page.page.route("/api/todo/actions", route => setTimeout(() => route.continue(), 10000));
-        await page.goto();
-        await page.click("openListButtons");
-        await page.fill("textInputs", "Bananas");
-        await page.expect("syncing").toBeAttached();
+    await page.page.route("/api/todo/actions", route => setTimeout(() => route.continue(), 10000));
+    await page.goto();
+    await page.click("openListButtons");
+    await page.fill("textInputs", "Bananas");
+    await page.expect("syncing").toBeAttached();
 
-        await page.page.close({ runBeforeUnload: true });
-        await expect.poll(() => page.dialog?.type()).toBe("beforeunload");
-    },
-);
+    await page.page.close({ runBeforeUnload: true });
+    await expect.poll(() => page.dialog?.type()).toBe("beforeunload");
+});
 
-test("does not allow adding an item when the list is full", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
+test("does not allow adding an item when the list is full", async ({ todoPage: page, db }) => {
     const [list] = await db.todoList.insert(1);
     await db.todoListItem.insert<number>(1000, { listId: list.id });
     await page.goto();
@@ -288,7 +284,7 @@ test("does not allow adding an item when the list is full", { tag: SCREENSHOT },
     await page.expect("addItem").toBeDisabled();
 });
 
-test("does not allow splitting an item when the list is full", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
+test("does not allow splitting an item when the list is full", async ({ todoPage: page, db }) => {
     const [list] = await db.todoList.insert(1);
     await db.todoListItem.insert<number>(1000, { listId: list.id });
     await page.goto();
