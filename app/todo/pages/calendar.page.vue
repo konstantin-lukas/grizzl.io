@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ICON_RETURN } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
-import Wrapper from "~/core/components/layout/Wrapper.vue";
+import DateCarousel from "~/todo/components/calendar/DateCarousel.vue";
 </script>
 
 <template>
-    <Wrapper>
+    <div class="pt-12 sm:pt-12 hover-none:pt-16">
+        <DateCarousel />
+        <USeparator />
         <Button
             :icon="ICON_RETURN"
             variant="ghost"
@@ -15,5 +17,5 @@ import Wrapper from "~/core/components/layout/Wrapper.vue";
             data-test-id="go-back-button"
             to="/todo"
         />
-    </Wrapper>
+    </div>
 </template>
