@@ -22,6 +22,7 @@ const LOCATORS = {
     completedList: "todo-completed-items-list",
     uncompletedList: "todo-uncompleted-items-list",
     accordion: "todo-completed-items-accordion",
+    clearDate: "clear-date-button",
 };
 
 export default class TodoPage extends BasePage<typeof LOCATORS> {

@@ -19,3 +19,16 @@ export const FULL_LIST = {
     createdAt: new Date("1999-12-31"),
     deleted: false,
 };
+
+export const BASE_PRESET = {
+    title: "Chili Con Tofu",
+    items: ["Chili", "Tofu", "Beans", "Corn", "Sauce"],
+};
+
+export const FULL_PRESET = {
+    ...BASE_PRESET,
+    id: "VbvbykXQUeBBs5n8",
+    listId: "VbvbykXQUeBBs5n8",
+    createdAt: new Date("1999-12-31"),
+    deleted: false,
+};

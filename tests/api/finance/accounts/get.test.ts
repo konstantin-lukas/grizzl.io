@@ -7,5 +7,5 @@ testBuilder
     .returnsAnEmptyArrayWhenThereAreNoResources()
     .doesNotReturnResourcesOfOtherUsers()
     .doesNotReturnSoftDeletedResources()
-    .allowsRetrievingAListOfResourcesSortedByCreationDate()
+    .allowsRetrievingAListOfResourcesSortedBy()
     .build();

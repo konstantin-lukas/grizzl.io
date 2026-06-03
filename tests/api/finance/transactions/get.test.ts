@@ -14,7 +14,7 @@ testBuilder
     .doesNotReturnResourcesOfOtherUsers()
     .doesNotReturnSoftDeletedResources()
     .doesNotReturnSubResourcesBelongingToOtherResources()
-    .allowsRetrievingAListOfResourcesSortedByCreationDate()
+    .allowsRetrievingAListOfResourcesSortedBy()
     .doesNotReturnSubResourcesOfSoftDeletedResources()
     .build();
 

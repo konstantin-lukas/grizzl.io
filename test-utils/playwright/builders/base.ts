@@ -2,7 +2,7 @@ import { ID_LENGTH } from "#shared/core/validators/core.validator";
 import type { DBFixtures } from "~~/test-utils/database/fixture";
 import { wrapArray } from "~~/test-utils/helpers/array";
 import { removeUndefinedFields } from "~~/test-utils/helpers/object";
-import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
+import { sortByCreatedAt, sortByStringField } from "~~/test-utils/helpers/sort";
 import { JSONWithBigInt } from "~~/test-utils/helpers/string";
 import { expect, test } from "~~/test-utils/playwright";
 import { withoutAuth } from "~~/test-utils/playwright/utils/auth";
@@ -329,22 +329,21 @@ export class TestBuilder {
     /**
      * @allowed get-collection
      */
-    public allowsRetrievingAListOfResourcesSortedByCreationDate() {
+    public allowsRetrievingAListOfResourcesSortedBy(property = "createdAt", order: "desc" | "asc" = "desc") {
         this.tests.push(() => {
             this.checkMethods("allowsRetrievingAListOfResourcesSortedByCreationDate", ["get-collection"]);
 
             test("allows retrieving a list of resources sorted by creation date", async ({ request, db }) => {
                 const { basePath, data, getDatabaseOverrides } = await this.fixtureProvider({ db, count: 3 });
-                const mappedResources = wrapArray(data).map(
-                    ({ accountId, createdAt, deletedAt, userId, ...rest }: any) => {
-                        return removeUndefinedFields({
-                            ...rest,
-                            createdAt: createdAt.toISOString(),
-                            ...getDatabaseOverrides,
-                        });
-                    },
-                );
-                sortByCreatedAt(mappedResources as never, "desc");
+                const mappedResources = wrapArray(data).map(({ accountId, deletedAt, userId, ...rest }: any) => {
+                    return removeUndefinedFields({
+                        ...rest,
+                        [property]: property === "createdAt" ? rest[property].toISOString() : rest[property],
+                        ...getDatabaseOverrides,
+                    });
+                });
+                if (property === "createdAt") sortByCreatedAt(mappedResources as never, order);
+                else sortByStringField(property, mappedResources, order);
 
                 const response = await request[this.resolvedMethod](basePath);
 
@@ -550,7 +549,7 @@ export class TestBuilder {
      * Get on a single resource is currently not implemented but can be added if needed
      * @allowed get-collection
      */
-    public doesNotReturnSubResourcesBelongingToOtherResources() {
+    public doesNotReturnSubResourcesBelongingToOtherResources(sortBy = "createdAt", order: "desc" | "asc" = "desc") {
         this.tests.push(() => {
             this.checkMethods("doesNotReturnSubResourcesBelongingToOtherResources", ["get-collection"]);
 
@@ -581,8 +580,10 @@ export class TestBuilder {
                     }),
                 );
 
-                sortByCreatedAt(mappedSubResources1, "desc");
-                sortByCreatedAt(mappedSubResources2, "desc");
+                if (sortBy === "createdAt") sortByCreatedAt(mappedSubResources1, order);
+                else sortByStringField(sortBy, mappedSubResources1, order);
+                if (sortBy === "createdAt") sortByCreatedAt(mappedSubResources2, order);
+                else sortByStringField(sortBy, mappedSubResources2, order);
                 const response1 = await request.get(path1);
                 const response2 = await request.get(path2);
                 expect(response1.status()).toBe(200);

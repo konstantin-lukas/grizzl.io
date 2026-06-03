@@ -31,7 +31,13 @@ const close = (value: boolean) => {
         <template #content>
             <UCalendar v-model="modelValue" class="p-2" @update:model-value="open = false" />
             <div class="px-4 pb-4">
-                <Button color="error" variant="subtle" class="center w-full" @click="clear">
+                <Button
+                    color="error"
+                    variant="subtle"
+                    class="center w-full"
+                    data-test-id="clear-date-button"
+                    @click="clear"
+                >
                     {{ $t("todo.clearDate") }}
                 </Button>
             </div>

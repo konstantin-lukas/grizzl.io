@@ -241,3 +241,38 @@ test(
         });
     },
 );
+
+test("allows scheduling and unscheduling a task", { tag: SCREENSHOT }, async ({ todoPage: page, db }) => {
+    const [list] = await db.todoList.insert(1);
+    await db.todoListItem.insert(1, { listId: list.id });
+
+    await page.page.clock.install({ time: "2026-05-05" });
+    await page.goto();
+    await page.click("openListButtons");
+    await page.click("datePickers");
+
+    await page.page.locator('[data-value="2026-05-10"]').click();
+
+    await page.syncAndReload();
+    await page.click("notSyncing");
+
+    await page.expect().toHaveScreenshot({
+        name: "todo-list-with-scheduled-item",
+        blur: false,
+        maxDiffPixelRatio: 0.01,
+    });
+    const [item] = await db.todoListItem.select();
+    expect(item?.scheduledFor).toBe("2026-05-10");
+
+    await page.click("datePickers");
+    await page.click("clearDate");
+
+    await page.syncAndReload();
+    await page.click("notSyncing");
+
+    await page.expect().toHaveScreenshot({
+        name: "todo-list-with-unscheduled-item",
+        blur: false,
+        maxDiffPixelRatio: 0.01,
+    });
+});
