@@ -1,13 +1,13 @@
-import { makeAutoTransactionTestBuilder } from "~~/test-utils/playwright/builders/finance";
+import { makePresetTestBuilder } from "~~/test-utils/playwright/builders/todo";
 
-const testBuilder = makeAutoTransactionTestBuilder("get-collection");
+const testBuilder = makePresetTestBuilder("get-collection");
 
 testBuilder
     .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
     .returnsAnEmptyArrayWhenThereAreNoResources()
     .doesNotReturnResourcesOfOtherUsers()
+    .allowsRetrievingAListOfResourcesSortedBy("title", "asc")
     .doesNotReturnSoftDeletedResources()
-    .allowsRetrievingAListOfResourcesSortedBy()
-    .doesNotReturnSubResourcesBelongingToOtherResources()
+    .doesNotReturnSubResourcesBelongingToOtherResources("title", "asc")
     .doesNotReturnSubResourcesOfSoftDeletedResources()
     .build();

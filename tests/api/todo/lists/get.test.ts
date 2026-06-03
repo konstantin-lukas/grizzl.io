@@ -6,6 +6,6 @@ testBuilder
     .returnsA401StatusCodeWhenAnUnauthenticatedRequestIsMade()
     .returnsAnEmptyArrayWhenThereAreNoResources()
     .doesNotReturnResourcesOfOtherUsers()
-    .allowsRetrievingAListOfResourcesSortedByCreationDate()
+    .allowsRetrievingAListOfResourcesSortedBy()
     .doesNotReturnSoftDeletedResources()
     .build();

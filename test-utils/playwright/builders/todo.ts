@@ -1,4 +1,4 @@
-import { BASE_LIST, FULL_LIST } from "~~/test-utils/constants/todo";
+import { BASE_LIST, BASE_PRESET, FULL_LIST, FULL_PRESET } from "~~/test-utils/constants/todo";
 import { type Method, TestBuilder } from "~~/test-utils/playwright/builders/base";
 import { LIST_BAD_REQUEST_TEST_CASES, LIST_VALID_REQUEST_TEST_CASES } from "~~/test-utils/playwright/test-tables/todo";
 
@@ -35,6 +35,33 @@ export function makeTodoListTestBuilder(method: Method) {
                 omittedFields: ["index", "listId"],
             },
         ],
+        method,
+    });
+}
+
+export function makePresetTestBuilder(method: Method) {
+    return new TestBuilder({
+        fixtureProvider: async options => {
+            const { db, userId, count = 1 } = options;
+            const [list] = await db.todoList.insert(1, userId ? { userId } : undefined);
+            const [preset, ...rest] = await db.todoPreset.insert(count as 1, { listId: list.id });
+            return {
+                id: preset.id,
+                parentId: list.id,
+                data: count > 1 ? [preset, ...rest] : preset,
+                basePath: `/api/todo/lists/${list.id}/presets`,
+                fullPath: `/api/todo/lists/${list.id}/presets/${preset.id}`,
+                getDatabaseOverrides: { listId: undefined, createdAt: undefined },
+            };
+        },
+        baseData: BASE_PRESET,
+        fullData: FULL_PRESET,
+        badPost: [],
+        badPut: [],
+        validPost: [],
+        validPut: [],
+        fixtureName: "todoPreset",
+        parentFixtureName: "todoList",
         method,
     });
 }
