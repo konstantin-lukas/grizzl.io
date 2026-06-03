@@ -261,6 +261,8 @@ test("allows scheduling and unscheduling a task", { tag: SCREENSHOT }, async ({ 
         blur: false,
         maxDiffPixelRatio: 0.01,
     });
+    const [item] = await db.todoListItem.select();
+    expect(item?.scheduledFor).toBe("2026-05-10");
 
     await page.click("datePickers");
     await page.click("clearDate");
