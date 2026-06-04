@@ -20,7 +20,7 @@ const { t } = useI18n();
 const { todoLists } = useTodoLists();
 const { openList, refreshOpenList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists");
-const { queue, isFetching } = useMutationQueue(true, error => {
+const { queue, isFetching } = useMutationQueue(false, error => {
     toast.add(createToastError(error));
     refresh().then(refreshOpenList);
 });
@@ -67,7 +67,7 @@ watch(
 </script>
 
 <template>
-    <Wrapper :class="{ 'max-w-xl': true }">
+    <Wrapper class="max-w-xl">
         <H1 class="mb-12">{{ $t("todo.mainHeading") }}</H1>
         <div class="mt-4 mb-4 flex gap-4 not-xs:flex-col">
             <Button

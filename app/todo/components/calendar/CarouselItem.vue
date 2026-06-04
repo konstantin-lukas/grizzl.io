@@ -8,7 +8,7 @@ const { language } = useLocale();
 
 <template>
     <div
-        class="center relative h-22 w-16 shrink-0 cursor-pointer flex-col gap-2 rounded-2xl hover:text-dimmed sm:h-25 sm:w-20"
+        class="center relative h-22 w-16 shrink-0 cursor-pointer flex-col gap-2 rounded-2xl select-none hover:text-dimmed sm:h-25 sm:w-20"
     >
         <span>{{ props.date.day.toString().padStart(2, "0") }}</span>
         <span>

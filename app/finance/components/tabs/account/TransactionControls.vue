@@ -2,7 +2,7 @@
 import type { Language } from "#shared/core/constants/i18n.constant";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_EDIT, ICON_EVENT_REPEAT, ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
-import CategoryIcon from "~/finance/components/CategoryIcon.vue";
+import CategoryIcon from "../../../../core/components/icon/CategoryIcon.vue";
 import AutoTransactionDeleteButton from "~/finance/components/tabs/account/AutoTransactionDeleteButton.vue";
 import AutoTransactionUpsertForm from "~/finance/components/tabs/account/AutoTransactionUpsertForm.vue";
 import TransactionFilters from "~/finance/components/tabs/account/TransactionFilters.vue";

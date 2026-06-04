@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useLocale from "~/core/composables/useLocale";
 import { formatDate } from "~/core/utils/date";
-import CategoryIcon from "~/finance/components/CategoryIcon.vue";
+import CategoryIcon from "../../../../core/components/icon/CategoryIcon.vue";
 import type { Transaction } from "~/finance/composables/useTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
 

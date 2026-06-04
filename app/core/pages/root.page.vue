@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from "~/core/components/button/Button.vue";
 import HeroCard from "~/core/components/layout/HeroCard.vue";
-import GrizzlLogo from "~/core/components/svg/GrizzlLogo.vue";
+import GrizzlLogo from "../components/icon/GrizzlLogo.vue";
 import H1 from "~/core/components/typo/H1.vue";
 import useMenu from "~/core/composables/useMenu";
 import { authClient } from "~/core/constants/auth-client.constant";
