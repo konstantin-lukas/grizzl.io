@@ -3,6 +3,7 @@ import type { TodoList } from "~/todo/composables/useTodoLists";
 import ListHeading from "~/todo/components/calendar/ListHeading.vue";
 import { parseCalendarDate } from "~/core/utils/date";
 import type { CalendarDate } from "@internationalized/date";
+import CalendarTask from "~/todo/components/calendar/CalendarTask.vue";
 const props = defineProps<{ list: TodoList; refDate?: CalendarDate }>();
 
 const filterTasks = (item: TodoList["items"]["completed"][number]) => {
@@ -18,12 +19,12 @@ const completedItems = computed(() => props.list.items.completed.filter(filterTa
 <template>
     <div v-if="uncompletedItems.length > 0 || completedItems.length > 0" class="mb-16">
         <ListHeading :list="props.list" />
-        <div v-for="item in uncompletedItems" :key="item.id">
-            {{ item.text }}
-        </div>
+        <ul v-for="item in uncompletedItems" :key="item.id">
+            <CalendarTask :item="item" />
+        </ul>
         <USeparator />
-        <div v-for="item in completedItems" :key="item.id">
-            {{ item.text }}
-        </div>
+        <ul v-for="item in completedItems" :key="item.id">
+            <CalendarTask :item="item" />
+        </ul>
     </div>
 </template>

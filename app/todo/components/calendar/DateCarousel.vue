@@ -23,7 +23,7 @@ const handleTransitionEnd = () => {
 
 <template>
     <div
-        class="relative mx-auto -mt-4 flex max-w-xl justify-center overflow-hidden pt-4 before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-1 before:h-full before:w-30 before:bg-linear-to-l before:from-back/0 before:to-back before:content-[''] after:pointer-events-none after:absolute after:top-0 after:right-0 after:h-full after:w-30 after:bg-linear-to-r after:from-back/0 after:to-back after:content-[''] sm:before:w-50 sm:after:w-50"
+        class="relative mx-auto -mt-4 flex max-w-xl justify-center overflow-hidden pt-4 before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-1 before:h-full before:w-30 before:bg-linear-to-l before:from-back/0 before:to-back before:content-[''] after:pointer-events-none after:absolute after:top-0 after:right-0 after:h-full after:w-30 after:bg-linear-to-r after:from-back/0 after:to-back after:content-[''] sm:before:w-44 sm:after:w-44"
     >
         <div
             class="flex"
