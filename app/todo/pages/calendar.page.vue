@@ -12,6 +12,7 @@ import ListLoadingSkeleton from "~/todo/components/calendar/ListLoadingSkeleton.
 
 const { data } = await useFetch("/api/todo/lists");
 const { today } = useToday();
+const toggle = ref(false);
 const selectedDate = ref();
 
 onMounted(() => (selectedDate.value = today.value));
@@ -33,7 +34,14 @@ const isEmpty = computed(() => {
 
 <template>
     <div class="pt-12 sm:pt-12 hover-none:pt-16">
-        <DateCarousel @update="date => (selectedDate = date)" />
+        <DateCarousel
+            @update="
+                date => {
+                    selectedDate = date;
+                    toggle = !toggle;
+                }
+            "
+        />
         <USeparator />
         <Button
             :icon="ICON_RETURN"
@@ -44,12 +52,15 @@ const isEmpty = computed(() => {
             data-test-id="go-back-button"
             to="/todo"
         />
-        <Wrapper class="relative max-w-xl pt-16">
-            <Transition name="fade">
+        <Wrapper class="relative max-w-xl px-0! pt-16">
+            <Transition name="fade-absolute">
                 <div v-if="isEmpty && today" class="absolute top-16 left-0 w-full px-8">
                     <EmptyCard description-translation-key="todo.noneToday" />
                 </div>
-                <div v-else-if="today">
+                <div v-else-if="today && toggle" class="w-full px-8">
+                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" />
+                </div>
+                <div v-else-if="today && !toggle" class="w-full px-8">
                     <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" />
                 </div>
                 <div v-else class="absolute top-0 left-0 w-full px-8">
