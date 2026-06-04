@@ -8,6 +8,7 @@
         "completedItems": "1 completed item | {n} completed items",
         "cannotMerge": "You can't merge this item with the previous one because the resulting text exceeds the maximum.",
         "tooManyItems": "You can't add any more items. This list is full.",
+        "noneToday": "You haven't scheduled any to-do tasks for the selected day",
         "meta": {
             "title": "To-Do",
             "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."

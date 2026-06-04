@@ -8,6 +8,7 @@
         "completedItems": "1 tarea completada | {n} tareas completadas",
         "cannotMerge": "No puedes combinar este elemento con el anterior porque el texto resultante supera el máximo permitido.",
         "tooManyItems": "No puedes añadir más elementos. Esta lista está llena.",
+        "noneToday": "No has programado ninguna tarea para el día seleccionado.",
         "meta": {
             "title": "Tareas",
             "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."

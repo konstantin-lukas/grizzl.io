@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import CarouselItem from "~/todo/components/calendar/CarouselItem.vue";
-import { getLocalTimeZone, today } from "@internationalized/date";
+import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
 import useScreenSize from "~/core/composables/useScreenSize";
+
+const emit = defineEmits<{ (e: "update", date: CalendarDate): void }>();
 
 const targetLength = 6;
 const refDate = ref(today(getLocalTimeZone()));
@@ -35,6 +37,7 @@ const handleTransitionEnd = () => {
                 :date="date"
                 :is-active="selectedIndex === index"
                 @click="
+                    emit('update', date);
                     disableTransition = false;
                     selectedIndex = index;
                 "
