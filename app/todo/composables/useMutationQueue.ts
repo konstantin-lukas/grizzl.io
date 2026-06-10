@@ -26,8 +26,9 @@ export default function useMutationQueue(watchChanges = false) {
         watch(
             [queue, isFetching],
             () => {
-                if (isFetching.value || queue.value.length < TODO_MIN_ACTIONS) return;
-                if (queue.value.length >= TODO_MAX_ACTIONS) {
+                const actionCount = queue.value?.length ?? 0;
+                if (isFetching.value || actionCount < TODO_MIN_ACTIONS) return;
+                if (actionCount >= TODO_MAX_ACTIONS) {
                     if (timeout.value) clearTimeout(timeout.value);
                     timeout.value = null;
                     mutate();
