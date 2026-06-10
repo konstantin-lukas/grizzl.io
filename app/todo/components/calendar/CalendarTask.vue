@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { TodoList } from "~/todo/composables/useTodoLists";
+import type { TodoItem } from "~/todo/composables/useTodoLists";
 import useVirtualization from "~/todo/composables/useVirtualization";
 import { ICON_CANCEL } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
-
-type TodoItem = TodoList["items"]["completed"][number];
 
 const emit = defineEmits<{ (e: "check", value: boolean, item: TodoItem): void; (e: "delete", item: TodoItem): void }>();
 const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted" }>();
@@ -22,7 +20,12 @@ watch(checked, value => {
     <li ref="el" class="box-border flex h-10.5 flex-col justify-center border-y border-y-transparent py-1">
         <Transition name="fade">
             <div v-if="isVisible" class="flex items-center justify-between gap-4">
-                <UCheckbox v-model="checked" data-test-id="todo-item-checkbox" :aria-labelledby="props.item.id" />
+                <UCheckbox
+                    v-model="checked"
+                    data-test-id="todo-item-checkbox"
+                    :aria-labelledby="props.item.text ? props.item.id : undefined"
+                    :aria-label="!props.item.text ? $t('todo.aria.emptyItem') : undefined"
+                />
                 <span
                     :id="props.item.id"
                     class="grow overflow-hidden text-sm text-ellipsis"

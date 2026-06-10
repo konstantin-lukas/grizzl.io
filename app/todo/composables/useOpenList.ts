@@ -1,12 +1,12 @@
 import { nanoid } from "#shared/core/utils/id.util";
-import type { TodoList } from "~/todo/composables/useTodoLists";
+import type { TodoItem, TodoList } from "~/todo/composables/useTodoLists";
 
 export function useOpenList(watchChanges = false) {
     const openList = useState<TodoList | null>("open-todo-list", () => null);
     const id = useState<string>("open-todo-list-id", () => "");
     const title = useState<string>("open-todo-list-title", () => "");
-    const completedItems = useState<TodoList["items"]["completed"]>("open-todo-list-completed-items", () => []);
-    const uncompletedItems = useState<TodoList["items"]["completed"]>("open-todo-list-uncompleted-items", () => []);
+    const completedItems = useState<TodoItem[]>("open-todo-list-completed-items", () => []);
+    const uncompletedItems = useState<TodoItem[]>("open-todo-list-uncompleted-items", () => []);
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
 
     const refreshOpenList = () => {

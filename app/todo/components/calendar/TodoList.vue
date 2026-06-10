@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import type { TodoList } from "~/todo/composables/useTodoLists";
+import type { TodoList, TodoItem } from "~/todo/composables/useTodoLists";
 import ListHeading from "~/todo/components/calendar/ListHeading.vue";
 import { parseCalendarDate } from "~/core/utils/date";
 import type { CalendarDate } from "@internationalized/date";
 import CalendarTask from "~/todo/components/calendar/CalendarTask.vue";
 import UAccordion from "#ui/components/Accordion.vue";
-
-type TodoItem = TodoList["items"]["completed"][number];
 
 const emit = defineEmits<{
     (e: "check", value: boolean, listId: string, item: TodoItem): void;

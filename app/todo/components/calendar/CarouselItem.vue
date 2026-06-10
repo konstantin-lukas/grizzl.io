@@ -4,15 +4,19 @@ import useLocale from "~/core/composables/useLocale";
 
 const props = defineProps<{ date: { day: number; toDate: (tz: string) => Date }; isActive: boolean }>();
 const { language } = useLocale();
+const day = computed(() => props.date.day.toString().padStart(2, "0"));
+const weekday = computed(() =>
+    new Intl.DateTimeFormat(language.value, { weekday: "short" }).format(props.date.toDate(getLocalTimeZone())),
+);
 </script>
 
 <template>
     <div
         class="center relative h-22 w-16 shrink-0 cursor-pointer flex-col gap-2 rounded-2xl select-none hover:text-dimmed sm:h-25 sm:w-20"
     >
-        <span>{{ props.date.day.toString().padStart(2, "0") }}</span>
+        <span>{{ day }}</span>
         <span>
-            {{ new Intl.DateTimeFormat(language, { weekday: "short" }).format(props.date.toDate(getLocalTimeZone())) }}
+            {{ weekday }}
         </span>
         <Transition name="fade">
             <span

@@ -5,14 +5,12 @@ import DateCarousel from "~/todo/components/calendar/DateCarousel.vue";
 import Wrapper from "~/core/components/layout/Wrapper.vue";
 import { parseCalendarDate } from "~/core/utils/date";
 import useToday from "~/core/composables/useToday";
-import type { TodoList as List } from "~/todo/composables/useTodoLists";
+import type { TodoItem } from "~/todo/composables/useTodoLists";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
 import ListLoadingSkeleton from "~/todo/components/calendar/ListLoadingSkeleton.vue";
 import TodoList from "~/todo/components/calendar/TodoList.vue";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
-
-type TodoItem = List["items"]["completed"][number];
 
 const { data } = await useFetch("/api/todo/lists");
 const { today } = useToday();
@@ -22,7 +20,7 @@ const selectedDate = ref();
 
 onMounted(() => (selectedDate.value = today.value));
 
-const checkIsEmpty = (item: List["items"]["completed"][number]) => {
+const checkIsEmpty = (item: TodoItem) => {
     if (!item.scheduledFor) return true;
     const parsedDate = parseCalendarDate(item.scheduledFor);
     return selectedDate.value?.compare(parsedDate) !== 0;

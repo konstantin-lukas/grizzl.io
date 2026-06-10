@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TodoList } from "~/todo/composables/useTodoLists";
+import type { TodoItem } from "~/todo/composables/useTodoLists";
 import { ICON_CANCEL, ICON_DRAG_VERTICAL } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
@@ -12,7 +12,6 @@ import type { CalendarDate } from "@internationalized/date";
 import { parseCalendarDate } from "~/core/utils/date";
 import useVirtualization from "~/todo/composables/useVirtualization";
 
-type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
