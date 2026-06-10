@@ -3,10 +3,11 @@ import type { ApiError } from "~/core/utils/toast";
 
 const MUTATION_QUEUE_TIMEOUT = 1000;
 
-export default function useMutationQueue(watchChanges = false, onResponseError?: (error: ApiError) => void) {
+export default function useMutationQueue(watchChanges = false) {
     const queue = useState<PostAction[]>("todo-list-mutation-queue", () => []);
     const isFetching = useState<boolean>("todo-list-mutation-queue-is-fetching", () => false);
     const timeout = useState<NodeJS.Timeout | null>("todo-list-mutation-queue-timeout", () => null);
+    const error = useState<ApiError | null>("todo-list-mutation-queue-error", () => null);
 
     if (watchChanges) {
         const mutate = () => {
@@ -17,7 +18,9 @@ export default function useMutationQueue(watchChanges = false, onResponseError?:
                 body: actions,
             })
                 .finally(() => (isFetching.value = false))
-                .catch(onResponseError);
+                .catch(e => {
+                    error.value = e;
+                });
         };
 
         watch(
@@ -36,5 +39,5 @@ export default function useMutationQueue(watchChanges = false, onResponseError?:
             { deep: true },
         );
     }
-    return { queue, isFetching };
+    return { queue, isFetching, error };
 }

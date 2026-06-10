@@ -3,7 +3,7 @@ import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
 import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
-import CategoryIcon from "../../../../core/components/icon/CategoryIcon.vue";
+import CategoryIcon from "~/core/components/icon/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
 const model = defineModel<string>({ default: emptyIcon });
