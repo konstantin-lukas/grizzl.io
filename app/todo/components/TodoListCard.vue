@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CategoryIcon from "../../core/components/icon/CategoryIcon.vue";
+import CategoryIcon from "~/core/components/icon/CategoryIcon.vue";
 import { ICON_CHEVRON_RIGHT } from "~/core/constants/icons.constant";
 import type { TodoList } from "~/todo/composables/useTodoLists";
 
