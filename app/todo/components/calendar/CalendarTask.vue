@@ -23,13 +23,13 @@ watch(checked, value => {
         <Transition name="fade">
             <div v-if="isVisible" class="flex items-center justify-between gap-4">
                 <UCheckbox v-model="checked" data-test-id="todo-item-checkbox" :aria-labelledby="props.item.id" />
-                <label
+                <span
                     :id="props.item.id"
-                    class="pointer-events-none grow overflow-hidden text-sm text-ellipsis select-none"
+                    class="grow overflow-hidden text-sm text-ellipsis"
                     :class="{ 'text-muted line-through': props.type === 'completed' }"
                 >
                     {{ props.item.text }}
-                </label>
+                </span>
                 <Button
                     :icon="ICON_CANCEL"
                     variant="ghost"

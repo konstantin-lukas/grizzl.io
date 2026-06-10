@@ -38,11 +38,16 @@ const completedItems = computed(() => props.list.items.completed.filter(filterTa
             <UAccordion
                 v-if="completedItems.length > 0"
                 :items="[{ label: $t('todo.completedItems', completedItems.length) }]"
-                :ui="{ trailingIcon: 'mr-1', label: 'text-muted', header: 'mt-0.5' }"
+                :ui="{
+                    trailingIcon: 'mr-1',
+                    label: 'text-muted',
+                    header: 'mt-0.5',
+                    content: 'relative -left-2',
+                }"
                 data-test-id="todo-completed-items-accordion"
             >
                 <template #content>
-                    <ul>
+                    <ul class="relative left-2">
                         <CalendarTask
                             v-for="item in completedItems"
                             :key="item.id"

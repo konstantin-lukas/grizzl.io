@@ -30,7 +30,7 @@ const scheduledFor = shallowRef<CalendarDate | null>(
 const checked = ref(props.type === "completed");
 const el = ref(null);
 
-const isVisible = useVirtualization(el);
+const isVisible = useVirtualization(el, props.type === "completed");
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
