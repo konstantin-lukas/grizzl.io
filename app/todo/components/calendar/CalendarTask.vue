@@ -6,7 +6,7 @@ import Button from "~/core/components/button/Button.vue";
 
 type TodoItem = TodoList["items"]["completed"][number];
 
-const emit = defineEmits<{ (e: "check", value: boolean, item: TodoItem): void }>();
+const emit = defineEmits<{ (e: "check", value: boolean, item: TodoItem): void; (e: "delete", item: TodoItem): void }>();
 const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted" }>();
 const el = ref(null);
 const checked = ref(props.type === "completed");
@@ -37,6 +37,7 @@ watch(checked, value => {
                     class="center size-7 text-muted hover-none:size-8"
                     :aria-label="$t('todo.aria.deleteTask')"
                     data-test-id="todo-item-delete-button"
+                    @click="emit('delete', props.item)"
                 />
             </div>
         </Transition>

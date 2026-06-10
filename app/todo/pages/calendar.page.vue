@@ -36,17 +36,32 @@ const handleCheck = (checked: boolean, listId: string, item: TodoItem) => {
             if (list.items.completed.every(({ text }) => text.trim() !== item.text.trim())) {
                 list.items.completed.push(item);
                 list.items.completed.sort((left, right) => left.text.localeCompare(right.text));
-                queue.value.push({ action: "check", id: item.id, listId: list.id });
+                queue.value.push({ action: "check", id: item.id, listId });
             } else {
-                queue.value.push({ action: "delete", id: item.id, listId: list.id });
+                queue.value.push({ action: "delete", id: item.id, listId });
             }
             list.items.uncompleted = list.items.uncompleted.filter(elem => elem.id !== item.id);
         } else {
             list.items.uncompleted.push({ ...item });
             list.items.completed = list.items.completed.filter(elem => elem.id !== item.id);
 
-            queue.value.push({ action: "check", id: item.id, listId: list.id });
+            queue.value.push({ action: "check", id: item.id, listId });
         }
+
+        return {
+            ...list,
+        };
+    });
+};
+
+const handleDelete = (listId: string, item: TodoItem) => {
+    data.value = data.value?.map(list => {
+        if (list.id !== listId) return list;
+
+        queue.value.push({ action: "delete", id: item.id, listId });
+
+        list.items.uncompleted = list.items.uncompleted.filter(elem => elem.id !== item.id);
+        list.items.completed = list.items.completed.filter(elem => elem.id !== item.id);
 
         return {
             ...list,
@@ -90,10 +105,24 @@ const isEmpty = computed(() => {
                     <EmptyCard description-translation-key="todo.noneToday" />
                 </div>
                 <div v-else-if="today && toggle" class="w-full px-8">
-                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" @check="handleCheck" />
+                    <TodoList
+                        v-for="list in data"
+                        :key="list.id"
+                        :list
+                        :ref-date="selectedDate"
+                        @check="handleCheck"
+                        @delete="handleDelete"
+                    />
                 </div>
                 <div v-else-if="today && !toggle" class="w-full px-8">
-                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" @check="handleCheck" />
+                    <TodoList
+                        v-for="list in data"
+                        :key="list.id"
+                        :list
+                        :ref-date="selectedDate"
+                        @check="handleCheck"
+                        @delete="handleDelete"
+                    />
                 </div>
                 <div v-else class="absolute top-0 left-0 w-full px-8">
                     <ListLoadingSkeleton v-for="i in 3" :key="i" />

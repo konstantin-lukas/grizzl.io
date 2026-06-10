@@ -8,7 +8,10 @@ import UAccordion from "#ui/components/Accordion.vue";
 
 type TodoItem = TodoList["items"]["completed"][number];
 
-const emit = defineEmits<{ (e: "check", value: boolean, listId: string, item: TodoItem): void }>();
+const emit = defineEmits<{
+    (e: "check", value: boolean, listId: string, item: TodoItem): void;
+    (e: "delete", listId: string, item: TodoItem): void;
+}>();
 const props = defineProps<{ list: TodoList; refDate?: CalendarDate }>();
 
 const filterTasks = (item: TodoItem) => {
@@ -30,7 +33,8 @@ const completedItems = computed(() => props.list.items.completed.filter(filterTa
                 :key="item.id"
                 :item="item"
                 type="uncompleted"
-                @check="(value, id) => emit('check', value, list.id, id)"
+                @check="(value, el) => emit('check', value, list.id, el)"
+                @delete="el => emit('delete', list.id, el)"
             />
         </ul>
         <USeparator v-if="completedItems.length > 0" :class="uncompletedItems.length === 0 ? 'mt-6' : 'mt-2'" />
@@ -42,18 +46,19 @@ const completedItems = computed(() => props.list.items.completed.filter(filterTa
                     trailingIcon: 'mr-1',
                     label: 'text-muted',
                     header: 'mt-0.5',
-                    content: 'relative -left-2',
+                    content: 'pl-2 -translate-x-2 w-[calc(100%+0.5rem)]',
                 }"
                 data-test-id="todo-completed-items-accordion"
             >
                 <template #content>
-                    <ul class="relative left-2">
+                    <ul>
                         <CalendarTask
                             v-for="item in completedItems"
                             :key="item.id"
                             :item="item"
                             type="completed"
-                            @check="(value, id) => emit('check', value, list.id, id)"
+                            @check="(value, el) => emit('check', value, list.id, el)"
+                            @delete="el => emit('delete', list.id, el)"
                         />
                     </ul>
                 </template>
