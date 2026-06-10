@@ -1,8 +1,9 @@
-export default function useVirtualization(element: Ref<Element | null>) {
+export default function useVirtualization(element: Ref<Element | null>, delayOnMounted = false) {
     const isVisible = ref(false);
     let observer: IntersectionObserver | null = null;
 
-    onMounted(() => {
+    onMounted(async () => {
+        if (delayOnMounted) await new Promise(r => setTimeout(r, 0));
         observer = new IntersectionObserver(([entry]) => {
             if (!entry) return;
             isVisible.value = entry.isIntersecting;

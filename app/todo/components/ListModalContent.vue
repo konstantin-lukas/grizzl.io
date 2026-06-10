@@ -107,7 +107,7 @@ watch(id, async value => {
                 <UAccordion
                     v-if="completedItems.length > 0"
                     :items="[{ label: $t('todo.completedItems', completedItems.length) }]"
-                    :ui="{ trailingIcon: 'mr-1.5', label: 'ml-2 text-muted' }"
+                    :ui="{ trailingIcon: 'mr-1', label: 'ml-2 text-muted' }"
                     data-test-id="todo-completed-items-accordion"
                 >
                     <template #content>

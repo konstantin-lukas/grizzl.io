@@ -7,11 +7,16 @@ import { parseCalendarDate } from "~/core/utils/date";
 import useToday from "~/core/composables/useToday";
 import type { TodoList as List } from "~/todo/composables/useTodoLists";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
-import TodoList from "~/todo/components/calendar/TodoList.vue";
 import ListLoadingSkeleton from "~/todo/components/calendar/ListLoadingSkeleton.vue";
+import TodoList from "~/todo/components/calendar/TodoList.vue";
+import useMutationQueue from "~/todo/composables/useMutationQueue";
+import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
+
+type TodoItem = List["items"]["completed"][number];
 
 const { data } = await useFetch("/api/todo/lists");
 const { today } = useToday();
+const { queue } = useMutationQueue();
 const toggle = ref(false);
 const selectedDate = ref();
 
@@ -21,6 +26,32 @@ const checkIsEmpty = (item: List["items"]["completed"][number]) => {
     if (!item.scheduledFor) return true;
     const parsedDate = parseCalendarDate(item.scheduledFor);
     return selectedDate.value?.compare(parsedDate) !== 0;
+};
+
+const handleCheck = (checked: boolean, listId: string, item: TodoItem) => {
+    data.value = data.value?.map(list => {
+        if (list.id !== listId) return list;
+
+        if (checked) {
+            if (list.items.completed.every(({ text }) => text.trim() !== item.text.trim())) {
+                list.items.completed.push(item);
+                list.items.completed.sort((left, right) => left.text.localeCompare(right.text));
+                queue.value.push({ action: "check", id: item.id, listId: list.id });
+            } else {
+                queue.value.push({ action: "delete", id: item.id, listId: list.id });
+            }
+            list.items.uncompleted = list.items.uncompleted.filter(elem => elem.id !== item.id);
+        } else {
+            list.items.uncompleted.push({ ...item });
+            list.items.completed = list.items.completed.filter(elem => elem.id !== item.id);
+
+            queue.value.push({ action: "check", id: item.id, listId: list.id });
+        }
+
+        return {
+            ...list,
+        };
+    });
 };
 
 const isEmpty = computed(() => {
@@ -34,6 +65,7 @@ const isEmpty = computed(() => {
 
 <template>
     <div class="pt-12 sm:pt-12 hover-none:pt-16">
+        <DataSyncIndicator class="fixed top-6.5 right-16 z-2 scale-110 hover-none:top-7 hover-none:right-18" />
         <DateCarousel
             @update="
                 date => {
@@ -58,13 +90,13 @@ const isEmpty = computed(() => {
                     <EmptyCard description-translation-key="todo.noneToday" />
                 </div>
                 <div v-else-if="today && toggle" class="w-full px-8">
-                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" />
+                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" @check="handleCheck" />
                 </div>
                 <div v-else-if="today && !toggle" class="w-full px-8">
-                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" />
+                    <TodoList v-for="list in data" :key="list.id" :list :ref-date="selectedDate" @check="handleCheck" />
                 </div>
                 <div v-else class="absolute top-0 left-0 w-full px-8">
-                    <ListLoadingSkeleton />
+                    <ListLoadingSkeleton v-for="i in 3" :key="i" />
                 </div>
             </Transition>
         </Wrapper>

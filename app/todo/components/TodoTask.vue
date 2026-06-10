@@ -171,7 +171,7 @@ const handleUpdate = (value: string) => {
 <template>
     <li
         ref="el"
-        class="box-border h-10.5 border-y border-y-transparent py-1 focus-within:border-y-muted"
+        class="my-1 box-border flex h-10.5 flex-col justify-center border-y border-y-transparent py-1 focus-within:border-y-muted"
         data-task-item
     >
         <Transition name="fade">
