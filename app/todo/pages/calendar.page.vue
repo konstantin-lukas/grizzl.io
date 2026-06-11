@@ -129,7 +129,7 @@ const isEmpty = computed(() => {
                         @delete="handleDelete"
                     />
                 </div>
-                <div v-else class="w-full -translate-y-16 px-8" data-test-id="calendar-loading-skeleton">
+                <div v-else class="w-full -translate-y-16 px-8">
                     <ListLoadingSkeleton v-for="i in 3" :key="i" />
                 </div>
             </Transition>
