@@ -1,4 +1,5 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
+import type { PostPreset } from "#shared/todo/validators/preset.validator";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
@@ -29,5 +30,14 @@ export default class PresetRepository extends BaseRepository<typeof schema> {
                 ),
             )
             .orderBy(asc(this.schema.title));
+    }
+
+    async create(listId: string, { items, title }: PostPreset, ctx: ExecutionContext = this.db) {
+        const [{ id }] = (await ctx
+            .insert(this.schema)
+            .values({ listId, title, items })
+            .returning({ id: this.schema.id })) as [{ id: string }];
+
+        return id;
     }
 }
