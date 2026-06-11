@@ -1,6 +1,11 @@
 import { BASE_LIST, BASE_PRESET, FULL_LIST, FULL_PRESET } from "~~/test-utils/constants/todo";
 import { type Method, TestBuilder } from "~~/test-utils/playwright/builders/base";
-import { LIST_BAD_REQUEST_TEST_CASES, LIST_VALID_REQUEST_TEST_CASES } from "~~/test-utils/playwright/test-tables/todo";
+import {
+    LIST_BAD_REQUEST_TEST_CASES,
+    LIST_VALID_REQUEST_TEST_CASES,
+    PRESET_BAD_REQUEST_TEST_CASES,
+    PRESET_VALID_REQUEST_TEST_CASES,
+} from "~~/test-utils/playwright/test-tables/todo";
 
 export function makeTodoListTestBuilder(method: Method) {
     return new TestBuilder({
@@ -52,13 +57,14 @@ export function makePresetTestBuilder(method: Method) {
                 basePath: `/api/todo/lists/${list.id}/presets`,
                 fullPath: `/api/todo/lists/${list.id}/presets/${preset.id}`,
                 getDatabaseOverrides: { listId: undefined, createdAt: undefined },
+                postDatabaseOverrides: { listId: list.id },
             };
         },
         baseData: BASE_PRESET,
         fullData: FULL_PRESET,
-        badPost: [],
+        badPost: PRESET_BAD_REQUEST_TEST_CASES,
         badPut: [],
-        validPost: [],
+        validPost: PRESET_VALID_REQUEST_TEST_CASES,
         validPut: [],
         fixtureName: "todoPreset",
         parentFixtureName: "todoList",

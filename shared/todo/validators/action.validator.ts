@@ -1,4 +1,4 @@
-import { DatabaseIdSchema, preTrim } from "#shared/core/validators/core.validator";
+import { DatabaseIdSchema, LONG_TITLE_MAX, preTrim } from "#shared/core/validators/core.validator";
 import { z } from "zod";
 
 export const TODO_MIN_ACTIONS = 1;
@@ -11,7 +11,7 @@ const BaseActionSchema = z.object({
 
 export const CreateActionSchema = BaseActionSchema.extend({
     action: z.literal("create"),
-    text: preTrim(z.string()),
+    text: preTrim(z.string().max(LONG_TITLE_MAX)),
     index: z.number().min(0).nullable(),
 });
 
@@ -35,7 +35,7 @@ export const DeleteActionSchema = BaseActionSchema.extend({
 
 export const ChangeActionSchema = BaseActionSchema.extend({
     action: z.literal("change"),
-    value: preTrim(z.string()),
+    value: preTrim(z.string().max(LONG_TITLE_MAX)),
 });
 
 export const PostActionSchema = z.union([

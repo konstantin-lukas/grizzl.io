@@ -1,4 +1,5 @@
 import { nanoid } from "#shared/core/utils/id.util";
+import { str } from "~~/test-utils/helpers/data";
 import { expect, test } from "~~/test-utils/playwright";
 
 const item = {
@@ -33,6 +34,18 @@ test("returns a 400 error when the user submits a list of actions that's too lon
 test("returns a 400 error when the index is negative", async ({ request }) => {
     const response = await request.post("/api/todo/actions", { data: [{ ...item, index: -1 }] });
     expect(response.status()).toBe(400);
+});
+
+test("returns a 400 error when text is too long", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", { data: [{ ...item, text: str({ length: 201 }) }] });
+    expect(response.status()).toBe(400);
+});
+
+test("returns a 204 status when text is just short enough after trimming", async ({ request }) => {
+    const response = await request.post("/api/todo/actions", {
+        data: [{ ...item, text: ` ${str({ length: 200 })} ` }],
+    });
+    expect(response.status()).toBe(204);
 });
 
 test("returns a 409 error when the index is out of bounds", async ({ request }) => {
