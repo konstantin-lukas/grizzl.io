@@ -1,31 +1,28 @@
 export default function useVirtualization(element: Ref<Element | null>, delayOnMounted = false) {
-    const config = useRuntimeConfig();
-    const isVisible = ref(config.public.appEnv === "test");
+    const isVisible = ref(false);
     let observer: IntersectionObserver | null = null;
 
-    if (config.public.appEnv !== "test") {
-        onMounted(async () => {
-            if (delayOnMounted) {
-                await new Promise(r => {
-                    setTimeout(r, 0);
-                });
-            }
-            observer = new IntersectionObserver(([entry]) => {
-                if (!entry) return;
-                isVisible.value = entry.isIntersecting;
+    onMounted(async () => {
+        if (delayOnMounted) {
+            await new Promise(r => {
+                setTimeout(r, 0);
             });
-
-            if (element.value) {
-                observer.observe(element.value);
-            }
+        }
+        observer = new IntersectionObserver(([entry]) => {
+            if (!entry) return;
+            isVisible.value = entry.isIntersecting;
         });
 
-        onBeforeUnmount(() => {
-            if (observer && element.value) {
-                observer.unobserve(element.value);
-            }
-        });
-    }
+        if (element.value) {
+            observer.observe(element.value);
+        }
+    });
+
+    onBeforeUnmount(() => {
+        if (observer && element.value) {
+            observer.unobserve(element.value);
+        }
+    });
 
     return isVisible;
 }

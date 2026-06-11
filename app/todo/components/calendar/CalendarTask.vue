@@ -8,8 +8,8 @@ const emit = defineEmits<{ (e: "check", value: boolean, item: TodoItem): void; (
 const props = defineProps<{ item: TodoItem; type: "completed" | "uncompleted" }>();
 const el = ref(null);
 const checked = ref(props.type === "completed");
-
-const isVisible = useVirtualization(el, true);
+const config = useRuntimeConfig();
+const isVisible = config.public.appEnv === "test" ? true : useVirtualization(el, true);
 
 watch(checked, value => {
     emit("check", value, props.item);
