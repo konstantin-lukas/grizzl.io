@@ -79,14 +79,21 @@ const isEmpty = computed(() => {
 <template>
     <div class="pt-12 sm:pt-12 hover-none:pt-16">
         <DataSyncIndicator class="fixed top-6.5 right-16 z-2 scale-110 hover-none:top-7 hover-none:right-18" />
-        <DateCarousel
-            @update="
-                date => {
-                    selectedDate = date;
-                    toggle = !toggle;
-                }
-            "
-        />
+        <ClientOnly>
+            <Transition name="fade" appear>
+                <DateCarousel
+                    @update="
+                        date => {
+                            selectedDate = date;
+                            toggle = !toggle;
+                        }
+                    "
+                />
+            </Transition>
+            <template #fallback>
+                <div class="h-22 sm:h-25" />
+            </template>
+        </ClientOnly>
         <USeparator />
         <Button
             :icon="ICON_RETURN"
@@ -97,10 +104,10 @@ const isEmpty = computed(() => {
             data-test-id="go-back-button"
             to="/todo"
         />
-        <Wrapper class="relative max-w-xl px-0! pt-16">
+        <Wrapper class="relative min-h-0! max-w-xl px-0! pt-16">
             <Transition name="fade-absolute">
                 <div v-if="isEmpty && today" class="absolute top-16 left-0 w-full px-8">
-                    <EmptyCard description-translation-key="todo.noneToday" />
+                    <EmptyCard title-as="h1" description-translation-key="todo.noneToday" />
                 </div>
                 <div v-else-if="today && toggle" class="w-full px-8">
                     <TodoList
@@ -122,7 +129,7 @@ const isEmpty = computed(() => {
                         @delete="handleDelete"
                     />
                 </div>
-                <div v-else class="absolute top-0 left-0 w-full px-8">
+                <div v-else class="w-full -translate-y-16 px-8" data-test-id="calendar-loading-skeleton">
                     <ListLoadingSkeleton v-for="i in 3" :key="i" />
                 </div>
             </Transition>

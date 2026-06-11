@@ -1,0 +1,30 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - button /\d+ Sat/
+    - button /\d+ Sun/
+    - button /\d+ Mon/
+    - button /\d+ Tue/
+    - button /\d+ Wed/
+    - button /\d+ Thu/
+    - button /\d+ Fri/
+    - button /\d+ Sat/
+    - button /\d+ Sun/
+    - button /\d+ Mon/
+    - button /\d+ Tue/
+    - button /\d+ Wed/
+    - button /\d+ Thu/
+    - separator
+    - link "Go back":
+      - /url: /todo
+    - heading "No entries found" [level=2]:
+      - heading "No entries found" [level=1]
+    - text: You haven't scheduled any to-do tasks for the selected day
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
