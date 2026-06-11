@@ -8,22 +8,16 @@ import { ICON_CALENDAR, ICON_PLUS } from "~/core/constants/icons.constant";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
 import ListModal from "~/todo/components/ListModalContent.vue";
-import { createToastError } from "~/core/utils/toast";
-import { useToast } from "#ui/composables";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import useEventListener from "~/core/composables/useEventListener";
 
 const route = useRoute();
-const toast = useToast();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
 const { openList, refreshOpenList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists");
-const { queue, isFetching } = useMutationQueue(true, error => {
-    toast.add(createToastError(error));
-    refresh().then(refreshOpenList);
-});
+const { queue, isFetching, error } = useMutationQueue(false);
 const createTodoList = useOnSubmit({
     url: () => "/api/todo/lists",
     method: () => "POST",
@@ -48,6 +42,10 @@ watchEffect(() => {
     todoLists.value = data.value;
 });
 
+watch(error, () => {
+    refresh().then(refreshOpenList);
+});
+
 watch(
     [queue, isFetching, openList],
     () => {
@@ -67,7 +65,7 @@ watch(
 </script>
 
 <template>
-    <Wrapper :class="{ 'max-w-xl': true }">
+    <Wrapper class="max-w-xl">
         <H1 class="mb-12">{{ $t("todo.mainHeading") }}</H1>
         <div class="mt-4 mb-4 flex gap-4 not-xs:flex-col">
             <Button

@@ -33,12 +33,12 @@ seed("insert realistic todo test data", async ({ db }) => {
         await db.todoListItem.insert(listItems[i]!.length, j => ({
             listId: list.id,
             text: listItems[i]![j],
-            scheduledFor: maybe(
-                () =>
-                    date({ refDate: new Date(), seed: i * j + j, days: 4 })
-                        .toISOString()
-                        .split("T")[0],
-            ),
+            scheduledFor:
+                (i * j + j) % 2 === 0
+                    ? date({ refDate: new Date(), when: "afterRef", seed: i * j + j, days: j % 4 === 0 ? 4 : 0 })
+                          .toISOString()
+                          .split("T")[0]
+                    : null,
             index: j < 7 ? j : null,
         }));
     }
@@ -53,8 +53,17 @@ seed("insert realistic todo test data", async ({ db }) => {
 seed("insert random todo test data", async ({ db }) => {
     const [list1, list2] = await db.todoList.insert(3);
 
-    await db.todoListItem.insert<number>(TODO_LIST_MAX_LENGTH, { listId: list1.id });
-    await db.todoPreset.insert(50, { listId: list1.id });
+    await db.todoListItem.insert<number>(TODO_LIST_MAX_LENGTH, seed => ({
+        listId: list1.id,
+        scheduledFor: maybe(
+            () => date({ refDate: new Date(), when: "afterRef", seed, days: 4 }).toISOString().split("T")[0],
+            { seed },
+        ),
+        index: seed % 2 === 0 ? seed : null,
+    }));
+    await db.todoPreset.insert(50, {
+        listId: list1.id,
+    });
 
     await db.todoListItem.insert<number>(1, { listId: list2.id });
     await db.todoPreset.insert(1, { listId: list2.id });

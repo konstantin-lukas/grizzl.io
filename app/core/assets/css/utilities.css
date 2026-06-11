@@ -170,6 +170,18 @@
         filter: blur(1rem);
     }
 
+    .fade-absolute-enter-active,
+    .fade-absolute-leave-active {
+        transition: all 0.25s ease;
+        position: absolute;
+    }
+
+    .fade-absolute-enter-from,
+    .fade-absolute-leave-to {
+        opacity: 0;
+        filter: blur(1rem);
+    }
+
     .swipe-enter-active,
     .swipe-leave-active {
         transition: all 0.5s ease;

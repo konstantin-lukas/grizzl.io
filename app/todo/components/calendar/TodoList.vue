@@ -1,0 +1,66 @@
+<script setup lang="ts">
+import type { TodoList, TodoItem } from "~/todo/composables/useTodoLists";
+import ListHeading from "~/todo/components/calendar/ListHeading.vue";
+import { parseCalendarDate } from "~/core/utils/date";
+import type { CalendarDate } from "@internationalized/date";
+import CalendarTask from "~/todo/components/calendar/CalendarTask.vue";
+import UAccordion from "#ui/components/Accordion.vue";
+
+const emit = defineEmits<{
+    (e: "check", value: boolean, listId: string, item: TodoItem): void;
+    (e: "delete", listId: string, item: TodoItem): void;
+}>();
+const props = defineProps<{ list: TodoList; refDate?: CalendarDate }>();
+
+const filterTasks = (item: TodoItem) => {
+    if (!item.scheduledFor) return false;
+    const parsedDate = parseCalendarDate(item.scheduledFor);
+    return props.refDate?.compare(parsedDate) === 0;
+};
+
+const uncompletedItems = computed(() => props.list.items.uncompleted.filter(filterTasks));
+const completedItems = computed(() => props.list.items.completed.filter(filterTasks));
+</script>
+
+<template>
+    <div v-if="uncompletedItems.length > 0 || completedItems.length > 0" class="mb-16">
+        <ListHeading :list="props.list" />
+        <ul class="mt-4">
+            <CalendarTask
+                v-for="item in uncompletedItems"
+                :key="item.id"
+                :item="item"
+                type="uncompleted"
+                @check="(value, el) => emit('check', value, list.id, el)"
+                @delete="el => emit('delete', list.id, el)"
+            />
+        </ul>
+        <USeparator v-if="completedItems.length > 0" :class="uncompletedItems.length === 0 ? 'mt-6' : 'mt-2'" />
+        <Transition name="fade">
+            <UAccordion
+                v-if="completedItems.length > 0"
+                :items="[{ label: $t('todo.completedItems', completedItems.length) }]"
+                :ui="{
+                    trailingIcon: 'mr-1',
+                    label: 'text-muted',
+                    header: 'mt-0.5',
+                    content: 'pl-2 -translate-x-2 w-[calc(100%+0.5rem)]',
+                }"
+                data-test-id="todo-completed-items-accordion"
+            >
+                <template #content>
+                    <ul>
+                        <CalendarTask
+                            v-for="item in completedItems"
+                            :key="item.id"
+                            :item="item"
+                            type="completed"
+                            @check="(value, el) => emit('check', value, list.id, el)"
+                            @delete="el => emit('delete', list.id, el)"
+                        />
+                    </ul>
+                </template>
+            </UAccordion>
+        </Transition>
+    </div>
+</template>

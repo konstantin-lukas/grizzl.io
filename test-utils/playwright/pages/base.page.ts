@@ -6,6 +6,7 @@ import { expect } from "~~/test-utils/playwright";
 type _GotoOptions = NonNullable<Parameters<Page["goto"]>[1]>;
 export interface GotoOptions extends Omit<_GotoOptions, "waitUntil"> {
     waitUntil?: "hydration" | "route" | _GotoOptions["waitUntil"];
+    target?: string;
 }
 
 const BASE_LOCATORS = {
@@ -57,13 +58,13 @@ export default abstract class BasePage<T extends Record<string, string>> {
     }
 
     async goto(options: GotoOptions = {}) {
-        const { waitUntil = "hydration", ...vanillaOptions } = options;
+        const { waitUntil = "hydration", target = this.url, ...vanillaOptions } = options;
         const isVanillaWaitUntil = waitUntil !== "hydration" && waitUntil !== "route";
-        const result = await this.page.goto(this.url, isVanillaWaitUntil ? vanillaOptions : options);
+        const result = await this.page.goto(target, isVanillaWaitUntil ? vanillaOptions : options);
         if (waitUntil === "hydration") {
             await this.page.waitForFunction(() => window.useNuxtApp?.().isHydrating === false);
         } else if (waitUntil === "route") {
-            await this.page.waitForFunction(route => window.useNuxtApp?.()._route.fullPath === route, this.url);
+            await this.page.waitForFunction(route => window.useNuxtApp?.()._route.fullPath === route, target);
         }
         await this.page.evaluate(() => {
             const el = document.getElementById("nuxt-devtools-container");

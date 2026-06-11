@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TodoList } from "~/todo/composables/useTodoLists";
+import type { TodoItem } from "~/todo/composables/useTodoLists";
 import { ICON_CANCEL, ICON_DRAG_VERTICAL } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
 import { useOpenList } from "~/todo/composables/useOpenList";
@@ -10,8 +10,8 @@ import { deleteNthElement, insertElement } from "#shared/core/utils/array.util";
 import { LONG_TITLE_MAX } from "#shared/core/validators/core.validator";
 import type { CalendarDate } from "@internationalized/date";
 import { parseCalendarDate } from "~/core/utils/date";
+import useVirtualization from "~/todo/composables/useVirtualization";
 
-type TodoItem = TodoList["items"]["completed" | "uncompleted"][number];
 const props = defineProps<{
     item: TodoItem;
     type: "completed" | "uncompleted";
@@ -26,11 +26,10 @@ const menuOpen = ref(false);
 const scheduledFor = shallowRef<CalendarDate | null>(
     props.item.scheduledFor ? parseCalendarDate(props.item.scheduledFor) : null,
 );
-const el = ref(null);
-const isVisible = ref(false);
 const checked = ref(props.type === "completed");
-let observer: IntersectionObserver;
+const el = ref(null);
 
+const isVisible = useVirtualization(el, props.type === "completed");
 const deferredText = useDeferredValue(text);
 const { queue } = useMutationQueue();
 const { completedItems, id, uncompletedItems, sortCompletedItems, generateNewID } = useOpenList();
@@ -155,6 +154,7 @@ watch(checked, value => {
         uncompletedItems.value.push({ ...item, scheduledFor: null });
         completedItems.value = deleteNthElement(completedItems.value, index);
         queue.value.push({ action: "check", id: item.id, listId: id.value });
+        queue.value.push({ action: "schedule", id: item.id, listId: id.value, value: null });
     }
 });
 
@@ -165,30 +165,12 @@ const handleUpdate = (value: string) => {
         else deferredText.value = value;
     });
 };
-
-onMounted(() => {
-    observer = new IntersectionObserver(
-        ([entry]) => {
-            if (!entry) return;
-            isVisible.value = entry.isIntersecting;
-        },
-        {
-            threshold: 0,
-        },
-    );
-
-    if (el.value) observer.observe(el.value);
-});
-
-onBeforeUnmount(() => {
-    if (observer && el.value) observer.unobserve(el.value);
-});
 </script>
 
 <template>
     <li
         ref="el"
-        class="box-border h-10.5 border-y border-y-transparent py-1 focus-within:border-y-muted"
+        class="box-border flex h-10.5 flex-col justify-center border-y border-y-transparent py-1 focus-within:border-y-muted"
         data-task-item
     >
         <Transition name="fade">
