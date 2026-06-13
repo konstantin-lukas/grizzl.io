@@ -1,5 +1,5 @@
 import PresetService from "#server/todo/services/preset.service";
-import { PostPresetSchema } from "#shared/todo/validators/preset.validator";
+import { PostPresetSchema, PutPresetSchema } from "#shared/todo/validators/preset.validator";
 import type { H3Event } from "h3";
 import BaseController from "~~/server/core/controllers/base.controller";
 
@@ -21,6 +21,13 @@ export default class PresetController extends BaseController {
         const listId = PresetController.parseIdParameter(event, "listId");
         const data = await this.presetService.create(event.context.user.id, listId, body);
         setHeader(event, "Location", `/api/todo/lists/${listId}/presets/${data}`);
+    }
+
+    public async update(event: H3Event) {
+        const body = await PresetController.parseRequestBody(event, PutPresetSchema);
+        const listId = PresetController.parseIdParameter(event, "listId");
+        const id = PresetController.parseIdParameter(event);
+        return await this.presetService.update(id, listId, event.context.user.id, body);
     }
 }
 /* c8 ignore stop */

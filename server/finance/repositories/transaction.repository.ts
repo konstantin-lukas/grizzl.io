@@ -47,14 +47,7 @@ export default class TransactionRepository extends BaseRepository<typeof schema>
             .update(this.schema)
             .set({ amount, reference, categoryId })
             .from(dbSchema.financeAccount)
-            .where(
-                and(
-                    eq(this.schema.id, id),
-                    this.ownershipResolver(userId),
-                    isNull(this.schema.deletedAt),
-                    isNull(dbSchema.financeAccount.deletedAt),
-                ),
-            );
+            .where(and(eq(this.schema.id, id), this.ownershipResolver(userId), isNull(this.schema.deletedAt)));
 
         return rowCount;
     }

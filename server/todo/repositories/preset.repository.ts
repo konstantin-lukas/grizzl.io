@@ -1,5 +1,5 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
-import type { PostPreset } from "#shared/todo/validators/preset.validator";
+import type { PostPreset, PutPreset } from "#shared/todo/validators/preset.validator";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
@@ -39,5 +39,21 @@ export default class PresetRepository extends BaseRepository<typeof schema> {
             .returning({ id: this.schema.id })) as [{ id: string }];
 
         return id;
+    }
+
+    public async update(id: string, listId: string, userId: string, { title, items }: PutPreset) {
+        const { rowCount } = await this.db
+            .update(this.schema)
+            .set({ title, items })
+            .where(
+                and(
+                    this.ownershipResolver(userId),
+                    eq(this.schema.id, id),
+                    eq(this.schema.listId, listId),
+                    isNull(this.schema.deletedAt),
+                ),
+            );
+
+        return rowCount;
     }
 }
