@@ -1,6 +1,7 @@
 import type { PostList, PutList } from "#shared/todo/validators/list.validator";
 import { and, count, eq } from "drizzle-orm";
 import type { Database } from "~~/database";
+import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
 
 const schema = "todoList";
@@ -9,6 +10,21 @@ export default class ListRepository extends BaseRepository<typeof schema> {
     constructor(db: Database) {
         super(db, schema, userId => eq(this.schema.userId, userId));
     }
+
+    /* c8 ignore start */
+    public async hasPreset(presetId: string, userId: string, listId: string, ctx: ExecutionContext = this.db) {
+        const [result] = await ctx
+            .select({ value: count() })
+            .from(dbSchema.todoPreset)
+            .innerJoin(this.schema, eq(dbSchema.todoPreset.listId, this.schema.id))
+            .where(
+                and(eq(dbSchema.todoPreset.id, presetId), eq(this.schema.id, listId), eq(this.schema.userId, userId)),
+            )
+            .limit(1);
+
+        return !!result?.value;
+    }
+    /* c8 ignore stop */
 
     public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
         return ctx.query.todoList.findMany({

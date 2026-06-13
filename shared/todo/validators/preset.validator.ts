@@ -7,4 +7,7 @@ export const PostPresetSchema = z.object({
     items: z.array(preTrim(z.string().max(LONG_TITLE_MAX))).max(TODO_LIST_MAX_LENGTH),
 });
 
+export const PutPresetSchema = PostPresetSchema;
+
 export type PostPreset = z.infer<typeof PostPresetSchema>;
+export type PutPreset = z.infer<typeof PutPresetSchema>;
