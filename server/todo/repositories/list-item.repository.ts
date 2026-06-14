@@ -1,4 +1,5 @@
 import { transitiveOwnership } from "#server/core/utils/sql.util";
+import { nanoid } from "#shared/core/utils/id.util";
 import type {
     ChangeAction,
     CreateAction,
@@ -6,7 +7,7 @@ import type {
     ScheduleAction,
 } from "#shared/todo/validators/action.validator";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
-import { type SQL, and, eq, gte, isNotNull, lte, sql } from "drizzle-orm";
+import { type SQL, and, eq, gte, isNotNull, isNull, lte, sql } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
 import BaseRepository, { type ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -74,5 +75,36 @@ export default class ListItemRepository extends BaseRepository<typeof schema> {
     async deleteByList({ id, listId }: DeleteAction, ctx: ExecutionContext = this.db) {
         const condition = and(eq(this.schema.listId, listId), eq(this.schema.id, id));
         await ctx.delete(this.schema).where(condition);
+    }
+
+    async append(listId: string, item: string, ctx: ExecutionContext = this.db) {
+        return ctx.insert(this.schema).values({
+            id: nanoid(),
+            listId,
+            text: item,
+            index: sql<number>`
+                (
+                  SELECT COUNT(*)
+                  FROM ${this.schema}
+                  WHERE ${this.schema.listId} = ${listId}
+                    AND ${this.schema.index} IS NOT NULL
+                )
+              `,
+        });
+    }
+
+    async updateIndexToLast({ listId, text }: { listId: string; text: string }, ctx: ExecutionContext = this.db) {
+        const values = {
+            index: sql<number>`
+                (
+                  SELECT COUNT(*)
+                  FROM ${this.schema}
+                  WHERE ${this.schema.listId} = ${listId}
+                    AND ${this.schema.index} IS NOT NULL
+                )
+              `,
+        };
+        const condition = and(eq(this.schema.listId, listId), eq(this.schema.text, text), isNull(this.schema.index));
+        await ctx.update(this.schema).set(values).where(condition);
     }
 }

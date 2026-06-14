@@ -237,16 +237,11 @@ export default class BaseController {
         };
 
         const status = (() => {
-            if (
-                event.method === "PUT" ||
-                event.method === "PATCH" ||
-                event.path === "/api/todo/actions" ||
-                event.path.includes(":")
-            ) {
+            if (event.method === "GET" || event.path.includes(":")) return "OK";
+            if (event.method === "PUT" || event.method === "PATCH" || event.path === "/api/todo/actions") {
                 return "NO_CONTENT";
             }
             if (event.method === "POST") return "CREATED";
-            if (event.method === "GET") return "OK";
         })();
 
         if (status) setStatus(status);

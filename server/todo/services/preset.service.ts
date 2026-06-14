@@ -1,16 +1,18 @@
 import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
+import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import type { PostPreset, PutPreset } from "#shared/todo/validators/preset.validator";
 
 export default class PresetService {
-    static readonly deps = [PresetRepository, ListRepository];
+    static readonly deps = [PresetRepository, ListRepository, ListItemRepository];
 
     constructor(
         private readonly presetRepository: PresetRepository,
         private readonly listRepository: ListRepository,
+        private readonly listItemRepository: ListItemRepository,
     ) {}
 
     /* c8 ignore start */
@@ -41,26 +43,34 @@ export default class PresetService {
     }
 
     public async create(userId: string, listId: string, preset: PostPreset) {
-        const listExists = await this.doesListExist(userId, listId);
-        if (!listExists) {
-            const logMessage = `Unable to create todo list preset for user with id ${userId} on list with id ${listId}.`;
-            throw new NotFoundError("The requested todo list does not exist.", logMessage);
-        }
-        return this.presetRepository.create(listId, preset);
+        return this.presetRepository.transaction(async tx => {
+            await this.presetRepository.advisoryLock(`todo-list-items-${userId}`, tx);
+
+            const listExists = await this.doesListExist(userId, listId);
+            if (!listExists) {
+                const logMessage = `Unable to create todo list preset for user with id ${userId} on list with id ${listId}.`;
+                throw new NotFoundError("The requested todo list does not exist.", logMessage);
+            }
+            return this.presetRepository.create(listId, preset);
+        });
     }
 
     public async update(id: string, listId: string, userId: string, preset: PutPreset) {
-        const result = await this.presetRepository.update(id, listId, userId, preset);
-        if (!result) {
-            const logMessage = `Unable to update todo list preset for user with id ${userId} on list with id ${listId}.`;
-            throw new NotFoundError("The requested resource does not exist.", logMessage);
-        }
-        return result;
+        return this.presetRepository.transaction(async tx => {
+            await this.presetRepository.advisoryLock(`todo-list-items-${userId}`, tx);
+
+            const result = await this.presetRepository.update(id, listId, userId, preset);
+            if (!result) {
+                const logMessage = `Unable to update todo list preset for user with id ${userId} on list with id ${listId}.`;
+                throw new NotFoundError("The requested resource does not exist.", logMessage);
+            }
+            return result;
+        });
     }
 
     public async apply(id: string, listId: string, userId: string) {
         return this.presetRepository.transaction(async tx => {
-            await this.presetRepository.advisoryLock(`apply-transition-${listId}`, tx);
+            await this.presetRepository.advisoryLock(`todo-list-items-${userId}`, tx);
 
             const list = await this.listRepository.findByUserIdAndListId(userId, listId, tx);
             const preset = await this.presetRepository.findByIdUserIdAndListId(id, userId, listId, tx);
@@ -75,14 +85,22 @@ export default class PresetService {
             const listItems = new Set(list.items.map(({ text }) => text));
             const presetItems = new Set(preset.items);
 
-            const itemsToInsert = presetItems.difference(listItems);
+            const itemsToInsert = presetItems.difference(listItems).values().toArray();
 
-            const resultingListSize = listItemCount + itemsToInsert.size;
+            const resultingListSize = listItemCount + itemsToInsert.length;
 
             if (resultingListSize > TODO_LIST_MAX_LENGTH) {
                 const logMessage = `Unable to apply todo preset with id ${id} and user id ${userId} on list with id ${listId} because resulting list size is ${resultingListSize}.`;
                 throw new EntityLimitError("Unable to apply preset. Too many items.", logMessage);
             }
+
+            for (const item of presetItems) {
+                if (itemsToInsert.includes(item)) await this.listItemRepository.append(listId, item, tx);
+                else await this.listItemRepository.updateIndexToLast({ listId, text: item }, tx);
+            }
+
+            const modifiedList = await this.listRepository.findByUserIdAndListId(userId, listId, tx);
+            return modifiedList?.items ?? [];
         });
     }
 }

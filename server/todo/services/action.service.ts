@@ -141,7 +141,7 @@ export default class ActionService {
 
     async processActions(userId: string, actions: PostActionQueue) {
         return this.listRepository.transaction(async tx => {
-            await this.listRepository.advisoryLock(`execute-to-do-list-actions-${userId}`, tx);
+            await this.listRepository.advisoryLock(`todo-list-items-${userId}`, tx);
             const lists = await this.listRepository.findByUserId(userId, tx);
             for (const action of actions) {
                 const list: MinimalList | undefined = lists.find(list => list.id === action.listId);
