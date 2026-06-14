@@ -190,7 +190,7 @@ test("does not turn synchronous methods into asynchronous ones", () => {
     }
 
     const container = createContainer();
-    const event = "event" as never;
+    const event = { path: "/api" } as never;
     const throwingInstance = container.resolve(SyncController, event);
 
     expect(throwingInstance.syncMethod()).toBe(value);

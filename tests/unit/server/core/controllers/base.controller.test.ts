@@ -182,10 +182,10 @@ describe("parseRequestBody", () => {
 
 describe("mapDomainResultToHttp", () => {
     test.each([
-        { event: { method: "GET" }, msg: "OK", code: 200 },
-        { event: { method: "POST" }, msg: "Created", code: 201 },
-        { event: { method: "PATCH" }, msg: "No Content", code: 204 },
-        { event: { method: "PUT" }, msg: "No Content", code: 204 },
+        { event: { method: "GET", path: "/api" }, msg: "OK", code: 200 },
+        { event: { method: "POST", path: "/api" }, msg: "Created", code: 201 },
+        { event: { method: "PATCH", path: "/api" }, msg: "No Content", code: 204 },
+        { event: { method: "PUT", path: "/api" }, msg: "No Content", code: 204 },
     ] as const)(
         "should set the response status to $code - $msg when method is $method and error is null",
         async ({ event, code, msg }) => {
