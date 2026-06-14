@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.17.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.6...v1.17.0) (2026-06-14)
+
+
+### Features
+
+* add todo calendar ([#524](https://github.com/konstantin-lukas/grizzl.io/issues/524)) ([948695a](https://github.com/konstantin-lukas/grizzl.io/commit/948695a19233e83a2419d6a396a086c1e8e13cc9))
+* **todo:** add get preset collection route ([#519](https://github.com/konstantin-lukas/grizzl.io/issues/519)) ([0c96cfa](https://github.com/konstantin-lukas/grizzl.io/commit/0c96cfabc2cc431241ed153b9ea8312d75066fc5))
+* **todo:** add post endpoints for todo presets ([#525](https://github.com/konstantin-lukas/grizzl.io/issues/525)) ([f8c7056](https://github.com/konstantin-lukas/grizzl.io/commit/f8c7056f80fea9da438a2051810c9db9945e1713))
+* **todo:** add put route for todo presets ([d665188](https://github.com/konstantin-lukas/grizzl.io/commit/d665188995bdabed14f60d1dccf6f277cafb70c0))
+* **todo:** create endpoint to apply presets ([#529](https://github.com/konstantin-lukas/grizzl.io/issues/529)) ([dfbbf8c](https://github.com/konstantin-lukas/grizzl.io/commit/dfbbf8cadc2d70deab878b999d6fef4ef50415d7))
+
 ## [1.16.6](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.5...v1.16.6) (2026-05-29)
 
 
