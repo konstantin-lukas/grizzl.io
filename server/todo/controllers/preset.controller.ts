@@ -17,21 +17,27 @@ export default class PresetController extends BaseController {
         return await this.presetService.getList(event.context.user.id, id);
     }
 
-    public async create(event: H3Event) {
+    public async post(event: H3Event) {
         const body = await PresetController.parseRequestBody(event, PostPresetSchema);
         const listId = PresetController.parseIdParameter(event, "listId");
         const data = await this.presetService.create(event.context.user.id, listId, body);
         setHeader(event, "Location", `/api/todo/lists/${listId}/presets/${data}`);
     }
 
-    public async update(event: H3Event) {
+    public async action(event: H3Event) {
+        const listId = PresetController.parseIdParameter(event, "listId");
+        const { id } = PresetController.parseIdParameterWithAction(event, "apply", "id");
+        return this.presetService.apply(id, listId, event.context.user.id);
+    }
+
+    public async put(event: H3Event) {
         const body = await PresetController.parseRequestBody(event, PutPresetSchema);
         const listId = PresetController.parseIdParameter(event, "listId");
         const id = PresetController.parseIdParameter(event);
-        return await this.presetService.update(id, listId, event.context.user.id, body);
+        return this.presetService.update(id, listId, event.context.user.id, body);
     }
 
-    public async setDeletedStatus(event: H3Event) {
+    public async patch(event: H3Event) {
         const id = BaseController.parseIdParameter(event);
         const listId = BaseController.parseIdParameter(event, "listId");
         const body = await BaseController.parseRequestBody(event, DatabaseDeletedSchema);

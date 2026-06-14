@@ -2,6 +2,7 @@ import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
+import { toArray } from "#shared/core/utils/array.util";
 import { nanoid } from "#shared/core/utils/id.util";
 import { DatabaseIdSchema } from "#shared/core/validators/core.validator";
 import type { ZodType } from "better-auth";
@@ -190,6 +191,21 @@ export default class BaseController {
         return DatabaseIdSchema.parse(getRouterParam(event, idName));
     }
 
+    static parseIdParameterWithAction(event: H3Event, action: string | string[], idName = "id") {
+        const pathSegment = getRouterParam(event, idName);
+        if (!pathSegment) BaseController.throwError(new Error(), "NOT_FOUND");
+
+        const [id, method, ...rest] = pathSegment.split(":");
+        if (rest.length > 0) throw new NotFoundError("Action not found.", "Multiple colons in path segment.");
+
+        const parsedId = DatabaseIdSchema.parse(id);
+        const { data, error } = z.enum(toArray(action)).safeParse(method);
+
+        if (error) throw new NotFoundError("Action not found.", error.message);
+
+        return { id: parsedId, action: data };
+    }
+
     /**
      * This method is the central error handler. It is automatically invoked whenever you call a method on a
      * controller created by the dependency injection container when using a proxy.
@@ -221,11 +237,11 @@ export default class BaseController {
         };
 
         const status = (() => {
+            if (event.method === "GET" || event.path.includes(":")) return "OK";
             if (event.method === "PUT" || event.method === "PATCH" || event.path === "/api/todo/actions") {
                 return "NO_CONTENT";
             }
             if (event.method === "POST") return "CREATED";
-            if (event.method === "GET") return "OK";
         })();
 
         if (status) setStatus(status);
