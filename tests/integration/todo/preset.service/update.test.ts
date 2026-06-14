@@ -1,4 +1,5 @@
 import NotFoundError from "#server/core/errors/not-found.error";
+import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
 import PresetService from "#server/todo/services/preset.service";
@@ -8,7 +9,8 @@ import { expect, test } from "~~/test-utils/vitest";
 function makePresetService(db: DBFixtures) {
     const presetRepository = new PresetRepository(db.client);
     const listRepository = new ListRepository(db.client);
-    return new PresetService(presetRepository, listRepository);
+    const listItemRepository = new ListItemRepository(db.client);
+    return new PresetService(presetRepository, listRepository, listItemRepository);
 }
 
 test("updates a preset and returns the amount of affected rows", async ({ db, user }) => {

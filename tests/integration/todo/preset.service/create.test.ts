@@ -1,4 +1,5 @@
 import NotFoundError from "#server/core/errors/not-found.error";
+import ListItemRepository from "#server/todo/repositories/list-item.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
 import PresetService from "#server/todo/services/preset.service";
@@ -9,7 +10,8 @@ test("creates a preset and returns the id of the created preset", async ({ db, u
 
     const presetRepository = new PresetRepository(db.client);
     const listRepository = new ListRepository(db.client);
-    const presetService = new PresetService(presetRepository, listRepository);
+    const listItemRepository = new ListItemRepository(db.client);
+    const presetService = new PresetService(presetRepository, listRepository, listItemRepository);
 
     const items = ["Bananas", "Oranges"];
     const title = "Fruit";
@@ -22,6 +24,7 @@ test("creates a preset and returns the id of the created preset", async ({ db, u
 test("throws a NotFoundError error when the input data is faulty", async ({ db, user }) => {
     const presetRepository = new PresetRepository(db.client);
     const listRepository = new ListRepository(db.client);
-    const presetService = new PresetService(presetRepository, listRepository);
+    const listItemRepository = new ListItemRepository(db.client);
+    const presetService = new PresetService(presetRepository, listRepository, listItemRepository);
     await expect(presetService.create(user.id, "Bananas", { items: [], title: "" })).rejects.toThrow(NotFoundError);
 });
