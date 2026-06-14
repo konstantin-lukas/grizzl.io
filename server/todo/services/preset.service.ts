@@ -1,6 +1,8 @@
+import EntityLimitError from "#server/core/errors/entity-limit.error";
 import NotFoundError from "#server/core/errors/not-found.error";
 import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
+import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import type { PostPreset, PutPreset } from "#shared/todo/validators/preset.validator";
 
 export default class PresetService {
@@ -54,5 +56,33 @@ export default class PresetService {
             throw new NotFoundError("The requested resource does not exist.", logMessage);
         }
         return result;
+    }
+
+    public async apply(id: string, listId: string, userId: string) {
+        return this.presetRepository.transaction(async tx => {
+            await this.presetRepository.advisoryLock(`apply-transition-${listId}`, tx);
+
+            const list = await this.listRepository.findByUserIdAndListId(userId, listId, tx);
+            const preset = await this.presetRepository.findByIdUserIdAndListId(id, userId, listId, tx);
+
+            if (!list || !preset) {
+                const logMessage = `Unable to apply todo preset with id ${id} and user id ${userId} on list with id ${listId}.`;
+                throw new NotFoundError("The requested resource does not exist.", logMessage);
+            }
+
+            const listItemCount = list.items.length;
+
+            const listItems = new Set(list.items.map(({ text }) => text));
+            const presetItems = new Set(preset.items);
+
+            const itemsToInsert = presetItems.difference(listItems);
+
+            const resultingListSize = listItemCount + itemsToInsert.size;
+
+            if (resultingListSize > TODO_LIST_MAX_LENGTH) {
+                const logMessage = `Unable to apply todo preset with id ${id} and user id ${userId} on list with id ${listId} because resulting list size is ${resultingListSize}.`;
+                throw new EntityLimitError("Unable to apply preset. Too many items.", logMessage);
+            }
+        });
     }
 }

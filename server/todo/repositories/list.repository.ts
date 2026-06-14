@@ -50,6 +50,32 @@ export default class ListRepository extends BaseRepository<typeof schema> {
         });
     }
 
+    public async findByUserIdAndListId(userId: string, listId: string, ctx: ExecutionContext = this.db) {
+        const result = await ctx.query.todoList.findMany({
+            where: (todoList, { eq, isNull, and }) =>
+                and(eq(todoList.userId, userId), eq(todoList.id, listId), isNull(todoList.deletedAt)),
+            with: {
+                items: {
+                    columns: {
+                        id: true,
+                        text: true,
+                        index: true,
+                        scheduledFor: true,
+                    },
+                    orderBy: (item, { asc }) => [asc(item.index)],
+                },
+            },
+            orderBy: (todoList, { desc, asc }) => [desc(todoList.createdAt), asc(todoList.title)],
+            columns: {
+                id: true,
+                title: true,
+                icon: true,
+                createdAt: true,
+            },
+        });
+        return result[0];
+    }
+
     public async getCount(userId: string, ctx: ExecutionContext = this.db) {
         const result = await ctx.select({ count: count() }).from(this.schema).where(eq(this.schema.userId, userId));
 

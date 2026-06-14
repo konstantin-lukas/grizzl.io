@@ -32,6 +32,28 @@ export default class PresetRepository extends BaseRepository<typeof schema> {
             .orderBy(asc(this.schema.title));
     }
 
+    async findByIdUserIdAndListId(id: string, userId: string, listId: string, ctx: ExecutionContext = this.db) {
+        const result = await ctx
+            .select({
+                id: this.schema.id,
+                title: this.schema.title,
+                items: this.schema.items,
+            })
+            .from(this.schema)
+            .innerJoin(dbSchema.todoList, eq(this.schema.listId, dbSchema.todoList.id))
+            .where(
+                and(
+                    eq(this.schema.id, id),
+                    eq(this.schema.listId, listId),
+                    eq(dbSchema.todoList.userId, userId),
+                    isNull(dbSchema.todoList.deletedAt),
+                    isNull(this.schema.deletedAt),
+                ),
+            )
+            .orderBy(asc(this.schema.title));
+        return result[0];
+    }
+
     async create(listId: string, { items, title }: PostPreset, ctx: ExecutionContext = this.db) {
         const [{ id }] = (await ctx
             .insert(this.schema)

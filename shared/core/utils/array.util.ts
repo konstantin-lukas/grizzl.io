@@ -33,3 +33,7 @@ export function filterMap<I, O>(array: I[], callback: (value: I) => O | undefine
         return aggregate;
     }, [] as O[]);
 }
+
+export function toArray<T>(data: T | T[]) {
+    return Array.isArray(data) ? data : [data];
+}
