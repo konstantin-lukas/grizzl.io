@@ -2,9 +2,28 @@
 import Button from "~/core/components/button/Button.vue";
 import { ICON_DELETE, ICON_OPTIONS, ICON_RESTART, ICON_SAVE } from "~/core/constants/icons.constant";
 import CategoryIconSelect from "~/core/components/form/CategoryIconSelect.vue";
+import { useOpenList } from "~/todo/composables/useOpenList";
+import { TITLE_MAX } from "#shared/core/validators/core.validator";
+import useDeferredValue from "~/core/composables/useDeferredValue";
+import { onResponseError } from "~/core/utils/toast";
 
-const listTitle = ref("");
 const listIcon = ref();
+
+const { title, id } = useOpenList();
+const listTitle = useDeferredValue(title);
+const { t } = useI18n();
+const toast = useToast();
+
+const handleListChange = (icon: string, title: string) => {
+    $fetch(`/api/todo/lists/${id.value}`, {
+        body: {
+            title,
+            icon,
+        },
+        method: "PUT",
+        onResponseError: onResponseError(toast, t),
+    });
+};
 </script>
 
 <template>
@@ -19,19 +38,25 @@ const listIcon = ref();
         />
         <template #content>
             <div class="relative flex items-center gap-2 p-2 pr-12">
-                <UInput v-model="listTitle" :aria-label="$t('todo.aria.listName')" />
+                <UInput v-model="listTitle" :aria-label="$t('todo.aria.listName')" :maxlength="TITLE_MAX" />
                 <div class="absolute top-1/2 right-0 -translate-y-1/2 hover-none:right-1">
                     <CategoryIconSelect
                         v-model="listIcon"
                         :category-name="listTitle"
                         class="scale-75 hover-none:scale-80"
+                        @suggestion="handleListChange"
+                        @select="handleListChange"
                     />
                 </div>
             </div>
             <USeparator />
             <div class="p-2">
                 <div class="flex gap-2">
-                    <UInput :aria-label="$t('todo.aria.presetName')" />
+                    <UInput
+                        :aria-label="$t('todo.aria.presetName')"
+                        :placeholder="$t('todo.newPreset')"
+                        :maxlength="TITLE_MAX"
+                    />
                     <Button variant="subtle" square :icon="ICON_SAVE" :aria-label="$t('todo.aria.saveNewPreset')" />
                 </div>
                 <ul>

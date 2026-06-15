@@ -8,6 +8,7 @@ import CategoryIcon from "~/core/components/icon/CategoryIcon.vue";
 const emptyIcon = "question-mark-rounded";
 const model = defineModel<string>({ default: emptyIcon });
 const props = defineProps<{ categoryName: string; categories?: { normalizedName: string; icon: string }[] }>();
+const emit = defineEmits<{ (e: "suggestion" | "select", icon: string, text: string): void }>();
 
 const open = ref(false);
 
@@ -19,11 +20,13 @@ const query = computed(() => ({ categoryName: deferredCategoryName.value }));
 const { data: suggestion, pending } = useFetch(`/api/icon-suggestion`, {
     query,
     default: () => ({ icon: emptyIcon }),
+    immediate: false,
 });
 
 watch(categoryName, () => (ignoreSuggestion.value = false));
 
 watch(suggestion, async newSuggestion => {
+    emit("suggestion", newSuggestion.icon, categoryName.value);
     if (ignoreSuggestion.value) return;
     const icon = props.categories?.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
     model.value = icon ?? newSuggestion.icon;
@@ -64,6 +67,7 @@ watch(suggestion, async newSuggestion => {
                             model = ico;
                             open = false;
                             ignoreSuggestion = true;
+                            emit('select', ico, categoryName);
                         "
                     />
                 </li>
