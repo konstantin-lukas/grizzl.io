@@ -22,6 +22,7 @@ const handleSavePreset = async () => {
         onResponseError: onResponseError(toast, t),
     });
     await refreshPresets();
+    newPresetName.value = "";
 };
 </script>
 
@@ -44,15 +45,12 @@ const handleSavePreset = async () => {
             :on-async-click="handleSavePreset"
         />
     </div>
-
-    <ul class="mt-2 max-h-[min(30dvh,20rem)] overflow-auto">
+    <ul
+        class="relative max-h-[min(30dvh,20rem)] overflow-x-hidden overflow-y-auto"
+        :class="{ 'mt-2': presets.length > 0 }"
+    >
         <TransitionGroup name="list">
-            <ListPresetItem
-                class="mt-2 flex w-full items-center gap-2 overflow-hidden first-of-type:mt-0"
-                v-for="preset in presets"
-                :key="preset.id"
-                :preset
-            />
+            <ListPresetItem v-for="preset in presets" :key="preset.id" :preset />
         </TransitionGroup>
     </ul>
 </template>

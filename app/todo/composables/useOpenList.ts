@@ -13,7 +13,10 @@ export function useOpenList(watchChanges = false) {
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
 
     const refreshPresets = async () => {
-        await $fetch(`/api/todo/lists/${id.value}/presets`).then(response => (presets.value = response));
+        await $fetch(`/api/todo/lists/${id.value}/presets`).then(response => {
+            response.sort((left, right) => left.title.localeCompare(right.title));
+            presets.value = response;
+        });
     };
 
     const refreshOpenList = () => {

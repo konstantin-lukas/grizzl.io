@@ -26,13 +26,7 @@ import ListPresetsMenu from "~/todo/components/options/ListPresetsMenu.vue";
                 </div>
                 <USeparator />
                 <div class="p-2">
-                    <Button
-                        square
-                        variant="subtle"
-                        color="error"
-                        class="flex w-full justify-center"
-                        :icon="ICON_DELETE"
-                    >
+                    <Button square color="error" class="flex w-full justify-center font-bold" :icon="ICON_DELETE">
                         {{ $t("todo.deleteList") }}
                     </Button>
                 </div>
