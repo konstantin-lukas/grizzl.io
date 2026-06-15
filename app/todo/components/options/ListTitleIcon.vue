@@ -1,0 +1,45 @@
+<script setup lang="ts">
+import CategoryIconSelect from "~/core/components/form/CategoryIconSelect.vue";
+import { useOpenList } from "~/todo/composables/useOpenList";
+import useDeferredValue from "~/core/composables/useDeferredValue";
+import { onResponseError } from "~/core/utils/toast";
+import { TITLE_MAX } from "#shared/core/validators/core.validator";
+
+const listIcon = ref();
+
+const { title, id } = useOpenList();
+const listTitle = useDeferredValue(title);
+const { t } = useI18n();
+const toast = useToast();
+
+const handleListChange = (icon: string, title: string) => {
+    if (!title.trim()) return;
+    $fetch(`/api/todo/lists/${id.value}`, {
+        body: {
+            title,
+            icon,
+        },
+        method: "PUT",
+        onResponseError: onResponseError(toast, t),
+    });
+};
+</script>
+
+<template>
+    <UInput
+        v-model="listTitle"
+        :aria-label="$t('todo.aria.listName')"
+        :maxlength="TITLE_MAX"
+        class="grow"
+        :color="listTitle.trim().length === 0 ? 'error' : 'primary'"
+    />
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 hover-none:right-1">
+        <CategoryIconSelect
+            v-model="listIcon"
+            :category-name="listTitle"
+            class="scale-75 hover-none:scale-80"
+            @suggestion="handleListChange"
+            @select="handleListChange"
+        />
+    </div>
+</template>

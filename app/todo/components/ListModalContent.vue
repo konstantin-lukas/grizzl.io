@@ -10,9 +10,10 @@ import useMutationQueue from "~/todo/composables/useMutationQueue";
 import UAccordion from "#ui/components/Accordion.vue";
 import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
-import ListOptionsPopover from "~/todo/components/ListOptionsPopover.vue";
+import ListOptionsPopover from "~/todo/components/options/ListOptionsPopover.vue";
 
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
+
 const { queue } = useMutationQueue();
 const { t } = useI18n();
 
