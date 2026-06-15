@@ -1,7 +1,7 @@
 import { nanoid } from "#shared/core/utils/id.util";
 import type { TodoItem, TodoList } from "~/todo/composables/useTodoLists";
 
-type Preset = FetchReturnValue<"/api/todo/lists/:listId/presets">[number];
+export type Preset = FetchReturnValue<"/api/todo/lists/:listId/presets">[number];
 
 export function useOpenList(watchChanges = false) {
     const openList = useState<TodoList | null>("open-todo-list", () => null);
@@ -12,8 +12,8 @@ export function useOpenList(watchChanges = false) {
     const uncompletedItems = useState<TodoItem[]>("open-todo-list-uncompleted-items", () => []);
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
 
-    const refreshPresets = () => {
-        $fetch(`/api/todo/lists/${id.value}/presets`).then(response => (presets.value = response));
+    const refreshPresets = async () => {
+        await $fetch(`/api/todo/lists/${id.value}/presets`).then(response => (presets.value = response));
     };
 
     const refreshOpenList = () => {
@@ -23,7 +23,7 @@ export function useOpenList(watchChanges = false) {
         title.value = clone.title;
         completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
         uncompletedItems.value = clone.items.uncompleted;
-        refreshPresets();
+        refreshPresets().then();
     };
 
     if (watchChanges) {

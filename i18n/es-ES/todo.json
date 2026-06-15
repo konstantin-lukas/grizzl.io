@@ -35,7 +35,9 @@
             "updatedTitle": "Lista de tareas actualizada",
             "updatedDescription": "La lista de tareas con el título «{title}» ha sido actualizada.",
             "deletedTitle": "Lista de tareas eliminada",
-            "deletedDescription": "La lista de tareas con el título «{title}» ha sido eliminada."
+            "deletedDescription": "La lista de tareas con el título «{title}» ha sido eliminada.",
+            "deletedPresetTitle": "Plantilla eliminada",
+            "deletedPresetDescription": "La plantilla con el título «{title}» ha sido eliminada."
         }
     }
 }

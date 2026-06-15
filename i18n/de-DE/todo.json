@@ -35,7 +35,9 @@
             "updatedTitle": "To-do-Liste aktualisiert",
             "updatedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde aktualisiert.",
             "deletedTitle": "To-do-Liste gelöscht",
-            "deletedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde gelöscht."
+            "deletedDescription": "Die To-do-Liste mit dem Titel „{title}“ wurde gelöscht.",
+            "deletedPresetTitle": "Vorlage gelöscht",
+            "deletedPresetDescription": "Die Vorlage mit dem Titel „{title}“ wurde gelöscht."
         }
     }
 }

@@ -35,7 +35,9 @@
             "updatedTitle": "To-Do List Updated",
             "updatedDescription": "The todo-list titled “{title}” was updated.",
             "deletedTitle": "To-Do List Deleted",
-            "deletedDescription": "The todo-list titled “{title}” was deleted."
+            "deletedDescription": "The todo-list titled “{title}” was deleted.",
+            "deletedPresetTitle": "Preset Deleted",
+            "deletedPresetDescription": "The preset titled “{title}” was deleted."
         }
     }
 }

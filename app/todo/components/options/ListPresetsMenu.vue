@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ICON_DELETE, ICON_RESTART, ICON_SAVE } from "~/core/constants/icons.constant";
+import { ICON_SAVE } from "~/core/constants/icons.constant";
 import Button from "~/core/components/button/Button.vue";
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 import { useOpenList } from "~/todo/composables/useOpenList";
 import { onResponseError } from "~/core/utils/toast";
+import ListPresetItem from "~/todo/components/options/ListPresetItem.vue";
 
 const newPresetName = ref("");
 const { id, presets, uncompletedItems, refreshPresets } = useOpenList();
@@ -20,7 +21,7 @@ const handleSavePreset = async () => {
         },
         onResponseError: onResponseError(toast, t),
     });
-    refreshPresets();
+    await refreshPresets();
 };
 </script>
 
@@ -46,29 +47,12 @@ const handleSavePreset = async () => {
 
     <ul class="mt-2 max-h-[min(30dvh,20rem)] overflow-auto">
         <TransitionGroup name="list">
-            <li
+            <ListPresetItem
                 class="mt-2 flex w-full items-center gap-2 overflow-hidden first-of-type:mt-0"
                 v-for="preset in presets"
                 :key="preset.id"
-            >
-                <span class="grow overflow-hidden text-ellipsis">{{ preset.title }}</span>
-                <div class="shrink-0">
-                    <Button
-                        square
-                        variant="ghost"
-                        color="neutral"
-                        :aria-label="$t('todo.aria.applyPreset')"
-                        :icon="ICON_RESTART"
-                    />
-                    <Button
-                        square
-                        variant="ghost"
-                        color="error"
-                        :aria-label="$t('todo.aria.deletePreset')"
-                        :icon="ICON_DELETE"
-                    />
-                </div>
-            </li>
+                :preset
+            />
         </TransitionGroup>
     </ul>
 </template>
