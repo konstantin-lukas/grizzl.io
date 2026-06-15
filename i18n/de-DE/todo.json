@@ -9,6 +9,8 @@
         "cannotMerge": "Du kannst diesen Eintrag nicht mit dem vorherigen zusammenführen, da der resultierende Text das Maximum überschreitet.",
         "tooManyItems": "Du kannst keine weiteren Einträge hinzufügen. Diese Liste ist voll.",
         "noneToday": "Du hast für den ausgewählten Tag keine To-do-Aufgaben geplant.",
+        "deleteList": "Liste löschen",
+        "newPreset": "Neue Vorlage",
         "meta": {
             "title": "To-do",
             "description": "Erstelle To-do-Listen, verfolge deine täglichen Aufgaben und speichere oder lade To-do-Listen-Vorlagen."
@@ -22,7 +24,12 @@
             "deleteTask": "Aufgabe löschen",
             "itemText": "Text des To-do-Listeneintrags",
             "todoListSettings": "To-do-Listen-Einstellungen",
-            "emptyItem": "Leerer Eintrag"
+            "emptyItem": "Leerer Eintrag",
+            "presetName": "Name der Vorlage",
+            "listName": "Listenname",
+            "saveNewPreset": "Neue Vorlage speichern",
+            "deletePreset": "Vorlage löschen",
+            "applyPreset": "Vorlage anwenden"
         },
         "toast": {
             "updatedTitle": "To-do-Liste aktualisiert",

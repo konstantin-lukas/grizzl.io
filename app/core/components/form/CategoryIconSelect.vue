@@ -7,7 +7,7 @@ import CategoryIcon from "~/core/components/icon/CategoryIcon.vue";
 
 const emptyIcon = "question-mark-rounded";
 const model = defineModel<string>({ default: emptyIcon });
-const props = defineProps<{ categoryName: string; categories: { normalizedName: string; icon: string }[] }>();
+const props = defineProps<{ categoryName: string; categories?: { normalizedName: string; icon: string }[] }>();
 
 const open = ref(false);
 
@@ -25,7 +25,7 @@ watch(categoryName, () => (ignoreSuggestion.value = false));
 
 watch(suggestion, async newSuggestion => {
     if (ignoreSuggestion.value) return;
-    const icon = props.categories.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
+    const icon = props.categories?.find(category => category.normalizedName === normalize(categoryName.value))?.icon;
     model.value = icon ?? newSuggestion.icon;
 });
 </script>

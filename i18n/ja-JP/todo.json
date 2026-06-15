@@ -9,6 +9,8 @@
         "cannotMerge": "結合後のテキストが最大文字数を超えるため、この項目を前の項目と結合できません。",
         "tooManyItems": "これ以上項目を追加できません。このリストはいっぱいです。",
         "noneToday": "選択した日に予定されているToDoタスクはありません。",
+        "deleteList": "リストを削除",
+        "newPreset": "新しいプリセット",
         "meta": {
             "title": "ToDo",
             "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"
@@ -22,7 +24,12 @@
             "deleteTask": "タスクを削除",
             "itemText": "ToDoリスト項目のテキスト",
             "todoListSettings": "ToDoリスト設定",
-            "emptyItem": "空の項目"
+            "emptyItem": "空の項目",
+            "presetName": "プリセット名",
+            "listName": "リスト名",
+            "deletePreset": "プリセットを削除",
+            "applyPreset": "プリセットを適用",
+            "saveNewPreset": "新しいプリセットを保存"
         },
         "toast": {
             "updatedTitle": "ToDoリストを更新しました",

@@ -14,7 +14,7 @@ import H1 from "~/core/components/typo/H1.vue";
 import useLocale from "~/core/composables/useLocale";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import CurrencyInput from "~/finance/components/CurrencyInput.vue";
-import CategoryIconSelect from "~/finance/components/tabs/account/CategoryIconSelect.vue";
+import CategoryIconSelect from "~/core/components/form/CategoryIconSelect.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import type { AutoTransaction } from "~/finance/composables/useAutoTransactions";
 import useCategories from "~/finance/composables/useCategories";

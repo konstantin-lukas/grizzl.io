@@ -2,7 +2,7 @@
 import { useOpenList } from "~/todo/composables/useOpenList";
 import H1 from "~/core/components/typo/H1.vue";
 import Button from "~/core/components/button/Button.vue";
-import { ICON_OPTIONS, ICON_PLUS } from "~/core/constants/icons.constant";
+import { ICON_PLUS } from "~/core/constants/icons.constant";
 import DataSyncIndicator from "~/todo/components/DataSyncIndicator.vue";
 import TodoTask from "./TodoTask.vue";
 import QueryModal from "~/todo/components/ListModalBase.vue";
@@ -10,6 +10,7 @@ import useMutationQueue from "~/todo/composables/useMutationQueue";
 import UAccordion from "#ui/components/Accordion.vue";
 import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
+import ListOptionsPopover from "~/todo/components/ListOptionsPopover.vue";
 
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 const { queue } = useMutationQueue();
@@ -127,14 +128,7 @@ watch(id, async value => {
             </Transition>
         </div>
         <template #header>
-            <Button
-                :icon="ICON_OPTIONS"
-                color="neutral"
-                variant="ghost"
-                class="absolute top-2 left-4 size-10 hover-none:size-12"
-                :aria-label="$t('todo.aria.todoListSettings')"
-                data-test-id="todo-list-options-button"
-            />
+            <ListOptionsPopover />
             <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>
         <template #title>{{ $t("todo.aria.modal.title") }}</template>
