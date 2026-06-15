@@ -15,6 +15,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const handleListChange = (icon: string, title: string) => {
+    if (!title) return;
     $fetch(`/api/todo/lists/${id.value}`, {
         body: {
             title,
@@ -38,7 +39,12 @@ const handleListChange = (icon: string, title: string) => {
         />
         <template #content>
             <div class="relative flex items-center gap-2 p-2 pr-12">
-                <UInput v-model="listTitle" :aria-label="$t('todo.aria.listName')" :maxlength="TITLE_MAX" />
+                <UInput
+                    v-model="listTitle"
+                    :aria-label="$t('todo.aria.listName')"
+                    :maxlength="TITLE_MAX"
+                    :color="listTitle.length === 0 ? 'error' : 'primary'"
+                />
                 <div class="absolute top-1/2 right-0 -translate-y-1/2 hover-none:right-1">
                     <CategoryIconSelect
                         v-model="listIcon"
