@@ -8,6 +8,7 @@ export function useOpenList(watchChanges = false) {
     const presets = useState<Preset[]>("open-todo-list-presets", () => []);
     const id = useState<string>("open-todo-list-id", () => "");
     const title = useState<string>("open-todo-list-title", () => "");
+    const icon = useState<string>("open-todo-list-icon", () => "");
     const completedItems = useState<TodoItem[]>("open-todo-list-completed-items", () => []);
     const uncompletedItems = useState<TodoItem[]>("open-todo-list-uncompleted-items", () => []);
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
@@ -24,6 +25,7 @@ export function useOpenList(watchChanges = false) {
         const clone = structuredClone(toRaw(openList.value));
         id.value = clone.id;
         title.value = clone.title;
+        icon.value = clone.icon;
         completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
         uncompletedItems.value = clone.items.uncompleted;
         refreshPresets().then();
@@ -69,6 +71,7 @@ export function useOpenList(watchChanges = false) {
         uncompletedItems,
         refreshOpenList,
         presets,
+        icon,
         refreshPresets,
     };
 }

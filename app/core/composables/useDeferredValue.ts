@@ -1,4 +1,8 @@
-export default function useDeferredValue<T>(source: Ref<T>, delay = 500) {
+export default function useDeferredValue<T>(
+    source: Ref<T>,
+    delay = 500,
+    skipCondition: null | ((value: T) => boolean) = null,
+) {
     const local = ref(source.value) as Ref<T>;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     let syncingFromSource = false;
@@ -17,7 +21,7 @@ export default function useDeferredValue<T>(source: Ref<T>, delay = 500) {
     });
 
     watch(local, newValue => {
-        if (syncingFromSource) return;
+        if (syncingFromSource || skipCondition?.(newValue)) return;
 
         clearPending();
         timeout = setTimeout(() => {

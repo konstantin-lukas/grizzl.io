@@ -5,10 +5,10 @@ import useDeferredValue from "~/core/composables/useDeferredValue";
 import { onResponseError } from "~/core/utils/toast";
 import { TITLE_MAX } from "#shared/core/validators/core.validator";
 
-const listIcon = ref();
+const { title, icon, id } = useOpenList();
+const listTitle = useDeferredValue(title, 500, value => value === "");
 
-const { title, id } = useOpenList();
-const listTitle = useDeferredValue(title);
+const listIcon = ref(icon.value);
 const { t } = useI18n();
 const toast = useToast();
 

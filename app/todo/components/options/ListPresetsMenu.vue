@@ -20,20 +20,19 @@ const handleSavePreset = async () => {
             items: uncompletedItems.value.map(({ text }) => text),
         },
         onResponseError: onResponseError(toast, t),
-    });
+    }).then(() => (newPresetName.value = ""));
     await refreshPresets();
-    newPresetName.value = "";
 };
 </script>
 
 <template>
     <div class="flex gap-2">
         <UInput
+            v-model="newPresetName"
             :aria-label="$t('todo.aria.presetName')"
             :placeholder="$t('todo.newPreset')"
             :maxlength="TITLE_MAX"
             class="grow"
-            v-model="newPresetName"
             :color="newPresetName.trim().length === 0 ? 'error' : 'primary'"
         />
         <Button
