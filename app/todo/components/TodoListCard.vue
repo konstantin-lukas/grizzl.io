@@ -11,7 +11,7 @@ const target = computed(() => props.list.items.completed.length + props.list.ite
 </script>
 
 <template>
-    <li class="mt-4">
+    <li class="mt-4 w-full">
         <div class="flex gap-4 rounded-xl bg-elevated p-4">
             <CategoryIcon :category-name="props.list.icon" />
             <div class="flex grow flex-col justify-between overflow-hidden">

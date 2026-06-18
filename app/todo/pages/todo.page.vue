@@ -97,7 +97,7 @@ watch(
             </Button>
         </div>
         <USeparator />
-        <ul>
+        <ul class="relative w-full">
             <li v-if="todoLists?.length === 0">
                 <EmptyCard class="mt-4" />
             </li>
