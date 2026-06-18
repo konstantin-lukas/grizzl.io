@@ -12,6 +12,8 @@ import { type SortableEvent, VueDraggable } from "vue-draggable-plus";
 import { TODO_LIST_MAX_LENGTH } from "#shared/todo/validators/list.validator";
 import ListOptionsPopover from "~/todo/components/options/ListOptionsPopover.vue";
 
+const emit = defineEmits(["deleteList"]);
+
 const { openList, title, completedItems, uncompletedItems, id, persistChanges, generateNewID } = useOpenList();
 
 const { queue } = useMutationQueue();
@@ -129,7 +131,7 @@ watch(id, async value => {
             </Transition>
         </div>
         <template #header>
-            <ListOptionsPopover />
+            <ListOptionsPopover @delete="emit('deleteList')" />
             <DataSyncIndicator class="absolute top-4.5 left-16 hover-none:top-5 hover-none:left-18" />
         </template>
         <template #title>{{ $t("todo.aria.modal.title") }}</template>

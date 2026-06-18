@@ -11,6 +11,10 @@
         "noneToday": "選択した日に予定されているToDoタスクはありません。",
         "deleteList": "リストを削除",
         "newPreset": "新しいプリセット",
+        "presetConfirmationTitle": "タイトル「{title}」のプリセットを適用してもよろしいですか？",
+        "presetConfirmationDescription": "プリセット内のすべての項目が未完了としてマークされるか、不足している項目がリストに追加されます。この操作は自動的に元に戻せません。",
+        "presetTooManyItemsTitle": "プリセットを適用できません",
+        "presetTooManyItemsDescription": "適用後のToDoリストの項目数が上限を超えます。",
         "meta": {
             "title": "ToDo",
             "description": "ToDoリストを作成し、毎日のタスクを管理して、ToDoリストのプリセットを保存または読み込みできます。"

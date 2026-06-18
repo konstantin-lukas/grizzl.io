@@ -11,6 +11,10 @@
         "noneToday": "No has programado ninguna tarea para el día seleccionado.",
         "deleteList": "Eliminar lista",
         "newPreset": "Nueva plantilla",
+        "presetConfirmationTitle": "¿Seguro que quieres aplicar la plantilla titulada «{title}»?",
+        "presetConfirmationDescription": "Esto marcará todos los elementos de la plantilla como no completados o añadirá los elementos que falten a la lista. Esta acción no se puede deshacer automáticamente.",
+        "presetTooManyItemsTitle": "No se puede aplicar la plantilla",
+        "presetTooManyItemsDescription": "La lista de tareas resultante tendría más elementos de los permitidos.",
         "meta": {
             "title": "Tareas",
             "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."

@@ -3,6 +3,8 @@ import Button from "~/core/components/button/Button.vue";
 import { ICON_DELETE, ICON_OPTIONS } from "~/core/constants/icons.constant";
 import ListTitleIcon from "~/todo/components/options/ListTitleIcon.vue";
 import ListPresetsMenu from "~/todo/components/options/ListPresetsMenu.vue";
+
+const emit = defineEmits(["delete"]);
 </script>
 
 <template>
@@ -26,7 +28,13 @@ import ListPresetsMenu from "~/todo/components/options/ListPresetsMenu.vue";
                 </div>
                 <USeparator />
                 <div class="p-2">
-                    <Button square color="error" class="flex w-full justify-center font-bold" :icon="ICON_DELETE">
+                    <Button
+                        square
+                        color="error"
+                        class="flex w-full justify-center font-bold"
+                        :icon="ICON_DELETE"
+                        @click="emit('delete')"
+                    >
                         {{ $t("todo.deleteList") }}
                     </Button>
                 </div>

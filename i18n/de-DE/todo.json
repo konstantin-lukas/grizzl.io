@@ -11,6 +11,10 @@
         "noneToday": "Du hast für den ausgewählten Tag keine To-do-Aufgaben geplant.",
         "deleteList": "Liste löschen",
         "newPreset": "Neue Vorlage",
+        "presetConfirmationTitle": "Möchtest du die Vorlage mit dem Titel „{title}“ wirklich anwenden?",
+        "presetConfirmationDescription": "Dadurch werden alle Einträge der Vorlage als nicht erledigt markiert oder fehlende Einträge zur Liste hinzugefügt. Diese Aktion kann nicht automatisch rückgängig gemacht werden.",
+        "presetTooManyItemsTitle": "Vorlage kann nicht angewendet werden",
+        "presetTooManyItemsDescription": "Die resultierende To-do-Liste würde mehr Einträge enthalten als erlaubt.",
         "meta": {
             "title": "To-do",
             "description": "Erstelle To-do-Listen, verfolge deine täglichen Aufgaben und speichere oder lade To-do-Listen-Vorlagen."

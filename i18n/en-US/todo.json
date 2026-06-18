@@ -11,6 +11,10 @@
         "noneToday": "You haven't scheduled any to-do tasks for the selected day",
         "deleteList": "Delete list",
         "newPreset": "New preset",
+        "presetConfirmationTitle": "Are you sure you want to apply the preset titled “{title}”?",
+        "presetConfirmationDescription": "This will mark all items in the preset as uncompleted or add missing items to the list. This action cannot be undone automatically.",
+        "presetTooManyItemsTitle": "Cannot Apply Preset",
+        "presetTooManyItemsDescription": "The resulting to-do list would contain more items than allowed.",
         "meta": {
             "title": "To-Do",
             "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."

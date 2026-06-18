@@ -11,13 +11,29 @@ import ListModal from "~/todo/components/ListModalContent.vue";
 import useOnSubmit from "~/core/composables/useOnSubmit";
 import useMutationQueue from "~/todo/composables/useMutationQueue";
 import useEventListener from "~/core/composables/useEventListener";
+import useSoftDelete from "~/core/composables/useSoftDelete";
 
 const route = useRoute();
 const { t } = useI18n();
 const { todoLists } = useTodoLists();
-const { openList, refreshOpenList } = useOpenList(true);
+const { openList, title, id, refreshOpenList } = useOpenList(true);
 const { data, refresh } = await useFetch("/api/todo/lists");
 const { queue, isFetching, error } = useMutationQueue(false);
+
+const resource = computed(() => `/api/todo/lists/${id.value}`);
+const interpolations = computed(() => ({
+    title: title.value,
+}));
+const softDelete = useSoftDelete(resource, {
+    successTitle: "todo.toast.deletedTitle",
+    successDescription: "todo.toast.deletedDescription",
+    interpolations,
+    refresh: async () => {
+        await refresh();
+        openList.value = null;
+    },
+});
+
 const createTodoList = useOnSubmit({
     url: () => "/api/todo/lists",
     method: () => "POST",
@@ -94,6 +110,6 @@ watch(
                 />
             </TransitionGroup>
         </ul>
-        <ListModal />
+        <ListModal @delete-list="softDelete" />
     </Wrapper>
 </template>
