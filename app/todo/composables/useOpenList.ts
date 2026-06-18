@@ -1,7 +1,7 @@
 import { nanoid } from "#shared/core/utils/id.util";
 import type { TodoItem, TodoList } from "~/todo/composables/useTodoLists";
 
-export type Preset = FetchReturnValue<"/api/todo/lists/:listId/presets">[number];
+export type Preset = Awaited<ReturnType<typeof $fetch<unknown, "/api/todo/lists/:listId/presets">>>[number];
 
 export function useOpenList(watchChanges = false) {
     const openList = useState<TodoList | null>("open-todo-list", () => null);
