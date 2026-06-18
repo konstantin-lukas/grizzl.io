@@ -72,7 +72,15 @@ const applyPreset = async () => {
                     </span>
                 </template>
                 <template #footer="{ close }">
-                    <Button class="flex w-full justify-center font-bold" :on-async-click="applyPreset">
+                    <Button
+                        class="flex w-full justify-center font-bold"
+                        :on-async-click="
+                            async () => {
+                                await applyPreset();
+                                close();
+                            }
+                        "
+                    >
                         {{ $t("ui.apply") }}
                     </Button>
                     <Button class="flex w-full justify-center font-bold" color="error" @click="close">
