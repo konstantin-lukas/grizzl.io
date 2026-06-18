@@ -69,7 +69,6 @@
                 "deletedDescription": "La transacción con el importe «{amount}» ha sido eliminada."
             },
             "aria": {
-                "selectCategoryIcon": "Selecciona un icono de categoría",
                 "drawer": {
                     "edit": "Editar transacción",
                     "create": "Crear transacción",

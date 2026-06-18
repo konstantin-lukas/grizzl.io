@@ -23,6 +23,18 @@ const LOCATORS = {
     uncompletedList: "todo-uncompleted-items-list",
     accordion: "todo-completed-items-accordion",
     clearDate: "clear-date-button",
+
+    // LIST OPTIONS
+    titleInput: "list-options-title-input",
+    presetTitleInput: "list-options-preset-title-input",
+    presetSaveButton: "list-options-preset-save-button",
+    presetApplyButton: "list-options-preset-apply-button",
+    presetApplyConfirmButton: "list-options-preset-apply-confirm-button",
+    presetApplyCancelButton: "list-options-preset-apply-cancel-button",
+    presetDeleteButton: "list-options-preset-delete-button",
+    listDeleteButton: "list-options-delete-button",
+    categorySelect: "category-icon-select-button",
+    categoryOptions: "category-icon-select-option",
 };
 
 export default class TodoPage extends BasePage<typeof LOCATORS> {

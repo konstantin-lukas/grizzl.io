@@ -32,6 +32,7 @@ const handleListChange = (icon: string, title: string) => {
         :maxlength="TITLE_MAX"
         class="grow"
         :color="listTitle.trim().length === 0 ? 'error' : 'primary'"
+        data-test-id="list-options-title-input"
     />
     <div class="absolute top-1/2 right-0 -translate-y-1/2 hover-none:right-1">
         <CategoryIconSelect

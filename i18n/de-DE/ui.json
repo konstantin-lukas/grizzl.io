@@ -41,6 +41,7 @@
         "filters": "Filter",
         "selectDateRange": "Wähle einen Datumsbereich",
         "open": "Öffnen",
+        "selectIcon": "Wähle ein Icon",
         "toast": {
             "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
             "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."

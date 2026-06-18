@@ -69,7 +69,6 @@
                 "deletedDescription": "The transaction with amount “{amount}” was deleted."
             },
             "aria": {
-                "selectCategoryIcon": "Select category icon",
                 "drawer": {
                     "edit": "Edit Transaction",
                     "create": "Create Transaction",

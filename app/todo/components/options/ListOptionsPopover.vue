@@ -33,6 +33,7 @@ const emit = defineEmits(["delete"]);
                         color="error"
                         class="flex w-full justify-center font-bold"
                         :icon="ICON_DELETE"
+                        data-test-id="list-options-delete-button"
                         @click="emit('delete')"
                     >
                         {{ $t("todo.deleteList") }}

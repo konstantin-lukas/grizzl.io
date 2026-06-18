@@ -34,6 +34,7 @@ const handleSavePreset = async () => {
             :maxlength="TITLE_MAX"
             class="grow"
             :color="newPresetName.trim().length === 0 ? 'error' : 'primary'"
+            data-test-id="list-options-preset-title-input"
         />
         <Button
             variant="subtle"
@@ -42,6 +43,7 @@ const handleSavePreset = async () => {
             :icon="ICON_SAVE"
             :aria-label="$t('todo.aria.saveNewPreset')"
             :on-async-click="handleSavePreset"
+            data-test-id="list-options-preset-save-button"
         />
     </div>
     <ul

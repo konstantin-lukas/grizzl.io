@@ -1,6 +1,6 @@
 import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
+import { normalize } from "#shared/core/utils/string.util";
 import { TITLE_MAX, TITLE_MIN, preTrim } from "#shared/core/validators/core.validator";
-import { normalize } from "#shared/finance/utils/string";
 import { z } from "zod";
 
 export const CategorySchema = z

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { CATEGORY_ICONS } from "#shared/core/constants/category-icons.constant";
-import { normalize } from "#shared/finance/utils/string";
 import useDeferredSourceValue from "~/core/composables/useDeferredSourceValue";
 import { ICON_EDIT, ICON_LOAD } from "~/core/constants/icons.constant";
 import CategoryIcon from "~/core/components/icon/CategoryIcon.vue";
+import { normalize } from "#shared/core/utils/string.util";
 
 const emptyIcon = "question-mark-rounded";
 const model = defineModel<string>({ default: emptyIcon });
@@ -38,9 +38,9 @@ watch(suggestion, async newSuggestion => {
         <button
             class="group/category-icon relative overflow-hidden rounded-full"
             type="button"
-            :aria-label="$t('finance.transaction.aria.selectCategoryIcon')"
+            :aria-label="$t('ui.selectIcon')"
             :disabled="pending"
-            data-test-id="finance-category-icon-select-button"
+            data-test-id="category-icon-select-button"
         >
             <CategoryIcon :category-name="model" />
             <span v-if="pending" class="center absolute top-0 left-0 size-full bg-theme-black/60 transition-opacity">
@@ -62,7 +62,7 @@ watch(suggestion, async newSuggestion => {
                         square
                         variant="ghost"
                         color="neutral"
-                        data-test-id="finance-category-icon-select-option"
+                        data-test-id="category-icon-select-option"
                         @click="
                             model = ico;
                             open = false;

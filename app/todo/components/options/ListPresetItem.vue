@@ -60,6 +60,7 @@ const applyPreset = async () => {
                     color="neutral"
                     :aria-label="$t('todo.aria.applyPreset')"
                     :icon="ICON_RESTART"
+                    data-test-id="list-options-preset-apply-button"
                 />
                 <template #title>
                     <span class="mr-12 block overflow-hidden wrap-anywhere">
@@ -74,6 +75,7 @@ const applyPreset = async () => {
                 <template #footer="{ close }">
                     <Button
                         class="flex w-full justify-center font-bold"
+                        data-test-id="list-options-preset-apply-confirm-button"
                         :on-async-click="
                             async () => {
                                 await applyPreset();
@@ -83,7 +85,12 @@ const applyPreset = async () => {
                     >
                         {{ $t("ui.apply") }}
                     </Button>
-                    <Button class="flex w-full justify-center font-bold" color="error" @click="close">
+                    <Button
+                        class="flex w-full justify-center font-bold"
+                        color="error"
+                        data-test-id="list-options-preset-apply-cancel-button"
+                        @click="close"
+                    >
                         {{ $t("ui.cancel") }}
                     </Button>
                 </template>
@@ -95,6 +102,7 @@ const applyPreset = async () => {
                 :aria-label="$t('todo.aria.deletePreset')"
                 :icon="ICON_DELETE"
                 :on-async-click="deletePreset"
+                data-test-id="list-options-preset-delete-button"
             />
         </div>
     </li>

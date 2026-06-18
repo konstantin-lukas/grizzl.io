@@ -69,7 +69,6 @@
                 "deletedDescription": "金額「{amount}」の取引が削除されました。"
             },
             "aria": {
-                "selectCategoryIcon": "カテゴリーアイコンを選択",
                 "drawer": {
                     "edit": "取引を編集",
                     "create": "取引を作成",
