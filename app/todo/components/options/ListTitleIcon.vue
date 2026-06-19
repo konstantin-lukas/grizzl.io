@@ -12,12 +12,13 @@ const listIcon = ref(icon.value);
 const { t } = useI18n();
 const toast = useToast();
 
-const handleListChange = (icon: string, title: string) => {
-    if (!title.trim()) return;
+const handleListChange = (newIcon: string, newTitle: string) => {
+    if (!newTitle.trim()) return;
+    icon.value = newIcon;
     $fetch(`/api/todo/lists/${id.value}`, {
         body: {
-            title,
-            icon,
+            title: newTitle,
+            icon: newIcon,
         },
         method: "PUT",
         onResponseError: onResponseError(toast, t),

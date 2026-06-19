@@ -51,7 +51,9 @@ const applyPreset = async () => {
 
 <template>
     <li class="mt-2 flex w-full items-center gap-2 overflow-hidden first-of-type:mt-0">
-        <span class="grow overflow-hidden pl-2 text-ellipsis">{{ preset.title }}</span>
+        <span class="grow overflow-hidden pl-2 text-ellipsis" data-test-id="list-options-preset-title">{{
+            preset.title
+        }}</span>
         <div class="shrink-0">
             <UModal>
                 <Button

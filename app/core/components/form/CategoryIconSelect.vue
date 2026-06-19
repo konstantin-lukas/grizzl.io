@@ -41,6 +41,7 @@ watch(suggestion, async newSuggestion => {
             :aria-label="$t('ui.selectIcon')"
             :disabled="pending"
             data-test-id="category-icon-select-button"
+            :data-icon="model"
         >
             <CategoryIcon :category-name="model" />
             <span v-if="pending" class="center absolute top-0 left-0 size-full bg-theme-black/60 transition-opacity">

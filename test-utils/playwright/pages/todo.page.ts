@@ -6,9 +6,13 @@ const LOCATORS = {
     // OVERVIEW
     addListButton: "todo-list-add-button",
     openListButtons: "todo-open-list-button",
+    listCardTitles: "list-card-title",
+    categoryIcon: "category-icon",
 
     // LIST MODAL
     modal: "todo-list-modal",
+    listTitle: "list-title",
+    completedTexts: "todo-completed-item-text",
     optionsButton: "todo-list-options-button",
     closeButton: "todo-close-modal-button",
     notSyncing: "todo-list-is-not-syncing",
@@ -26,12 +30,13 @@ const LOCATORS = {
 
     // LIST OPTIONS
     titleInput: "list-options-title-input",
+    presetTitles: "list-options-preset-title",
     presetTitleInput: "list-options-preset-title-input",
     presetSaveButton: "list-options-preset-save-button",
-    presetApplyButton: "list-options-preset-apply-button",
+    presetApplyButtons: "list-options-preset-apply-button",
     presetApplyConfirmButton: "list-options-preset-apply-confirm-button",
     presetApplyCancelButton: "list-options-preset-apply-cancel-button",
-    presetDeleteButton: "list-options-preset-delete-button",
+    presetDeleteButtons: "list-options-preset-delete-button",
     listDeleteButton: "list-options-delete-button",
     categorySelect: "category-icon-select-button",
     categoryOptions: "category-icon-select-option",
@@ -63,5 +68,13 @@ export default class TodoPage extends BasePage<typeof LOCATORS> {
         await this.expect("notSyncing").toBeAttached();
         await this.page.reload();
         await this.expect("notSyncing").toBeAttached();
+    }
+
+    async applyPreset(n = 0) {
+        await this.click("openListButtons");
+        await this.click("optionsButton");
+        await this.click("presetApplyButtons", { nth: n });
+        await this.click("presetApplyConfirmButton");
+        await this.page.keyboard.press("Escape");
     }
 }

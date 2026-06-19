@@ -49,15 +49,18 @@ const handleShiftFocus = async (index: number, caretPos: number, repeat = true) 
     setTimeout(() => handleShiftFocus(index, caretPos, false), 50);
 };
 
-watch(id, async value => {
-    if (!value) return;
+watch(
+    () => openList.value?.id,
+    async value => {
+        if (!value) return;
 
-    await nextTick();
+        await nextTick();
 
-    if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-    }
-});
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+    },
+);
 </script>
 
 <template>
@@ -70,7 +73,7 @@ watch(id, async value => {
         "
     >
         <div class="p-6 pt-8">
-            <H1>{{ title }}</H1>
+            <H1 data-test-id="list-title">{{ title }}</H1>
             <div v-if="uncompletedItems.length > 0">
                 <VueDraggable
                     v-model="uncompletedItems"
