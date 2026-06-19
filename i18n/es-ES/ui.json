@@ -32,6 +32,7 @@
         "next": "Siguiente",
         "previous": "Anterior",
         "error": "Error",
+        "apply": "Aplicar",
         "homepage": "Página de inicio",
         "expandAll": "Expandir todo",
         "collapseAll": "Contraer todo",
@@ -40,6 +41,7 @@
         "filters": "Filtros",
         "selectDateRange": "Selecciona un rango de fechas",
         "open": "Abrir",
+        "selectIcon": "Selecciona un icono",
         "toast": {
             "unableToFetchTitle": "No se pudieron obtener los datos del servidor",
             "unableToFetchDescription": "Actualmente no podemos obtener tus datos del servidor."

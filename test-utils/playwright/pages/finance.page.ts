@@ -22,8 +22,8 @@ const LOCATORS = {
     autoTransactionExecOnInput: "finance-auto-transaction-upsert-exec-on-input",
 
     // CATEGORY ICON
-    categorySelect: "finance-category-icon-select-button",
-    categoryOptions: "finance-category-icon-select-option",
+    categorySelect: "category-icon-select-button",
+    categoryOptions: "category-icon-select-option",
 
     // CONTROL ELEMENTS
     accountMenu: "finance-account-control-menu",

@@ -203,7 +203,11 @@ const handleUpdate = (value: string) => {
                         <span :id="bottomID" />
                     </template>
                 </UInputMenu>
-                <div v-else class="grow overflow-hidden px-3 text-sm text-ellipsis text-muted line-through">
+                <div
+                    v-else
+                    class="grow overflow-hidden px-3 text-sm text-ellipsis text-muted line-through"
+                    data-test-id="todo-completed-item-text"
+                >
                     {{ props.item.text }}
                 </div>
                 <div class="flex hover-none:gap-1">

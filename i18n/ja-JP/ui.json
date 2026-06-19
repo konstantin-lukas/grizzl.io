@@ -32,6 +32,7 @@
         "next": "次へ",
         "previous": "前へ",
         "error": "エラー",
+        "apply": "適用",
         "homepage": "ホームページ",
         "expandAll": "すべて展開",
         "collapseAll": "すべて折りたたむ",
@@ -40,6 +41,7 @@
         "filters": "フィルター",
         "selectDateRange": "日付範囲を選択",
         "open": "開く",
+        "selectIcon": "アイコンを選択",
         "toast": {
             "unableToFetchTitle": "サーバーからデータを取得できません",
             "unableToFetchDescription": "現在、サーバーからデータを取得できません。"

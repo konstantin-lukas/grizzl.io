@@ -9,6 +9,12 @@
         "cannotMerge": "You can't merge this item with the previous one because the resulting text exceeds the maximum.",
         "tooManyItems": "You can't add any more items. This list is full.",
         "noneToday": "You haven't scheduled any to-do tasks for the selected day",
+        "deleteList": "Delete list",
+        "newPreset": "New preset",
+        "presetConfirmationTitle": "Are you sure you want to apply the preset titled “{title}”?",
+        "presetConfirmationDescription": "This will mark all items in the preset as uncompleted or add missing items to the list. This action cannot be undone automatically.",
+        "presetTooManyItemsTitle": "Cannot Apply Preset",
+        "presetTooManyItemsDescription": "The resulting to-do list would contain more items than allowed.",
         "meta": {
             "title": "To-Do",
             "description": "Create to-do lists, track your daily to-dos and save or load to-do list presets."
@@ -22,13 +28,20 @@
             "deleteTask": "Delete task",
             "itemText": "To-do list item text",
             "todoListSettings": "To-do list settings",
-            "emptyItem": "Empty item"
+            "emptyItem": "Empty item",
+            "presetName": "Preset name",
+            "listName": "List name",
+            "saveNewPreset": "Save new preset",
+            "deletePreset": "Delete preset",
+            "applyPreset": "Apply preset"
         },
         "toast": {
             "updatedTitle": "To-Do List Updated",
             "updatedDescription": "The todo-list titled “{title}” was updated.",
             "deletedTitle": "To-Do List Deleted",
-            "deletedDescription": "The todo-list titled “{title}” was deleted."
+            "deletedDescription": "The todo-list titled “{title}” was deleted.",
+            "deletedPresetTitle": "Preset Deleted",
+            "deletedPresetDescription": "The preset titled “{title}” was deleted."
         }
     }
 }

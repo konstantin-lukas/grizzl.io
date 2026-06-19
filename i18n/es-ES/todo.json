@@ -9,6 +9,12 @@
         "cannotMerge": "No puedes combinar este elemento con el anterior porque el texto resultante supera el máximo permitido.",
         "tooManyItems": "No puedes añadir más elementos. Esta lista está llena.",
         "noneToday": "No has programado ninguna tarea para el día seleccionado.",
+        "deleteList": "Eliminar lista",
+        "newPreset": "Nueva plantilla",
+        "presetConfirmationTitle": "¿Seguro que quieres aplicar la plantilla titulada «{title}»?",
+        "presetConfirmationDescription": "Esto marcará todos los elementos de la plantilla como no completados o añadirá los elementos que falten a la lista. Esta acción no se puede deshacer automáticamente.",
+        "presetTooManyItemsTitle": "No se puede aplicar la plantilla",
+        "presetTooManyItemsDescription": "La lista de tareas resultante tendría más elementos de los permitidos.",
         "meta": {
             "title": "Tareas",
             "description": "Crea listas de tareas, sigue tus tareas diarias y guarda o carga plantillas de listas de tareas."
@@ -22,13 +28,20 @@
             "deleteTask": "Eliminar tarea",
             "itemText": "Texto del elemento de la lista de tareas",
             "todoListSettings": "Configuración de la lista de tareas",
-            "emptyItem": "Elemento vacío"
+            "emptyItem": "Elemento vacío",
+            "presetName": "Nombre de la plantilla",
+            "listName": "Nombre de la lista",
+            "saveNewPreset": "Guardar nueva plantilla",
+            "deletePreset": "Eliminar plantilla",
+            "applyPreset": "Aplicar plantilla"
         },
         "toast": {
             "updatedTitle": "Lista de tareas actualizada",
             "updatedDescription": "La lista de tareas con el título «{title}» ha sido actualizada.",
             "deletedTitle": "Lista de tareas eliminada",
-            "deletedDescription": "La lista de tareas con el título «{title}» ha sido eliminada."
+            "deletedDescription": "La lista de tareas con el título «{title}» ha sido eliminada.",
+            "deletedPresetTitle": "Plantilla eliminada",
+            "deletedPresetDescription": "La plantilla con el título «{title}» ha sido eliminada."
         }
     }
 }

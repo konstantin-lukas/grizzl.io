@@ -1,21 +1,34 @@
 import { nanoid } from "#shared/core/utils/id.util";
 import type { TodoItem, TodoList } from "~/todo/composables/useTodoLists";
 
+export type Preset = Awaited<ReturnType<typeof $fetch<unknown, "/api/todo/lists/:listId/presets">>>[number];
+
 export function useOpenList(watchChanges = false) {
     const openList = useState<TodoList | null>("open-todo-list", () => null);
+    const presets = useState<Preset[]>("open-todo-list-presets", () => []);
     const id = useState<string>("open-todo-list-id", () => "");
     const title = useState<string>("open-todo-list-title", () => "");
+    const icon = useState<string>("open-todo-list-icon", () => "");
     const completedItems = useState<TodoItem[]>("open-todo-list-completed-items", () => []);
     const uncompletedItems = useState<TodoItem[]>("open-todo-list-uncompleted-items", () => []);
     const existingIDs = useState<Set<string>>("open-todo-list-existing-ids", () => new Set());
+
+    const refreshPresets = async () => {
+        await $fetch(`/api/todo/lists/${id.value}/presets`).then(response => {
+            response.sort((left, right) => left.title.localeCompare(right.title));
+            presets.value = response;
+        });
+    };
 
     const refreshOpenList = () => {
         if (!openList.value) return;
         const clone = structuredClone(toRaw(openList.value));
         id.value = clone.id;
         title.value = clone.title;
+        icon.value = clone.icon;
         completedItems.value = clone.items.completed.sort((left, right) => left.text.localeCompare(right.text));
         uncompletedItems.value = clone.items.uncompleted;
+        refreshPresets().then();
     };
 
     if (watchChanges) {
@@ -57,5 +70,8 @@ export function useOpenList(watchChanges = false) {
         completedItems,
         uncompletedItems,
         refreshOpenList,
+        presets,
+        icon,
+        refreshPresets,
     };
 }

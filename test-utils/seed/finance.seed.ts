@@ -1,4 +1,4 @@
-import { normalize } from "#shared/finance/utils/string";
+import { normalize } from "#shared/core/utils/string.util";
 import { date, int, maybe } from "~~/test-utils/helpers/data";
 import { seed } from "~~/test-utils/playwright";
 

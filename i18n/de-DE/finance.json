@@ -69,7 +69,6 @@
                 "deletedDescription": "Die Transaktion mit dem Betrag „{amount}“ wurde gelöscht."
             },
             "aria": {
-                "selectCategoryIcon": "Wähle ein Kategorie-Icon",
                 "drawer": {
                     "edit": "Transaktion bearbeiten",
                     "create": "Transaktion erstellen",

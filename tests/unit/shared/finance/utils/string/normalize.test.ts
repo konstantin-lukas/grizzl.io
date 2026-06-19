@@ -1,4 +1,4 @@
-import { normalize } from "#shared/finance/utils/string";
+import { normalize } from "#shared/core/utils/string.util";
 import { expect, test } from "vitest";
 
 test.each([

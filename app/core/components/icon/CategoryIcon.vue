@@ -4,6 +4,6 @@ const props = defineProps<{ categoryName: string }>();
 
 <template>
     <div class="center aspect-square size-12 rounded-full bg-primary">
-        <UIcon :name="'material-symbols:' + props.categoryName" class="size-8 bg-back" />
+        <UIcon :name="'material-symbols:' + props.categoryName" class="size-8 bg-back" data-test-id="category-icon" />
     </div>
 </template>
