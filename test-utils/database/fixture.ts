@@ -5,6 +5,8 @@ import FinanceAccountFixture from "~~/test-utils/fixtures/finance-account.fixtur
 import FinanceAutoTransactionFixture from "~~/test-utils/fixtures/finance-auto-transaction.fixture";
 import FinanceCategoryFixture from "~~/test-utils/fixtures/finance-category.fixture";
 import FinanceTransactionFixture from "~~/test-utils/fixtures/finance-transaction.fixture";
+import PollVoteFixture from "~~/test-utils/fixtures/poll-vote.fixture";
+import PollFixture from "~~/test-utils/fixtures/poll.fixture";
 import TimerIntervalFixture from "~~/test-utils/fixtures/timer-interval.fixture";
 import TimerFixture from "~~/test-utils/fixtures/timer.fixture";
 import TodoListItemFixture from "~~/test-utils/fixtures/todo-list-item.fixture";
@@ -23,6 +25,8 @@ function createDBFixtures(db: Database) {
         todoList: new TodoListFixture(db),
         todoListItem: new TodoListItemFixture(db),
         todoPreset: new TodoPresetFixture(db),
+        poll: new PollFixture(db),
+        pollVote: new PollVoteFixture(db),
         user: new UserFixture(db),
         account: new AccountFixture(db),
         client: db,
