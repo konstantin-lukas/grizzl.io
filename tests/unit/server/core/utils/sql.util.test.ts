@@ -8,6 +8,7 @@ const transactionPurgeMock = vi.fn();
 const autoTransactionPurgeMock = vi.fn();
 const listPurgeMock = vi.fn();
 const presetPurgeMock = vi.fn();
+const pollPurgeMock = vi.fn();
 let isSoftDeletable = true;
 
 vi.mock("~~/server/timer/repositories/timer.repository", () => {
@@ -86,6 +87,18 @@ vi.mock("#server/todo/repositories/preset.repository", () => {
     };
 });
 
+vi.mock("#server/poll/repositories/poll.repository", () => {
+    return {
+        default: vi.fn(
+            class {
+                purge = pollPurgeMock;
+                tableName = "poll";
+                isSoftDeletable = true;
+            },
+        ),
+    };
+});
+
 const consoleErrorSpy = vi.spyOn(console, "error");
 const consoleWarnSpy = vi.spyOn(console, "warn");
 const consoleLogSpy = vi.spyOn(console, "log");
@@ -103,6 +116,7 @@ test("calls purge on all soft-deletable repositories", async () => {
     autoTransactionPurgeMock.mockReturnValueOnce(Promise.resolve(0));
     listPurgeMock.mockReturnValueOnce(Promise.resolve(0));
     presetPurgeMock.mockReturnValueOnce(Promise.resolve(0));
+    pollPurgeMock.mockReturnValueOnce(Promise.resolve(0));
 
     await purgeAll({ maxAge: 0 });
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -116,8 +130,9 @@ test("calls purge on all soft-deletable repositories", async () => {
     );
     expect(consoleLogSpy).toHaveBeenCalledWith('Successfully deleted 0 rows while purging table "todo_list".');
     expect(consoleLogSpy).toHaveBeenCalledWith('Successfully deleted 0 rows while purging table "todo_preset".');
+    expect(consoleLogSpy).toHaveBeenCalledWith('Successfully deleted 0 rows while purging table "poll".');
 
-    expect(consoleLogSpy).toHaveBeenCalledTimes(6);
+    expect(consoleLogSpy).toHaveBeenCalledTimes(7);
 
     expect(timerPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });
     expect(accountPurgeMock).toHaveBeenCalledExactlyOnceWith({ maxAge: 0 });

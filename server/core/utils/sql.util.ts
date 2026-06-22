@@ -2,6 +2,7 @@ import type BaseRepository from "#server/core/repositories/base.repository";
 import AccountRepository from "#server/finance/repositories/account.repository";
 import AutoTransactionRepository from "#server/finance/repositories/auto-transaction.repository";
 import TransactionRepository from "#server/finance/repositories/transaction.repository";
+import PollRepository from "#server/poll/repositories/poll.repository";
 import ListRepository from "#server/todo/repositories/list.repository";
 import PresetRepository from "#server/todo/repositories/preset.repository";
 import { tryCatch } from "#shared/core/utils/result.util";
@@ -18,6 +19,7 @@ const SOFT_DELETABLE_REPOSITORIES = [
     AutoTransactionRepository,
     ListRepository,
     PresetRepository,
+    PollRepository,
 ];
 
 export async function purgeAll(options: { maxAge: number }) {

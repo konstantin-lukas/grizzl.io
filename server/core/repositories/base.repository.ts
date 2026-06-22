@@ -11,7 +11,9 @@ type Schema =
     | "financeCategory"
     | "todoList"
     | "todoListItem"
-    | "todoPreset";
+    | "todoPreset"
+    | "poll"
+    | "pollVote";
 type OwnershipResolver = (userId: string) => SQL<unknown>;
 export type DatabaseTransaction = Parameters<Parameters<Database["transaction"]>[0]>[0];
 export type ExecutionContext = DatabaseTransaction | Database;

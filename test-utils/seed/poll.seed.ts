@@ -1,5 +1,5 @@
 import { PollMethod } from "#shared/poll/enums/method.enum";
-import { date, int } from "~~/test-utils/helpers/data";
+import { date, int, intArr } from "~~/test-utils/helpers/data";
 import { seed } from "~~/test-utils/playwright";
 
 seed("insert realistic poll test data", async ({ db }) => {
@@ -11,7 +11,7 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(6, { pollId: pluralityPoll.id });
+    await db.pollVote.insert(6, seed => ({ pollId: pluralityPoll.id, selection: [int({ min: 0, max: 3, seed })] }));
 
     const [approvalPoll] = await db.poll.insert(1, index => ({
         title: "Which features should be included in the next release?",
@@ -21,7 +21,10 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(2, { pollId: approvalPoll.id });
+    await db.pollVote.insert(2, seed => ({
+        pollId: approvalPoll.id,
+        selection: intArr({ min: 0, max: 3, length: int({ min: 0, max: 4, seed }), seed }),
+    }));
 
     const [runoffPoll] = await db.poll.insert(1, index => ({
         title: "Who should host the next game night?",
@@ -31,7 +34,10 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(24, { pollId: runoffPoll.id });
+    await db.pollVote.insert(24, seed => ({
+        pollId: runoffPoll.id,
+        selection: intArr({ unique: true, min: 0, max: 3, length: 4, seed }),
+    }));
 
     const [scorePoll] = await db.poll.insert(1, index => ({
         title: "How should we spend the team budget?",
@@ -41,7 +47,10 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(9, { pollId: scorePoll.id });
+    await db.pollVote.insert(9, seed => ({
+        pollId: scorePoll.id,
+        selection: intArr({ min: 1, max: 10, length: 4, seed }),
+    }));
 
     const [positionalPoll] = await db.poll.insert(1, index => ({
         title: "Which destination should we pick for the company retreat?",
@@ -51,7 +60,10 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(3, { pollId: positionalPoll.id });
+    await db.pollVote.insert(3, seed => ({
+        pollId: positionalPoll.id,
+        selection: intArr({ unique: true, min: 0, max: 3, length: 4, seed }),
+    }));
 
     await db.poll.insert(1, index => ({
         title: "Which snack should we stock in the office? (No Votes)",
@@ -69,7 +81,10 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: false,
     }));
 
-    await db.pollVote.insert(3, { pollId: closedPoll.id });
+    await db.pollVote.insert(3, seed => ({
+        pollId: closedPoll.id,
+        selection: intArr({ unique: true, min: 0, max: 3, length: 4, seed }),
+    }));
 
     const [majorityPoll] = await db.poll.insert(1, index => ({
         title: "Who will win the World Cup? (Majority)",
@@ -79,13 +94,14 @@ seed("insert realistic poll test data", async ({ db }) => {
         majorityWinner: true,
     }));
 
-    await db.pollVote.insert(3, { pollId: majorityPoll.id });
+    await db.pollVote.insert(3, seed => ({
+        pollId: majorityPoll.id,
+        selection: intArr({ unique: true, min: 0, max: 3, length: 4, seed }),
+    }));
 });
 
 seed("insert random poll test data", async ({ db }) => {
-    const polls = await db.poll.insert(20);
+    const [poll] = await db.poll.insert(1);
 
-    await db.pollVote.insert(polls.length, seed => ({
-        pollId: polls[int({ min: 0, max: polls.length - 1, seed })]!.id,
-    }));
+    await db.pollVote.insert(1, { pollId: poll.id });
 });
