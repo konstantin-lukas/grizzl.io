@@ -8,6 +8,7 @@ export const LONG_TITLE_MAX = 200;
 export const ZERO = 0;
 export const LONG_STRING = 500;
 export const SHA_1_CHAR_COUNT = 40;
+export const SHA_256_CHAR_COUNT = 64;
 export const LIST_MIN = 1;
 export const LIST_MAX = 100;
 export const COUNT_MIN = 1;

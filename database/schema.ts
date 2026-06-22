@@ -11,3 +11,7 @@ export * from "../server/todo/schemas/list.schema";
 export * from "../server/todo/schemas/list-item.schema";
 export * from "../server/todo/schemas/preset.schema";
 export * from "../server/todo/schemas/relations.schema";
+
+export * from "../server/poll/schemas/poll.schema";
+export * from "../server/poll/schemas/vote.schema";
+export * from "../server/poll/schemas/relations.schema";

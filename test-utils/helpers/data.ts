@@ -89,22 +89,22 @@ export function int(options: IntOptions = {}) {
  */
 export function arr<T extends Primitive, N extends number = 3>(
     source: T | T[] | ((index: number) => T),
-    options?: PrimitiveArrayOptions<N>,
+    options?: PrimitiveArrayOptions<N> & PRNGOptions,
 ): T[];
 export function arr<T extends object, N extends number = 3>(
     source: T | T[] | ((index: number) => T),
-    options?: ObjectArrayOptions<T, N>,
+    options?: ObjectArrayOptions<T, N> & PRNGOptions,
 ): T[];
 export function arr<T extends Primitive | object, N extends number = 3>(
     source: T | T[] | ((index: number) => T),
-    options: PrimitiveArrayOptions<N> | ObjectArrayOptions<T, N> = {},
+    options: (PrimitiveArrayOptions<N> & PRNGOptions) | (ObjectArrayOptions<T, N> & PRNGOptions) = {},
 ): NTuple<T, N> {
-    const { length = 3, unique = false } = options;
+    const { length = 3, unique = false, seed = 0 } = options;
     const sourceIsCallback = typeof source === "function";
 
     const unpackValue = (index: number) => {
         const value = sourceIsCallback ? source(index) : source;
-        return Array.isArray(value) ? value[int({ min: 0, max: value.length - 1, seed: index })]! : value;
+        return Array.isArray(value) ? value[int({ min: 0, max: value.length - 1, seed: seed + index })]! : value;
     };
 
     if (!unique) {
@@ -282,7 +282,7 @@ export function strArr<N extends number>(options: StrArrayOptions<N>) {
 }
 
 /**
- * @returns The provided value or undefined depending on the seed
+ * @returns The provided value or null depending on the seed
  */
 export function maybe<T>(value: () => T, options: PRNGOptions & { odds?: number } = {}) {
     const { seed, odds = 0.5 } = options;
@@ -294,4 +294,15 @@ export function maybe<T>(value: () => T, options: PRNGOptions & { odds?: number 
 
     if (roll > odds) return null;
     return value();
+}
+
+export function enumValue<T extends Record<string, string>>(e: T, options: PRNGOptions = {}) {
+    const { seed } = options;
+    const items = Object.values(e);
+    const index = int({ min: 0, max: items.length - 1, seed });
+    return items[index] as T[keyof T];
+}
+
+export function boolean(options: PRNGOptions & { odds?: number } = {}) {
+    return maybe(() => true, options) ?? false;
 }

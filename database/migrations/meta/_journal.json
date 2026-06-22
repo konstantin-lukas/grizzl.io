@@ -71,6 +71,13 @@
             "when": 1779741863178,
             "tag": "0009_orange_kronos",
             "breakpoints": true
+        },
+        {
+            "idx": 10,
+            "version": "7",
+            "when": 1782121756842,
+            "tag": "0010_plain_lake",
+            "breakpoints": true
         }
     ]
 }
