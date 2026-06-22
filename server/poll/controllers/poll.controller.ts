@@ -1,6 +1,6 @@
-import PollService from "#server/poll/services/list.service";
+import BaseController from "#server/core/controllers/base.controller";
+import PollService from "#server/poll/services/poll.service";
 import type { H3Event } from "h3";
-import BaseController from "~~/server/core/controllers/base.controller";
 
 /* c8 ignore start */
 export default class PollController extends BaseController {
