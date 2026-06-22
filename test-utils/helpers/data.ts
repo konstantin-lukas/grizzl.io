@@ -1,4 +1,3 @@
-import { items } from "happy-dom/lib/PropertySymbol";
 import { capitalize } from "~~/test-utils/helpers/string";
 
 interface PRNGOptions {
