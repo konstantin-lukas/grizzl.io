@@ -20,7 +20,7 @@ export default class PollService {
 
     static saltAndHash(str: string) {
         const runtimeConfig = useRuntimeConfig();
-        const salt = runtimeConfig.poll.voterIdentifierSalt;
+        const salt = runtimeConfig.voterIdentifierSalt;
         return hash("sha256", str + salt);
     }
 
