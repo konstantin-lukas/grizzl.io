@@ -35,6 +35,8 @@ const EnvProductionSchema = z.object({
     DB_NAME: z.literal("grizzl"),
     DB_USERNAME: z.literal("grizzl_user"),
     DB_PASSWORD: NotLiteral("password"),
+
+    NUXT_VOTER_IDENTIFIER_SALT: NotLiteral("Cucumber"),
 });
 
 const EnvSchema = z.object({
@@ -64,6 +66,8 @@ const EnvSchema = z.object({
     DB_NAME: z.literal("grizzl"),
     DB_USERNAME: z.literal("grizzl_user"),
     DB_PASSWORD: z.literal("password"),
+
+    NUXT_VOTER_IDENTIFIER_SALT: z.literal("Cucumber"),
 });
 
 export default defineNitroPlugin(() => {

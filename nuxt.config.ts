@@ -107,6 +107,7 @@ export default defineNuxtConfig({
         },
     },
     runtimeConfig: {
+        voterIdentifierSalt: process.env.NUXT_VOTER_IDENTIFIER_SALT,
         public: {
             version: process.env.NUXT_PUBLIC_VERSION,
             appEnv: process.env.NUXT_PUBLIC_APP_ENV,

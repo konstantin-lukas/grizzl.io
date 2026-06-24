@@ -1,4 +1,4 @@
-import { PollMethod } from "#shared/poll/enums/method.enum";
+import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 
 export const BASE_POLL = {
     title: "What is your favorite color?",
@@ -6,6 +6,7 @@ export const BASE_POLL = {
     choices: ["Green", "Blue", "Yellow", "Orange", "Red"],
     method: PollMethod.APPROVAL,
     majorityWinner: false,
+    voterIdentityMethod: VoterIdentityMethod.COOKIE,
 };
 
 export const FULL_POLL = {

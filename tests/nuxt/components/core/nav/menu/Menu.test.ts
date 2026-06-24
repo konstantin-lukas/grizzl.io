@@ -31,8 +31,8 @@ test("should use the correct translation keys and link to the correct pages", as
     expect(financeLI.attributes("aria-hidden")).toBeUndefined();
     expect(financeLink.text()).toBe("ui.finance");
 
-    expect(pollLink.attributes("href")).toBeUndefined();
-    expect(pollLI.attributes("aria-hidden")).toBe("true");
+    expect(pollLink.attributes("href")).toBe("/poll");
+    expect(pollLI.attributes("aria-hidden")).toBeUndefined();
     expect(pollLink.text()).toBe("ui.poll");
 
     expect(todoLink.attributes("href")).toBe("/todo");

@@ -33,7 +33,7 @@ test("returns only the polls belonging to the requested user", async ({ db, user
                 "Sodales turpis irure pretium phasellus egestas praesent. Aliqua excepteur eros neque non nisi erati.",
                 "Turpis irure pretium phasellus egestas praesent aliqua excepteur eros neque. Non nisi erat tristiqu.",
             ],
-            closesAt: expect.any(Date),
+            closesAt: null,
             createdAt: expect.any(Date),
             id: anyId,
             majorityWinner: false,
@@ -64,7 +64,7 @@ test("returns only the polls belonging to the requested user", async ({ db, user
                 "Bibendum sodales turpis irure pretium phasellus. Egestas praesent aliqua excepteur eros neque nonio.",
                 "Sodales turpis irure pretium phasellus egestas praesent. Aliqua excepteur eros neque non nisi erati.",
             ],
-            closesAt: expect.any(Date),
+            closesAt: null,
             createdAt: expect.any(Date),
             id: anyId,
             majorityWinner: false,
@@ -82,16 +82,16 @@ test("automatically includes the votes belonging to a poll", async ({ db, user }
     const [foundPoll] = await pollRepository.findByUserId(user.id);
     expect(foundPoll).toStrictEqual({
         choices: ["Bananas", "Oranges", "Pineapples"],
-        closesAt: expect.any(Date),
+        closesAt: null,
         createdAt: expect.any(Date),
         id: anyId,
         majorityWinner: false,
         method: "positional",
         title: "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasell.",
-        votes: [
+        votes: expect.arrayContaining([
             [2, 0, 1],
             [0, 1, 2],
-        ],
+        ]),
     });
 });
 

@@ -12,7 +12,7 @@ export function makePollTestBuilder(method: Method) {
                 basePath: "/api/polls",
                 fullPath: `/api/polls/${poll.id}`,
                 getDatabaseOverrides: {
-                    closesAt: poll.closesAt.toISOString(),
+                    closesAt: poll.closesAt?.toISOString() ?? null,
                     votes: votes.map(vote => vote.selection),
                 },
             };

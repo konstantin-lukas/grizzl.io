@@ -40,6 +40,15 @@ export default {
             component: () => import("~/todo/pages/calendar.page.vue"),
         },
         {
+            name: "poll",
+            path: "/poll",
+            meta: {
+                title: "poll.meta.title",
+                description: "poll.meta.description",
+            },
+            component: () => import("~/poll/pages/poll.page.vue"),
+        },
+        {
             name: "home",
             path: "/",
             component: () => import("~/core/pages/root.page.vue"),

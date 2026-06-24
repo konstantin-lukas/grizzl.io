@@ -1,4 +1,5 @@
 import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
+import InvalidIpError from "#server/core/errors/invalid-ip.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
@@ -215,6 +216,7 @@ export default class BaseController {
     static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
         // SPECIFIC DOMAIN ERROR
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
+        if (error instanceof InvalidIpError) BaseController.throwError(error, "BAD_REQUEST");
         if (error instanceof UnknownError) BaseController.throwError(error, "INTERNAL_SERVER_ERROR");
         if (
             error instanceof InvalidAccountBalanceError ||
@@ -245,5 +247,36 @@ export default class BaseController {
         })();
 
         if (status) setStatus(status);
+    }
+
+    /**
+     * This function assumes that caddy is the only reverse proxy between the client and the server and that the server
+     * concatenates all instances of the X-Forwarded-For header with commas and returns the result in the event headers.
+     * If that's not the case, you need to modify this function.
+     * More Information: https://adam-p.ca/blog/2022/03/x-forwarded-for/
+     */
+    static getIpAddress(event: H3Event) {
+        const h = event.headers;
+
+        let ip = (() => {
+            const xForwardedFor = h.get("X-Forwarded-For");
+            if (!xForwardedFor) return;
+            const ipList = xForwardedFor.split(",").map(ip => ip.trim());
+            return ipList[ipList.length - 1];
+        })();
+
+        if (ip?.startsWith("::ffff:")) {
+            ip = ip.replace("::ffff:", "");
+        }
+
+        if (ip === "::1") {
+            ip = "127.0.0.1";
+        }
+
+        if (ip === undefined) {
+            throw new InvalidIpError("Request IP address not found", "Request IP address is undefined");
+        }
+
+        return ip;
     }
 }
