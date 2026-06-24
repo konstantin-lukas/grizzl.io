@@ -23,7 +23,7 @@ export default defineEventHandler(async event => {
         return;
     }
 
-    if (event.path.startsWith("/api") && !PUBLIC_API_PATHS.some(path => event.path.startsWith(path))) {
+    if (event.path.startsWith("/api") && !PUBLIC_API_PATHS.some(path => path.test(event.path))) {
         BaseController.throwError(new Error("You need to sign in to perform this action."), "UNAUTHORIZED");
     }
 

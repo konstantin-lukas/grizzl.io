@@ -13,5 +13,11 @@ export default class PollController extends BaseController {
     public async getCollection(event: H3Event) {
         return await this.pollService.getCollection(event.context.user.id);
     }
+
+    public async get(event: H3Event) {
+        const ip = PollController.getIpAddress(event);
+        const id = PollController.parseIdParameter(event);
+        return await this.pollService.getOne(id, ip);
+    }
 }
 /* c8 ignore stop */
