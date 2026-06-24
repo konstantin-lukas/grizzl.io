@@ -57,7 +57,7 @@ watch(
                         "
                     />
                 </div>
-                <div class="mt-14 overflow-y-auto sm:h-[calc(100%-3.5rem)]">
+                <div class="mt-14 h-[calc(100%-3.5rem)] overflow-y-auto">
                     <slot />
                 </div>
             </div>

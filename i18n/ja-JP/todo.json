@@ -40,8 +40,8 @@
             "updatedDescription": "タイトル「{title}」のToDoリストが更新されました。",
             "deletedTitle": "ToDoリストを削除しました",
             "deletedDescription": "タイトル「{title}」のToDoリストが削除されました。",
-            "deletedPresetTitle": "Plantilla eliminada",
-            "deletedPresetDescription": "La plantilla con el título «{title}» ha sido eliminada."
+            "deletedPresetTitle": "プリセットを削除しました",
+            "deletedPresetDescription": "タイトル「{title}」のプリセットが削除されました。"
         }
     }
 }
