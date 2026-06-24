@@ -1,3 +1,4 @@
+import InvalidIpError from "#server/core/errors/invalid-ip.error";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
@@ -256,4 +257,57 @@ describe("mapDomainResultToHttp", () => {
             expect(consoleErrorMock).toHaveBeenCalledExactlyOnceWith(serverMessage);
         },
     );
+});
+
+describe("getIpAddress", () => {
+    const createEvent = (ip?: string) =>
+        ({
+            headers: {
+                get: vi.fn().mockReturnValue(ip),
+            },
+        }) as unknown as H3Event;
+
+    test("should return the last ip from X-Forwarded-For", () => {
+        const event = createEvent("1.1.1.1, 2.2.2.2, 3.3.3.3");
+
+        expect(BaseController.getIpAddress(event)).toBe("3.3.3.3");
+    });
+
+    test("should trim whitespace around ips", () => {
+        const event = createEvent("1.1.1.1, 2.2.2.2 , 3.3.3.3 ");
+
+        expect(BaseController.getIpAddress(event)).toBe("3.3.3.3");
+    });
+
+    test("should convert IPv4-mapped IPv6 addresses", () => {
+        const event = createEvent("::ffff:127.0.0.1");
+
+        expect(BaseController.getIpAddress(event)).toBe("127.0.0.1");
+    });
+
+    test("should convert ::1 to 127.0.0.1", () => {
+        const event = createEvent("::1");
+
+        expect(BaseController.getIpAddress(event)).toBe("127.0.0.1");
+    });
+
+    test("should convert an IPv4-mapped localhost address", () => {
+        const event = createEvent("::ffff:::1");
+
+        expect(BaseController.getIpAddress(event)).toBe("127.0.0.1");
+    });
+
+    test("should throw an InvalidIpError when X-Forwarded-For is missing", () => {
+        const event = createEvent();
+
+        expect(() => BaseController.getIpAddress(event)).toThrow(InvalidIpError);
+
+        expect(() => BaseController.getIpAddress(event)).toThrow("Request IP address not found");
+    });
+
+    test("should return an IPv6 address unchanged", () => {
+        const event = createEvent("2001:db8::1");
+
+        expect(BaseController.getIpAddress(event)).toBe("2001:db8::1");
+    });
 });

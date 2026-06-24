@@ -18,10 +18,10 @@ export default class PollService {
     }
     /* c8 ignore stop */
 
-    static saltAndHash(ip: string) {
+    static saltAndHash(str: string) {
         const runtimeConfig = useRuntimeConfig();
         const salt = runtimeConfig.poll.voterIdentifierSalt;
-        return hash("sha256", ip + salt);
+        return hash("sha256", str + salt);
     }
 
     async getOne(id: string, ip: string, cookie?: string) {
@@ -34,11 +34,11 @@ export default class PollService {
 
         const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
-        if (!relevantIdentifier) return { ...poll, userHasVoted: false };
+        if (!relevantIdentifier) return { ...poll, hasUserVoted: false };
 
         const identifierHash = PollService.saltAndHash(relevantIdentifier);
-        const userHasVoted = await this.voteRepository.hasVote(id, identifierHash);
+        const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash);
 
-        return { ...poll, userHasVoted };
+        return { ...poll, hasUserVoted };
     }
 }
