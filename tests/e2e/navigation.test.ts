@@ -19,7 +19,7 @@ withoutAuth(() => {
         test(`redirects the user to ${path} after signing in through a server-side redirect`, async ({
             timerPage: page,
         }) => {
-            await page.goto();
+            await page.goto({ target: path });
             await page.expect().toHaveURL(`/signin?callbackURL=${path}`);
             await page.page.getByTestId("keycloak-provider").click();
             await page.page.locator("#username").fill("user");
