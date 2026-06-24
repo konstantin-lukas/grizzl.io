@@ -32,7 +32,7 @@ const texts = {
 forEachLocale((locale, texts) => {
     test(`has links to all services for locale ${locale.language}`, async ({ homePage: page }) => {
         const links = [
-            { locator: "pollLink", text: texts.poll, href: "" },
+            { locator: "pollLink", text: texts.poll, href: "/poll" },
             { locator: "todoLink", text: texts.todo, href: "/todo" },
             { locator: "timerLink", text: texts.timer, href: "/timer" },
             { locator: "financeLink", text: texts.finance, href: "/finance" },
@@ -50,10 +50,10 @@ forEachLocale((locale, texts) => {
             await page.click("menuButton");
             for (const { locator, text, href } of links) {
                 await page.expect(locator).toHaveText(text);
-                if (href === "") {
-                    await page.expect(locator).not.toHaveAttribute("href");
-                    continue;
-                }
+                // if (href === "") {
+                //     await page.expect(locator).not.toHaveAttribute("href");
+                //     continue;
+                // }
                 await page.expect(locator).toHaveAttribute("href", href);
             }
         });
