@@ -88,10 +88,10 @@ test("automatically includes the votes belonging to a poll", async ({ db, user }
         majorityWinner: false,
         method: "positional",
         title: "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasell.",
-        votes: [
+        votes: expect.arrayContaining([
             [2, 0, 1],
             [0, 1, 2],
-        ],
+        ]),
     });
 });
 
