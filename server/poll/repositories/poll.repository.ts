@@ -57,7 +57,7 @@ export default class PollRepository extends BaseRepository<typeof schema> {
             },
         });
 
-        const poll = result[0];
+        const [poll] = result;
         return poll && { ...poll, votes: poll.votes.map(vote => vote.selection) };
     }
 }

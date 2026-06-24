@@ -5,3 +5,8 @@ export enum PollMethod {
     APPROVAL = "approval",
     PLURALITY = "plurality",
 }
+
+export enum VoterIdentityMethod {
+    IP = "ip",
+    COOKIE = "cookie",
+}

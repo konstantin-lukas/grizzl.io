@@ -1,5 +1,5 @@
 {
-    "id": "c5485514-c1d1-4d7c-92db-61a5994f23be",
+    "id": "58d06499-8cdb-49c8-b71f-970774cc9649",
     "prevId": "5a4a8a5a-ced5-4650-aa03-8d1ef65279eb",
     "version": "7",
     "dialect": "postgresql",
@@ -976,11 +976,17 @@
                     "primaryKey": false,
                     "notNull": true
                 },
+                "voter_identity_method": {
+                    "name": "voter_identity_method",
+                    "type": "voter_identity_method",
+                    "primaryKey": false,
+                    "notNull": true
+                },
                 "closes_at": {
                     "name": "closes_at",
                     "type": "timestamp with time zone",
                     "primaryKey": false,
-                    "notNull": true
+                    "notNull": false
                 },
                 "choices": {
                     "name": "choices",
@@ -1035,8 +1041,8 @@
                     "primaryKey": false,
                     "notNull": true
                 },
-                "ip_hash": {
-                    "name": "ip_hash",
+                "voter_identifier_hash": {
+                    "name": "voter_identifier_hash",
                     "type": "char(64)",
                     "primaryKey": false,
                     "notNull": true
@@ -1061,7 +1067,13 @@
                 }
             },
             "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
+            "uniqueConstraints": {
+                "poll_vote_pollId_voterIdentifierHash_unique": {
+                    "name": "poll_vote_pollId_voterIdentifierHash_unique",
+                    "nullsNotDistinct": false,
+                    "columns": ["poll_id", "voter_identifier_hash"]
+                }
+            },
             "policies": {},
             "checkConstraints": {},
             "isRLSEnabled": false
@@ -1077,6 +1089,11 @@
             "name": "poll_method",
             "schema": "public",
             "values": ["runoff", "positional", "score", "approval", "plurality"]
+        },
+        "public.voter_identity_method": {
+            "name": "voter_identity_method",
+            "schema": "public",
+            "values": ["ip", "cookie"]
         }
     },
     "schemas": {},

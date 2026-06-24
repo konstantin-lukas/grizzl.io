@@ -2,7 +2,8 @@ import { transitiveOwnership } from "#server/core/utils/sql.util";
 import { and, eq } from "drizzle-orm";
 import type { Database } from "~~/database";
 import * as dbSchema from "~~/database/schema";
-import BaseRepository, { ExecutionContext } from "~~/server/core/repositories/base.repository";
+import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
+import BaseRepository from "~~/server/core/repositories/base.repository";
 
 const schema = "pollVote";
 
