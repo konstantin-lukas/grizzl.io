@@ -101,7 +101,7 @@ seed("insert realistic poll test data", async ({ db }) => {
 });
 
 seed("insert random poll test data", async ({ db }) => {
-    const [poll] = await db.poll.insert(1);
+    const [poll] = await db.poll.insert(20);
 
     await db.pollVote.insert(1, { pollId: poll.id });
 });

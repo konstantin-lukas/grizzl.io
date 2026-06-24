@@ -54,6 +54,7 @@ export default class PollRepository extends BaseRepository<typeof schema> {
                 choices: true,
                 method: true,
                 majorityWinner: true,
+                voterIdentityMethod: true,
             },
         });
 

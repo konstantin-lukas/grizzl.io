@@ -1,6 +1,7 @@
 import NotFoundError from "#server/core/errors/not-found.error";
 import PollRepository from "#server/poll/repositories/poll.repository";
 import VoteRepository from "#server/poll/repositories/vote.repository";
+import { VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 import { hash } from "crypto";
 
 export default class PollService {
@@ -17,11 +18,13 @@ export default class PollService {
     }
     /* c8 ignore stop */
 
-    static hashIp(ip: string) {
-        return hash("sha256", ip);
+    static saltAndHash(ip: string) {
+        const runtimeConfig = useRuntimeConfig();
+        const salt = runtimeConfig.poll.voterIdentifierSalt;
+        return hash("sha256", ip + salt);
     }
 
-    async getOne(id: string, ip: string) {
+    async getOne(id: string, ip: string, cookie?: string) {
         const poll = await this.pollRepository.findById(id);
 
         if (!poll) {
@@ -29,8 +32,12 @@ export default class PollService {
             throw new NotFoundError("Poll does not exist", logMessage);
         }
 
-        const ipHash = PollService.hashIp(ip);
-        const userHasVoted = await this.voteRepository.hasVote(id, ipHash);
+        const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
+
+        if (!relevantIdentifier) return { ...poll, userHasVoted: false };
+
+        const identifierHash = PollService.saltAndHash(relevantIdentifier);
+        const userHasVoted = await this.voteRepository.hasVote(id, identifierHash);
 
         return { ...poll, userHasVoted };
     }

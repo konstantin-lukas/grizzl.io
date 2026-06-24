@@ -16,7 +16,7 @@ export default class VoteRepository extends BaseRepository<typeof schema> {
         const [result] = await ctx
             .select()
             .from(this.schema)
-            .where(and(eq(this.schema.ipHash, ipHash), eq(this.schema.pollId, pollId)));
+            .where(and(eq(this.schema.voterIdentifierHash, ipHash), eq(this.schema.pollId, pollId)));
 
         return !!result;
     }
