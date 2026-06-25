@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.18.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.17.0...v1.18.0) (2026-06-25)
+
+
+### Features
+
+* **poll:** add api route to post polls ([a519f7b](https://github.com/konstantin-lukas/grizzl.io/commit/a519f7bd381f42ee82571747b40c97d44ca1a1bd))
+* **poll:** add api route to post polls ([27f6fc6](https://github.com/konstantin-lukas/grizzl.io/commit/27f6fc65bf3b0f51ac75baa049989e629fc1057e))
+* **poll:** add database structure for poll section ([#561](https://github.com/konstantin-lukas/grizzl.io/issues/561)) ([aed876b](https://github.com/konstantin-lukas/grizzl.io/commit/aed876be6d85d3a61dd529c1490337243c5d4d1f))
+* **poll:** create route GET /api/polls ([#563](https://github.com/konstantin-lukas/grizzl.io/issues/563)) ([85206ea](https://github.com/konstantin-lukas/grizzl.io/commit/85206ea2d5d97569b88503c33b2177856fe35e15))
+* **poll:** create route GET /api/polls/{id} ([#568](https://github.com/konstantin-lukas/grizzl.io/issues/568)) ([d24e8f3](https://github.com/konstantin-lukas/grizzl.io/commit/d24e8f3e8cf5be7c76fb42410b58acd40e66db6b))
+
+
+### Bug Fixes
+
+* **todo:** broken scroll on todo lists and incorrect translations japanese when deleting a preset ([7096957](https://github.com/konstantin-lukas/grizzl.io/commit/70969572e7f0a7e1e2c0a106dd3a64c5fc23db97))
+
 ## [1.17.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.16.6...v1.17.0) (2026-06-19)
 
 
