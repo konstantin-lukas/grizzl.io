@@ -2,6 +2,7 @@ import NotFoundError from "#server/core/errors/not-found.error";
 import PollRepository from "#server/poll/repositories/poll.repository";
 import VoteRepository from "#server/poll/repositories/vote.repository";
 import { VoterIdentityMethod } from "#shared/poll/enums/method.enum";
+import type { PostPoll } from "#shared/poll/validators/poll.validator";
 import { hash } from "crypto";
 
 export default class PollService {
@@ -15,6 +16,10 @@ export default class PollService {
     /* c8 ignore start */
     async getCollection(userId: string) {
         return this.pollRepository.findByUserId(userId);
+    }
+
+    async create(userId: string, poll: PostPoll) {
+        return this.pollRepository.create(userId, poll);
     }
     /* c8 ignore stop */
 

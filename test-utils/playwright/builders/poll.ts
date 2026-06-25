@@ -1,5 +1,6 @@
 import { BASE_POLL, FULL_POLL } from "~~/test-utils/constants/poll";
 import { type Method, TestBuilder } from "~~/test-utils/playwright/builders/base";
+import { POLL_BAD_REQUEST_TEST_CASES, POLL_VALID_REQUEST_TEST_CASES } from "~~/test-utils/playwright/test-tables/poll";
 
 export function makePollTestBuilder(method: Method) {
     return new TestBuilder({
@@ -19,9 +20,9 @@ export function makePollTestBuilder(method: Method) {
         },
         baseData: BASE_POLL,
         fullData: FULL_POLL,
-        badPost: [],
+        badPost: POLL_BAD_REQUEST_TEST_CASES,
         badPut: [],
-        validPost: [],
+        validPost: POLL_VALID_REQUEST_TEST_CASES,
         validPut: [],
         fixtureName: "poll",
         method,
