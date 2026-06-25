@@ -1,3 +1,4 @@
+import type { PostPoll } from "#shared/poll/validators/poll.validator";
 import { eq } from "drizzle-orm";
 import type { Database } from "~~/database";
 import type { ExecutionContext } from "~~/server/core/repositories/base.repository";
@@ -8,6 +9,19 @@ const schema = "poll";
 export default class PollRepository extends BaseRepository<typeof schema> {
     constructor(db: Database) {
         super(db, schema, userId => eq(this.schema.userId, userId));
+    }
+
+    public async create(
+        userId: string,
+        { title, voterIdentityMethod, closesAt, choices, method, majorityWinner }: PostPoll,
+        ctx: ExecutionContext = this.db,
+    ) {
+        const [{ pollId }] = (await ctx
+            .insert(this.schema)
+            .values({ userId, title, voterIdentityMethod, closesAt, choices, method, majorityWinner })
+            .returning({ pollId: this.schema.id })) as [{ pollId: string }];
+
+        return pollId;
     }
 
     public async findByUserId(userId: string, ctx: ExecutionContext = this.db) {
