@@ -21,6 +21,15 @@ export default class PollService {
     async create(userId: string, poll: PostPoll) {
         return this.pollRepository.create(userId, poll);
     }
+
+    public async setDeletedStatus(id: string, userId: string, isDeleted: boolean) {
+        const operation = isDeleted ? "delete" : "undelete";
+        const rowCount = await this.pollRepository[operation]({ id, userId });
+        if (rowCount === 0) {
+            const logMessage = `Unable to ${operation} poll with id ${id} and user id ${userId}.`;
+            throw new NotFoundError("The requested poll does not exist.", logMessage);
+        }
+    }
     /* c8 ignore stop */
 
     static saltAndHash(str: string) {

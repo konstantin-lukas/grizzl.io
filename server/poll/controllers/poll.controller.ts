@@ -1,5 +1,6 @@
 import BaseController from "#server/core/controllers/base.controller";
 import PollService from "#server/poll/services/poll.service";
+import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import { VOTER_IDENTIFIER_COOKIE_NAME } from "#shared/poll/constants/cookie.constant";
 import { PostPollSchema } from "#shared/poll/validators/poll.validator";
 import type { H3Event } from "h3";
@@ -14,6 +15,12 @@ export default class PollController extends BaseController {
 
     public async getCollection(event: H3Event) {
         return await this.pollService.getCollection(event.context.user.id);
+    }
+
+    public async setDeletedStatus(event: H3Event) {
+        const id = PollController.parseIdParameter(event, "id");
+        const body = await PollController.parseRequestBody(event, DatabaseDeletedSchema);
+        await this.pollService.setDeletedStatus(id, event.context.user.id, body.deleted);
     }
 
     public async get(event: H3Event) {
