@@ -1,7 +1,7 @@
 import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import InvalidIpError from "#server/core/errors/invalid-ip.error";
+import InvalidVoteError from "#server/core/errors/invalid-vote.error";
 import NotFoundError from "#server/core/errors/not-found.error";
-import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import PollRepository from "#server/poll/repositories/poll.repository";
 import VoteRepository from "#server/poll/repositories/vote.repository";
@@ -68,7 +68,7 @@ export default class PollService {
 
     static isVoteValid(poll: PostPoll, vote: PostVote) {
         const sameLength = vote.selection.length === poll.choices.length;
-        const containsOnlyChoiceIndices = vote.selection.every(choice => choice < poll.choices.length);
+        const containsOnlyChoiceIndices = vote.selection.every(choice => choice < poll.choices.length && choice >= 0);
         const containsOnlyUniqueItems = vote.selection.length === new Set(vote.selection).size;
 
         if (poll.method === PollMethod.APPROVAL) {
@@ -80,9 +80,9 @@ export default class PollService {
             return sameLength && allVotesOnScale;
         }
 
-        if (poll.method == PollMethod.PLURALITY) {
-            const onlyOneVote = vote.selection.length === 1;
-            return containsOnlyChoiceIndices && onlyOneVote;
+        if (poll.method === PollMethod.PLURALITY) {
+            const containsExactlyOneChoice = vote.selection.length === 1;
+            return containsOnlyChoiceIndices && containsExactlyOneChoice;
         }
 
         return containsOnlyUniqueItems && containsOnlyChoiceIndices && sameLength;
@@ -111,7 +111,7 @@ export default class PollService {
 
             if (!isVoteValid) {
                 const logMessage = `Cannot create vote. Vote is invalid. Method: ${poll.method}. Vote: ${vote.selection}`;
-                throw new OutOfBoundsError("User has already voted.", logMessage);
+                throw new InvalidVoteError("Array of selected choices is invalid.", logMessage);
             }
 
             return this.voteRepository.create(id, identifierHash, vote, tx);
