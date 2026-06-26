@@ -38,6 +38,12 @@ test("returns a 409 when the user has already voted", async ({ request, db }) =>
     expect(votes).toHaveLength(1);
 });
 
+test("returns a 404 when the poll doesn't exist", async ({ request }) => {
+    const response = await request.post(`/api/polls/2222222222222222/votes`, { data: { selection: [0, 1] } });
+
+    expect(response.status()).toBe(404);
+});
+
 test("returns a 400 when the selected choice indices are invalid", async ({ request, db }) => {
     const [poll] = await db.poll.insert(1, {
         choices: ["A", "B"],
