@@ -73,3 +73,19 @@ test("sets a new identifier cookie when none exists", async ({ request, db }) =>
         ]),
     );
 });
+
+test("only allows voting once", async ({ context, db }) => {
+    await context.addCookies([{ name: "voter_identifier", value: "123", domain: "grizzl.localhost", path: "/" }]);
+    const [poll] = await db.poll.insert(1, {
+        choices: ["A", "B"],
+        method: PollMethod.RUNOFF,
+        voterIdentityMethod: VoterIdentityMethod.COOKIE,
+    });
+    await Promise.all(
+        Array.from({ length: 20 }).map(() =>
+            context.request.post(`/api/polls/${poll.id}/votes`, { data: { selection: [0, 1] } }),
+        ),
+    );
+    const votes = await db.pollVote.select();
+    expect(votes).toHaveLength(1);
+});
