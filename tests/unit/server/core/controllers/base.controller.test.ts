@@ -1,4 +1,5 @@
 import InvalidIpError from "#server/core/errors/invalid-ip.error";
+import InvalidVoteError from "#server/core/errors/invalid-vote.error";
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import type { EventHandlerRequest, H3Event } from "h3";
 import { beforeEach, describe, expect, test, vi } from "vitest";
@@ -219,6 +220,14 @@ describe("mapDomainResultToHttp", () => {
             serverMessage: `${id} - EntityLimitError: B`,
             code: 409,
             msg: "Conflict",
+        },
+        {
+            error: new InvalidVoteError("A", "B"),
+            errorType: "InvalidVoteError",
+            message: `A | ${id}`,
+            serverMessage: `${id} - InvalidVoteError: B`,
+            code: 400,
+            msg: "Bad Request",
         },
         {
             error: zodError,
