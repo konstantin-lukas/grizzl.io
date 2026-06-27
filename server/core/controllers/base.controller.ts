@@ -1,5 +1,6 @@
 import DuplicateKeyError from "#server/core/errors/duplicate-key.error";
 import InvalidIpError from "#server/core/errors/invalid-ip.error";
+import InvalidVoteError from "#server/core/errors/invalid-vote.error";
 import OutOfBoundsError from "#server/core/errors/out-of-bounds.error";
 import UniqueConstraintError from "#server/core/errors/unique-constraint.error";
 import { LOCALES } from "#shared/core/constants/i18n.constant";
@@ -216,7 +217,8 @@ export default class BaseController {
     static mapDomainResultToHttp(event: H3Event, error: Error | null): asserts error is null {
         // SPECIFIC DOMAIN ERROR
         if (error instanceof NotFoundError) BaseController.throwError(error, "NOT_FOUND");
-        if (error instanceof InvalidIpError) BaseController.throwError(error, "BAD_REQUEST");
+        if (error instanceof InvalidIpError || error instanceof InvalidVoteError)
+            BaseController.throwError(error, "BAD_REQUEST");
         if (error instanceof UnknownError) BaseController.throwError(error, "INTERNAL_SERVER_ERROR");
         if (
             error instanceof InvalidAccountBalanceError ||
