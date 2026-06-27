@@ -16,11 +16,11 @@ const progress = computed(() => (props.expense.budget === 0 ? 1 : props.expense.
 const transform = computed(() => `rotate(${progress.value}turn)`);
 const spentLess = computed(() => (props.expense?.change ?? -1) <= 0);
 const change = computed(() => `${spentLess.value ? "" : "+"}${props.expense.change}%`);
-const fullySpent = computed(() => progress.value >= 1);
-const backgroundColor = computed(() => (fullySpent.value ? "bg-error" : "bg-primary"));
+const isOverBudget = computed(() => props.expense.spent > props.expense.budget);
+const backgroundColor = computed(() => (isOverBudget.value ? "bg-error" : "bg-primary"));
 const backgroundImage = computed(
     () =>
-        `conic-gradient(var(--ui-${fullySpent.value ? "error" : "primary"}) ${progress.value}turn, var(--ui-border) 0)`,
+        `conic-gradient(var(--ui-${isOverBudget.value ? "error" : "primary"}) ${progress.value}turn, var(--ui-border) 0)`,
 );
 const spentAmount = computed(() => formatCurrency(language.value, props.currency, props.expense.spent));
 </script>
