@@ -42,6 +42,8 @@
         "selectDateRange": "Wähle einen Datumsbereich",
         "open": "Öffnen",
         "selectIcon": "Wähle ein Icon",
+        "view": "Anzeigen",
+        "notSpecified": "Nicht angegeben",
         "toast": {
             "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
             "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."

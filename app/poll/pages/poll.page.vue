@@ -8,7 +8,7 @@ const { data: polls } = await useFetch("/api/polls");
 
 <template>
     <Wrapper class="max-w-xl">
-        <H1>Manage Your Polls</H1>
+        <H1>{{ $t("poll.managePolls") }}</H1>
         <ul>
             <PollListItem v-for="poll in polls" :key="poll.id" :poll class="mt-8" />
         </ul>

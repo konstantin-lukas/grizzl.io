@@ -1,0 +1,21 @@
+{
+    "poll": {
+        "managePolls": "Deine Umfragen verwalten",
+        "choices": "Optionen",
+        "openUntil": "Offen bis",
+        "alreadyClosed": "Bereits geschlossen",
+        "method": {
+            "approval": "Zustimmungswahl",
+            "runoff": "Präferenzwahl",
+            "plurality": "Mehrheitswahl",
+            "positional": "Punktwahl",
+            "score": "Bewertungswahl"
+        },
+        "toast": {
+            "createdTitle": "Umfrage erstellt",
+            "createdDescription": "Eine neue Umfrage mit dem Titel „{title}“ wurde erstellt.",
+            "deletedTitle": "Umfrage gelöscht",
+            "deletedDescription": "Die Umfrage mit dem Titel „{title}“ wurde gelöscht."
+        }
+    }
+}

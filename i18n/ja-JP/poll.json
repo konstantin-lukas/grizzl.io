@@ -1,0 +1,21 @@
+{
+    "poll": {
+        "managePolls": "投票を管理",
+        "choices": "選択肢",
+        "openUntil": "終了日時",
+        "alreadyClosed": "すでに終了しています",
+        "method": {
+            "approval": "承認投票",
+            "runoff": "即時決選投票",
+            "plurality": "最多得票方式",
+            "positional": "順位投票",
+            "score": "スコア投票"
+        },
+        "toast": {
+            "createdTitle": "投票を作成しました",
+            "createdDescription": "タイトル「{title}」の新しい投票が作成されました。",
+            "deletedTitle": "投票を削除しました",
+            "deletedDescription": "タイトル「{title}」の投票が削除されました。"
+        }
+    }
+}

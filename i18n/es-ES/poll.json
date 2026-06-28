@@ -1,0 +1,21 @@
+{
+    "poll": {
+        "managePolls": "Gestiona tus encuestas",
+        "choices": "Opciones",
+        "openUntil": "Abierta hasta",
+        "alreadyClosed": "Ya cerrada",
+        "method": {
+            "approval": "Votación por aprobación",
+            "runoff": "Votación por eliminación instantánea",
+            "plurality": "Votación por mayoría simple",
+            "positional": "Votación posicional",
+            "score": "Votación por puntuación"
+        },
+        "toast": {
+            "createdTitle": "Encuesta creada",
+            "createdDescription": "Se ha creado una nueva encuesta con el título «{title}».",
+            "deletedTitle": "Encuesta eliminada",
+            "deletedDescription": "La encuesta con el título «{title}» ha sido eliminada."
+        }
+    }
+}
