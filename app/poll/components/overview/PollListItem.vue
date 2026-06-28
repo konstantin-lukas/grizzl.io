@@ -5,13 +5,15 @@ import { ICON_DELETE, ICON_EYE } from "~/core/constants/icons.constant";
 import { formatDateTime } from "~/core/utils/date";
 import useLocale from "~/core/composables/useLocale";
 import type { PollMethod } from "#shared/poll/enums/method.enum";
+import useSoftDelete from "~/core/composables/useSoftDelete";
 
 const props = defineProps<{
     poll: { title: string; id: string; choices: string[]; closesAt: string | null; method: PollMethod };
 }>();
 const { language } = useLocale();
 const { t } = useI18n();
-
+const resource = computed(() => `/api/polls/${props.poll.id}`);
+const interpolations = computed(() => ({ title: props.poll.title }));
 const choices = computed(() => props.poll.choices.join(", "));
 const openUntil = computed(() => {
     if (!props.poll.closesAt) return t("ui.notSpecified");
@@ -19,6 +21,13 @@ const openUntil = computed(() => {
     return formatDateTime(props.poll.closesAt, language.value);
 });
 const method = computed(() => props.poll.method);
+
+const softDelete = useSoftDelete(resource, {
+    refresh: async () => await refreshNuxtData("/api/polls"),
+    successDescription: "poll.toast.deletedDescription",
+    successTitle: "poll.toast.deletedTitle",
+    interpolations,
+});
 </script>
 
 <template>
@@ -40,8 +49,22 @@ const method = computed(() => props.poll.method);
         </span>
 
         <div class="mt-3 flex gap-4">
-            <Button :icon="ICON_EYE" :to="`/poll/${props.poll.id}`">{{ $t("ui.view") }}</Button>
-            <Button :icon="ICON_DELETE" color="error">{{ $t("ui.delete") }}</Button>
+            <Button
+                :icon="ICON_EYE"
+                :to="`/poll/${props.poll.id}`"
+                class="select-none"
+                data-test-id="poll-overview-delete-button"
+            >
+                {{ $t("ui.view") }}
+            </Button>
+            <Button
+                :icon="ICON_DELETE"
+                color="error"
+                :on-async-click="softDelete"
+                data-test-id="poll-overview-view-button"
+            >
+                {{ $t("ui.delete") }}
+            </Button>
         </div>
     </li>
 </template>
