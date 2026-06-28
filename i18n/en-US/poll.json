@@ -1,0 +1,25 @@
+{
+    "poll": {
+        "managePolls": "Manage Your Polls",
+        "choices": "Choices",
+        "openUntil": "Open until",
+        "alreadyClosed": "Already closed",
+        "method": {
+            "approval": "Approval Voting",
+            "runoff": "Instant-Runoff Voting",
+            "plurality": "Plurality Voting",
+            "positional": "Positional Voting",
+            "score": "Score Voting"
+        },
+        "toast": {
+            "createdTitle": "Poll Created",
+            "createdDescription": "A new poll titled “{title}” was created.",
+            "deletedTitle": "Poll Deleted",
+            "deletedDescription": "The poll titled “{title}” was deleted."
+        },
+        "meta": {
+            "title": "Poll",
+            "description": "Create polls with different voting methods and shared them with your friends!"
+        }
+    }
+}

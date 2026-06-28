@@ -5,6 +5,7 @@ import toHaveCountGreaterThan from "~~/test-utils/playwright/expect/toHaveCountG
 import toHaveTextEndingWith from "~~/test-utils/playwright/expect/toHaveTextEndingWith";
 import FinancePage from "~~/test-utils/playwright/pages/finance.page";
 import HomePage from "~~/test-utils/playwright/pages/home.page";
+import PollPage from "~~/test-utils/playwright/pages/poll.page";
 import TimerPage from "~~/test-utils/playwright/pages/timer.page";
 import TodoPage from "~~/test-utils/playwright/pages/todo.page";
 import globalBeforeAfterEach from "~~/test-utils/playwright/test/globalBeforeAfterEach.fixture";
@@ -19,11 +20,13 @@ export const test = seed.extend<{
     homePage: HomePage;
     timerPage: TimerPage;
     financePage: FinancePage;
+    pollPage: PollPage;
     todoPage: TodoPage;
 }>({
     homePage: constructPageObject(HomePage),
     timerPage: constructPageObject(TimerPage),
     financePage: constructPageObject(FinancePage),
+    pollPage: constructPageObject(PollPage),
     todoPage: constructPageObject(TodoPage),
     globalBeforeAfterEach: [globalBeforeAfterEach(), { auto: true }],
 });
