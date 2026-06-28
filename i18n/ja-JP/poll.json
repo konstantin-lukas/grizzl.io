@@ -16,6 +16,10 @@
             "createdDescription": "タイトル「{title}」の新しい投票が作成されました。",
             "deletedTitle": "投票を削除しました",
             "deletedDescription": "タイトル「{title}」の投票が削除されました。"
+        },
+        "meta": {
+            "title": "投票",
+            "description": "さまざまな投票方式で投票を作成し、友達と共有しましょう！"
         }
     }
 }

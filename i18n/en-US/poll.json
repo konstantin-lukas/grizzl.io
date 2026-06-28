@@ -16,6 +16,10 @@
             "createdDescription": "A new poll titled “{title}” was created.",
             "deletedTitle": "Poll Deleted",
             "deletedDescription": "The poll titled “{title}” was deleted."
+        },
+        "meta": {
+            "title": "Poll",
+            "description": "Create polls with different voting methods and shared them with your friends!"
         }
     }
 }

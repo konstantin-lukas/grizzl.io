@@ -16,6 +16,10 @@
             "createdDescription": "Se ha creado una nueva encuesta con el título «{title}».",
             "deletedTitle": "Encuesta eliminada",
             "deletedDescription": "La encuesta con el título «{title}» ha sido eliminada."
+        },
+        "meta": {
+            "title": "Encuestas",
+            "description": "¡Crea encuestas con diferentes métodos de votación y compártelas con tus amigos!"
         }
     }
 }

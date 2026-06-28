@@ -1,0 +1,16 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "Manage Your Polls" [level=1]
+    - list:
+      - listitem:
+        - heading "No entries found" [level=2]
+    - button "Create"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

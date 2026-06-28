@@ -16,6 +16,10 @@
             "createdDescription": "Eine neue Umfrage mit dem Titel „{title}“ wurde erstellt.",
             "deletedTitle": "Umfrage gelöscht",
             "deletedDescription": "Die Umfrage mit dem Titel „{title}“ wurde gelöscht."
+        },
+        "meta": {
+            "title": "Umfragen",
+            "description": "Erstelle Umfragen mit verschiedenen Abstimmungsmethoden und teile sie mit deinen Freunden!"
         }
     }
 }

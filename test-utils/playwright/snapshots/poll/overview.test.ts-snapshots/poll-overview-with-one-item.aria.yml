@@ -1,0 +1,20 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "Manage Your Polls" [level=1]
+    - list:
+      - listitem:
+        - heading "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasell." [level=2]
+        - text: "Positional Voting Choices: Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudini., Lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin. Nisiio., Pellentesque tortor volutpat aliquam lectus vivamus. Voluptate quisque sollicitudin nisi aenean fau., Tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget. In., Volutpat aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer al., Aliquam lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer aliquam con., Lectus vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur., Vivamus voluptate quisque sollicitudin nisi aenean faucibus eget integer. Aliquam consectetur biben., Voluptate quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum soda., Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur bibendum sodales turpisi., Sollicitudin nisi aenean faucibus eget integer aliquam consectetur bibendum sodales turpis irure pr., Nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasel., Aenean faucibus eget integer aliquam consectetur bibendum sodales turpis irure pretium phasellus eg., Faucibus eget integer aliquam consectetur bibendum sodales turpis irure pretium phasellus egestasio., Eget integer aliquam consectetur bibendum sodales turpis irure pretium phasellus egestas praesentio., Integer aliquam consectetur bibendum sodales turpis irure pretium phasellus egestas praesent aliqua., Aliquam consectetur bibendum sodales turpis irure pretium phasellus egestas praesent aliqua. Except., Consectetur bibendum sodales turpis irure pretium phasellus. Egestas praesent aliqua excepteur eros., Bibendum sodales turpis irure pretium phasellus. Egestas praesent aliqua excepteur eros neque nonio., Sodales turpis irure pretium phasellus egestas praesent. Aliqua excepteur eros neque non nisi erati. Open until: Not specified"
+        - link "View":
+          - /url: /\/poll\/.+/
+        - button "Delete"
+    - button "Create"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

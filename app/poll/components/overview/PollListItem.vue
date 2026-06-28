@@ -53,7 +53,7 @@ const softDelete = useSoftDelete(resource, {
                 :icon="ICON_EYE"
                 :to="`/poll/${props.poll.id}`"
                 class="select-none"
-                data-test-id="poll-overview-delete-button"
+                data-test-id="poll-overview-view-button"
             >
                 {{ $t("ui.view") }}
             </Button>
@@ -61,7 +61,7 @@ const softDelete = useSoftDelete(resource, {
                 :icon="ICON_DELETE"
                 color="error"
                 :on-async-click="softDelete"
-                data-test-id="poll-overview-view-button"
+                data-test-id="poll-overview-delete-button"
             >
                 {{ $t("ui.delete") }}
             </Button>
