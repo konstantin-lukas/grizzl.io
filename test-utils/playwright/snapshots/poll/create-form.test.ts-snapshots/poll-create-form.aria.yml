@@ -1,0 +1,25 @@
+- heading "Create A Poll" [level=1]
+- text: pollTitle*
+- textbox "pollTitle*": What should we have for dinner?
+- text: Poll Method*
+- combobox "Poll Method*": Instant-Runoff Voting
+- text: Open until
+- group:
+  - spinbutton "month,"
+  - spinbutton "day,"
+  - spinbutton "year,"
+  - spinbutton "hour,": ––
+  - spinbutton "minute,": ––
+  - spinbutton "AM/PM"
+  - textbox "timezone,"
+  - button "Clear date"
+- text: Win Condition*
+- combobox "Win Condition*": Winner doesn't need majority
+- text: Voting Security*
+- combobox "Voting Security*": One vote per IP-address
+- text: Choice No. 1*
+- textbox "Choice No. 1*": Italian
+- text: Choice No. 2*
+- textbox "Choice No. 2*": Korean
+- button "Add"
+- button "Create"

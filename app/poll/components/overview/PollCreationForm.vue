@@ -60,7 +60,7 @@ watch(
             state.closesAt = newClosesAt;
             return;
         }
-        state.closesAt = newClosesAt.toDate().toISOString();
+        state.closesAt = newClosesAt.set({ second: 0 }).toDate().toISOString();
     },
     { immediate: true },
 );
@@ -90,7 +90,13 @@ const onSubmit = useOnSubmit({
         <BaseUpsertForm :state :schema="PostPollSchema" mode="insert" @submit="onSubmit">
             <H1>{{ $t("poll.createPoll") }}</H1>
             <UFormField :label="$t('poll.title')" name="title" class="w-full" required>
-                <UInput v-model="state.title" value-key="title" class="w-full" :maxlength="LONG_TITLE_MAX" />
+                <UInput
+                    v-model="state.title"
+                    value-key="title"
+                    class="w-full"
+                    :maxlength="LONG_TITLE_MAX"
+                    data-test-id="poll-create-form-title-input"
+                />
             </UFormField>
             <UFormField :label="$t('poll.pollMethod')" name="method" class="w-full" required>
                 <USelect v-model="state.method" :items="pollMethodItems" value-key="method" class="w-full" />
@@ -104,6 +110,7 @@ const onSubmit = useOnSubmit({
                             size="sm"
                             :icon="ICON_CANCEL"
                             :aria-label="$t('ui.clearDate')"
+                            data-test-id="poll-create-form-clear-datetime-button"
                             @click="closesAt = null"
                         />
                     </template>
@@ -125,7 +132,12 @@ const onSubmit = useOnSubmit({
                         class="w-full not-first-of-type:mt-4"
                         required
                     >
-                        <UInput v-model="state.choices[i - 1]" class="w-full" :maxlength="TITLE_MAX">
+                        <UInput
+                            v-model="state.choices[i - 1]"
+                            class="w-full"
+                            :maxlength="TITLE_MAX"
+                            data-test-id="poll-create-form-choice-input"
+                        >
                             <template v-if="i > 2" #trailing>
                                 <UButton
                                     color="neutral"
@@ -133,6 +145,7 @@ const onSubmit = useOnSubmit({
                                     size="sm"
                                     :icon="ICON_CANCEL"
                                     :aria-label="$t('poll.deleteChoice')"
+                                    data-test-id="poll-create-form-choice-delete-button"
                                     @click="state.choices = deleteNthElement(state.choices, i - 1)"
                                 />
                             </template>
@@ -146,11 +159,14 @@ const onSubmit = useOnSubmit({
                     :icon="ICON_PLUS"
                     color="neutral"
                     class="mt-4"
+                    data-test-id="poll-create-form-add-choice-input-button"
                     @click="state.choices.push('')"
                 >
                     {{ $t("ui.add") }}
                 </Button>
             </Transition>
         </BaseUpsertForm>
+        <template #title>{{ $t("poll.createPoll") }}</template>
+        <template #description>{{ $t("poll.meta.description") }}</template>
     </Drawer>
 </template>
