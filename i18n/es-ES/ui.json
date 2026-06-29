@@ -13,6 +13,7 @@
         "create": "Crear",
         "noEntries": "No se encontraron entradas",
         "pickProvider": "Elige un servicio para iniciar sesión.",
+        "clearDate": "Borrar fecha",
         "start": "Iniciar",
         "pause": "Pausar",
         "reset": "Restablecer",

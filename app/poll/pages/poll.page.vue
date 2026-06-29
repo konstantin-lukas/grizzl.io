@@ -5,8 +5,10 @@ import PollListItem from "~/poll/components/overview/PollListItem.vue";
 import EmptyCard from "~/core/components/data/EmptyCard.vue";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_PLUS_CIRCLE } from "~/core/constants/icons.constant";
+import PollCreationForm from "~/poll/components/overview/PollCreationForm.vue";
 
 const { data: polls } = await useFetch("/api/polls", { key: "/api/polls" });
+const isFormOpen = ref(false);
 </script>
 
 <template>
@@ -27,8 +29,10 @@ const { data: polls } = await useFetch("/api/polls", { key: "/api/polls" });
             color="neutral"
             :icon="ICON_PLUS_CIRCLE"
             data-test-id="poll-overview-create-button"
+            @click="isFormOpen = true"
         >
             {{ $t("ui.create") }}
         </Button>
+        <PollCreationForm v-model:open="isFormOpen" />
     </Wrapper>
 </template>
