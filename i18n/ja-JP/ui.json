@@ -13,6 +13,7 @@
         "create": "作成",
         "noEntries": "エントリーが見つかりません",
         "pickProvider": "サインインするサービスを選択してください。",
+        "clearDate": "日付をクリア",
         "start": "スタート",
         "pause": "一時停止",
         "reset": "リセット",

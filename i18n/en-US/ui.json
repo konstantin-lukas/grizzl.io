@@ -13,6 +13,7 @@
         "create": "Create",
         "noEntries": "No entries found",
         "pickProvider": "Please choose a service to sign in.",
+        "clearDate": "Clear date",
         "start": "Start",
         "pause": "Pause",
         "reset": "Reset",

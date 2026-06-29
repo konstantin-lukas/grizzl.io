@@ -12,6 +12,7 @@ export default function useOnSubmit<T extends object>({
     interpolations,
     refresh,
     skipSuccess,
+    onResponse,
 }: {
     url: () => string;
     method: () => "POST" | "PUT";
@@ -22,6 +23,7 @@ export default function useOnSubmit<T extends object>({
     interpolations?: (v: T) => Record<string, string>;
     refresh?: () => void;
     skipSuccess?: boolean;
+    onResponse?: (res: { response: { headers: Headers } }) => void;
 }) {
     const toast = useToast();
     const { t } = useI18n();
@@ -37,6 +39,7 @@ export default function useOnSubmit<T extends object>({
         await $fetch(url(), {
             method: m,
             body: submissionState,
+            onResponse,
         })
             .then(() => {
                 emit?.("success");
