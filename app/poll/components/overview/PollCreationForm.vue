@@ -5,7 +5,8 @@ import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum"
 import { MAX_POLL_CHOICES, type PostPoll, PostPollSchema } from "#shared/poll/validators/poll.validator";
 import BaseUpsertForm from "~/core/components/form/BaseUpsertForm.vue";
 import { LONG_TITLE_MAX, TITLE_MAX } from "#shared/core/validators/core.validator";
-import { getLocalTimeZone, now, ZonedDateTime } from "@internationalized/date";
+import type { ZonedDateTime } from "@internationalized/date";
+import { getLocalTimeZone, now } from "@internationalized/date";
 import Button from "~/core/components/button/Button.vue";
 import { ICON_CANCEL, ICON_PLUS } from "~/core/constants/icons.constant";
 import { deleteNthElement } from "#shared/core/utils/array.util";
@@ -92,7 +93,7 @@ const onSubmit = useOnSubmit({
                 <UInput v-model="state.title" value-key="title" class="w-full" :maxlength="LONG_TITLE_MAX" />
             </UFormField>
             <UFormField :label="$t('poll.pollMethod')" name="method" class="w-full" required>
-                <USelect :items="pollMethodItems" v-model="state.method" value-key="method" class="w-full" />
+                <USelect v-model="state.method" :items="pollMethodItems" value-key="method" class="w-full" />
             </UFormField>
             <UFormField :label="$t('poll.openUntil')" name="closesAt" class="w-full">
                 <UInputDate v-model="closesAt" class="w-full" :min-value="now(getLocalTimeZone()).add({ minutes: 3 })">
@@ -109,10 +110,10 @@ const onSubmit = useOnSubmit({
                 </UInputDate>
             </UFormField>
             <UFormField :label="$t('poll.winCondition')" name="majorityWinner" class="w-full" required>
-                <USelect :items="majorityWinnerItems" v-model="state.majorityWinner" class="w-full" />
+                <USelect v-model="state.majorityWinner" :items="majorityWinnerItems" class="w-full" />
             </UFormField>
             <UFormField :label="$t('poll.votingSecurity')" name="voterIdentityMethod" class="w-full" required>
-                <USelect :items="votingSecurityItems" v-model="state.voterIdentityMethod" class="w-full" />
+                <USelect v-model="state.voterIdentityMethod" :items="votingSecurityItems" class="w-full" />
             </UFormField>
             <div class="relative w-full">
                 <TransitionGroup name="list">
