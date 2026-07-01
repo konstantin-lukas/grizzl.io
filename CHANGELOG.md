@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.19.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.18.0...v1.19.0) (2026-07-01)
+
+
+### Features
+
+* **poll:** create page /poll ([#581](https://github.com/konstantin-lukas/grizzl.io/issues/581)) ([0424a00](https://github.com/konstantin-lukas/grizzl.io/commit/0424a00b83e8cd79cb09b4c8d9c66f30fd252296))
+* **poll:** create route POST /api/polls/{id}/votes ([#578](https://github.com/konstantin-lukas/grizzl.io/issues/578)) ([b5a80d7](https://github.com/konstantin-lukas/grizzl.io/commit/b5a80d7f2e63ccf339f0ac81f2e983a5598f2415))
+* **poll:** display budget as green when it is used up exactly ([#580](https://github.com/konstantin-lukas/grizzl.io/issues/580)) ([a219394](https://github.com/konstantin-lukas/grizzl.io/commit/a219394fcbebb57e97a4c3a06bd98c7b1673154a))
+* **poll:** implement base page for voting and poll results ([5224ec5](https://github.com/konstantin-lukas/grizzl.io/commit/5224ec5e8b776741628dc9875894fc96d5d180b0))
+* **poll:** implement insert form for polls ([#590](https://github.com/konstantin-lukas/grizzl.io/issues/590)) ([6dadc5f](https://github.com/konstantin-lukas/grizzl.io/commit/6dadc5f7ccb5816a90bddb65ed490cc2f2f18959))
+* **poll:** implement patch route for soft-deleting polls ([#575](https://github.com/konstantin-lukas/grizzl.io/issues/575)) ([9693f99](https://github.com/konstantin-lukas/grizzl.io/commit/9693f99854a0af8c4726affbf5f3590eb33ad0e1))
+
 ## [1.18.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.17.0...v1.18.0) (2026-06-25)
 
 
