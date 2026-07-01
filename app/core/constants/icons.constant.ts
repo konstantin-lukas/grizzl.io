@@ -83,3 +83,5 @@ export const ICON_SEARCH = "ri:search-line";
 export const ICON_COMPUTER = "material-symbols:computer-outline";
 export const ICON_LIGHTBULB = "material-symbols:lightbulb-2-outline";
 export const ICON_CLOUD_CHECK = "mdi:cloud-check-outline";
+export const ICON_VOTE = "material-symbols:how-to-vote-outline-rounded";
+export const ICON_SHARE = "mdi:share-variant-outline";

@@ -1,6 +1,8 @@
 {
     "poll": {
         "managePolls": "Deine Umfragen verwalten",
+        "vote": "Abstimmen",
+        "seeResults": "Ergebnisse ansehen",
         "choices": "Optionen",
         "openUntil": "Offen bis",
         "title": "Umfragetitel",
@@ -17,6 +19,10 @@
         "pollMethod": "Abstimmungsmethode",
         "alreadyClosed": "Bereits geschlossen",
         "deleteChoice": "Option löschen",
+        "emptyTitle": "Warten auf die erste Stimme",
+        "emptyDescription": "Die Ergebnisse werden hier angezeigt, sobald die erste Stimme abgegeben wurde.",
+        "bestFor": "Am besten geeignet für",
+        "pollExplanationHeading": "Wie funktioniert diese Abstimmung?",
         "method": {
             "approval": "Zustimmungswahl",
             "runoff": "Präferenzwahl",
@@ -33,6 +39,33 @@
         "meta": {
             "title": "Umfragen",
             "description": "Erstelle Umfragen mit verschiedenen Abstimmungsmethoden und teile sie mit deinen Freunden!"
+        },
+        "voting": {
+            "runoff": {
+                "action": "Ordne die Optionen nach deiner Präferenz.",
+                "explanation": "Ordne die Optionen nach deiner Präferenz. Erreicht keine Option die Mehrheit, wird die Option mit den wenigsten Stimmen ausgeschlossen und deren Stimmen werden auf die jeweils nächste Präferenz übertragen. Das wird wiederholt, bis eine Option die Mehrheit erreicht.",
+                "bestFor": "Mittelgroße bis große Gruppen (5+ Personen), bei denen eine Mehrheit erforderlich ist und die Präferenzen zwischen den Optionen klar sind."
+            },
+            "approval": {
+                "action": "Stimme für alle Optionen, die dir gefallen.",
+                "explanation": "Du kannst für beliebig viele Optionen stimmen, ohne sie zu sortieren. Die Option mit den meisten Zustimmungen gewinnt.",
+                "bestFor": "Kleine bis mittelgroße Gruppen (bis zu 20 Personen), die eine einfache Abstimmung möchten und keine starken Präferenzen haben."
+            },
+            "plurality": {
+                "action": "Stimme für die Option, die dir am besten gefällt.",
+                "explanation": "Wähle eine einzelne Option. Die Option mit den meisten Stimmen gewinnt.",
+                "bestFor": "Kleine Gruppen (unter 10 Personen), wenn Einfachheit wichtig ist und es wahrscheinlich einen klaren Favoriten gibt."
+            },
+            "score": {
+                "action": "Bewerte jede Option mit 1–10 Punkten (1 = gefällt dir nicht, 10 = gefällt dir).",
+                "explanation": "Bewerte jede Option mit 1–10 Punkten. Alle Punkte werden addiert und die Option mit der höchsten Gesamtpunktzahl gewinnt.",
+                "bestFor": "Mittelgroße Gruppen (5–20 Personen), die ihre Präferenzen differenzierter ausdrücken möchten."
+            },
+            "positional": {
+                "action": "Ordne die Optionen nach deiner Präferenz.",
+                "explanation": "Ordne die Optionen. Jede Platzierung ist eine bestimmte Anzahl an Punkten wert. Die Option mit den meisten Gesamtpunkten gewinnt. Der letzte Platz erhält 1 Punkt, der vorletzte 2 Punkte und so weiter.",
+                "bestFor": "Mittelgroße Abstimmungen (5–20 Personen) mit mehreren Auswahlmöglichkeiten, bei denen detaillierte Präferenzen wichtig sind."
+            }
         }
     }
 }

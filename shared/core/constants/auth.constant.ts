@@ -1,4 +1,4 @@
-export const PROTECTED_PATHS = ["/timer", "/finance", "/todo", "/poll"] as const;
+export const PROTECTED_PATHS = [/^\/timer/, /^\/finance/, /^\/todo/, /^\/poll\/?$/] as const;
 
 export const PUBLIC_API_PATHS = [
     { pattern: /^\/api\/auth/, method: null },

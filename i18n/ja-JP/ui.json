@@ -45,6 +45,8 @@
         "selectIcon": "アイコンを選択",
         "view": "表示",
         "notSpecified": "未設定",
+        "share": "共有",
+        "copiedToClipboard": "クリップボードにコピーしました！",
         "toast": {
             "unableToFetchTitle": "サーバーからデータを取得できません",
             "unableToFetchDescription": "現在、サーバーからデータを取得できません。"

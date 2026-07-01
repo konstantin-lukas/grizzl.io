@@ -1,3 +1,4 @@
+import { TIMEZONE_COOKIE_NAME } from "#shared/core/constants/cookie.constant";
 import { DatabaseDeletedSchema } from "#shared/core/validators/core.validator";
 import {
     GetTransactionFiltersSchema,
@@ -27,7 +28,7 @@ export default class TransactionController extends BaseController {
         const accountId = BaseController.parseIdParameter(event, "accountId");
         const filters = GetTransactionFiltersSchema.parse(getQuery(event));
         const cookies = parseCookies(event);
-        const userTimezone = cookies.tz ?? "UTC";
+        const userTimezone = cookies[TIMEZONE_COOKIE_NAME] ?? "UTC";
         return this.transactionService.getList(event.context.user.id, accountId, userTimezone, filters);
     }
 

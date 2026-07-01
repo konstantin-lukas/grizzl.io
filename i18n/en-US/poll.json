@@ -1,6 +1,8 @@
 {
     "poll": {
         "managePolls": "Manage Your Polls",
+        "vote": "Vote",
+        "seeResults": "See Results",
         "choices": "Choices",
         "openUntil": "Open until",
         "title": "pollTitle",
@@ -17,6 +19,10 @@
         "pollMethod": "Poll Method",
         "alreadyClosed": "Already closed",
         "deleteChoice": "Delete choice",
+        "emptyTitle": "Waiting for the first vote",
+        "emptyDescription": "Results will be displayed here once the first vote has been cast.",
+        "bestFor": "Best for",
+        "pollExplanationHeading": "How Does This Poll Work?",
         "method": {
             "approval": "Approval Voting",
             "runoff": "Instant-Runoff Voting",
@@ -33,6 +39,33 @@
         "meta": {
             "title": "Poll",
             "description": "Create polls with different voting methods and shared them with your friends!"
+        },
+        "voting": {
+            "runoff": {
+                "action": "Rank the options in order of preference.",
+                "explanation": "Rank the options in order of preference. If nobody gets a majority, the option with the fewest votes is eliminated and those votes are transferred to the next preference. This repeats until one option has a majority.",
+                "bestFor": "Medium to large groups (5+ people) where majority support is essential, and preferences between options are clear."
+            },
+            "approval": {
+                "action": "Approve all options you like.",
+                "explanation": "Approve as many options as you like without ranking them. The option with the most approvals wins.",
+                "bestFor": "Small to medium-sized groups (up to 20 people) who want a simple poll and don’t have strong preferences."
+            },
+            "plurality": {
+                "action": "Pick the option you like the most.",
+                "explanation": "Choose a single option. The option with the most votes wins.",
+                "bestFor": "Small groups (less than 10 people) when simplicity is important and there is likely a favorite option."
+            },
+            "score": {
+                "action": "Give each option a score from 1–10 (1 = dislike; 10 = like).",
+                "explanation": "Give each option a score from 1–10 (1 = dislike; 10 = like). All scores are added up, and the option with the highest total wins.",
+                "bestFor": "Medium-sized groups (5-20 people) who want more flexibility to express their intensity of preference."
+            },
+            "positional": {
+                "action": "Rank the options in order of preference",
+                "explanation": "Rank the options. Each ranking position is worth a certain number of points, and the option with the most total points wins. The last position is worth 1 point, the second-to-last position is worth 2 points, and so on.",
+                "bestFor": "Medium-sized polls (5-20 people) with multiple choices, where detailed preferences matter."
+            }
         }
     }
 }

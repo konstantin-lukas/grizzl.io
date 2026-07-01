@@ -49,6 +49,11 @@ export default {
             component: () => import("~/poll/pages/poll.page.vue"),
         },
         {
+            name: "vote",
+            path: "/poll/:id",
+            component: () => import("~/poll/pages/vote.page.vue"),
+        },
+        {
             name: "home",
             path: "/",
             component: () => import("~/core/pages/root.page.vue"),

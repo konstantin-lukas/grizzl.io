@@ -45,6 +45,8 @@
         "selectIcon": "Wähle ein Icon",
         "view": "Anzeigen",
         "notSpecified": "Nicht angegeben",
+        "share": "Teilen",
+        "copiedToClipboard": "In die Zwischenablage kopiert!",
         "toast": {
             "unableToFetchTitle": "Daten konnten nicht vom Server abgerufen werden",
             "unableToFetchDescription": "Deine Daten konnten derzeit nicht vom Server abgerufen werden."

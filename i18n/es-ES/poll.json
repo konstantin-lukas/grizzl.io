@@ -1,6 +1,8 @@
 {
     "poll": {
         "managePolls": "Gestiona tus encuestas",
+        "vote": "Votar",
+        "seeResults": "Ver resultados",
         "choices": "Opciones",
         "openUntil": "Abierta hasta",
         "title": "Título de la encuesta",
@@ -17,6 +19,10 @@
         "pollMethod": "Método de votación",
         "alreadyClosed": "Ya cerrada",
         "deleteChoice": "Eliminar opción",
+        "emptyTitle": "Esperando el primer voto",
+        "emptyDescription": "Los resultados se mostrarán aquí una vez que se haya emitido el primer voto.",
+        "bestFor": "Ideal para",
+        "pollExplanationHeading": "¿Cómo funciona esta votación?",
         "method": {
             "approval": "Votación por aprobación",
             "runoff": "Votación por eliminación instantánea",
@@ -33,6 +39,33 @@
         "meta": {
             "title": "Encuestas",
             "description": "¡Crea encuestas con diferentes métodos de votación y compártelas con tus amigos!"
+        },
+        "voting": {
+            "runoff": {
+                "action": "Ordena las opciones según tu preferencia.",
+                "explanation": "Ordena las opciones según tu preferencia. Si ninguna obtiene la mayoría, la opción con menos votos es eliminada y esos votos se transfieren a la siguiente preferencia. Esto se repite hasta que una opción obtiene la mayoría.",
+                "bestFor": "Grupos medianos o grandes (5 o más personas) donde el apoyo mayoritario es esencial y las preferencias entre las opciones son claras."
+            },
+            "approval": {
+                "action": "Aprueba todas las opciones que te gusten.",
+                "explanation": "Puedes aprobar tantas opciones como quieras sin clasificarlas. Gana la opción con más aprobaciones.",
+                "bestFor": "Grupos pequeños o medianos (hasta 20 personas) que quieren una votación sencilla y no tienen preferencias muy marcadas."
+            },
+            "plurality": {
+                "action": "Elige la opción que más te guste.",
+                "explanation": "Elige una única opción. Gana la opción con más votos.",
+                "bestFor": "Grupos pequeños (menos de 10 personas) cuando la simplicidad es importante y probablemente exista una opción favorita."
+            },
+            "score": {
+                "action": "Asigna a cada opción una puntuación del 1 al 10 (1 = no te gusta; 10 = te gusta mucho).",
+                "explanation": "Asigna a cada opción una puntuación del 1 al 10 (1 = no te gusta; 10 = te gusta mucho). Se suman todas las puntuaciones y gana la opción con la puntuación total más alta.",
+                "bestFor": "Grupos medianos (5-20 personas) que quieren expresar con mayor precisión la intensidad de sus preferencias."
+            },
+            "positional": {
+                "action": "Ordena las opciones según tu preferencia.",
+                "explanation": "Ordena las opciones. Cada posición otorga una determinada cantidad de puntos y gana la opción con más puntos en total. La última posición vale 1 punto, la penúltima 2 puntos, y así sucesivamente.",
+                "bestFor": "Encuestas medianas (5-20 personas) con varias opciones, donde las preferencias detalladas son importantes."
+            }
         }
     }
 }

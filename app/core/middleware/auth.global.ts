@@ -18,7 +18,7 @@ export default defineNuxtRouteMiddleware(async to => {
         return navigateTo("/");
     }
 
-    if (!session && PROTECTED_PATHS.some(path => to.path.startsWith(path))) {
+    if (!session && PROTECTED_PATHS.some(path => path.test(to.path))) {
         return navigateTo({ path: "/signin", query: { callbackURL: to.fullPath } });
     }
 });
