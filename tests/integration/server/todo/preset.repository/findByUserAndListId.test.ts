@@ -1,5 +1,5 @@
-import PresetRepository from "server/todo/repositories/preset.repository";
-import { expect, test } from "test-utils/vitest";
+import PresetRepository from "~~/server/todo/repositories/preset.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("returns an empty array when the user id doesn't exist", async ({ db, user }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });

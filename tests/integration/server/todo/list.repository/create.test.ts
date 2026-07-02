@@ -1,6 +1,6 @@
-import ListRepository from "server/todo/repositories/list.repository";
-import { BASE_LIST } from "test-utils/constants/todo";
-import { expect, test } from "test-utils/vitest";
+import ListRepository from "~~/server/todo/repositories/list.repository";
+import { BASE_LIST } from "~~/test-utils/constants/todo";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("creates an account and returns the id of the created account", async ({ db, user }) => {
     const listRepository = new ListRepository(db.client);

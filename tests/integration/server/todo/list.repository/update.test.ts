@@ -1,6 +1,6 @@
-import ListRepository from "server/todo/repositories/list.repository";
-import { BASE_LIST } from "test-utils/constants/todo";
-import { expect, test } from "test-utils/vitest";
+import ListRepository from "~~/server/todo/repositories/list.repository";
+import { BASE_LIST } from "~~/test-utils/constants/todo";
+import { expect, test } from "~~/test-utils/vitest";
 
 let id = "";
 test.beforeEach(async ({ db, user }) => {

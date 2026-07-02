@@ -1,9 +1,9 @@
-import NotFoundError from "server/core/errors/not-found.error";
-import ListItemRepository from "server/todo/repositories/list-item.repository";
-import ListRepository from "server/todo/repositories/list.repository";
-import PresetRepository from "server/todo/repositories/preset.repository";
-import PresetService from "server/todo/services/preset.service";
-import { expect, test } from "test-utils/vitest";
+import NotFoundError from "~~/server/core/errors/not-found.error";
+import ListItemRepository from "~~/server/todo/repositories/list-item.repository";
+import ListRepository from "~~/server/todo/repositories/list.repository";
+import PresetRepository from "~~/server/todo/repositories/preset.repository";
+import PresetService from "~~/server/todo/services/preset.service";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("creates a preset and returns the id of the created preset", async ({ db, user }) => {
     const [list] = await db.todoList.insert(1, { userId: user.id });

@@ -1,6 +1,6 @@
-import ListRepository from "server/todo/repositories/list.repository";
-import { expect, test } from "test-utils/vitest";
-import { anyId } from "test-utils/vitest/patterns";
+import ListRepository from "~~/server/todo/repositories/list.repository";
+import { expect, test } from "~~/test-utils/vitest";
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the todo lists belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });
