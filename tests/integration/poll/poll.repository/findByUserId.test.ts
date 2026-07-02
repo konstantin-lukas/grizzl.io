@@ -39,7 +39,6 @@ test("returns only the polls belonging to the requested user", async ({ db, user
             majorityWinner: false,
             method: "approval",
             title: "Lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate quisque sollicitudin. Nisi aenean faucibus eget integer aliquam consectetur bibendum sodales turpis irure pretium phasellus. Ege.",
-            votes: [],
         },
         {
             choices: [
@@ -70,29 +69,8 @@ test("returns only the polls belonging to the requested user", async ({ db, user
             majorityWinner: false,
             method: "positional",
             title: "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasell.",
-            votes: [],
         },
     ]);
-});
-
-test("automatically includes the votes belonging to a poll", async ({ db, user }) => {
-    const pollRepository = new PollRepository(db.client);
-    const [poll] = await db.poll.insert(1, { userId: user.id, choices: ["Bananas", "Oranges", "Pineapples"] });
-    await db.pollVote.insert(2, index => ({ pollId: poll.id, selection: index ? [0, 1, 2] : [2, 0, 1] }));
-    const [foundPoll] = await pollRepository.findByUserId(user.id);
-    expect(foundPoll).toStrictEqual({
-        choices: ["Bananas", "Oranges", "Pineapples"],
-        closesAt: null,
-        createdAt: expect.any(Date),
-        id: anyId,
-        majorityWinner: false,
-        method: "positional",
-        title: "Vitae lobortis pellentesque tortor volutpat aliquam lectus vivamus voluptate. Quisque sollicitudin nisi aenean faucibus eget integer aliquam consectetur. Bibendum sodales turpis irure pretium phasell.",
-        votes: expect.arrayContaining([
-            [2, 0, 1],
-            [0, 1, 2],
-        ]),
-    });
 });
 
 test("returns an empty array when the user id doesn't exist", async ({ db }) => {

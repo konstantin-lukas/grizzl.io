@@ -44,12 +44,14 @@ export default class PollService {
     }
 
     private async getPoll(id: string, ctx?: DatabaseTransaction) {
-        const poll = await this.pollRepository.findById(id, ctx);
+        const data = await this.pollRepository.findById(id, ctx);
 
-        if (!poll) {
+        if (!data) {
             const logMessage = `Unable to find poll with id ${id}`;
             throw new NotFoundError("Poll does not exist", logMessage);
         }
+
+        const { votes, ...poll } = data;
 
         return poll;
     }
