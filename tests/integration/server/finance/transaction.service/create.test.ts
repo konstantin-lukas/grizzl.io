@@ -1,12 +1,12 @@
-import AccountRepository from "server/finance/repositories/account.repository";
-import CategoryRepository from "server/finance/repositories/category.repository";
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import AccountService from "server/finance/services/account.service";
-import CategoryService from "server/finance/services/category.service";
-import TransactionService from "server/finance/services/transaction.service";
-import { INTERNAL_TRANSACTION } from "test-utils/constants/finance";
-import { arr } from "test-utils/helpers/data";
-import { expect, test } from "test-utils/vitest";
+import AccountRepository from "~~/server/finance/repositories/account.repository";
+import CategoryRepository from "~~/server/finance/repositories/category.repository";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import AccountService from "~~/server/finance/services/account.service";
+import CategoryService from "~~/server/finance/services/category.service";
+import TransactionService from "~~/server/finance/services/transaction.service";
+import { INTERNAL_TRANSACTION } from "~~/test-utils/constants/finance";
+import { arr } from "~~/test-utils/helpers/data";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("correctly calculates the account balance when multiple updates happens simultaneously", async ({ db, user }) => {
     const accountRepository = new AccountRepository(db.client);

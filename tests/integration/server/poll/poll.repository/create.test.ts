@@ -1,6 +1,6 @@
-import PollRepository from "server/poll/repositories/poll.repository";
-import { BASE_POLL } from "test-utils/constants/poll";
-import { expect, test } from "test-utils/vitest";
+import PollRepository from "~~/server/poll/repositories/poll.repository";
+import { BASE_POLL } from "~~/test-utils/constants/poll";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("creates a poll and returns the id of the created account", async ({ db, user }) => {
     const pollRepository = new PollRepository(db.client);

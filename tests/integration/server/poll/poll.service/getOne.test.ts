@@ -1,10 +1,10 @@
-import NotFoundError from "server/core/errors/not-found.error";
-import PollRepository from "server/poll/repositories/poll.repository";
-import VoteRepository from "server/poll/repositories/vote.repository";
-import PollService from "server/poll/services/poll.service";
-import { VoterIdentityMethod } from "shared/poll/enums/method.enum";
-import type { DBFixtures } from "test-utils/database/fixture";
-import { expect, test } from "test-utils/vitest";
+import NotFoundError from "~~/server/core/errors/not-found.error";
+import PollRepository from "~~/server/poll/repositories/poll.repository";
+import VoteRepository from "~~/server/poll/repositories/vote.repository";
+import PollService from "~~/server/poll/services/poll.service";
+import { VoterIdentityMethod } from "~~/shared/poll/enums/method.enum";
+import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { expect, test } from "~~/test-utils/vitest";
 
 function makePollService(db: DBFixtures) {
     const pollRepository = new PollRepository(db.client);

@@ -1,12 +1,12 @@
-import DuplicateKeyError from "server/core/errors/duplicate-key.error";
-import InvalidIpError from "server/core/errors/invalid-ip.error";
-import InvalidVoteError from "server/core/errors/invalid-vote.error";
-import PollRepository from "server/poll/repositories/poll.repository";
-import VoteRepository from "server/poll/repositories/vote.repository";
-import PollService from "server/poll/services/poll.service";
-import { PollMethod, VoterIdentityMethod } from "shared/poll/enums/method.enum";
-import type { DBFixtures } from "test-utils/database/fixture";
-import { expect, test } from "test-utils/vitest";
+import DuplicateKeyError from "~~/server/core/errors/duplicate-key.error";
+import InvalidIpError from "~~/server/core/errors/invalid-ip.error";
+import InvalidVoteError from "~~/server/core/errors/invalid-vote.error";
+import PollRepository from "~~/server/poll/repositories/poll.repository";
+import VoteRepository from "~~/server/poll/repositories/vote.repository";
+import PollService from "~~/server/poll/services/poll.service";
+import { PollMethod, VoterIdentityMethod } from "~~/shared/poll/enums/method.enum";
+import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { expect, test } from "~~/test-utils/vitest";
 
 function makePollService(db: DBFixtures) {
     const pollRepository = new PollRepository(db.client);

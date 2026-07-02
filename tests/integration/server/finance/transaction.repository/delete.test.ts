@@ -1,5 +1,5 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { expect, test } from "test-utils/vitest";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("deletes only resources owned by the user", async ({ db, user }) => {
     const transactionRepository = new TransactionRepository(db.client);

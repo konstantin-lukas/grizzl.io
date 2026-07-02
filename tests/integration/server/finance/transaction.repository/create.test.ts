@@ -1,7 +1,7 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { BASE_TRANSACTION } from "test-utils/constants/finance";
-import { expect, test } from "test-utils/vitest";
-import { anyId } from "test-utils/vitest/patterns";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { expect, test } from "~~/test-utils/vitest";
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("creates a transaction and returns the id of the created resource", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });

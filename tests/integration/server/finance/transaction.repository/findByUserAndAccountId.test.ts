@@ -1,8 +1,8 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { generateFilterCombinations } from "test-utils/helpers/object";
-import { sortByCreatedAt } from "test-utils/helpers/sort";
-import { expect, test } from "test-utils/vitest";
-import { anyId } from "test-utils/vitest/patterns";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { generateFilterCombinations } from "~~/test-utils/helpers/object";
+import { sortByCreatedAt } from "~~/test-utils/helpers/sort";
+import { expect, test } from "~~/test-utils/vitest";
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the transactions belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });

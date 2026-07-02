@@ -1,6 +1,6 @@
-import CategoryRepository from "server/finance/repositories/category.repository";
-import { omit } from "test-utils/helpers/object";
-import { expect, test } from "test-utils/vitest";
+import CategoryRepository from "~~/server/finance/repositories/category.repository";
+import { omit } from "~~/test-utils/helpers/object";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("returns only the categories belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });

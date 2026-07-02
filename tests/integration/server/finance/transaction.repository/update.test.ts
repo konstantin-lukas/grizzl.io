@@ -1,6 +1,6 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { BASE_TRANSACTION } from "test-utils/constants/finance";
-import { expect, test } from "test-utils/vitest";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { BASE_TRANSACTION } from "~~/test-utils/constants/finance";
+import { expect, test } from "~~/test-utils/vitest";
 
 let id = "";
 test.beforeEach(async ({ db, user }) => {

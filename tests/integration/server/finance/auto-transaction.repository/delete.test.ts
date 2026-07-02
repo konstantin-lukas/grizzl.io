@@ -1,5 +1,5 @@
-import AutoTransactionRepository from "server/finance/repositories/auto-transaction.repository";
-import { expect, test } from "test-utils/vitest";
+import AutoTransactionRepository from "~~/server/finance/repositories/auto-transaction.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("deletes only resources owned by the user", async ({ db, user }) => {
     const transactionRepository = new AutoTransactionRepository(db.client);

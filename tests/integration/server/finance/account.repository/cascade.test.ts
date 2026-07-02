@@ -1,5 +1,5 @@
-import AccountRepository from "server/finance/repositories/account.repository";
-import { expect, test } from "test-utils/vitest";
+import AccountRepository from "~~/server/finance/repositories/account.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("purging a soft-deleted account automatically removes all associated resources", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id, deletedAt: new Date() });

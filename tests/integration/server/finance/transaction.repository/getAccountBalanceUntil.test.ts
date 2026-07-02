@@ -1,5 +1,5 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { expect, test } from "test-utils/vitest";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("sums all matching transaction amounts up to and including the provided date", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });

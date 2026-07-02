@@ -1,5 +1,5 @@
-import AccountRepository from "server/finance/repositories/account.repository";
-import { expect, test } from "test-utils/vitest";
+import AccountRepository from "~~/server/finance/repositories/account.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("returns true when the sub resource exists for the given account", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });

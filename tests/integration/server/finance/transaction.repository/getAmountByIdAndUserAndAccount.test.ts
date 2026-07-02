@@ -1,5 +1,5 @@
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import { expect, test } from "test-utils/vitest";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import { expect, test } from "~~/test-utils/vitest";
 
 test("returns only the amount of an transaction given the necessary ids", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });

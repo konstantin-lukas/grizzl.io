@@ -1,7 +1,7 @@
-import AutoTransactionRepository from "server/finance/repositories/auto-transaction.repository";
-import { BASE_AUTO_TRANSACTION } from "test-utils/constants/finance";
-import { expect, test } from "test-utils/vitest";
-import { anyId } from "test-utils/vitest/patterns";
+import AutoTransactionRepository from "~~/server/finance/repositories/auto-transaction.repository";
+import { BASE_AUTO_TRANSACTION } from "~~/test-utils/constants/finance";
+import { expect, test } from "~~/test-utils/vitest";
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("creates an auto-transaction and returns the id of the created resource", async ({ db, user }) => {
     const [account] = await db.financeAccount.insert(1, { userId: user.id });

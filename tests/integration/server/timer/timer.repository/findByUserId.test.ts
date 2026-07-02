@@ -1,6 +1,6 @@
-import TimerRepository from "server/timer/repositories/timer.repository";
-import { expect, test } from "test-utils/vitest";
-import { anyId } from "test-utils/vitest/patterns";
+import TimerRepository from "~~/server/timer/repositories/timer.repository";
+import { expect, test } from "~~/test-utils/vitest";
+import { anyId } from "~~/test-utils/vitest/patterns";
 
 test("returns only the timers belonging to the requested user", async ({ db, user }) => {
     const [otherUser] = await db.user.insert(1, { name: "Smithers", email: "smithers@burns.com" });

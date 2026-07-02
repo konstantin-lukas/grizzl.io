@@ -1,14 +1,14 @@
-import InvalidAccountBalanceError from "server/core/errors/invalid-account-balance.error";
-import UnknownError from "server/core/errors/unknown.error";
-import AccountRepository from "server/finance/repositories/account.repository";
-import AutoTransactionRepository from "server/finance/repositories/auto-transaction.repository";
-import CategoryRepository from "server/finance/repositories/category.repository";
-import TransactionRepository from "server/finance/repositories/transaction.repository";
-import AccountService from "server/finance/services/account.service";
-import AutoTransactionService from "server/finance/services/auto-transaction.service";
-import CategoryService from "server/finance/services/category.service";
-import type { DBFixtures } from "test-utils/database/fixture";
-import { beforeEach, expect, test, vi } from "test-utils/vitest";
+import InvalidAccountBalanceError from "~~/server/core/errors/invalid-account-balance.error";
+import UnknownError from "~~/server/core/errors/unknown.error";
+import AccountRepository from "~~/server/finance/repositories/account.repository";
+import AutoTransactionRepository from "~~/server/finance/repositories/auto-transaction.repository";
+import CategoryRepository from "~~/server/finance/repositories/category.repository";
+import TransactionRepository from "~~/server/finance/repositories/transaction.repository";
+import AccountService from "~~/server/finance/services/account.service";
+import AutoTransactionService from "~~/server/finance/services/auto-transaction.service";
+import CategoryService from "~~/server/finance/services/category.service";
+import type { DBFixtures } from "~~/test-utils/database/fixture";
+import { beforeEach, expect, test, vi } from "~~/test-utils/vitest";
 
 beforeEach(() => {
     vi.resetAllMocks();
