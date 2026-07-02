@@ -16,13 +16,13 @@ const copyToClipboard = async () => {
 
 <template>
     <UPopover
+        v-model:open="isPopoverOpen"
         :content="{
             align: 'center',
             side: 'top',
         }"
-        @update:open="copyToClipboard"
-        v-model:open="isPopoverOpen"
         :ui="{ content: 'overflow-hidden' }"
+        @update:open="copyToClipboard"
     >
         <Button color="neutral" :icon="ICON_SHARE">{{ $t("ui.share") }}</Button>
         <template #content>
