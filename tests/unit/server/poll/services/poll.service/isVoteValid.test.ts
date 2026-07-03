@@ -1,6 +1,6 @@
-import PollService from "server/poll/services/poll.service";
-import { PollMethod } from "shared/poll/enums/method.enum";
-import type { PostPoll } from "shared/poll/validators/poll.validator";
+import PollService from "#server/poll/services/poll.service";
+import { PollMethod } from "#shared/poll/enums/method.enum";
+import type { PostPoll } from "#shared/poll/validators/poll.validator";
 import { expect, test } from "vitest";
 
 const approvalTestCases = [

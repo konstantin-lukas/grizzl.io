@@ -19,6 +19,9 @@ withoutAuth(() => {
             voterIdentityMethod: poll.voterIdentityMethod,
             majorityWinner: false,
             createdAt: poll.createdAt.toISOString(),
+            results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            turnout: 0,
+            winners: [],
         });
     });
 });
