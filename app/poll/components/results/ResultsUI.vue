@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import EmptyCard from "~/core/components/data/EmptyCard.vue";
-import { ICON_VOTE } from "~/core/constants/icons.constant";
 import PollInfoBox from "~/poll/components/vote/PollInfoBox.vue";
 import type { Poll } from "~/poll/types";
+import EmptyResults from "~/poll/components/results/EmptyResults.vue";
+import ResultsHeader from "~/poll/components/results/ResultsHeader.vue";
 
 defineProps<{ poll: Poll }>();
 </script>
 
 <template>
     <div class="w-full">
-        <EmptyCard
-            :icon="ICON_VOTE"
-            title-translation-key="poll.emptyTitle"
-            description-translation-key="poll.emptyDescription"
-        />
+        <EmptyResults v-if="poll.turnout === 0" />
+        <div v-else>
+            <ResultsHeader :poll />
+        </div>
         <PollInfoBox :method="poll.method" />
     </div>
 </template>

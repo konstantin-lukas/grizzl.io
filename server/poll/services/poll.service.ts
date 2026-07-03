@@ -62,12 +62,10 @@ export default class PollService {
 
     async getOne(id: string, ip: string, cookie?: string) {
         const { votes, ...poll } = await this.getPoll(id);
-        const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
+        const identifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
-        if (!relevantIdentifier) return { ...poll, hasUserVoted: false };
-
-        const identifierHash = PollService.saltAndHash(relevantIdentifier);
-        const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash);
+        const hasUserVoted =
+            !!identifier && (await this.voteRepository.hasVote(id, PollService.saltAndHash(identifier)));
 
         const resultCalculators = {
             [PollMethod.SCORE]: getScoreResults,
@@ -78,10 +76,10 @@ export default class PollService {
         };
 
         const results = resultCalculators[poll.method](votes, poll.choices.length);
-        const voterCount = votes.length;
-
+        const turnout = votes.length;
         const mostPoints = Math.max(...results.filter(n => !isNaN(n)));
         const maxPoints = results.reduce((acc, points) => acc + points, 0);
+
         const meetsWinningCondition = !poll.majorityWinner || (poll.majorityWinner && mostPoints > maxPoints / 2);
         const hasMinimumPoints = mostPoints > 0 && meetsWinningCondition;
 
@@ -90,7 +88,7 @@ export default class PollService {
             return indices;
         }, []);
 
-        return { ...poll, hasUserVoted, results, winners, voterCount };
+        return { ...poll, hasUserVoted, results, winners, turnout };
     }
 
     static isVoteValid(poll: PostPoll, vote: PostVote) {
@@ -118,14 +116,14 @@ export default class PollService {
     async vote(id: string, vote: PostVote, ip: string, cookie?: string) {
         return this.pollRepository.transaction(async tx => {
             const poll = await this.getPoll(id, tx);
-            const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
+            const identifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
-            if (!relevantIdentifier) {
-                const logMessage = `Unable to get identifier of type "${poll.voterIdentityMethod}". Value is "${relevantIdentifier}".`;
+            if (!identifier) {
+                const logMessage = `Unable to get identifier of type "${poll.voterIdentityMethod}". Value is "${identifier}".`;
                 throw new InvalidIpError("Unable to identify user", logMessage);
             }
 
-            const identifierHash = PollService.saltAndHash(relevantIdentifier);
+            const identifierHash = PollService.saltAndHash(identifier);
             await this.pollRepository.advisoryLock(`vote-${id}-${identifierHash}`, tx);
             const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash, tx);
 
