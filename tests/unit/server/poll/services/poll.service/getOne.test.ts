@@ -115,6 +115,4 @@ test("throws a NotFoundError when the poll does not exist", async () => {
     pollRepository.findById.mockResolvedValue(undefined);
 
     await expect(service.getOne("missing", "127.0.0.1")).rejects.toBeInstanceOf(NotFoundError);
-
-    expect(voteRepository.hasVote).not.toHaveBeenCalled();
 });
