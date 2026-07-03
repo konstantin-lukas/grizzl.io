@@ -5,6 +5,12 @@ import NotFoundError from "#server/core/errors/not-found.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import PollRepository from "#server/poll/repositories/poll.repository";
 import VoteRepository from "#server/poll/repositories/vote.repository";
+import {
+    getApprovalOrPluralityResults,
+    getInstantRunoffResults,
+    getPositionalResults,
+    getScoreResults,
+} from "#server/poll/utils/results.util";
 import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 import type { PostPoll } from "#shared/poll/validators/poll.validator";
 import type { PostVote } from "#shared/poll/validators/vote.validator";
@@ -44,20 +50,18 @@ export default class PollService {
     }
 
     private async getPoll(id: string, ctx?: DatabaseTransaction) {
-        const data = await this.pollRepository.findById(id, ctx);
+        const poll = await this.pollRepository.findById(id, ctx);
 
-        if (!data) {
+        if (!poll) {
             const logMessage = `Unable to find poll with id ${id}`;
             throw new NotFoundError("Poll does not exist", logMessage);
         }
-
-        const { votes, ...poll } = data;
 
         return poll;
     }
 
     async getOne(id: string, ip: string, cookie?: string) {
-        const poll = await this.getPoll(id);
+        const { votes, ...poll } = await this.getPoll(id);
         const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
         if (!relevantIdentifier) return { ...poll, hasUserVoted: false };
@@ -65,7 +69,28 @@ export default class PollService {
         const identifierHash = PollService.saltAndHash(relevantIdentifier);
         const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash);
 
-        return { ...poll, hasUserVoted };
+        const resultCalculators = {
+            [PollMethod.SCORE]: getScoreResults,
+            [PollMethod.RUNOFF]: getInstantRunoffResults,
+            [PollMethod.POSITIONAL]: getPositionalResults,
+            [PollMethod.APPROVAL]: getApprovalOrPluralityResults,
+            [PollMethod.PLURALITY]: getApprovalOrPluralityResults,
+        };
+
+        const results = resultCalculators[poll.method](votes, poll.choices.length);
+        const voterCount = votes.length;
+
+        const mostPoints = Math.max(...results.filter(n => !isNaN(n)));
+        const maxPoints = results.reduce((acc, points) => acc + points, 0);
+        const meetsWinningCondition = !poll.majorityWinner || (poll.majorityWinner && mostPoints > maxPoints / 2);
+        const hasMinimumPoints = mostPoints > 0 && meetsWinningCondition;
+
+        const winners = results.reduce<number[]>((indices, value, index) => {
+            if (hasMinimumPoints && value === mostPoints) indices.push(index);
+            return indices;
+        }, []);
+
+        return { ...poll, hasUserVoted, results, winners, voterCount };
     }
 
     static isVoteValid(poll: PostPoll, vote: PostVote) {
