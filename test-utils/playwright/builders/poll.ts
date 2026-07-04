@@ -6,7 +6,6 @@ export function makePollTestBuilder(method: Method) {
     return new TestBuilder({
         fixtureProvider: async ({ db, userId }) => {
             const [poll] = await db.poll.insert(1, userId ? { userId } : undefined);
-            const votes = await db.pollVote.insert(3, { pollId: poll.id });
             return {
                 id: poll.id,
                 data: poll,
@@ -14,7 +13,6 @@ export function makePollTestBuilder(method: Method) {
                 fullPath: `/api/polls/${poll.id}`,
                 getDatabaseOverrides: {
                     closesAt: poll.closesAt?.toISOString() ?? null,
-                    votes: votes.map(vote => vote.selection),
                 },
             };
         },

@@ -23,7 +23,6 @@ test("allows retrieving a list of resources sorted by creation date", async ({ r
             majorityWinner: false,
             method: "positional",
             title: "Letter",
-            votes: [],
         }),
         expect.objectContaining({
             choices: ["A", "B"],
@@ -32,7 +31,6 @@ test("allows retrieving a list of resources sorted by creation date", async ({ r
             majorityWinner: false,
             method: "positional",
             title: "Letter",
-            votes: [],
         }),
     ]);
 });

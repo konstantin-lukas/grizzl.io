@@ -5,6 +5,12 @@ import NotFoundError from "#server/core/errors/not-found.error";
 import type { DatabaseTransaction } from "#server/core/repositories/base.repository";
 import PollRepository from "#server/poll/repositories/poll.repository";
 import VoteRepository from "#server/poll/repositories/vote.repository";
+import {
+    getApprovalOrPluralityResults,
+    getInstantRunoffResults,
+    getPositionalResults,
+    getScoreResults,
+} from "#server/poll/utils/results.util";
 import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 import type { PostPoll } from "#shared/poll/validators/poll.validator";
 import type { PostVote } from "#shared/poll/validators/vote.validator";
@@ -55,15 +61,34 @@ export default class PollService {
     }
 
     async getOne(id: string, ip: string, cookie?: string) {
-        const poll = await this.getPoll(id);
-        const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
+        const { votes, ...poll } = await this.getPoll(id);
+        const identifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
-        if (!relevantIdentifier) return { ...poll, hasUserVoted: false };
+        const hasUserVoted =
+            !!identifier && (await this.voteRepository.hasVote(id, PollService.saltAndHash(identifier)));
 
-        const identifierHash = PollService.saltAndHash(relevantIdentifier);
-        const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash);
+        const resultCalculators = {
+            [PollMethod.SCORE]: getScoreResults,
+            [PollMethod.RUNOFF]: getInstantRunoffResults,
+            [PollMethod.POSITIONAL]: getPositionalResults,
+            [PollMethod.APPROVAL]: getApprovalOrPluralityResults,
+            [PollMethod.PLURALITY]: getApprovalOrPluralityResults,
+        };
 
-        return { ...poll, hasUserVoted };
+        const results = resultCalculators[poll.method](votes, poll.choices.length);
+        const turnout = votes.length;
+        const mostPoints = Math.max(...results.filter(n => !isNaN(n)));
+        const maxPoints = results.reduce((acc, points) => acc + points, 0);
+
+        const meetsWinningCondition = !poll.majorityWinner || (poll.majorityWinner && mostPoints > maxPoints / 2);
+        const hasMinimumPoints = mostPoints > 0 && meetsWinningCondition;
+
+        const winners = results.reduce<number[]>((indices, value, index) => {
+            if (hasMinimumPoints && value === mostPoints) indices.push(index);
+            return indices;
+        }, []);
+
+        return { ...poll, hasUserVoted, results, winners, turnout };
     }
 
     static isVoteValid(poll: PostPoll, vote: PostVote) {
@@ -91,14 +116,14 @@ export default class PollService {
     async vote(id: string, vote: PostVote, ip: string, cookie?: string) {
         return this.pollRepository.transaction(async tx => {
             const poll = await this.getPoll(id, tx);
-            const relevantIdentifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
+            const identifier = poll.voterIdentityMethod === VoterIdentityMethod.COOKIE ? cookie : ip;
 
-            if (!relevantIdentifier) {
-                const logMessage = `Unable to get identifier of type "${poll.voterIdentityMethod}". Value is "${relevantIdentifier}".`;
+            if (!identifier) {
+                const logMessage = `Unable to get identifier of type "${poll.voterIdentityMethod}". Value is "${identifier}".`;
                 throw new InvalidIpError("Unable to identify user", logMessage);
             }
 
-            const identifierHash = PollService.saltAndHash(relevantIdentifier);
+            const identifierHash = PollService.saltAndHash(identifier);
             await this.pollRepository.advisoryLock(`vote-${id}-${identifierHash}`, tx);
             const hasUserVoted = await this.voteRepository.hasVote(id, identifierHash, tx);
 

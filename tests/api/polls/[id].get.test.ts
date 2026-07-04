@@ -17,18 +17,13 @@ withoutAuth(() => {
             id: poll.id,
             hasUserVoted: false,
             voterIdentityMethod: poll.voterIdentityMethod,
-            votes: [],
             majorityWinner: false,
             createdAt: poll.createdAt.toISOString(),
+            results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            turnout: 0,
+            winners: [],
         });
     });
-});
-
-test("includes vote selections associated with the poll", async ({ request, db }) => {
-    const [poll] = await db.poll.insert(1);
-    const [vote] = await db.pollVote.insert(1, { pollId: poll.id });
-    const response = await request.get(`/api/polls/${poll.id}`);
-    expect(await response.json()).toHaveProperty("votes", [vote.selection]);
 });
 
 test("returns true for userHasVoted when the voterIdentityMethod is 'cookie' and the cookie is associated with a vote on the same poll", async ({

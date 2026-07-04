@@ -1,6 +1,6 @@
 - heading "Create A Poll" [level=1]
-- text: pollTitle*
-- textbox "pollTitle*": What should we have for dinner?
+- text: Poll Title*
+- textbox "Poll Title*": What should we have for dinner?
 - text: Poll Method*
 - combobox "Poll Method*": Instant-Runoff Voting
 - text: Open until

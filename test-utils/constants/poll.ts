@@ -15,5 +15,4 @@ export const FULL_POLL = {
     userId: "VbvbykXQUeBBs5n8",
     createdAt: new Date("1999-12-31"),
     deleted: false,
-    votes: [[0, 1], [0, 3, 2], [4]],
 };

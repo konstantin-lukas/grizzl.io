@@ -1,4 +1,5 @@
 import { defineVitestProject } from "@nuxt/test-utils/config";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vitest/config";
 
 const plugins = [
@@ -33,14 +34,22 @@ export default defineConfig({
             reporter: ["text", "lcov", "json"],
         },
         projects: [
-            await defineVitestProject({
+            {
                 test: {
                     name: "unit",
                     include: ["tests/unit/**/*.test.ts"],
                     environment: "node",
                 },
-                plugins,
-            }),
+                resolve: {
+                    alias: {
+                        "#server": fileURLToPath(new URL("./server", import.meta.url)),
+                        "#shared": fileURLToPath(new URL("./shared", import.meta.url)),
+                        "~~": fileURLToPath(new URL("./", import.meta.url)),
+                        "@@": fileURLToPath(new URL("./", import.meta.url)),
+                        "~": fileURLToPath(new URL("./app", import.meta.url)),
+                    },
+                },
+            },
             await defineVitestProject({
                 test: {
                     name: "integration",
