@@ -4,6 +4,7 @@ import type { Poll } from "~/poll/types";
 import EmptyResults from "~/poll/components/results/EmptyResults.vue";
 import ResultsHeader from "~/poll/components/results/ResultsHeader.vue";
 import { ICON_INFO } from "~/core/constants/icons.constant";
+import ResultsBarChart from "~/poll/components/results/ResultsBarChart.vue";
 
 defineProps<{ poll: Poll }>();
 </script>
@@ -21,6 +22,7 @@ defineProps<{ poll: Poll }>();
                 :title="$t('poll.needsMajority')"
             />
             <ResultsHeader :poll />
+            <ResultsBarChart :poll />
         </div>
         <PollInfoBox :method="poll.method" />
     </div>

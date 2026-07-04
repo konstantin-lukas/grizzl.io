@@ -2,7 +2,6 @@
 import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 import useLocale from "~/core/composables/useLocale";
 import useToday from "~/core/composables/useToday";
-import { CHART_COLORS, COLOR_FRONT_DARK_MODE, COLOR_FRONT_LIGHT_MODE } from "~/core/constants/colors.constant";
 import useCategories from "~/finance/composables/useCategories";
 import type { PerMonthCategoryStatistics } from "~/finance/composables/usePerMonthTransactions";
 import { formatCurrency } from "~/finance/utils/currency";
@@ -10,7 +9,6 @@ import BarChart from "~/core/components/chart/BarChart.vue";
 
 const props = defineProps<{ expenses: PerMonthCategoryStatistics[][]; currency: string }>();
 
-const colorMode = useColorMode();
 const { language } = useLocale();
 const { categories } = useCategories();
 const { today } = useToday();
@@ -21,7 +19,6 @@ const getMonthName = (month: number, variant: "short" | "long" = "short") => {
     return new Intl.DateTimeFormat(language.value, { month: variant, timeZone }).format(date.toDate(timeZone));
 };
 
-const backgroundColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const monthNumbers = computed(() =>
     Array.from({ length: 12 }).map((_, i) => {
         const offset = today.value?.month ?? 0;
@@ -40,24 +37,14 @@ const datasets = computed(() => {
         const bDisplayName = categories.value.find(c => c.id === b)?.displayName ?? "";
         return aDisplayName.localeCompare(bDisplayName);
     });
-    return categoryIds.map((categoryId, i) => {
+    return categoryIds.map(categoryId => {
         const categoryName = categories.value.find(({ id }) => id === categoryId)?.displayName;
         const categoryExpenses = props.expenses.map(expense => expense.find(item => item.category === categoryId));
         const categoryData = categoryExpenses.map(expense => expense?.spent ?? 0);
-        const color = CHART_COLORS[i % CHART_COLORS.length];
 
         return {
             label: categoryName,
             data: categoryData,
-            backgroundColor: color,
-            hoverBackgroundColor: backgroundColor.value,
-            borderRadius: {
-                topLeft: 8,
-                topRight: 8,
-                bottomLeft: 8,
-                bottomRight: 8,
-            },
-            borderSkipped: false,
         };
     });
 });

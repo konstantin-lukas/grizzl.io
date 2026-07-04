@@ -1,26 +1,49 @@
 <script setup lang="ts">
-import type { ChartDataset } from "chart.js";
 import { Chart } from "chart.js";
-import { COLOR_FRONT_DARK_MODE, COLOR_FRONT_LIGHT_MODE } from "~/core/constants/colors.constant";
+import { CHART_COLORS, COLOR_FRONT_DARK_MODE, COLOR_FRONT_LIGHT_MODE } from "~/core/constants/colors.constant";
 import useScreenSize from "~/core/composables/useScreenSize";
+import { ellipsize } from "#shared/core/utils/string.util";
 
-const props = defineProps<{
-    labels: string[];
-    datasets: ChartDataset[];
-    tooltipLabelCallback?: (value: number) => string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        labels: string[];
+        datasets: { data: number[]; label?: string }[];
+        colors?: string[];
+        tooltipLabelCallback?: (value: number) => string;
+    }>(),
+    { colors: () => CHART_COLORS, tooltipLabelCallback: undefined },
+);
 const colorMode = useColorMode();
 const canvasRef = ref();
 const chart = shallowRef<Chart>();
 const gridColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
+const backgroundColor = computed(() => (colorMode.value === "dark" ? COLOR_FRONT_DARK_MODE : COLOR_FRONT_LIGHT_MODE));
 const { sm } = useScreenSize();
+
+const datasets = computed(() =>
+    props.datasets.map((dataset, i) => {
+        const color = props.colors[i % props.colors.length];
+        return {
+            ...dataset,
+            backgroundColor: color,
+            hoverBackgroundColor: backgroundColor.value,
+            borderRadius: {
+                topLeft: 8,
+                topRight: 8,
+                bottomLeft: 8,
+                bottomRight: 8,
+            },
+            borderSkipped: false,
+        };
+    }),
+);
 
 onMounted(() => {
     chart.value = new Chart(canvasRef.value, {
         type: "bar",
         data: {
             labels: props.labels,
-            datasets: props.datasets,
+            datasets: datasets.value,
         },
         options: {
             indexAxis: sm.value ? "x" : "y",
@@ -37,6 +60,9 @@ onMounted(() => {
                         display: sm.value,
                         color: gridColor.value,
                         padding: 10,
+                        callback(value) {
+                            return ellipsize(String(this.getLabelForValue(Number(value))), 20);
+                        },
                     },
                 },
                 y: {
@@ -49,6 +75,9 @@ onMounted(() => {
                         display: !sm.value,
                         color: gridColor.value,
                         padding: 10,
+                        callback(value) {
+                            return ellipsize(String(this.getLabelForValue(Number(value))), 20);
+                        },
                     },
                     border: {
                         width: 0,
@@ -77,7 +106,7 @@ onMounted(() => {
 });
 
 watch(
-    () => [props.datasets, props.labels, gridColor.value, sm.value] as const,
+    () => [datasets.value, props.labels, gridColor.value, sm.value] as const,
     ([newDatasets, newLabels, newGridColor, newSm]) => {
         if (!chart.value || import.meta.server) return;
 
@@ -96,6 +125,9 @@ watch(
                 display: newSm,
                 color: newGridColor,
                 padding: 10,
+                callback(value) {
+                    return ellipsize(String(this.getLabelForValue(Number(value))), 20);
+                },
             },
         };
 
@@ -109,6 +141,9 @@ watch(
                 display: !newSm,
                 color: newGridColor,
                 padding: 10,
+                callback(value) {
+                    return ellipsize(String(this.getLabelForValue(Number(value))), 20);
+                },
             },
             border: {
                 width: 0,
