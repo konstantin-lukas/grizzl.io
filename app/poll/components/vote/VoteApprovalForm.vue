@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Poll } from "~/poll/types";
 import { ICON_CANCEL, ICON_CHECK } from "~/core/constants/icons.constant";
-import { deleteNthElement } from "#shared/core/utils/array.util";
 
 const model = defineModel<number[]>("selection", { required: true });
 defineProps<{ poll: Poll }>();
@@ -20,7 +19,8 @@ defineProps<{ poll: Poll }>();
             @keydown.enter.prevent="
                 () => {
                     if (model.includes(index)) {
-                        model = deleteNthElement(model, index);
+                        const copy = [...model];
+                        model = copy.filter(value => value !== index);
                         return;
                     }
                     model = [...model, index];
