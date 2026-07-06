@@ -25,11 +25,7 @@ const selectedIndex = computed<number | null>({
             tabindex="0"
             :aria-checked="selectedIndex === index"
             :aria-labelledby="`choice-${index}-label`"
-            @keydown.enter.prevent="
-                () => {
-                    selectedIndex = index;
-                }
-            "
+            @keydown.enter.prevent="selectedIndex = index"
         >
             <UIcon v-if="selectedIndex === index" class="size-6 text-back" :name="ICON_CHECK" />
             <UIcon v-else class="size-6 text-back" :name="ICON_CANCEL" />
