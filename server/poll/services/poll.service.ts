@@ -13,7 +13,7 @@ import {
 } from "#server/poll/utils/results.util";
 import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 import type { PostPoll } from "#shared/poll/validators/poll.validator";
-import type { PostVote } from "#shared/poll/validators/vote.validator";
+import { type PostVote, SCORE_VOTE_MAX_POINTS, SCORE_VOTE_MIN_POINTS } from "#shared/poll/validators/vote.validator";
 import { hash } from "crypto";
 
 export default class PollService {
@@ -101,7 +101,9 @@ export default class PollService {
         }
 
         if (poll.method === PollMethod.SCORE) {
-            const allVotesOnScale = vote.selection.every(choice => choice >= 1 && choice <= 10);
+            const allVotesOnScale = vote.selection.every(
+                choice => choice >= SCORE_VOTE_MIN_POINTS && choice <= SCORE_VOTE_MAX_POINTS,
+            );
             return sameLength && allVotesOnScale;
         }
 

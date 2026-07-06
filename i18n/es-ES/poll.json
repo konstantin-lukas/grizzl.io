@@ -18,6 +18,7 @@
         "votingSecurityCookieDetails": "Es más fácil de eludir que la dirección IP, pero permite que las personas de la misma red participen en la encuesta. Elige esta opción cuando los votantes estén en la misma red, por ejemplo, en una red corporativa.",
         "winCondition": "Condición de victoria",
         "needsMajority": "El ganador necesita mayoría",
+        "needsMajorityAlert": "Para ganar esta votación, una opción necesita la mayoría de los votos (al menos 1 punto). | Para ganar esta votación, una opción necesita la mayoría de los votos (al menos {n} puntos).",
         "doesntNeedMajority": "El ganador no necesita mayoría",
         "pollMethod": "Método de votación",
         "alreadyClosed": "Ya cerrada",
@@ -45,27 +46,27 @@
         },
         "voting": {
             "runoff": {
-                "action": "Ordena las opciones según tu preferencia.",
+                "action": "Ordena las opciones según tu preferencia",
                 "explanation": "Ordena las opciones según tu preferencia. Si ninguna obtiene la mayoría, la opción con menos votos es eliminada y esos votos se transfieren a la siguiente preferencia. Esto se repite hasta que una opción obtiene la mayoría.",
                 "bestFor": "Grupos medianos o grandes (5 o más personas) donde el apoyo mayoritario es esencial y las preferencias entre las opciones son claras."
             },
             "approval": {
-                "action": "Aprueba todas las opciones que te gusten.",
+                "action": "Aprueba todas las opciones que te gusten",
                 "explanation": "Puedes aprobar tantas opciones como quieras sin clasificarlas. Gana la opción con más aprobaciones.",
                 "bestFor": "Grupos pequeños o medianos (hasta 20 personas) que quieren una votación sencilla y no tienen preferencias muy marcadas."
             },
             "plurality": {
-                "action": "Elige la opción que más te guste.",
+                "action": "Elige la opción que más te guste",
                 "explanation": "Elige una única opción. Gana la opción con más votos.",
                 "bestFor": "Grupos pequeños (menos de 10 personas) cuando la simplicidad es importante y probablemente exista una opción favorita."
             },
             "score": {
-                "action": "Asigna a cada opción una puntuación del 1 al 10 (1 = no te gusta; 10 = te gusta mucho).",
+                "action": "Asigna a cada opción una puntuación del 1 al 10 (1 = no te gusta; 10 = te gusta mucho)",
                 "explanation": "Asigna a cada opción una puntuación del 1 al 10 (1 = no te gusta; 10 = te gusta mucho). Se suman todas las puntuaciones y gana la opción con la puntuación total más alta.",
                 "bestFor": "Grupos medianos (5-20 personas) que quieren expresar con mayor precisión la intensidad de sus preferencias."
             },
             "positional": {
-                "action": "Ordena las opciones según tu preferencia.",
+                "action": "Ordena las opciones según tu preferencia",
                 "explanation": "Ordena las opciones. Cada posición otorga una determinada cantidad de puntos y gana la opción con más puntos en total. La última posición vale 1 punto, la penúltima 2 puntos, y así sucesivamente.",
                 "bestFor": "Encuestas medianas (5-20 personas) con varias opciones, donde las preferencias detalladas son importantes."
             }

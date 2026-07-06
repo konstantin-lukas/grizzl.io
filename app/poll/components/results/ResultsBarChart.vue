@@ -17,10 +17,15 @@ const colors = computed(() => [colorMode.value === "dark" ? COLOR_PRIMARY_DARK_M
 </script>
 
 <template>
-    <div
-        class="mt-12 sm:max-h-80 portrait:h-[75dvh]"
-        :style="{ height: (sm ? 50 : props.poll.choices.length * 5) + 'dvh' }"
-    >
-        <BarChart :datasets="datasets" :labels="poll.choices" :colors />
-    </div>
+    <ClientOnly>
+        <div
+            class="mt-12 sm:max-h-80 portrait:h-[75dvh]"
+            :style="{ height: (sm ? 50 : props.poll.choices.length * 5) + 'dvh' }"
+        >
+            <BarChart :datasets="datasets" :labels="poll.choices" :colors />
+        </div>
+        <template #placeholder>
+            <USkeleton class="mt-12 h-80 w-full" />
+        </template>
+    </ClientOnly>
 </template>

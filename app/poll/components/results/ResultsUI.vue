@@ -6,7 +6,11 @@ import ResultsHeader from "~/poll/components/results/ResultsHeader.vue";
 import { ICON_INFO } from "~/core/constants/icons.constant";
 import ResultsBarChart from "~/poll/components/results/ResultsBarChart.vue";
 
-defineProps<{ poll: Poll }>();
+const props = defineProps<{ poll: Poll }>();
+const requiredMajority = computed(() => {
+    const halfOfVotes = props.poll.results.reduce((acc, option) => acc + option, 0) / 2;
+    return Math.floor(halfOfVotes + 1);
+});
 </script>
 
 <template>
@@ -19,7 +23,7 @@ defineProps<{ poll: Poll }>();
                 class="mb-4"
                 color="info"
                 :icon="ICON_INFO"
-                :title="$t('poll.needsMajority')"
+                :title="$t('poll.needsMajorityAlert', requiredMajority)"
             />
             <ResultsHeader :poll />
             <ResultsBarChart :poll />
