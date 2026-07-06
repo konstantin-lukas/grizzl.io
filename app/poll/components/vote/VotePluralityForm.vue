@@ -2,7 +2,7 @@
 import type { Poll } from "~/poll/types";
 import { ICON_CANCEL, ICON_CHECK } from "~/core/constants/icons.constant";
 
-const model = defineModel<number[] | null>("selection");
+const model = defineModel<number[] | null>("selection", { required: true });
 defineProps<{ poll: Poll }>();
 
 const selectedIndex = computed<number | null>({
@@ -22,8 +22,10 @@ const selectedIndex = computed<number | null>({
         <span
             class="center mr-4 block size-10 shrink-0 grow rounded-full bg-error peer-checked:bg-primary"
             role="radio"
+            tabindex="0"
             :aria-checked="selectedIndex === index"
             :aria-labelledby="`choice-${index}-label`"
+            @keydown.enter.prevent="selectedIndex = index"
         >
             <UIcon v-if="selectedIndex === index" class="size-6 text-back" :name="ICON_CHECK" />
             <UIcon v-else class="size-6 text-back" :name="ICON_CANCEL" />

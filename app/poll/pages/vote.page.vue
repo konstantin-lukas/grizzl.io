@@ -81,9 +81,8 @@ const showResults = ref(poll.value.hasUserVoted || isClosed.value);
                     </Button>
                 </div>
             </div>
-            <USeparator class="mt-12" />
-            <div class="relative mt-12 w-full">
-                <Transition name="fade-absolute">
+            <div class="relative mt-20 w-full">
+                <Transition name="fade">
                     <ResultsUI v-if="showResults" :poll />
                     <VotingUI
                         v-else
