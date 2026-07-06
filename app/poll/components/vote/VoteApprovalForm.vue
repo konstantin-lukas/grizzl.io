@@ -18,12 +18,8 @@ defineProps<{ poll: Poll }>();
             :aria-labelledby="`choice-${index}-label`"
             @keydown.enter.prevent="
                 () => {
-                    if (model.includes(index)) {
-                        const copy = [...model];
-                        model = copy.filter(value => value !== index);
-                        return;
-                    }
-                    model = [...model, index];
+                    if (model.includes(index)) model = model.filter(value => value !== index);
+                    else model = [...model, index];
                 }
             "
         >
