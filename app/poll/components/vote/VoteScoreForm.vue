@@ -22,16 +22,8 @@ const classNames = [
     <div>
         <div v-for="(choice, index) in poll.choices" :key="index" class="relative mt-6 flex gap-4">
             <USlider
-                :id="`choice-${index}`"
+                :aria-label="choice"
                 :model-value="model[index]"
-                @update:model-value="
-                    value => {
-                        if (value === undefined) return;
-                        const copy = [...model];
-                        copy[index] = value;
-                        model = copy;
-                    }
-                "
                 :min="SCORE_VOTE_MIN_POINTS"
                 :max="SCORE_VOTE_MAX_POINTS"
                 :ui="{
@@ -41,13 +33,20 @@ const classNames = [
                         'size-10 bg-front ring-0 focus-visible:outline-primary focus-visible:outline-offset-0 focus-visible:outline-6 ' +
                         classNames[model[index]! - 1],
                 }"
+                @update:model-value="
+                    value => {
+                        if (value === undefined) return;
+                        const copy = [...model];
+                        copy[index] = value;
+                        model = copy;
+                    }
+                "
             />
-            <label
-                for="`choice-${index}`"
+            <span
                 class="pointer-events-none absolute h-full w-[calc(100%-3.5rem)] overflow-hidden rounded-full px-16 pt-1.5 text-lg text-nowrap text-ellipsis text-white mix-blend-difference"
             >
                 {{ choice }}
-            </label>
+            </span>
             <div class="center size-10 shrink-0 rounded-full bg-accented text-xl">{{ model[index] }}</div>
         </div>
     </div>

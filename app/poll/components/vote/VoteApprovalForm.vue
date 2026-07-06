@@ -10,7 +10,7 @@ defineProps<{ poll: Poll }>();
 <template>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-for="(choice, index) in poll.choices" :key="index" class="mt-6 flex cursor-pointer items-center">
-        <input :value="index" v-model="model" type="checkbox" name="choice" class="peer hidden" />
+        <input v-model="model" :value="index" type="checkbox" name="choice" class="peer hidden" />
         <span
             class="center mr-4 block size-10 shrink-0 grow rounded-full bg-error peer-checked:bg-primary"
             role="checkbox"

@@ -39,10 +39,6 @@ const onSubmit = async (e: SubmitEvent) => {
     emit("success");
 };
 
-watchEffect(() => {
-    console.log(selection.value);
-});
-
 const disableSubmitButton = computed(() => selection.value === null);
 </script>
 
@@ -58,8 +54,8 @@ const disableSubmitButton = computed(() => selection.value === null);
             <VotePluralityForm v-else-if="poll.method === PollMethod.PLURALITY" v-model:selection="selection" :poll />
             <VoteScoreForm
                 v-else-if="poll.method === PollMethod.SCORE && selection"
-                :poll
                 v-model:selection="selection"
+                :poll
             />
             <VoteRunoffAndPositionalForm v-else :poll />
             <Button
