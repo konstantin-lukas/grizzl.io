@@ -52,8 +52,6 @@ const voteFormComponents = {
 const voteFormComponent = computed(() => voteFormComponents[props.poll.method]);
 
 const disableSubmitButton = computed(() => selection.value === null);
-
-watchEffect(() => console.log(selection.value));
 </script>
 
 <template>
