@@ -18,6 +18,8 @@ const initialSelection = (() => {
     if (props.poll.method === PollMethod.APPROVAL) return [];
     if (props.poll.method === PollMethod.SCORE)
         return Array.from({ length: props.poll.choices.length }).fill(1) as number[];
+    if (props.poll.method === PollMethod.RUNOFF || props.poll.method === PollMethod.POSITIONAL)
+        return props.poll.choices.map((_, i) => i) as number[];
     return null;
 })();
 
@@ -39,25 +41,31 @@ const onSubmit = async (e: SubmitEvent) => {
     emit("success");
 };
 
+const voteFormComponents = {
+    [PollMethod.APPROVAL]: VoteApprovalForm,
+    [PollMethod.PLURALITY]: VotePluralityForm,
+    [PollMethod.SCORE]: VoteScoreForm,
+    [PollMethod.RUNOFF]: VoteRunoffAndPositionalForm,
+    [PollMethod.POSITIONAL]: VoteRunoffAndPositionalForm,
+} satisfies Record<PollMethod, Component>;
+
+const voteFormComponent = computed(() => voteFormComponents[props.poll.method]);
+
 const disableSubmitButton = computed(() => selection.value === null);
+
+watchEffect(() => console.log(selection.value));
 </script>
 
 <template>
     <div class="w-full">
         <form class="w-full" autocomplete="off" @submit="onSubmit">
             <H2>{{ $t(`poll.voting.${poll.method}.action`) }}</H2>
-            <VoteApprovalForm
-                v-if="poll.method === PollMethod.APPROVAL && selection"
+            <component
+                :is="voteFormComponent"
+                v-if="voteFormComponent === VotePluralityForm || selection !== null"
                 v-model:selection="selection"
-                :poll
+                :poll="poll"
             />
-            <VotePluralityForm v-else-if="poll.method === PollMethod.PLURALITY" v-model:selection="selection" :poll />
-            <VoteScoreForm
-                v-else-if="poll.method === PollMethod.SCORE && selection"
-                v-model:selection="selection"
-                :poll
-            />
-            <VoteRunoffAndPositionalForm v-else :poll />
             <Button
                 :disabled="disableSubmitButton || isLoading"
                 type="submit"
