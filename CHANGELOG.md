@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.19.0...v1.20.0) (2026-07-08)
+
+
+### Features
+
+* **poll:** implement runoff and positional voting ui ([#604](https://github.com/konstantin-lukas/grizzl.io/issues/604)) ([a87b363](https://github.com/konstantin-lukas/grizzl.io/commit/a87b3631c92bb130ccd5fded5e184b2676f0317c))
+
 ## [1.19.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.18.0...v1.19.0) (2026-07-06)
 
 
