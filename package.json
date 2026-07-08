@@ -55,7 +55,7 @@
         "prettier-plugin-tailwindcss": "0.8.0",
         "tailwindcss": "4.3.0",
         "typescript": "6.0.3",
-        "vue-tsc": "3.3.4"
+        "vue-tsc": "3.3.5"
     },
     "overrides": {
         "esbuild": "0.25.10",
