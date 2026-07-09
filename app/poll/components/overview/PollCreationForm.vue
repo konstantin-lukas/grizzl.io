@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import H1 from "~/core/components/typo/H1.vue";
+import H2 from "~/core/components/typo/H2.vue";
 import Drawer from "~/core/components/overlay/Drawer.vue";
 import { PollMethod, VoterIdentityMethod } from "#shared/poll/enums/method.enum";
 import { MAX_POLL_CHOICES, type PostPoll, PostPollSchema } from "#shared/poll/validators/poll.validator";
@@ -11,6 +12,7 @@ import Button from "~/core/components/button/Button.vue";
 import { ICON_CANCEL, ICON_PLUS } from "~/core/constants/icons.constant";
 import { deleteNthElement } from "#shared/core/utils/array.util";
 import useOnSubmit from "~/core/composables/useOnSubmit";
+import Info from "~/core/components/data/Info.vue";
 
 const open = defineModel<boolean>("open");
 const { t } = useI18n();
@@ -98,8 +100,28 @@ const onSubmit = useOnSubmit({
                     data-test-id="poll-create-form-title-input"
                 />
             </UFormField>
-            <UFormField :label="$t('poll.pollMethod')" name="method" class="w-full" required>
+            <UFormField name="method" class="w-full" required>
                 <USelect v-model="state.method" :items="pollMethodItems" value-key="method" class="w-full" />
+                <template #label>
+                    <span class="inline-flex items-center gap-0.5">
+                        {{ $t("poll.pollMethod") }}
+                        <Info>
+                            <div class="flex flex-col gap-4">
+                                <div
+                                    class="flex flex-col gap-2"
+                                    v-for="method in Object.values(PollMethod)"
+                                    :key="method"
+                                >
+                                    <H2 as="h3">{{ $t(`poll.method.${method}`) }}</H2>
+                                    <p>{{ $t(`poll.voting.${method}.explanation`) }}</p>
+                                    <p>
+                                        <b>{{ $t("poll.bestFor") }}:</b> {{ $t(`poll.voting.${method}.bestFor`) }}
+                                    </p>
+                                </div>
+                            </div>
+                        </Info>
+                    </span>
+                </template>
             </UFormField>
             <UFormField :label="$t('poll.openUntil')" name="closesAt" class="w-full">
                 <UInputDate v-model="closesAt" class="w-full" :min-value="now(getLocalTimeZone()).add({ minutes: 3 })">
@@ -119,8 +141,25 @@ const onSubmit = useOnSubmit({
             <UFormField :label="$t('poll.winCondition')" name="majorityWinner" class="w-full" required>
                 <USelect v-model="state.majorityWinner" :items="majorityWinnerItems" class="w-full" />
             </UFormField>
-            <UFormField :label="$t('poll.votingSecurity')" name="voterIdentityMethod" class="w-full" required>
+            <UFormField name="voterIdentityMethod" class="w-full" required>
                 <USelect v-model="state.voterIdentityMethod" :items="votingSecurityItems" class="w-full" />
+                <template #label>
+                    <span class="inline-flex items-center gap-0.5">
+                        {{ $t("poll.votingSecurity") }}
+                        <Info>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col gap-2">
+                                    <H2 as="h3">{{ $t("poll.votingSecurityIp") }}</H2>
+                                    <p>{{ $t("poll.votingSecurityIpDetails") }}</p>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <H2 as="h3">{{ $t("poll.votingSecurityCookie") }}</H2>
+                                    <p>{{ $t("poll.votingSecurityCookieDetails") }}</p>
+                                </div>
+                            </div>
+                        </Info>
+                    </span>
+                </template>
             </UFormField>
             <div class="relative w-full">
                 <TransitionGroup name="list">

@@ -63,7 +63,7 @@ const handleChange = (value: string | null) => {
             @update:model-value="handleChange"
         />
         <template #label>
-            <span class="flex items-center">
+            <span class="flex items-center gap-0.5">
                 {{ $t("timer.form.ttsVoice") }}
                 <Info :text="$t('timer.form.ttsInfo')" />
             </span>

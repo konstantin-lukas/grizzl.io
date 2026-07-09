@@ -13,7 +13,7 @@
         "choiceN": "Opción n.º {n}",
         "votingSecurity": "Seguridad de la votación",
         "votingSecurityIp": "Un voto por dirección IP",
-        "votingSecurityDetails": "El método más seguro para determinar quién ya ha votado, pero no funciona cuando los votantes están en la misma red. Elige esta opción solo cuando los votantes estén en redes diferentes, por ejemplo, si todos usan el wifi de su casa.",
+        "votingSecurityIpDetails": "El método más seguro para determinar quién ya ha votado, pero no funciona cuando los votantes están en la misma red. Elige esta opción solo cuando los votantes estén en redes diferentes, por ejemplo, si todos usan el wifi de su casa.",
         "votingSecurityCookie": "Un voto por navegador",
         "votingSecurityCookieDetails": "Es más fácil de eludir que la dirección IP, pero permite que las personas de la misma red participen en la encuesta. Elige esta opción cuando los votantes estén en la misma red, por ejemplo, en una red corporativa.",
         "winCondition": "Condición de victoria",
