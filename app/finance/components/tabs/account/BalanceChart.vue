@@ -183,8 +183,10 @@ watch(
         <span class="flex items-center gap-1 text-muted">
             <span>{{ $t("finance.account.expectedBalance") }}: </span>
             <USkeleton v-if="!expectedBalance" class="inline-block h-5 w-20 bg-accented" />
-            <span v-else>{{ expectedBalance }}</span>
-            <Info :text="$t('finance.account.expectedBalanceInfo')" class="shrink-0 -translate-x-1" />
+            <span v-else class="flex gap-2">
+                <span>{{ expectedBalance }}</span>
+                <Info :text="$t('finance.account.expectedBalanceInfo')" class="shrink-0 -translate-x-1" />
+            </span>
         </span>
     </div>
 </template>

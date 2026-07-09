@@ -7,7 +7,7 @@ const title = computed(() => props.title ?? t("ui.whatsThis"));
 
 <template>
     <UModal :text="props.text" :title>
-        <button class="center group focus-visible:outline-none">
+        <button class="center group focus-visible:outline-none" :aria-label="$t('ui.whatsThis')">
             <UIcon
                 :name="ICON_INFO"
                 class="size-5 opacity-50 transition-all group-focus:opacity-100 group-focus-visible:opacity-100 hover:text-front hover:opacity-100 focus:text-front"

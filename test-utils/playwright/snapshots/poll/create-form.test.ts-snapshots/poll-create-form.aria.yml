@@ -1,8 +1,10 @@
 - heading "Create A Poll" [level=1]
 - text: Poll Title*
 - textbox "Poll Title*": What should we have for dinner?
-- text: Poll Method*
-- combobox "Poll Method*": Instant-Runoff Voting
+- text: Poll Method
+- button "What is this?"
+- text: "*"
+- combobox "Poll Method What is this? *": Instant-Runoff Voting
 - text: Open until
 - group:
   - spinbutton "month,"
@@ -15,8 +17,10 @@
   - button "Clear date"
 - text: Win Condition*
 - combobox "Win Condition*": Winner doesn't need majority
-- text: Voting Security*
-- combobox "Voting Security*": One vote per IP-address
+- text: Voting Security
+- button "What is this?"
+- text: "*"
+- combobox "Voting Security What is this? *": One vote per IP-address
 - text: Choice No. 1*
 - textbox "Choice No. 1*": Italian
 - text: Choice No. 2*
