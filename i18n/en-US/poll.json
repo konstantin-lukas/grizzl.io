@@ -13,7 +13,7 @@
         "choiceN": "Choice No. {n}",
         "votingSecurity": "Voting Security",
         "votingSecurityIp": "One vote per IP-address",
-        "votingSecurityDetails": "Most secure method to determine who has already voted but does not work when your voters are on the same network. Pick this option only when your voters are on different networks, e.g. everyone's using their home wifi.",
+        "votingSecurityIpDetails": "Most secure method to determine who has already voted but does not work when your voters are on the same network. Pick this option only when your voters are on different networks, e.g. everyone's using their home wifi.",
         "votingSecurityCookie": "One vote per browser",
         "votingSecurityCookieDetails": "Easier to bypass than IP-address but allows people on the same network to participate in the poll. Pick this options when your voters are on the same network, e.g. a company network.",
         "winCondition": "Win Condition",
