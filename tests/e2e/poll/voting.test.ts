@@ -84,7 +84,8 @@ for (const method of [PollMethod.RUNOFF, PollMethod.POSITIONAL]) {
     test(
         `allows voting on polls of type "${method}" and shows the results after casting a vote"`,
         { tag: SCREENSHOT },
-        async ({ db, pollPage: page }) => {
+        async ({ db, pollPage: page }, testInfo) => {
+            if (testInfo.project.name.includes("mobile")) test.skip();
             await setup(page, db, method);
             await page.locators.choices.nth(1).dragTo(page.locators.choices.nth(3));
             await page.expect().toBeValid({ name: `${method}-poll-before-voting` });

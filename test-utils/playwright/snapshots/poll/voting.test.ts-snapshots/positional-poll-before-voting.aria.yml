@@ -6,7 +6,7 @@
     - button "Share"
     - button "See Results"
     - heading "Rank the options in order of preference" [level=2]
-    - text: Japanese Korean Thai Indonesian Chinese
+    - text: Japanese Thai Indonesian Korean Chinese
     - button "Vote"
     - heading "How Does This Poll Work?" [level=2]
     - paragraph: Rank the options. Each ranking position is worth a certain number of points, and the option with the most total points wins. The last position is worth 1 point, the second-to-last position is worth 2 points, and so on.
