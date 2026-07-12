@@ -13,6 +13,7 @@ defineProps<{ poll: Poll }>();
         <span
             class="center mr-4 block size-10 shrink-0 grow rounded-full bg-error peer-checked:bg-primary"
             role="checkbox"
+            data-test-id="poll-voting-choice"
             tabindex="0"
             :aria-checked="model.includes(index)"
             :aria-labelledby="`choice-${index}-label`"

@@ -13,6 +13,12 @@ const LOCATORS = {
     choiceDeleteButtons: "poll-create-form-choice-delete-button",
     clearDateTimeButton: "poll-create-form-clear-datetime-button",
     addChoiceButton: "poll-create-form-add-choice-input-button",
+
+    // VOTING
+    voteButton: "submit-vote-button",
+    toggleUiButton: "toggle-ui-button",
+    choices: "poll-voting-choice",
+    clipboardButton: "copy-to-clipboard-button",
 };
 
 export default class PollPage extends BasePage<typeof LOCATORS> {

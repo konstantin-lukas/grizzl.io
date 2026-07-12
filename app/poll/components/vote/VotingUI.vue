@@ -70,6 +70,7 @@ const disableSubmitButton = computed(() => selection.value === null);
                 class="mt-10 flex w-full justify-center"
                 size="xl"
                 :icon="ICON_VOTE"
+                data-test-id="submit-vote-button"
             >
                 {{ $t("poll.vote") }}
             </Button>

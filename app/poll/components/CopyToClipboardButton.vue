@@ -24,7 +24,7 @@ const copyToClipboard = async () => {
         :ui="{ content: 'overflow-hidden' }"
         @update:open="copyToClipboard"
     >
-        <Button color="neutral" :icon="ICON_SHARE">{{ $t("ui.share") }}</Button>
+        <Button color="neutral" :icon="ICON_SHARE" data-test-id="copy-to-clipboard-button">{{ $t("ui.share") }}</Button>
         <template #content>
             <span class="block bg-primary px-4 py-2 text-back">{{ $t("ui.copiedToClipboard") }}</span>
         </template>

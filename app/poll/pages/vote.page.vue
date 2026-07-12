@@ -66,6 +66,7 @@ const showResults = ref(poll.value.hasUserVoted || isClosed.value);
                         color="neutral"
                         class="flex justify-center not-sm:w-full sm:min-w-60"
                         :icon="ICON_VOTE"
+                        data-test-id="toggle-ui-button"
                         @click="showResults = false"
                     >
                         {{ $t("poll.vote") }}
@@ -75,6 +76,7 @@ const showResults = ref(poll.value.hasUserVoted || isClosed.value);
                         color="neutral"
                         class="flex justify-center not-sm:w-full sm:min-w-60"
                         :icon="ICON_EYE"
+                        data-test-id="toggle-ui-button"
                         @click="showResults = true"
                     >
                         {{ $t("poll.seeResults") }}

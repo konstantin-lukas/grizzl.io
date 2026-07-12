@@ -21,6 +21,7 @@ defineProps<{ poll: Poll }>();
                 v-for="choiceIndex in model"
                 :key="choiceIndex"
                 data-handle
+                data-test-id="poll-voting-choice"
                 class="flex w-full cursor-move items-center justify-start overflow-hidden rounded-full border border-accented py-2 pr-8 pl-4 text-nowrap text-ellipsis select-none"
             >
                 <UIcon :name="ICON_DRAG_VERTICAL" class="size-6 shrink-0" />
