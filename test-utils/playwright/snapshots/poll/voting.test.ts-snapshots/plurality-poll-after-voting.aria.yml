@@ -1,0 +1,18 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "What should we have for lunch?" [level=1]
+    - text: Plurality Voting
+    - button "Share"
+    - text: "Voters: 1 Winner: Indonesian Choices: 5"
+    - heading "How Does This Poll Work?" [level=2]
+    - paragraph: Choose a single option. The option with the most votes wins.
+    - text: "/Best for: Small groups \\(less than \\d+ people\\) when simplicity is important and there is likely a favorite option\\./"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

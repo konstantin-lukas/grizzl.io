@@ -26,6 +26,7 @@ const classNames = [
                 :model-value="model[index]"
                 :min="SCORE_VOTE_MIN_POINTS"
                 :max="SCORE_VOTE_MAX_POINTS"
+                data-test-id="poll-voting-choice"
                 :ui="{
                     track: 'h-10',
                     range: 'bg-front rounded-none',
@@ -43,6 +44,7 @@ const classNames = [
                 "
             />
             <span
+                data-hidden
                 class="pointer-events-none absolute h-full w-[calc(100%-3.5rem)] overflow-hidden rounded-full px-16 pt-1.5 text-lg text-nowrap text-ellipsis text-white mix-blend-difference"
             >
                 {{ choice }}

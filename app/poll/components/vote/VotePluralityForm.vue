@@ -23,6 +23,7 @@ const selectedIndex = computed<number | null>({
             class="center mr-4 block size-10 shrink-0 grow rounded-full bg-error peer-checked:bg-primary"
             role="radio"
             tabindex="0"
+            data-test-id="poll-voting-choice"
             :aria-checked="selectedIndex === index"
             :aria-labelledby="`choice-${index}-label`"
             @keydown.enter.prevent="selectedIndex = index"
