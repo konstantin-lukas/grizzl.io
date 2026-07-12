@@ -1,0 +1,18 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "What should we have for lunch?" [level=1]
+    - text: Instant-Runoff Voting
+    - button "Share"
+    - text: "Voters: 1 Winner: Japanese Choices: 5"
+    - heading "How Does This Poll Work?" [level=2]
+    - paragraph: Rank the options in order of preference. If nobody gets a majority, the option with the fewest votes is eliminated and those votes are transferred to the next preference. This repeats until one option has a majority.
+    - text: "Best for: Medium to large groups (5+ people) where majority support is essential, and preferences between options are clear."
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

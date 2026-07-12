@@ -1,0 +1,30 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "What should we have for lunch?" [level=1]
+    - text: Plurality Voting
+    - button "Share"
+    - button "See Results"
+    - heading "Pick the option you like the most" [level=2]
+    - radio "Japanese"
+    - text: Japanese
+    - radio "Korean"
+    - text: Korean
+    - radio "Thai"
+    - text: Thai
+    - radio "Indonesian" [checked]
+    - text: Indonesian
+    - radio "Chinese"
+    - text: Chinese
+    - button "Vote"
+    - heading "How Does This Poll Work?" [level=2]
+    - paragraph: Choose a single option. The option with the most votes wins.
+    - text: "/Best for: Small groups \\(less than \\d+ people\\) when simplicity is important and there is likely a favorite option\\./"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

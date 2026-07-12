@@ -32,11 +32,20 @@ test("does not allow voting on a poll that has ended", async ({ pollPage: page, 
     await page.expect("toggleUiButton").toBeDisattached();
 });
 
-test("shows an informational alert when the winner requires the majority of votes", async ({ pollPage: page, db }) => {
-    const [poll] = await db.poll.insert(1, { majorityWinner: true, closesAt: date({ when: "beforeRef" }) });
-    await page.goto({ target: `/poll/${poll.id}` });
-    await page.expect().toHaveScreenshot({ name: "results-ui-with-majority-winner-alert" });
-});
+test(
+    "shows an informational alert when the winner requires the majority of votes",
+    { tag: SCREENSHOT },
+    async ({ pollPage: page, db }) => {
+        const [poll] = await db.poll.insert(1, {
+            method: PollMethod.APPROVAL,
+            closesAt: null,
+            majorityWinner: true,
+        });
+        await page.goto({ target: `/poll/${poll.id}` });
+        await page.click("voteButton");
+        await page.expect().toHaveScreenshot({ name: "results-ui-with-majority-winner-alert" });
+    },
+);
 
 test("copies the current url to the clipboard when pressing the share button", async ({ pollPage: page, db }) => {
     const [poll] = await db.poll.insert(1, { closesAt: date({ when: "beforeRef" }) });

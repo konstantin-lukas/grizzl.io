@@ -1,0 +1,18 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "What should we have for lunch?" [level=1]
+    - text: Score Voting
+    - button "Share"
+    - text: "Voters: 1 Winner: Indonesian Choices: 5"
+    - heading "How Does This Poll Work?" [level=2]
+    - paragraph: /Give each option a score from 1–\d+ \(1 = dislike; \d+ = like\)\. All scores are added up, and the option with the highest total wins\./
+    - text: "/Best for: Medium-sized groups \\(5-\\d+ people\\) who want more flexibility to express their intensity of preference\\./"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list

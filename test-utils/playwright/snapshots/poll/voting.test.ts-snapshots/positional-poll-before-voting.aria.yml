@@ -1,0 +1,21 @@
+- document:
+  - button "Toggle the menu"
+  - main:
+    - heading "What should we have for lunch?" [level=1]
+    - text: Positional Voting
+    - button "Share"
+    - button "See Results"
+    - heading "Rank the options in order of preference" [level=2]
+    - text: Japanese Korean Thai Indonesian Chinese
+    - button "Vote"
+    - heading "How Does This Poll Work?" [level=2]
+    - paragraph: Rank the options. Each ranking position is worth a certain number of points, and the option with the most total points wins. The last position is worth 1 point, the second-to-last position is worth 2 points, and so on.
+    - text: "/Best for: Medium-sized polls \\(5-\\d+ people\\) with multiple choices, where detailed preferences matter\\./"
+  - contentinfo:
+    - navigation:
+      - link "Legal Notice":
+        - /url: /legal-notice
+      - link "Privacy Policy":
+        - /url: /privacy-policy
+  - region "Notifications (F8)":
+    - list
