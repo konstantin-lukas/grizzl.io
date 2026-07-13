@@ -12,14 +12,13 @@ import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 
 useUpdateTransactions();
 const { accounts, openAccountId } = useAccounts();
-const { refresh } = useCategories();
+const { refresh } = useCategories(true);
+useAutoTransactions(true);
 onMounted(() => {
     if (openAccountId.value) refresh();
 });
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
 const upsertFormOpen = ref(false);
-useCategories(true);
-useAutoTransactions(true);
 </script>
 
 <template>
