@@ -1,7 +1,7 @@
 import { onResponseError } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
 
-export default function useAutoTransactions() {
+export default function useAutoTransactions(watchRefetch = false) {
     const { openAccountId } = useAccounts();
     const toast = useToast();
     const { t } = useI18n();
@@ -18,17 +18,19 @@ export default function useAutoTransactions() {
         },
     );
 
-    watch(
-        openAccountId,
-        async id => {
-            if (!id) {
-                data.value = [];
-                return;
-            }
-            await refresh();
-        },
-        { immediate: true },
-    );
+    if (watchRefetch) {
+        watch(
+            openAccountId,
+            async id => {
+                if (!id) {
+                    data.value = [];
+                    return;
+                }
+                await refresh();
+            },
+            { immediate: true },
+        );
+    }
 
     return { autoTransactions: data, refresh, isFetching: pending };
 }

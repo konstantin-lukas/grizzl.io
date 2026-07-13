@@ -1,7 +1,7 @@
 import { onResponseError } from "~/core/utils/toast";
 import useAccounts from "~/finance/composables/useAccounts";
 
-export default function useCategories() {
+export default function useCategories(watchRefetch = false) {
     const { openAccountId } = useAccounts();
     const toast = useToast();
     const { t } = useI18n();
@@ -14,13 +14,15 @@ export default function useCategories() {
         default: () => [],
     });
 
-    watch(openAccountId, async id => {
-        if (!id) {
-            data.value = [];
-            return;
-        }
-        await refresh();
-    });
+    if (watchRefetch) {
+        watch(openAccountId, async id => {
+            if (!id) {
+                data.value = [];
+                return;
+            }
+            await refresh();
+        });
+    }
 
     return { categories: data, refresh, isFetching: pending };
 }
