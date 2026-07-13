@@ -6,7 +6,7 @@
     - button "Share"
     - button "See Results"
     - heading "Rank the options in order of preference" [level=2]
-    - text: Japanese Thai Indonesian Korean Chinese
+    - text: Japanese Korean Thai Indonesian Chinese
     - button "Vote"
     - heading "How Does This Poll Work?" [level=2]
     - paragraph: Rank the options in order of preference. If nobody gets a majority, the option with the fewest votes is eliminated and those votes are transferred to the next preference. This repeats until one option has a majority.

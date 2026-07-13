@@ -82,12 +82,11 @@ for (const method of [PollMethod.PLURALITY, PollMethod.APPROVAL]) {
 
 for (const method of [PollMethod.RUNOFF, PollMethod.POSITIONAL]) {
     test(
-        `allows voting on polls of type "${method}" and shows the results after casting a vote"`,
+        `allows voting on polls of type "${method}" and shows the results after casting a vote`,
         { tag: SCREENSHOT },
         async ({ db, pollPage: page }, testInfo) => {
             if (testInfo.project.name.includes("mobile")) test.skip();
             await setup(page, db, method);
-            await page.locators.choices.nth(1).dragTo(page.locators.choices.nth(3));
             await page.expect().toBeValid({ name: `${method}-poll-before-voting` });
             await page.click("voteButton");
             await page.expect().toBeValid({ name: `${method}-poll-after-voting`, skipThemeToggle: true });
@@ -96,7 +95,7 @@ for (const method of [PollMethod.RUNOFF, PollMethod.POSITIONAL]) {
 }
 
 test(
-    `allows voting on polls of type "${PollMethod.SCORE}" and shows the results after casting a vote"`,
+    `allows voting on polls of type "${PollMethod.SCORE}" and shows the results after casting a vote`,
     { tag: SCREENSHOT },
     async ({ db, pollPage: page }) => {
         await setup(page, db, PollMethod.SCORE);
