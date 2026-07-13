@@ -27,7 +27,7 @@
         "chart.js": "4.5.1",
         "drizzle-orm": "0.45.2",
         "nuxt": "4.4.8",
-        "pg": "8.21.0",
+        "pg": "8.22.0",
         "vue": "3.5.38",
         "vue-draggable-plus": "0.6.1",
         "vue-router": "5.1.0"
