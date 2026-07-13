@@ -8,6 +8,7 @@ import UpsertForm from "~/finance/components/UpsertForm.vue";
 import useAccounts from "~/finance/composables/useAccounts";
 import useCategories from "~/finance/composables/useCategories";
 import useUpdateTransactions from "~/finance/composables/useUpdateTransactions";
+import useAutoTransactions from "~/finance/composables/useAutoTransactions";
 
 useUpdateTransactions();
 const { accounts, openAccountId } = useAccounts();
@@ -17,6 +18,8 @@ onMounted(() => {
 });
 const showEmptyView = computed(() => accounts.value?.length === 0 && !openAccountId.value);
 const upsertFormOpen = ref(false);
+useCategories(true);
+useAutoTransactions(true);
 </script>
 
 <template>

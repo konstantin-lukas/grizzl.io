@@ -24,7 +24,7 @@ const items = ref<TabsItem[]>([
     },
 ]);
 
-const { refresh } = useAutoTransactions(true);
+const { refresh } = useAutoTransactions();
 </script>
 
 <template>
