@@ -10,10 +10,8 @@ export default function useAccounts() {
         refresh: refreshAccounts,
         pending,
     } = useFetch("/api/finance/accounts", {
-        key: "/api/finance/accounts",
         onResponseError: onResponseError(toast, t),
         server: false,
-        immediate: false,
     });
 
     const openAccountId = useLocalStorage("open-finance-account-id");
