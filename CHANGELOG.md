@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.20.0...v1.21.0) (2026-07-15)
+
+
+### Features
+
+* **poll:** add info to poll creation form ([#611](https://github.com/konstantin-lukas/grizzl.io/issues/611)) ([55f2bd5](https://github.com/konstantin-lukas/grizzl.io/commit/55f2bd57edc40111b7be8b9853002e79c62d3725))
+
 ## [1.20.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.19.0...v1.20.0) (2026-07-08)
 
 
