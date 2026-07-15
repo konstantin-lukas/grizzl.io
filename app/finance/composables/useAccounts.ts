@@ -12,6 +12,7 @@ export default function useAccounts() {
     } = useFetch("/api/finance/accounts", {
         onResponseError: onResponseError(toast, t),
         server: false,
+        dedupe: "defer",
     });
 
     const openAccountId = useLocalStorage("open-finance-account-id");

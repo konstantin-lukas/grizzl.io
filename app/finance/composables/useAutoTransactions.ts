@@ -13,6 +13,7 @@ export default function useAutoTransactions() {
             immediate: false,
             watch: false,
             server: false,
+            dedupe: "defer",
             default: () => [],
             onResponseError: onResponseError(toast, t),
         },

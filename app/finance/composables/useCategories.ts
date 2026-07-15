@@ -9,6 +9,7 @@ export default function useCategories() {
         onResponseError: onResponseError(toast, t),
         key: "categories",
         immediate: false,
+        dedupe: "defer",
         watch: false,
         server: false,
         default: () => [],
