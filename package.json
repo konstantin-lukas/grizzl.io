@@ -19,7 +19,7 @@
         "@huggingface/transformers": "4.2.0",
         "@nuxt/eslint": "1.16.0",
         "@nuxt/image": "2.0.0",
-        "@nuxt/ui": "4.8.2",
+        "@nuxt/ui": "4.9.0",
         "@nuxtjs/color-mode": "4.0.1",
         "@nuxtjs/i18n": "10.4.0",
         "@vite-pwa/nuxt": "1.1.1",
