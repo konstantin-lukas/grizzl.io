@@ -13,7 +13,8 @@
         "eslint:fix": "eslint --fix",
         "prettier": "prettier --check './**/*.{ts,tsx,css,json}' --config ./.prettierrc.json",
         "prettier:fix": "prettier --write './**/*.{ts,tsx,css,json}' --config ./.prettierrc.json",
-        "vitest": "vitest run --coverage"
+        "vitest": "vitest run --coverage",
+        "upgrade": "nuxt upgrade --dedupe"
     },
     "dependencies": {
         "@huggingface/transformers": "4.2.0",
@@ -26,11 +27,11 @@
         "better-auth": "1.6.23",
         "chart.js": "4.5.1",
         "drizzle-orm": "0.45.2",
-        "nuxt": "4.4.8",
+        "nuxt": "4.5.2",
         "pg": "8.22.0",
-        "vue": "3.5.38",
+        "vue": "3.5.41",
         "vue-draggable-plus": "0.6.1",
-        "vue-router": "5.1.0"
+        "vue-router": "5.2.0"
     },
     "devDependencies": {
         "@axe-core/playwright": "4.11.3",
@@ -44,7 +45,6 @@
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/pg": "8.20.0",
         "@vitest/coverage-v8": "4.1.9",
-        "vitest": "4.1.9",
         "@vue/test-utils": "2.4.11",
         "drizzle-kit": "0.31.10",
         "eslint": "10.6.0",
@@ -55,6 +55,7 @@
         "prettier-plugin-tailwindcss": "0.8.0",
         "tailwindcss": "4.3.2",
         "typescript": "6.0.3",
+        "vitest": "4.1.9",
         "vue-tsc": "3.3.5"
     },
     "overrides": {

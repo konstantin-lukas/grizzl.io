@@ -1,4 +1,6 @@
-export type TodoList = ReturnType<typeof useFetch<void, unknown, "/api/todo/lists">>["data"]["value"][number];
+import type { TypedInternalResponse } from "nitropack";
+
+export type TodoList = TypedInternalResponse<"/api/todo/lists">[number];
 export type TodoItem = TodoList["items"]["completed"][number];
 
 export default function useTodoLists() {

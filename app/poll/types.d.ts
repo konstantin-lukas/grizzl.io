@@ -1,1 +1,3 @@
-export type Poll = ReturnType<typeof useFetch<void, unknown, "/api/polls/:id">>["data"]["value"];
+import type { TypedInternalResponse } from "nitropack";
+
+export type Poll = TypedInternalResponse<"/api/polls/:id">;
