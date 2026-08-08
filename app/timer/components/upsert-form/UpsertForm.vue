@@ -129,14 +129,22 @@ function onEnd() {
                 :icon="ICON_COLLAPSE_ALL"
                 :aria-label="$t('ui.collapseAll')"
                 data-test-id="timer-upsert-collapse-button"
-                @click="forcedAccordionState = 'close'"
+                @click="
+                    () => {
+                        forcedAccordionState = 'close';
+                    }
+                "
             />
             <Button
                 variant="subtle"
                 :icon="ICON_EXPAND_ALL"
                 :aria-label="$t('ui.expandAll')"
                 data-test-id="timer-upsert-expand-button"
-                @click="forcedAccordionState = 'open'"
+                @click="
+                    () => {
+                        forcedAccordionState = 'open';
+                    }
+                "
             />
         </template>
     </BaseUpsertForm>

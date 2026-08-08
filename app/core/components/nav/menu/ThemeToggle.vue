@@ -21,7 +21,11 @@ const isDark = computed({
         class="center absolute top-4 right-4 z-50 size-10 cursor-pointer hover-none:size-12"
         data-test-id="theme-toggle"
         size="xl"
-        @click="isDark = !isDark"
+        @click="
+            () => {
+                isDark = !isDark;
+            }
+        "
     >
         <template #leading>
             <UIcon class="hidden size-8 text-front dark:inline-block" :name="ICON_SUN" data-test-id="icon-light-mode" />

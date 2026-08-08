@@ -29,7 +29,11 @@ const isFormOpen = ref(false);
             color="neutral"
             :icon="ICON_PLUS_CIRCLE"
             data-test-id="poll-overview-create-button"
-            @click="isFormOpen = true"
+            @click="
+                () => {
+                    isFormOpen = true;
+                }
+            "
         >
             {{ $t("ui.create") }}
         </Button>
