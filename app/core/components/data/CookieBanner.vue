@@ -37,7 +37,11 @@ watch(hideCookieBanner, newValue => {
                 color="neutral"
                 class="flex shrink-0 justify-center not-sm:w-full"
                 data-test-id="hide-cookie-banner-button"
-                @click="hideCookieBanner = 'true'"
+                @click="
+                    () => {
+                        hideCookieBanner = 'true';
+                    }
+                "
             >
                 {{ $t("ui.okay") }}
             </Button>

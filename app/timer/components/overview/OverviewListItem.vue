@@ -13,7 +13,7 @@ const emit = defineEmits<{ (e: "create"): void; (e: "start", value: Timer): void
 const props = defineProps<{ isLast: boolean; timer: Timer & { id: string } }>();
 
 const { language } = useLocale();
-const open = ref(false);
+const isOpen = ref(false);
 const duration = useComputedOnLocaleChange(
     () => {
         const timeInSeconds = Math.floor(
@@ -29,8 +29,8 @@ const duration = useComputedOnLocaleChange(
     () => props.timer.intervals,
 );
 
-watch(open, () => {
-    if (!open.value) refreshNuxtData("/api/timers");
+watch(isOpen, () => {
+    if (!isOpen.value) refreshNuxtData("/api/timers");
 });
 </script>
 
@@ -69,12 +69,23 @@ watch(open, () => {
                     variant="subtle"
                     :icon="ICON_EDIT"
                     data-test-id="timer-list-item-edit-button"
-                    @click="open = true"
+                    @click="
+                        () => {
+                            isOpen = true;
+                        }
+                    "
                 />
                 <OverviewDeleteButton :timer="props.timer" />
             </div>
-            <Drawer v-model:open="open">
-                <UpsertForm :initial-state="props.timer" @success="open = false" />
+            <Drawer v-model:open="isOpen">
+                <UpsertForm
+                    :initial-state="props.timer"
+                    @success="
+                        () => {
+                            isOpen = false;
+                        }
+                    "
+                />
                 <template #title>{{ $t("timer.aria.drawer.edit") }}</template>
                 <template #description>{{ $t("timer.aria.drawer.description") }}</template>
             </Drawer>
