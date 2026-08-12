@@ -41,7 +41,7 @@
         "@iconify-json/ri": "1.2.10",
         "@nuxt/test-utils": "4.1.0",
         "@playwright/test": "1.60.0",
-        "@tailwindcss/vite": "4.3.2",
+        "@tailwindcss/vite": "4.3.3",
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/pg": "8.20.0",
         "@vitest/coverage-v8": "4.1.10",
@@ -53,7 +53,7 @@
         "playwright-core": "1.60.0",
         "prettier": "3.9.6",
         "prettier-plugin-tailwindcss": "0.8.1",
-        "tailwindcss": "4.3.2",
+        "tailwindcss": "4.3.3",
         "typescript": "6.0.3",
         "vitest": "4.1.10",
         "vue-tsc": "3.3.8"
