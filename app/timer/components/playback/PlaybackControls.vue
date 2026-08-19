@@ -67,7 +67,11 @@ const togglePlayback = () => {
             :aria-label="mute ? $t('ui.unmute') : $t('ui.mute')"
             :data-test-id="`timer-controls-${mute ? 'unmute' : 'mute'}-button`"
             :color="mute ? 'neutral' : 'primary'"
-            @click="mute = !mute"
+            @click="
+                () => {
+                    mute = !mute;
+                }
+            "
         />
         <Button
             size="xl"

@@ -28,7 +28,7 @@ export default async function GlobalSetup(config: FullConfig) {
     const browser = await firefox.launch();
     const page = await browser.newPage();
 
-    for (let retries = 3; retries > 0; ) {
+    for (let retries = 3; retries > 0;) {
         try {
             await page.goto(`${baseURL}/signin`, { waitUntil: "load" });
             const context = page.context();

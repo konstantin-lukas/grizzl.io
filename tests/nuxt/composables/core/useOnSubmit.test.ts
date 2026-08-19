@@ -61,8 +61,11 @@ vi.mock("#shared/core/utils/object.util", () => ({
     deepCopy: vi.fn(v => ({ ...v })),
 }));
 
-const fetchMock = vi.fn();
-vi.stubGlobal("$fetch", fetchMock);
+const { fetchMock } = vi.hoisted(() => ({
+    fetchMock: vi.fn(),
+}));
+
+mockNuxtImport("$fetch", () => fetchMock);
 const emit = vi.fn();
 const refresh = vi.fn();
 

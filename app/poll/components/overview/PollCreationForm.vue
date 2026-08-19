@@ -108,9 +108,9 @@ const onSubmit = useOnSubmit({
                         <Info>
                             <div class="flex flex-col gap-4">
                                 <div
-                                    class="flex flex-col gap-2"
                                     v-for="method in Object.values(PollMethod)"
                                     :key="method"
+                                    class="flex flex-col gap-2"
                                 >
                                     <H2 as="h3">{{ $t(`poll.method.${method}`) }}</H2>
                                     <p>{{ $t(`poll.voting.${method}.explanation`) }}</p>
@@ -133,7 +133,11 @@ const onSubmit = useOnSubmit({
                             :icon="ICON_CANCEL"
                             :aria-label="$t('ui.clearDate')"
                             data-test-id="poll-create-form-clear-datetime-button"
-                            @click="closesAt = null"
+                            @click="
+                                () => {
+                                    closesAt = null;
+                                }
+                            "
                         />
                     </template>
                 </UInputDate>
@@ -185,7 +189,11 @@ const onSubmit = useOnSubmit({
                                     :icon="ICON_CANCEL"
                                     :aria-label="$t('poll.deleteChoice')"
                                     data-test-id="poll-create-form-choice-delete-button"
-                                    @click="state.choices = deleteNthElement(state.choices, i - 1)"
+                                    @click="
+                                        () => {
+                                            state.choices = deleteNthElement(state.choices, i - 1);
+                                        }
+                                    "
                                 />
                             </template>
                         </UInput>
@@ -199,7 +207,11 @@ const onSubmit = useOnSubmit({
                     color="neutral"
                     class="mt-4"
                     data-test-id="poll-create-form-add-choice-input-button"
-                    @click="state.choices.push('')"
+                    @click="
+                        () => {
+                            state.choices.push('');
+                        }
+                    "
                 >
                     {{ $t("ui.add") }}
                 </Button>
