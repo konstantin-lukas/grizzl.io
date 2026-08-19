@@ -43,7 +43,7 @@
         "@playwright/test": "1.60.0",
         "@tailwindcss/vite": "4.3.3",
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
-        "@types/pg": "8.20.0",
+        "@types/pg": "8.20.4",
         "@vitest/coverage-v8": "4.1.10",
         "@vue/test-utils": "2.4.11",
         "drizzle-kit": "0.31.10",
