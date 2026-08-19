@@ -106,6 +106,7 @@ services:
         environment:
             - TZ=UTC
             - CI=true
+            - PW_TEST_SCREENSHOT_NO_FONTS_READY=1
 
     caddy:
         image: caddy:2.10-alpine
