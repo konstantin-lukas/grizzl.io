@@ -80,7 +80,7 @@ services:
 
     playwright:
         container_name: grizzl-playwright-dev
-        image: mcr.microsoft.com/playwright:v1.60.0-noble
+        image: mcr.microsoft.com/playwright:v1.62.1-noble
         user: "${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}"
         volumes:
             - .:/home/grizzl
@@ -89,6 +89,7 @@ services:
         environment:
             - TZ=UTC
             - DEV_MODE=true
+            - PW_TEST_SCREENSHOT_NO_FONTS_READY=1
 
     caddy:
         container_name: grizzl-caddy-dev

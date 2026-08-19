@@ -55,14 +55,16 @@ test("uses auto-transactions to predict account balance at the end of the month"
 test(
     "shows a tooltip with the balance and balance change for a given day when clicking/hovering",
     { tag: SCREENSHOT },
-    async ({ financePage: page, db }) => {
+    async ({ financePage: page, db }, testInfo) => {
         await setup(db);
         await page.page.clock.install({ time: refDate });
         await page.goto();
 
-        await page.page.evaluate(() => document.fonts.ready);
+        if (testInfo.project.name !== "safari" && testInfo.project.name !== "mobile_safari") {
+            await page.page.evaluate(() => document.fonts.ready);
+            await page.page.waitForFunction(() => document.fonts.status === "loaded");
+        }
 
-        await page.page.waitForFunction(() => document.fonts.status === "loaded");
         await page.locators.balanceChart.hover({ position: { x: 200, y: 100 } });
         await page.expect("balanceChart").toHaveScreenshot({ name: "balance-chart-with-visible-tooltip", blur: false });
     },
