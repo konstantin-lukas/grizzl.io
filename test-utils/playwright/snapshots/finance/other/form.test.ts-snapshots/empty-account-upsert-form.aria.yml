@@ -3,5 +3,4 @@
 - textbox "Account title*"
 - text: Currency*
 - button "Show popup"
-- textbox
 - button "Create"

@@ -1,3 +1,4 @@
+- heading "Create Timer" [level=1]
 - text: Timer title*
 - textbox "Timer title*"
 - group:
@@ -8,25 +9,22 @@
     - textbox "Interval title":
       - /placeholder: Displayed while interval is running
     - text: Interval type*
-    - combobox "Interval type*"
-    - text: ""
+    - combobox "Interval type*": Standard
+    - text: Repetitions*
     - group:
-      - spinbutton "Repetitions*"
+      - spinbutton "Repetitions*": "1"
       - button "Increment"
       - button "Decrement" [disabled]
-      - textbox: "1"
     - text: Preparation Time*
     - group:
-      - spinbutton "Preparation Time*"
+      - spinbutton "Preparation Time*": 0 sec
       - button "Increment"
       - button "Decrement" [disabled]
-      - textbox: "0"
-    - text: ""
+    - text: Duration*
     - group:
-      - spinbutton "Duration*"
+      - spinbutton "Duration*": 3 sec
       - button "Increment"
       - button "Decrement"
-      - textbox: "3"
   - separator
   - button "Duplicate"
   - button "Move up" [disabled]

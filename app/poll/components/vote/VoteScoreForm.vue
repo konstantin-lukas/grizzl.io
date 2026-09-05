@@ -36,9 +36,10 @@ const classNames = [
                 }"
                 @update:model-value="
                     value => {
-                        if (value === undefined) return;
+                        const resolvedValue = Array.isArray(value) ? value[0] : value;
+                        if (resolvedValue === undefined) return;
                         const copy = [...model];
-                        copy[index] = value;
+                        copy[index] = resolvedValue;
                         model = copy;
                     }
                 "
