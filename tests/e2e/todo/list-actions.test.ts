@@ -50,7 +50,7 @@ test("allows deleting an item and persists changes", { tag: SCREENSHOT }, async 
     await page.syncAndReload();
     await page.click("notSyncing");
 
-    await page.expect().toHaveScreenshot({ name: "empty-todo-list-modal", maxDiffPixelRatio: 0.01, blur: false });
+    await page.expect("root").toHaveScreenshot({ name: "empty-todo-list-modal", maxDiffPixelRatio: 0.01, blur: false });
 });
 
 for (const [action, ordering, checkbox] of [
