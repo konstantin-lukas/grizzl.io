@@ -49,8 +49,6 @@ if (!process.env.CI) {
     } as never);
 }
 
-export const EXPECT_TIMEOUT = 5000;
-
 export default defineConfig<ConfigOptions>({
     testDir: "./tests",
     testMatch: "**/*.test.ts",
@@ -62,7 +60,7 @@ export default defineConfig<ConfigOptions>({
     reporter: process.env.CI ? [["github"], ["html"]] : "line",
     globalSetup: "./test-utils/playwright/global.setup.ts",
     expect: {
-        timeout: EXPECT_TIMEOUT,
+        timeout: 5000,
         toHaveScreenshot: {
             maxDiffPixelRatio: process.env.DEV_MODE === "true" ? 1 : 0,
             threshold: 0,

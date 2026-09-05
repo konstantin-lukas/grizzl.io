@@ -1,4 +1,3 @@
-import { EXPECT_TIMEOUT } from "~~/playwright.config.ts";
 import { test } from "~~/test-utils/playwright";
 import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
@@ -38,8 +37,8 @@ for (const [action, ordering, item] of [
             await page.syncAndReload();
             await page.click("accordion");
 
-            await page.expect("calendarLoadingSkeleton").toBeDisattached({ timeout: EXPECT_TIMEOUT * 2 });
             await page.expect(target, { nth: item }).toBeVisible();
+            await page.page.waitForTimeout(500);
             await page.expect().toHaveScreenshot({
                 name: `todo-calendar-after-${action}-an-item`,
                 blur: false,

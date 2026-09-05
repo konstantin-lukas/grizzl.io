@@ -67,7 +67,7 @@ const paid = computed(() => (bills.value.paid ?? []).reduce((sum, { amount }) =>
         <USkeleton v-if="isFetching" class="inline-block h-6 w-20" />
         <span v-else>{{ formatCurrency(language, currency, paid) }}</span>
     </H3>
-    <ul v-if="!isFetching" class="opacity-50" data-hidden>
+    <ul v-if="!isFetching" class="opacity-50">
         <BaseTransactionCard
             v-for="bill in bills.paid"
             :key="bill.id"

@@ -40,9 +40,6 @@ const LOCATORS = {
     listDeleteButton: "list-options-delete-button",
     categorySelect: "category-icon-select-button",
     categoryOptions: "category-icon-select-option",
-
-    // CALENDER
-    calendarLoadingSkeleton: "todo-list-loading-skeleton",
 };
 
 export default class TodoPage extends BasePage<typeof LOCATORS> {
