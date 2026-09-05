@@ -1,9 +1,9 @@
 import type { Locator } from "@playwright/test";
 import { expect } from "@playwright/test";
 
-export default async function toBeDisattached(loc: Locator) {
+export default async function toBeDisattached(loc: Locator, options?: { timeout?: number }) {
     try {
-        await expect(loc).not.toBeAttached();
+        await expect(loc).not.toBeAttached(options);
         return {
             pass: true,
             message: () => "Locator was not attached.",
