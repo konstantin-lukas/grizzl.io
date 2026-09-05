@@ -28,7 +28,7 @@
         "chart.js": "4.5.1",
         "drizzle-orm": "0.45.2",
         "nuxt": "4.5.2",
-        "pg": "8.22.0",
+        "pg": "8.23.0",
         "vue": "3.5.41",
         "vue-draggable-plus": "0.6.1",
         "vue-router": "5.2.0"
@@ -43,7 +43,7 @@
         "@playwright/test": "1.62.1",
         "@tailwindcss/vite": "4.3.3",
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
-        "@types/pg": "8.20.4",
+        "@types/pg": "8.23.1",
         "@vitest/coverage-v8": "4.1.11",
         "@vue/test-utils": "2.4.11",
         "drizzle-kit": "0.31.10",
