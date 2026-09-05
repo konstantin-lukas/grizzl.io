@@ -59,6 +59,7 @@
         "vue-tsc": "3.3.10"
     },
     "overrides": {
+        "sharp": "0.34.4",
         "esbuild": "0.25.10",
         "@sveltejs/kit": "0.0.0",
         "@sveltejs/vite-plugin-svelte": "0.0.0"
