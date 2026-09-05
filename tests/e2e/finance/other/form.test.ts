@@ -3,11 +3,7 @@ import { SCREENSHOT } from "~~/test-utils/playwright/tags";
 
 test("should register a service worker when supported", async ({ financePage: page }) => {
     await page.goto();
-    await expect
-        .poll(() => {
-            return page.swReady();
-        })
-        .not.toBe(null);
+    await expect.poll(() => page.swReady()).not.toBe(null);
 });
 
 test("allows creating a new account and deleting it", { tag: SCREENSHOT }, async ({ financePage: page }) => {
