@@ -29,13 +29,15 @@ const projects = [
         testDir: "./tests/e2e",
         use: {
             ...devices["Pixel 5"],
+            hasTouch: true,
+            isMobile: true,
             permissions: ["clipboard-read", "clipboard-write"],
         },
     },
     {
         name: "mobile_safari",
         testDir: "./tests/e2e",
-        use: { ...devices["iPhone 12"] },
+        use: { ...devices["iPhone 12"], isMobile: true, hasTouch: true },
     },
 ];
 
