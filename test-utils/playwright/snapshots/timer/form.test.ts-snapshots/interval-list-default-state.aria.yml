@@ -7,30 +7,27 @@
       - button "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau" [expanded]
       - region "vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau":
         - separator
-        - text: ""
+        - text: Interval title
         - textbox "Interval title":
           - /placeholder: Displayed while interval is running
           - text: vitaelobortispellentesquetortorvolutpataliquamlectusvivamusvoluptatequisquesollicitudinnisiaeneanfau
-        - text: ""
-        - combobox "Interval type*"
-        - text: ""
+        - text: Interval type*
+        - combobox "Interval type*": Standard
+        - text: Repetitions*
         - group:
-          - spinbutton "Repetitions*"
+          - spinbutton "Repetitions*": "2"
           - button "Increment"
           - button "Decrement"
-          - textbox: "2"
-        - text: ""
+        - text: Preparation Time*
         - group:
-          - spinbutton "Preparation Time*"
+          - spinbutton "Preparation Time*": 0 sec
           - button "Increment"
           - button "Decrement" [disabled]
-          - textbox: "0"
-        - text: ""
+        - text: Duration*
         - group:
-          - spinbutton "Duration*"
+          - spinbutton "Duration*": 3 sec
           - button "Increment"
           - button "Decrement"
-          - textbox: "3"
       - separator
       - button "Duplicate"
       - button "Move up" [disabled]

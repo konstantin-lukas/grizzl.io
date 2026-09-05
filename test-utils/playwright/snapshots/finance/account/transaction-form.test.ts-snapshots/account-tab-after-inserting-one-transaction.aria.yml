@@ -13,6 +13,7 @@
       - button "Manage automatic transactions"
       - button "Filters"
       - text: "Current: €100.00 Expected: €100.00"
+      - button "What is this?"
       - heading "Transaction History" [level=2]
       - list:
         - listitem:
@@ -25,7 +26,6 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
-  - alert: /Notification Transaction CreatedA new transaction with amount “€100\.00” was created\./
   - region "Notifications (F8)":
     - list:
       - listitem:

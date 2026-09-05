@@ -24,7 +24,6 @@
         - /url: /legal-notice
       - link "Privacy Policy":
         - /url: /privacy-policy
-  - alert: Notification Savings Account UpdatedThe account titled “Bananas” was updated.
   - region "Notifications (F8)":
     - list:
       - listitem:

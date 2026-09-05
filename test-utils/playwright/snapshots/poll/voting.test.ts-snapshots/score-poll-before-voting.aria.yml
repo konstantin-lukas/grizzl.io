@@ -6,15 +6,15 @@
     - button "Share"
     - button "See Results"
     - heading /Give each option a score from 1–\d+ \(1 = dislike; \d+ = like\)/ [level=2]
-    - slider "Thumb"
+    - slider "Japanese"
     - text: Japanese 1
-    - slider "Thumb"
+    - slider "Korean"
     - text: Korean 5
-    - slider "Thumb"
+    - slider "Thai"
     - text: Thai 1
-    - slider "Thumb"
+    - slider "Indonesian"
     - text: Indonesian 9
-    - slider "Thumb"
+    - slider "Chinese"
     - text: Chinese 1
     - button "Vote"
     - heading "How Does This Poll Work?" [level=2]
