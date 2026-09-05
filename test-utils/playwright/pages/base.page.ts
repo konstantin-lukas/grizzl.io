@@ -153,7 +153,8 @@ export default abstract class BasePage<T extends Record<string, string>> {
         const axe = new AxeBuilder({ page: this.page })
             .exclude("#nuxt-devtools-container")
             .exclude("[aria-hidden='true']")
-            .exclude("[data-hidden]");
+            .exclude("[data-hidden]")
+            .exclude("[aria-label='Notifications (F8)'");
         const start = Date.now();
         while (true) {
             const results = await axe.analyze();

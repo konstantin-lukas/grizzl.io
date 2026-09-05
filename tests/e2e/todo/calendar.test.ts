@@ -38,6 +38,7 @@ for (const [action, ordering, item] of [
             await page.click("accordion");
 
             await page.expect(target, { nth: item }).toBeVisible();
+            await page.page.waitForTimeout(500);
             await page.expect().toHaveScreenshot({
                 name: `todo-calendar-after-${action}-an-item`,
                 blur: false,
