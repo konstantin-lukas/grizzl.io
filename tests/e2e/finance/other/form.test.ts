@@ -43,7 +43,7 @@ test("allows creating a new account and deleting it", { tag: SCREENSHOT }, async
     });
 });
 
-test("allows editing an accounts title but not it's currency", async ({ db, financePage: page }) => {
+test("allows editing an account's title but not its currency", async ({ db, financePage: page }) => {
     await db.financeAccount.insert(1);
     await page.goto();
 
