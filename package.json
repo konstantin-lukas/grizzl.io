@@ -57,7 +57,7 @@
         "typescript": "npm:@typescript/typescript6@^6.0.0",
         "typescript-7": "npm:typescript@7.0.2",
         "vitest": "4.1.11",
-        "vue-tsc": "3.3.10"
+        "vue-tsc": "3.3.11"
     },
     "overrides": {
         "sharp": "0.34.4",
