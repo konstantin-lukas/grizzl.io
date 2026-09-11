@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.21.1](https://github.com/konstantin-lukas/grizzl.io/compare/v1.21.0...v1.21.1) (2026-09-11)
+
+
+### Miscellaneous Chores
+
+* release 1.21.0 ([eb48609](https://github.com/konstantin-lukas/grizzl.io/commit/eb4860977d72077aae6d82c0e6f4530b271b94c0))
+* release 1.21.1 ([c16631a](https://github.com/konstantin-lukas/grizzl.io/commit/c16631a2cf06a29cae1706d8cd4db2bee5ba9cc7))
+
 ## [1.21.0](https://github.com/konstantin-lukas/grizzl.io/compare/v1.20.0...v1.21.0) (2026-07-15)
 
 
