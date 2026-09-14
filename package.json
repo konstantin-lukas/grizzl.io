@@ -49,7 +49,7 @@
         "drizzle-kit": "0.31.10",
         "eslint": "10.9.1",
         "eslint-plugin-vuejs-accessibility": "2.6.0",
-        "happy-dom": "20.11.13",
+        "happy-dom": "20.12.0",
         "playwright-core": "1.62.1",
         "prettier": "3.9.6",
         "prettier-plugin-tailwindcss": "0.8.1",
