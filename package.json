@@ -51,7 +51,7 @@
         "eslint-plugin-vuejs-accessibility": "2.6.0",
         "happy-dom": "20.11.13",
         "playwright-core": "1.62.1",
-        "prettier": "3.9.6",
+        "prettier": "3.9.7",
         "prettier-plugin-tailwindcss": "0.8.1",
         "tailwindcss": "4.3.3",
         "typescript": "npm:@typescript/typescript6@^6.0.0",
